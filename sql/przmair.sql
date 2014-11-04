@@ -24,7 +24,7 @@ CREATE TABLE profile (
 	dateOfBirth DATE NOT NULL,
 	customerToken VARCHAR(130),
 	PRIMARY KEY (profileId),
-	INDEX(userId),
+	UNIQUE (userId),
 	FOREIGN KEY (userId) REFERENCES user (userId)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE flight (
 	originAirport VARCHAR(10) NOT NULL,
 	destinationAirport VARCHAR(10) NOT NULL,
 	departureTime DATETIME NOT NULL,
-	arrivalTime DATETIME,
+	duration HOUR_MINUTE NOT NULL,
 	totalAvailableTickets INT UNSIGNED NOT NULL,
 	totalTicketsSold INT UNSIGNED NOT NULL,
 	PRIMARY KEY (flightId),
@@ -44,18 +44,20 @@ CREATE TABLE flight (
 
 CREATE TABLE ticket (
 	confirmationNumber VARCHAR(10),
-	price DECIMAL UNSIGNED,
+	price DECIMAL(,2) UNSIGNED,
 	flightId INT UNSIGNED NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
 	travelerId INT UNSIGNED NOT NULL,
-	INDEX(flightId),
-	FOREIGN KEY (flightId) REFERENCES flight (flightId),
-	INDEX(profileId),
-	FOREIGN KEY (profileId) REFERENCES profile (profileId),
-	INDEX(travelerId),
-	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId),
-	PRIMARY KEY (profileId, travelerId, flightId),
 	UNIQUE (confirmationNumber)
+
+	INDEX(flightId),
+	INDEX(profileId),
+	INDEX(travelerId),
+
+	PRIMARY KEY (profileId, travelerId, flightId),
+	FOREIGN KEY (flightId) REFERENCES flight (flightId),
+	FOREIGN KEY (profileId) REFERENCES profile (profileId),
+	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId),
 );
 
 CREATE TABLE traveler (
