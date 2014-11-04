@@ -82,3 +82,12 @@ CREATE TABLE transaction (
 	FOREIGN KEY (profileId) REFERENCES profile (profileId)
 
 );
+
+CREATE TABLE airport (
+	airportId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	airportCode VARCHAR(10) NOT NULL,
+	airportDesc VARCHAR(100) NOT NULL,
+	airportSearchField VARCHAR(100) NOT NULL,
+	INDEX(airportSearchField),
+	PRIMARY KEY (airportId)
+);
