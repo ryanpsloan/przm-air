@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="I realized that in order to change a flight we will need to make and keep track of itineraries, so I made a table to store serialized objects (objects as long strings)">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sql/przmair.sql" afterPath="$PROJECT_DIR$/sql/przmair.sql" />
+    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="przm-air.iws" />
@@ -200,7 +198,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415169533318</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="I realized that in order to change a flight we will need to make and keep track of itineraries, so I made a table to store serialized objects (objects as long strings)">
+      <created>1415224277812</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1415224277812</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -246,7 +250,8 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="I realized that in order to change a flight we will need to make and keep track of itineraries, so I made a table to store serialized objects (objects as long strings) and called it itineraries, it has profileId as a foreign key and is a foreign key in ticket, I added to flight the arrivaltime field as I think we may need it later," />
-    <option name="LAST_COMMIT_MESSAGE" value="I realized that in order to change a flight we will need to make and keep track of itineraries, so I made a table to store serialized objects (objects as long strings) and called it itineraries, it has profileId as a foreign key and is a foreign key in ticket, I added to flight the arrivaltime field as I think we may need it later," />
+    <MESSAGE value="I realized that in order to change a flight we will need to make and keep track of itineraries, so I made a table to store serialized objects (objects as long strings)" />
+    <option name="LAST_COMMIT_MESSAGE" value="I realized that in order to change a flight we will need to make and keep track of itineraries, so I made a table to store serialized objects (objects as long strings)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
