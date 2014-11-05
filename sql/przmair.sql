@@ -41,7 +41,7 @@ CREATE TABLE flight (
 	duration TIME NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
 	totalTicketsSold INT UNSIGNED NOT NULL,
-	totalSeatsAvailable INT UNSIGNED NOT NULL,
+	totalAvailableSeats INT UNSIGNED NOT NULL,
 	totalNumConfirmedSeats INT UNSIGNED NOT NULL,
 	INDEX(originAirport),
 	INDEX(destinationAirport),
@@ -64,24 +64,34 @@ create TABLE template (
 );
 
 CREATE TABLE ticket (
+	ticketId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	confirmationNumber VARCHAR(10),
 	price DECIMAL(5,2) UNSIGNED,
 	flightId INT UNSIGNED NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
 	travelerId INT UNSIGNED NOT NULL,
-	itineraryId INT UNSIGNED NOT NULL,
 	UNIQUE (confirmationNumber),
 
 	INDEX(flightId),
 	INDEX(profileId),
 	INDEX(travelerId),
-	INDEX(itineraryId),
 
-	PRIMARY KEY (profileId, travelerId, flightId),
+	PRIMARY KEY (ticketId),
 	FOREIGN KEY (flightId) REFERENCES flight (flightId),
 	FOREIGN KEY (profileId) REFERENCES profile (profileId),
 	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId),
-	FOREIGN KEY (itineraryId) REFERENCES itinerary(itineraryId)
+
+);
+
+CREATE TABLE ticket_flight (
+	flightId INT UNSIGNED NOT NULL,
+	ticketId INT UNSIGNED NOT NULL,
+	INDEX(flightId),
+	INDEX(ticketId),
+	PRIMARY KEY (flightId,ticketId),
+	FOREIGN KEY flightId REFERENCES flight(flightId),
+	FOREIGN KEY ticketId REFERENCES ticket(ticketId)
+
 );
 
 CREATE TABLE traveler (
