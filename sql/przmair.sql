@@ -89,8 +89,8 @@ CREATE TABLE ticket_flight (
 	INDEX(flightId),
 	INDEX(ticketId),
 	PRIMARY KEY (flightId,ticketId),
-	FOREIGN KEY flightId REFERENCES flight(flightId),
-	FOREIGN KEY ticketId REFERENCES ticket(ticketId)
+	FOREIGN KEY (flightId) REFERENCES flight(flightId),
+	FOREIGN KEY (ticketId) REFERENCES ticket(ticketId)
 
 );
 
