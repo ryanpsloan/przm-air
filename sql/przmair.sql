@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS itinerary;
+DROP TABLE IF EXISTS ticket_flight;
 DROP TABLE IF EXISTS airport;
 DROP TABLE IF EXISTS transaction;
 DROP TABLE IF EXISTS traveler;
@@ -32,38 +32,41 @@ CREATE TABLE profile (
 
 CREATE TABLE flight (
 	flightId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	templateId INT UNSIGNED NOT NULL,
+	scheduleId INT UNSIGNED NOT NULL,
 	flightNumber VARCHAR(15),
-	originAirport VARCHAR(10) NOT NULL,
-	destinationAirport VARCHAR(10) NOT NULL,
 	departureTime DATETIME NOT NULL,
 	arrivalTime DATETIME NOT NULL,
 	duration TIME NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
-	INDEX(originAirport),
-	INDEX(destinationAirport),
 	INDEX(departureTime),
 	INDEX(arrivalTime),
 	INDEX(duration),
 	UNIQUE(flightNumber),
 	PRIMARY KEY (flightId),
-	FOREIGN KEY (templateId) REFERENCES template(templateId)
+	FOREIGN KEY (scheduleId) REFERENCES schedule (scheduleId)
 );
 
 create TABLE schedule (
 	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	flightNumber VARCHAR(15) NOT NULL,
-	originAirport VARCHAR(10) NOT NULL,
-	destinationAirport VARCHAR(10) NOT NULL,
 	departureTime DATETIME NOT NULL,
 	arrivalTime DATETIME NOT NULL,
-	duration TIME NOT NULL
+	duration TIME NOT NULL,
+	dayOfWeek INT NOT NULL,
+	originAirportId VARCHAR(10) NOT NULL,
+	destinationAirportId VARCHAR(10) NOT NULL,
+	PRIMARY KEY (scheduleId),
+	INDEX(originAirportId),
+	INDEX(destinationAirportId),
+	FOREIGN KEY(originAirportId)REFERENCES aiport(airportCode),
+	FOREIGN KEY(destinationAirportId)REFERENCES aiport(airportCode)
 );
 
 CREATE TABLE ticket (
 	ticketId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	confirmationNumber VARCHAR(10),
 	price DECIMAL(5,2) UNSIGNED,
+	status VARCHAR(30),
 	flightId INT UNSIGNED NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
 	travelerId INT UNSIGNED NOT NULL,
@@ -122,7 +125,10 @@ CREATE TABLE airport (
 	airportCode VARCHAR(10) NOT NULL,
 	airportDescription VARCHAR(100) NOT NULL,
 	airportSearchField VARCHAR(100) NOT NULL,
+	INDEX(airportCode),
 	INDEX(airportSearchField),
 	PRIMARY KEY (airportId)
+
+	)
 );
 

@@ -5,8 +5,8 @@ function readFile(&$mysqli,$fileName)
 		throw(new RuntimeException("Unable to Open $fileName"));
 	}
 
-	$query = "INSERT INTO template (templateId ,flightNumber, originAirport, destinationAirport, departureTime,
-			arrivalTime, duration) VALUES(?, ?, ?, ?, ?, ?, ?)";
+	$query = "INSERT INTO schedule (scheduleId , flightNumber, departureTime,
+			arrivalTime, duration, dayOfWeek) VALUES(?, ?, ?, ?, ?, ?)";
 	$statement = $mysqli->prepare($query);
 
 	if($statement === false) {
@@ -17,8 +17,8 @@ function readFile(&$mysqli,$fileName)
 	while(($output = fgetcsv($filePointer, 0, ",")) !== false) {
 
 		$num = count($output);
-		$wasClean = $statement->bind_param("isssssi", $output[0], $output[1], $output[2], $output[3], $output[4],
-			$output[5], $output[6], $output[7]);
+		$wasClean = $statement->bind_param("isssii", $output[0], $output[1], $output[2], $output[3], $output[4],
+			$output[5]);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -29,10 +29,11 @@ function readFile(&$mysqli,$fileName)
 		}
 		echo "Statement Executed, $num fields in line $row: ";
 		echo "\n";
-		$row++;
+		echo "row: $row \n ";
 		for ($c=0; $c < $num; $c++) {
-			echo "row: $row / position: $c ->".$output[$c];
+			 echo "position: $c ->".$output[$c]."\n";
 		}
+		$row++;
 	}
 	if(!fclose($filePointer)){
 		throw(new RuntimeException("Unable to close $fileName"));
