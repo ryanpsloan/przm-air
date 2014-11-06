@@ -43,7 +43,6 @@ CREATE TABLE flight (
 	INDEX(arrivalTime),
 	INDEX(duration),
 	INDEX(scheduleId),
-	UNIQUE(flightNumber),
 	PRIMARY KEY (flightId),
 	FOREIGN KEY (scheduleId) REFERENCES schedule (scheduleId)
 );
