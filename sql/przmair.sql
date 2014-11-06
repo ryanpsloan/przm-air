@@ -40,9 +40,6 @@ CREATE TABLE flight (
 	arrivalTime DATETIME NOT NULL,
 	duration TIME NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
-	totalTicketsSold INT UNSIGNED NOT NULL,
-	totalAvailableSeats INT UNSIGNED NOT NULL,
-	totalNumConfirmedSeats INT UNSIGNED NOT NULL,
 	INDEX(originAirport),
 	INDEX(destinationAirport),
 	INDEX(departureTime),
@@ -53,8 +50,8 @@ CREATE TABLE flight (
 	FOREIGN KEY (templateId) REFERENCES template(templateId)
 );
 
-create TABLE template (
-	templateId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+create TABLE schedule (
+	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	flightNumber VARCHAR(15) NOT NULL,
 	originAirport VARCHAR(10) NOT NULL,
 	destinationAirport VARCHAR(10) NOT NULL,
@@ -79,7 +76,7 @@ CREATE TABLE ticket (
 	PRIMARY KEY (ticketId),
 	FOREIGN KEY (flightId) REFERENCES flight (flightId),
 	FOREIGN KEY (profileId) REFERENCES profile (profileId),
-	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId),
+	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId)
 
 );
 

@@ -1,52 +1,41 @@
 <?php
 function readFile(&$mysqli,$fileName)
 {
-	$output = fgetcsv($fileName);
+	if(($filePointer = fopen($fileName, "r")) === false){
+		throw(new RuntimeException("Unable to Open $fileName"));
+	}
 
-	$query = "INSERT INTO template (templateId,flightNumber,originAirport,destinationAirport,departureTime,
-	arrivalTime,duration) VALUES(?,?,?,?,?,?,?)";
+	$query = "INSERT INTO template (templateId ,flightNumber, originAirport, destinationAirport, departureTime,
+			arrivalTime, duration) VALUES(?, ?, ?, ?, ?, ?, ?)";
 	$statement = $mysqli->prepare($query);
+
 	if($statement === false) {
 		throw(new mysqli_sql_exception("Unable to prepare statement"));
 	}
-	$wasClean = $statement->bind_param("isssssi",$output[0],$output[1],$output[2],$output[3],$output[],$output[4],$output[5],$output[6]);
-	if($wasClean === false) {
-		throw(new mysqli_sql_exception("Unable to bind parameters"));
-	}
 
-// execute the statement
-	if($statement->execute() === false) {
-		throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+	$row = 0;
+	while(($output = fgetcsv($filePointer, 0, ",")) !== false) {
+
+		$num = count($output);
+		$wasClean = $statement->bind_param("isssssi", $output[0], $output[1], $output[2], $output[3], $output[4],
+			$output[5], $output[6], $output[7]);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+		echo "Statement Executed, $num fields in line $row: ";
+		echo "\n";
+		$row++;
+		for ($c=0; $c < $num; $c++) {
+			echo "row: $row / position: $c ->".$output[$c];
+		}
+	}
+	if(!fclose($filePointer)){
+		throw(new RuntimeException("Unable to close $fileName"));
 	}
 }
 ?>
-public function insert(&$mysqli) {
-
-
-// enforce the userId is null (i.e., don't insert a user that already exists)
-if($this->userId !== null) {
-throw(new mysqli_sql_exception("not a new user"));
-}
-
-// create query template
-$query     = "INSERT INTO user(email, password, salt, authenticationToken) VALUES(?, ?, ?, ?)";
-$statement = $mysqli->prepare($query);
-if($statement === false) {
-throw(new mysqli_sql_exception("Unable to prepare statement"));
-}
-
-// bind the member variables to the place holders in the template
-$wasClean = $statement->bind_param("ssss", $this->email, $this->password,
-$this->salt,  $this->authenticationToken);
-if($wasClean === false) {
-throw(new mysqli_sql_exception("Unable to bind parameters"));
-}
-
-// execute the statement
-if($statement->execute() === false) {
-throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-}
-
-// update the null userId with what mySQL just gave us
-$this->userId = $mysqli->insert_id;
-}
