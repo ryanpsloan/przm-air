@@ -34,20 +34,17 @@ CREATE TABLE profile (
 CREATE TABLE flight (
 	flightId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	scheduleId INT UNSIGNED NOT NULL,
-	flightNumber VARCHAR(15),
-	departureTime DATETIME NOT NULL,
-	arrivalTime DATETIME NOT NULL,
-	duration TIME NOT NULL,
+	departureDateTime DATETIME NOT NULL,
+	arrivalDateTime DATETIME NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
-	INDEX(departureTime),
-	INDEX(arrivalTime),
-	INDEX(duration),
+	INDEX(departureDateTime),
+	INDEX(arrivalDateTime),
 	INDEX(scheduleId),
 	PRIMARY KEY (flightId),
 	FOREIGN KEY (scheduleId) REFERENCES schedule (scheduleId)
 );
 
-create TABLE schedule (
+CREATE TABLE schedule (
 	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	flightNumber VARCHAR(15) NOT NULL,
 	departureTime TIME NOT NULL,

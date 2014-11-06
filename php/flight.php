@@ -21,22 +21,13 @@ class Flight {
 	 **/
 	private $scheduleId;
 	/**
-	 * identifier that goes along with the flight -- refers to the the same flight in schedule on any given day, i.e.
-	 *any of the 5 7am flights from ABQ to NY on weekdays.
-	 **/
-	private $flightNumber;
-	/**
 	 * specific date and time of departure
 	 **/
-	private $departureTime;
+	private $departureDateTime;
 	/**
 	 * specific date and time of arrival
 	 **/
-	private $arrivalTime;
-	/**
-	 * time required for the given origin-destination flight pair
-	 **/
-	private $duration;
+	private $arrivalDateTime;
 	/**
 	 * number of remaining seats on a given flight.   Once the flight is created and stored, this auto-decrements any
 	 * time a user buys another ticket that contains this flight.
@@ -49,7 +40,7 @@ class Flight {
 
 
 	/**
-	 * ??-- need origin/destination pair
+	 * ??-- need origin/destination pair,
 	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
 	 *for that specific flightId?
 	 * ?? -- leave constant outside construct method
@@ -70,23 +61,18 @@ class Flight {
 	 *
 	 * @param mixed $newFlightId flight id (or null if new object)
 	 * @param mixed $newScheduleId schedule id
-	 * @param string $newFlightNumber flight number
-	 * @param string $newDepartureTime departure time
-	 * @param string $newArrivalTime arrival time
-	 * @param string $newDuration duration of flight
+	 * @param string $newDepartureDateTime departure time
+	 * @param string $newArrivalDateTime arrival time
 	 * @param string $newTotalSeatsOnPlane total seats left on plane
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throws RangeException when a parameter is invalid
 	 **/
-	public function __construct($newFlightId, $newScheduleId, $newFlightNumber, $newDepartureTime, $newArrivalTime,
-										 $newDuration,$newTotalSeatsOnPlane) {
+	public function __construct($newFlightId, $newScheduleId, $newDepartureDateTime, $newArrivalDateTime,$newTotalSeatsOnPlane) {
 		try {
 			$this->setFlightId($newFlightId);
 			$this->setScheduleId($newScheduleId);
-			$this->setFlightNumber($newFlightNumber);
-			$this->setDepartureTime($newDepartureTime);
-			$this->setArrivalTime($newArrivalTime);
-			$this->setDuration($newDuration);
+			$this->setDepartureDateTime($newDepartureDateTime);
+			$this->setArrivalDateTime($newArrivalDateTime);
 			$this->setTotalSeatsOnPlane($newTotalSeatsOnPlane);
 		} catch(UnexpectedValueException $unexpectedValue) {
 			// rethrow to the caller
@@ -118,7 +104,7 @@ class Flight {
 	public function setFlightId($newFlightId) {
 		// zeroth, set allow the flight id to be null if a new object
 		if($newFlightId === null) {
-			$this->$newFlightId = null;
+			$this->$flightId = null;
 			return;
 		}
 
@@ -127,55 +113,60 @@ class Flight {
 			throw(new UnexpectedValueException("flight id $newFlightId is not numeric"));
 		}
 
-
-
-
 		// second, convert the flight id to an integer and enforce it's positive
 		$newFlightId = intval($newFlightId);
 		if($newFlightId <= 0) {
-			throw(new RangeException("profile id $newProfileId is not positive"));
+			throw(new RangeException("flight id $newFlightId is not positive"));
 		}
 
-		// finally, take the profile id out of quarantine and assign it
+		// finally, take the flight id out of quarantine and assign it
 		$this->flightId = $newFlightId;
 	}
 
 
 	/**
-	 * gets the value of user id
+	 * gets the value of schedule id
 	 *
-	 * @return mixed user id
+	 * @return mixed schedule id
 	 **/
-	public function getUserId() {
-		return($this->userId);
+	public function getScheduleId() {
+		return($this->scheduleId);
 	}
 
 	/**
-	 * sets the value of user id
+	 * sets the value of schedule id
 	 *
-	 * @param int $newUserId user id
+	 * @param int $newScheduleId schedule id
 	 * @throws UnexpectedValueException if not an integer or null
 	 * @throws RangeException if user id isn't positive
 	 **/
-	public function setUserId($newUserId) {
-		// first, ensure the user id is an integer
-		if(filter_var($newUserId, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("user id $newUserId is not numeric"));
+	public function setScheduleId($newScheduleId) {
+		// first, ensure the schedule id is an integer
+		if(filter_var($newScheduleId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("schedule id $newScheduleId is not numeric"));
 		}
 
-		// second, convert the user id to an integer and enforce it's positive
-		$newUserId = intval($newUserId);
-		if($newUserId <= 0) {
-			throw(new RangeException("user id $newUserId is not positive"));
+		// second, convert the schedule id to an integer and enforce it's positive
+		$newScheduleId = intval($newScheduleId);
+		if($newScheduleId <= 0) {
+			throw(new RangeException("schedule id $newScheduleId is not positive"));
 		}
 
-		// finally, take the user id out of quarantine and assign it
-		$this->userId = $newUserId;
+		// finally, take the schedule id out of quarantine and assign it
+		$this->scheduleId = $newScheduleId;
 	}
 
 
+
+
+
+
+
+
+
+
 	/**
-	 * gets the value of first name
+	 * gets the value of flight number
 	 *
 	 * @return string value of first name
 	 **/
