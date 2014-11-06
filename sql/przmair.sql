@@ -58,8 +58,8 @@ create TABLE schedule (
 	PRIMARY KEY (scheduleId),
 	INDEX(originAirportId),
 	INDEX(destinationAirportId),
-	FOREIGN KEY(originAirportId)REFERENCES aiport(airportCode),
-	FOREIGN KEY(destinationAirportId)REFERENCES aiport(airportCode)
+	FOREIGN KEY(originAirportId)REFERENCES airport(airportId),
+	FOREIGN KEY(destinationAirportId)REFERENCES airport(airportId)
 );
 
 CREATE TABLE ticket (
@@ -128,7 +128,6 @@ CREATE TABLE airport (
 	INDEX(airportCode),
 	INDEX(airportSearchField),
 	PRIMARY KEY (airportId)
-
-	)
 );
+
 
