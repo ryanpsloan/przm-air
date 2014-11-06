@@ -41,6 +41,7 @@ CREATE TABLE flight (
 	INDEX(departureTime),
 	INDEX(arrivalTime),
 	INDEX(duration),
+	INDEX(scheduleId),
 	UNIQUE(flightNumber),
 	PRIMARY KEY (flightId),
 	FOREIGN KEY (scheduleId) REFERENCES schedule (scheduleId)
@@ -49,13 +50,14 @@ CREATE TABLE flight (
 create TABLE schedule (
 	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	flightNumber VARCHAR(15) NOT NULL,
-	departureTime DATETIME NOT NULL,
-	arrivalTime DATETIME NOT NULL,
+	departureTime TIME NOT NULL,
+	arrivalTime TIME NOT NULL,
 	duration TIME NOT NULL,
 	dayOfWeek INT NOT NULL,
 	originAirportId VARCHAR(10) NOT NULL,
 	destinationAirportId VARCHAR(10) NOT NULL,
 	PRIMARY KEY (scheduleId),
+	INDEX(flightNumber),
 	INDEX(originAirportId),
 	INDEX(destinationAirportId),
 	FOREIGN KEY(originAirportId)REFERENCES airport(airportId),
@@ -67,23 +69,19 @@ CREATE TABLE ticket (
 	confirmationNumber VARCHAR(10),
 	price DECIMAL(5,2) UNSIGNED,
 	status VARCHAR(30),
-	flightId INT UNSIGNED NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
 	travelerId INT UNSIGNED NOT NULL,
+	transactionId INT UNSIGNED NOT NULL,
 	UNIQUE (confirmationNumber),
-
-	INDEX(flightId),
 	INDEX(profileId),
 	INDEX(travelerId),
-
 	PRIMARY KEY (ticketId),
-	FOREIGN KEY (flightId) REFERENCES flight (flightId),
 	FOREIGN KEY (profileId) REFERENCES profile (profileId),
-	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId)
-
+	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId),
+	FOREIGN KEY (transactionId) REFERENCES transaction (transactionId)
 );
 
-CREATE TABLE ticket_flight (
+CREATE TABLE ticketFlight (
 	flightId INT UNSIGNED NOT NULL,
 	ticketId INT UNSIGNED NOT NULL,
 	INDEX(flightId),
@@ -126,6 +124,7 @@ CREATE TABLE airport (
 	airportDescription VARCHAR(100) NOT NULL,
 	airportSearchField VARCHAR(100) NOT NULL,
 	INDEX(airportCode),
+	INDEX(airportDescription),
 	INDEX(airportSearchField),
 	PRIMARY KEY (airportId)
 );
