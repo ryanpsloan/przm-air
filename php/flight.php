@@ -40,12 +40,18 @@ class Flight {
 
 
 	/**
-	 * ??-- need origin/destination pair,
+	 *Questions:
+	 * ?? -- validating datetime for arrival and departure
+	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii").
 	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
-	 *for that specific flightId?
+	 *			for that specific flightId?
 	 * ?? -- leave constant outside construct method
 	 * ?? what is 0 in throw exceptions around line 94
-	 * issue on about a tweet where userid not profile id
+	 *
+	 *To Do:
+	 * seats decrementer/incrementer
+	 * any method needed for the search function besides finding flight by flight ID? Do we need scheduleId by
+	 *
 	 *
 	 **/
 
@@ -157,85 +163,68 @@ class Flight {
 	}
 
 
-
-
-
-
-
-
-
-
 	/**
-	 * gets the value of flight number
+	 * gets the value of the flight's departure datetime.
 	 *
-	 * @return string value of first name
+	 * @return mixed value of departure datetime
 	 **/
-	public function getFirstName() {
-		return($this->firstName);
-	}
-
-	/**
-	 * sets the value of first name
-	 *
-	 * @param string $newFirstName of the first name
-	 * @throws UnexpectedValueException if the input doesn't appear to be a string
-	 * @throws RangeException if not a string of 32 or less characters
-	 **/
-	public function setFirstName($newFirstName) {
-		// verify the first name is a string with 32 or less characters
-		$newFirstName   = trim($newFirstName);
-
-		if(filter_var($newFirstName, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("first name $newFirstName does not appear to be a string"));
-		}
-
-		if(strlen($newFirstName) > 32) {
-			throw(new RangeException("first name $newFirstName has to be less than 32 characters long"));
-		}
-
-		// finally, take the first name out of quarantine
-		$this->firstName = $newFirstName;
+	public function getDepartureDateTime() {
+		return($this->departureDateTime);
 	}
 
 
 	/**
-	 * gets the value of last name
+	 * sets the value of the departureDateTime
 	 *
-	 * @return string value of last name
+	 * @param string $newDepartureDateTime of the first name
+	 * @throws UnexpectedValueException if the input doesn't appear to be a date
+	 * @throws RangeException????
 	 **/
-	public function getLastName() {
-		return($this->lastName);
+	public function setDepartureDateTime($newDepartureDateTime) {
+		// verify the date and time is a datetime
+		$newDepartureDateTime = trim($newDepartureDateTime);
+
+		if(filter_var($newDepartureDateTime, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Departure date and time $newDepartureDateTime does not appear to be a date"));
+		}
+
+		// finally, take the departure datetime out of quarantine
+		$this->departureDateTime = $newDepartureDateTime;
 	}
 
 
 	/**
-	 * sets the value of last name
+	 * gets the value of arrival datetime
 	 *
-	 * @param string $newLastName of the last name
-	 * @throws UnexpectedValueException if the input doesn't appear to be a string
-	 * @throws RangeException if not a string of 32 or less characters
+	 * @return mixed value of arrival datetime
 	 **/
-	public function setLastName($newLastName) {
-		// verify the last name is 32 or less characters
-		$newLastName   = trim($newLastName);
-
-		if(filter_var($newLastName, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("last name $newLastName is not a string"));
-		}
-
-		if(strlen($newLastName) > 32) {
-			throw(new RangeException("last name $newLastName has to be less than 32 characters long"));
-		}
-
-		// finally, take the last name out of quarantine
-		$this->lastName = $newLastName;
+	public function getArrivalDateTime() {
+		return($this->arrivalDateTime);
 	}
 
 
+		/**
+		 * sets the value of the arrivalDateTime
+		 *
+		 * @param string $newArrivalDateTime of the arrival date and time
+		 * @throws UnexpectedValueException if the input doesn't appear to be a date
+		 * @throws RangeException???
+		 **/
+	public function setArrivalDateTime($newArrivalDateTime) {
+		// verify the date and time is a datetime
+		$newArrivalDateTime = trim($newArrivalDateTime);
+
+		if(filter_var($newArrivalDateTime, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Departure date and time $newArrivalDateTime does not appear to be a date"));
+		}
+
+		// finally, take the arrival datetime out of quarantine
+		$this->arrivalDateTime = $newArrivalDateTime;
+	}
 
 
 	/**
-	 * inserts this Profile to mySQL
+	 * inserts this Flight to mySQL
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @throws mysqli_sql_exception when mySQL related errors occur
@@ -246,21 +235,21 @@ class Flight {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the profileId is null (i.e., don't insert a user that already exists)
-		if($this->profileId !== null) {
-			throw(new mysqli_sql_exception("not a new profile"));
+		// enforce the flightId is null (i.e., don't insert a new flight if it already exists)
+		if($this->flightId !== null) {
+			throw(new mysqli_sql_exception("not a new flight"));
 		}
 
 		// create query template
-		$query     = "INSERT INTO profile (userId, firstName, lastName) VALUES(?, ?, ?)";
+		$query     = "INSERT INTO flight (scheduleId, departureDateTime, arrivalDateTime, totalSeatsOnPlane) VALUES(?, ?, ?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("iss", $this->userId, $this->firstName,
-			$this->lastName);
+		$wasClean = $statement->bind_param("iiii", $this->scheduleId, $this->departureDateTime,
+			$this->arrivalDateTime, $this->totalSeatsOnPlane);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -270,14 +259,14 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
-		// update the null profileId with what mySQL just gave us
-		$this->profileId = $mysqli->insert_id;
+		// update the null flightId with what mySQL just gave us
+		$this->flightId = $mysqli->insert_id;
 	}
 
 
 
 	/**
-	 * deletes this Profile from mySQL
+	 * deletes this Flight from mySQL
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @throws mysqli_sql_exception when mySQL related errors occur
@@ -288,20 +277,20 @@ class Flight {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the userId is not null (i.e., don't delete a user that hasn't been inserted)
-		if($this->profileId === null) {
-			throw(new mysqli_sql_exception("Unable to delete a user that does not exist"));
+		// enforce the flightId is not null (i.e., don't delete a flight that hasn't been inserted)
+		if($this->flightId === null) {
+			throw(new mysqli_sql_exception("Unable to delete a flight that does not exist"));
 		}
 
 		// create query template
-		$query     = "DELETE FROM profile WHERE profileId = ?";
+		$query     = "DELETE FROM flight WHERE flightId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holder in the template
-		$wasClean = $statement->bind_param("i", $this->profileId);
+		$wasClean = $statement->bind_param("i", $this->flightId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -313,7 +302,7 @@ class Flight {
 	}
 
 	/**
-	 * updates this Profile in mySQL
+	 * updates this Flight in mySQL
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @throws mysqli_sql_exception when mySQL related errors occur
@@ -325,21 +314,21 @@ class Flight {
 		}
 
 		// enforce the userId is not null (i.e., don't update a user that hasn't been inserted)
-		if($this->profileId === null) {
-			throw(new mysqli_sql_exception("Unable to update a user that does not exist"));
+		if($this->flightId === null) {
+			throw(new mysqli_sql_exception("Unable to update a flight that does not exist"));
 		}
 
 		// create query template
-		$query     = "UPDATE profile SET userId = ?, firstName = ?, lastName = ? WHERE profileId = ?";
+		$query     = 	"UPDATE flight SET scheduleId = ?, departureDateTime = ?, arrivalDateTime = ?,
+							totalSeatsOnPlane = ? WHERE flightId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("sssi", $this->userId, $this->firstName,
-			$this->lastName,
-			$this->profileId);
+		$wasClean = $statement->bind_param("iiiii", $this->scheduleId, $this->departureDateTime, $this->arrivalDateTime,
+														$this->totalSeatsOnPlane, $this->flightId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -351,41 +340,55 @@ class Flight {
 	}
 
 
-
 	/**
-	 * gets the Profile by profileId
+	 * decrements the totalSeatsOnPlane
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
-	 * @param string $profileId profile ID to search for
-	 * @return mixed Profile found or null if not found
+	 * @param mixed $totalSeatsOnPlane available seats to change
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-	public static function getProfileByProfileId(&$mysqli, $profileId) {
+
+
+
+
+
+
+
+
+	/**
+	 * gets the Flight by flightId
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $flightId flight ID to search for
+	 * @return mixed Flight found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getFlightByFlightId(&$mysqli, $flightID) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
 
-		// first trim, then validate, then sanitize the profileId int before searching.
-		$profileId = trim($profileId);
+		// first trim, then validate, then sanitize the flightId int before searching.
+		$flightId = trim($flightId);
 
-		if (filter_var($profileId, FILTER_SANITIZE_NUMBER_INT) === false) {
-			throw (new UnexpectedValueException ("profile id $profileId does not appear to be an integer"));
+		if (filter_var($flightId, FILTER_SANITIZE_NUMBER_INT) === false) {
+			throw (new UnexpectedValueException ("flight id $flightId does not appear to be an integer"));
 		}
 		else {
-			$profileId = filter_var($profileId, FILTER_SANITIZE_NUMBER_INT);
+			$flightId = filter_var($flightId, FILTER_SANITIZE_NUMBER_INT);
 		}
 
 		// create query template
-		$query = "SELECT profileId, userId, firstName, lastName FROM profile WHERE $profileId = ?";
+		$query = "SELECT flightId, scheduleId, departureDateTime, arrivalDateTime FROM flight WHERE $flightId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		// bind the profileId to the place holder in the template
-		$wasClean = $statement->bind_param("i", $profileId);
+		// bind the flightId to the place holder in the template
+		$wasClean = $statement->bind_param("i", $flightId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -402,21 +405,22 @@ class Flight {
 		}
 
 		// since this is a unique field, this will only return 0 or 1 results. So...
-		// 1) if there's a result, we can make it into a Profile object normally
+		// 1) if there's a result, we can make it into a Flight object normally
 		// 2) if there's no result, we can just return null
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
 
-		// convert the associative array to a Profile
+		// convert the associative array to a Flight
 		if($row !== null) {
 			try {
-				$profile = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"]);
+				$flight = new Flight ($row["flightId"], $row["scheduleId"], $row["departureDateTime"],
+											$row["arrivalDateTime"], $row["totalSeatsOnPlane"]);
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
-				throw(new mysqli_sql_exception("Unable to convert row to Profile", 0, $exception));
+				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
 			}
 
-			// if we got here, the Profile is good - return it
-			return ($profile);
+			// if we got here, the Flight is good - return it
+			return ($flight);
 		} else {
 			// 404 User not found - return null instead
 			return (null);
@@ -425,95 +429,26 @@ class Flight {
 
 
 
-	/**
-	 * gets any existing Profile by lastName
-	 *
-	 * @param resource $mysqli pointer to mySQL connection, by reference
-	 * @param string $lastName last name to search for
-	 * @return mixed Profile found or null if not found
-	 * @throws mysqli_sql_exception when mySQL related errors occur
-	 **/
-	public static function getProfileByLastName(&$mysqli, $lastName)
-	{
-		// handle degenerate cases
-		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-			throw(new mysqli_sql_exception("input is not a mysqli object"));
-		}
 
-		// first trim, then validate, then sanitize the lastName string before searching.
-		$lastName = trim($lastName);
 
-		if (filter_var($lastName, FILTER_SANITIZE_STRING) === false) {
-			throw (new UnexpectedValueException ("last name of $lastName does not appear to be a string"));
-		}
-		else {
-			$lastName = filter_var($lastName, FILTER_SANITIZE_STRING);
-		}
 
-		// create query template
-		$query = "SELECT profileId, userId, firstName, lastName FROM profile WHERE lastName = ?";
-		$statement = $mysqli->prepare($query);
-		if($statement === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
 
-		// bind the last name to the place holder in the template
-		$wasClean = $statement->bind_param("s", $lastName);
-		if($wasClean === false) {
-			throw(new mysqli_sql_exception("Unable to bind parameters"));
-		}
 
-		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-		}
 
-		// get result from the SELECT query *pounds fists*
-		$result = $statement->get_result();
-		if($result === false) {
-			throw(new mysqli_sql_exception("Unable to get result set"));
-		}
 
-		// since this is not a unique field, this will return as many results as there are profiles with  same last name.
-		// 1) if there's no result, we can just return null
-		// 2) if there's a result, we can make it into Profile objects normally
-		// fetch_assoc() returns row as associative arr until row is null
-//		$arrayCounter = 0;
-		$profileArray = array();
-		// convert the associative array to a Profile and repeat for all last names equal to lastName.
-		while(($row = $result->fetch_assoc()) !== null) {
 
-			// convert the associative array to a Profile for all last names equal to lastName.
-			try {
-				$profile = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"]);
-				$profileArray[] = $profile;
-
-			} catch(Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new mysqli_sql_exception("Unable to convert row to Profile", 0, $exception));
-			}
-
-		}
-
-		if(empty($profileArray)) {
-			// 404 User not found - return null
-			return (null);
-		}
-		else {
-			return ($profileArray);
-		}
-	}
 
 
 
 
 
 	/**
-	 * @return string describing info in class Profile
+	 * @return string describing info in class Flight
 	 */
 	public function __toString() {
-		return ("<p>" . $this->firstName . " " . $this->lastName . "'s profile." . "<br/>" . "Profile ID: " . $this->profileId .
-			"." . "<br/>" . "User ID: " . $this->userId . "." . "</p>");
+		return ("<p>" . "Flight Id: " . $this->flightId . "<br/>" . "Schedule ID: " . $this->scheduleId . "<br/>" .
+			"Departure: " . $this->departureDateTime . "<br/>" . "Arrival: " . $this->arrivalDateTime . "<br/>" .
+			"Remaining Seats Available " . $this->totalSeatsOnPlane . "<br/>" . "</p>");
 	}
 
 
