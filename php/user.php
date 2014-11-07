@@ -5,7 +5,7 @@
 	 *
 	 * This is a mySQL enabled container for User authentication at a typical eCommcerce site. It can easily be extended to include more fields as necessary.
 	 *
-	 * @author Dylan McDonald <dmcdonald21@cnm.edu>
+	 * @author Dylan McDonald <dmcdonald21@cnm.edu> & Ryan Sloan <ryansdeal@hotmail.com>
 	 * @see Profile
 	 **/
 class User {

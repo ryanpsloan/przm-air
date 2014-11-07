@@ -116,24 +116,24 @@
 		 * @param $newProfileId should be a + integer not -
 		 */
 		public function setProfileId($newProfileId){
-			// zeroth, set allow the user id to be null if a new object
+			// zeroth, set allow the profile id to be null if a new object
 			if($newProfileId === null) {
 				$this->profileId = null;
 				return;
 			}
 
-			// first, ensure the user id is an integer
+			// first, ensure the profile id is an integer
 			if(filter_var($newProfileId, FILTER_VALIDATE_INT) === false) {
 				throw(new UnexpectedValueException("profile id $newProfileId is not numeric"));
 			}
 
-			// second, convert the user id to an integer and enforce it's positive
+			// second, convert the profile id to an integer and enforce it's positive
 			$newProfileId = intval($newProfileId);
 			if($newProfileId <= 0) {
 				throw(new RangeException("profile id $newProfileId is not positive"));
 			}
 
-			// finally, take the user id out of quarantine and assign it
+			// finally, take the profile id out of quarantine and assign it
 			$this->profileId = $newProfileId;
 		}
 
