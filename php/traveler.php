@@ -124,12 +124,19 @@ class Traveler{
 		}
 		//test if is positive
 		if($newProfileId <= 0){
-			throw(new RangeException("Argument $newProfileId is not positive"))
+			throw(new RangeException("Argument $newProfileId is not positive"));
 		}
 		//if passes previous tests set into class property $profileId
 		$this->profileId = $newProfileId;
 
 	}
+
+	/**
+	 * sets $userFirstName with a string representing the first name after trimming setting to lowercase and REGEX
+	 * validation
+	 * @param string $newFirstName
+	 * @throw InvalidArgumentException if string contains any character other than letters
+	 */
 
 	public function setFirstName($newFirstName){
 		//first trim the incoming string argument
@@ -138,19 +145,49 @@ class Traveler{
 		$newFirstName = strtolower($newFirstName);
 		//validate the string using REGEX
 		$filterOptions = array('options' => array("regexp" => "/^[a-zA-Z]{1,50}$/"));
-		if(filter_var($newFirstName,FILTER_VALIDATE_REGEXP) === false){
+		if(filter_var($newFirstName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 			throw(new InvalidArgumentException("Argument $newFirstName must be [a-zA-Z] no special characters or spaces"));
 		}
-
+		//set into class variable
 		$this->travelerFirstName = $newFirstName;
 	}
 
+	/**
+	 * sets the argument string into class property $userFirstName after validation trimming and set to lowercase
+	 * @param string $newMiddleName
+	 * @throw InvalidArgumentException when argument has characters other than letters
+	 */
 	public function setMiddleName($newMiddleName){
-
+		//first trim the incoming string argument
+		$newMiddleName = trim($newMiddleName);
+		//force all characters to lower case
+		$newMiddleName = strtolower($newMiddleName);
+		//validate the string using REGEX
+		$filterOptions = array('options' => array("regexp" => "/^[a-zA-Z]{1,50}$/"));
+		if(filter_var($newMiddleName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
+			throw(new InvalidArgumentException("Argument $newMiddleName must be [a-zA-Z] no special characters or spaces"));
+		}
+		//set into class variable
+		$this->travelerMiddleName = $newMiddleName;
 	}
 
+	/**
+	 * sets $userLastName with a string argument after validating trimming and setting to all lowercase
+	 * @param string $newLastName
+	 * @throw InvalidArgumentException when argument is composed of any other characters other than letters
+	 */
 	public function setLastName($newLastName){
-
+		//first trim the incoming string argument
+		$newLastName = trim($newLastName);
+		//force all characters to lower case
+		$newLastName = strtolower($newLastName);
+		//validate the string using REGEX
+		$filterOptions = array('options' => array("regexp" => "/^[a-zA-Z]{1,50}$/"));
+		if(filter_var($newLastName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
+			throw(new InvalidArgumentException("Argument $newLastName must be [a-zA-Z] no special characters or spaces"));
+		}
+		//set into class variable
+		$this->travelerLastName = $newLastName;
 	}
 
 	public function setDateOfBirth($newDateOfBirth){
