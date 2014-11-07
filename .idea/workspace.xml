@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="more adjustments on table relationships with the advisement of dylan&#10;transaction and ticket now have a direct relationship, ticket and flight no longer have a direct relationship but use an intersection table">
+    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
+      <change type="MOVED" beforePath="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air\profile.php" afterPath="$PROJECT_DIR$/php/profile.php" />
+      <change type="MOVED" beforePath="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air\user.php" afterPath="$PROJECT_DIR$/php/user.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="przm-air.iws" />
@@ -34,28 +36,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="przmair.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="przmair.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3041145" vertical-offset="204" max-vertical-offset="2295">
+            <state vertical-scroll-proportion="-6.8" vertical-offset="204" max-vertical-offset="2295">
               <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/user.php">
+      <file leaf-file-name="user.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/php/user.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6612" max-vertical-offset="7922">
+            <state vertical-scroll-proportion="-0.746789" vertical-offset="7377" max-vertical-offset="7922">
               <caret line="410" column="46" selection-start-line="410" selection-start-column="46" selection-end-line="410" selection-end-column="46" />
-              <folding />
+              <folding>
+                <marker date="1415319711675" expanded="true" signature="6934:7013" placeholder="INSERT INTO ..." />
+                <marker date="1415319711675" expanded="true" signature="8336:8369" placeholder="DELETE FROM ..." />
+                <marker date="1415319711675" expanded="true" signature="9529:9620" placeholder="UPDATE user ..." />
+                <marker date="1415319711675" expanded="true" signature="10890:10973" placeholder="SELECT userI..user..." />
+                <marker date="1415319711675" expanded="true" signature="13122:13211" placeholder="SELECT userI..user..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="profile.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/profile.php">
+        <entry file="file://$PROJECT_DIR$/php/profile.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="7701" max-vertical-offset="9010">
               <caret line="456" column="6" selection-start-line="456" selection-start-column="6" selection-end-line="522" selection-end-column="0" />
@@ -198,6 +206,11 @@
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air\php" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner />
@@ -297,7 +310,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415320745575</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="creation of profile class">
+      <created>1415321726292</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1415321726292</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -352,7 +371,8 @@
     <MESSAGE value="more adjustments on table relationships with the advisement of dylan&#10;transaction and ticket now have a direct relationship, ticket and flight no longer have a direct relationship but use an intersection table" />
     <MESSAGE value="finalization of sql first asana integrated commit https://app.asana.com/0/19128794071947/19594215856456" />
     <MESSAGE value="Added git ignore file to prevent PHPStorm configuration files from flooding us with conflicts https://app.asana.com/0/19128794071947/19594215856456" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added git ignore file to prevent PHPStorm configuration files from flooding us with conflicts https://app.asana.com/0/19128794071947/19594215856456" />
+    <MESSAGE value="creation of profile class" />
+    <option name="LAST_COMMIT_MESSAGE" value="creation of profile class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -367,15 +387,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/user.php">
+    <entry file="file://$PROJECT_DIR$/php/user.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6612" max-vertical-offset="7922">
           <caret line="410" column="46" selection-start-line="410" selection-start-column="46" selection-end-line="410" selection-end-column="46" />
-          <folding />
+          <folding>
+            <marker date="1415319711675" expanded="true" signature="6934:7013" placeholder="INSERT INTO ..." />
+            <marker date="1415319711675" expanded="true" signature="8336:8369" placeholder="DELETE FROM ..." />
+            <marker date="1415319711675" expanded="true" signature="9529:9620" placeholder="UPDATE user ..." />
+            <marker date="1415319711675" expanded="true" signature="10890:10973" placeholder="SELECT userI..user..." />
+            <marker date="1415319711675" expanded="true" signature="13122:13211" placeholder="SELECT userI..user..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/profile.php">
+    <entry file="file://$PROJECT_DIR$/php/profile.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="7701" max-vertical-offset="9010">
           <caret line="456" column="6" selection-start-line="456" selection-start-column="6" selection-end-line="522" selection-end-column="0" />
@@ -492,18 +518,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/profile.php">
+    <entry file="file://$PROJECT_DIR$/php/profile.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="7701" max-vertical-offset="9010">
           <caret line="456" column="6" selection-start-line="456" selection-start-column="6" selection-end-line="522" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/user.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6612" max-vertical-offset="7922">
-          <caret line="410" column="46" selection-start-line="410" selection-start-column="46" selection-end-line="410" selection-end-column="46" />
           <folding />
         </state>
       </provider>
@@ -518,9 +536,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3041145" vertical-offset="204" max-vertical-offset="2295">
+        <state vertical-scroll-proportion="-6.8" vertical-offset="204" max-vertical-offset="2295">
           <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/user.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.746789" vertical-offset="7377" max-vertical-offset="7922">
+          <caret line="410" column="46" selection-start-line="410" selection-start-column="46" selection-end-line="410" selection-end-column="46" />
+          <folding>
+            <marker date="1415319711675" expanded="true" signature="6934:7013" placeholder="INSERT INTO ..." />
+            <marker date="1415319711675" expanded="true" signature="8336:8369" placeholder="DELETE FROM ..." />
+            <marker date="1415319711675" expanded="true" signature="9529:9620" placeholder="UPDATE user ..." />
+            <marker date="1415319711675" expanded="true" signature="10890:10973" placeholder="SELECT userI..user..." />
+            <marker date="1415319711675" expanded="true" signature="13122:13211" placeholder="SELECT userI..user..." />
+          </folding>
         </state>
       </provider>
     </entry>
