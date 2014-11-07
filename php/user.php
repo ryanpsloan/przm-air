@@ -217,7 +217,8 @@ class User {
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-	public function insert(&$mysqli) {
+	public function insert(&$mysqli)
+	{
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -227,17 +228,20 @@ class User {
 		if($this->userId !== null) {
 			throw(new mysqli_sql_exception("not a new user"));
 		}
-
-		// create query template
-		$query     = "INSERT INTO user(email, password, salt, authenticationToken) VALUES(?, ?, ?, ?)";
-		$statement = $mysqli->prepare($query);
-		if($statement === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		try {
+			// create query template
+			$query = "INSERT INTO user(email, password, salt, authToken) VALUES(?, ?, ?, ?)";
+			$statement = $mysqli->prepare($query);
+		} catch(Exception $e){
+			$e->getMessage();
 		}
+		/*if($statement === false) {
+
+		}*/
 
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ssss", $this->email, $this->password,
-			$this->salt,  $this->authenticationToken);
+			$this->salt, $this->authenticationToken);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -305,7 +309,7 @@ class User {
 		}
 
 		// create query template
-		$query     = "UPDATE user SET email = ?, password = ?, salt = ?, authenticationToken = ? WHERE userId = ?";
+		$query     = "UPDATE user SET email = ?, password = ?, salt = ?, authToken = ? WHERE userId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -344,7 +348,7 @@ class User {
 		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
 		// create query template
-		$query     = "SELECT userId, email, password, salt, authenticationToken FROM user WHERE email = ?";
+		$query     = "SELECT userId, email, password, salt, authToken FROM user WHERE email = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -408,7 +412,7 @@ class User {
 			throw(new RangeException("user id $userId is not positive"));
 		}
 		//CREATE QUERY TEMPLATE
-		$query = "SELECT userId, email, password, salt, authenticationToken
+		$query = "SELECT userId, email, password, salt, authToken
 					FROM user WHERE userId = ? ";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
@@ -441,15 +445,15 @@ class User {
 		//convert the associate array to user
 		if($row !== null) {
 			try {
-				$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],
-					$row['userMiddleName'],$row['userLastName'], $row['dateOfBirth'], $row['customerToken']);
+				$user = new User ($row['userId'], $row['email'],$row['password'],
+					$row['salt'], $row['authToken']);
 			} catch(Exception $exception) {
 				//if row can't be converted rethrow
 				throw(new mysqli_sql_exception("Unable to convert row to Profile Object", 0, $exception));
 			}
 
 			//if we got here, the Profile Object is good - return it
-			return ($profile);
+			return ($user);
 		} else {
 			//404 profile not found
 			return (null);
