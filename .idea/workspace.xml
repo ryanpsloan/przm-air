@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="Set up all core boiler-plate methods.  Still working on decrement and increment methods, and need to work on the set methods for the arrivalDateTime and departureDateTime to deal with validating DATETIME.&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/flight.php" afterPath="$PROJECT_DIR$/php/flight.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+=======
+    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" />
+>>>>>>> Stashed changes
     </list>
     <ignored path="przm-air.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,6 +39,7 @@
     <favorites_list name="przm-air" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< Updated upstream
     <splitter split-orientation="horizontal" split-proportion="0.28061768">
       <split-first>
         <leaf>
@@ -109,6 +115,30 @@
         </leaf>
       </split-second>
     </splitter>
+=======
+    <leaf>
+      <file leaf-file-name="przmair.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3649374" vertical-offset="0" max-vertical-offset="2346">
+              <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scriptReader.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="1479">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+>>>>>>> Stashed changes
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -227,6 +257,9 @@
       <BehatRunner />
       <method />
     </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-options />
       <gulpfile />
@@ -235,9 +268,12 @@
       <envs />
       <method />
     </configuration>
+<<<<<<< Updated upstream
     <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" server_id="96a2229d-5a7c-47e7-ba53-1911a64714d9" server_name="przm-air">
       <method />
     </configuration>
+=======
+>>>>>>> Stashed changes
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -293,6 +329,7 @@
       <option name="project" value="LOCAL" />
       <updated>1415247960198</updated>
     </task>
+<<<<<<< Updated upstream
     <task id="LOCAL-00008" summary="Aligned DROP TABLES to order of tables and added DROP TABLE for schedule">
       <created>1415294227853</created>
       <option name="number" value="00008" />
@@ -313,6 +350,22 @@
     <editor active="true" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32673267" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+=======
+    <task id="LOCAL-00008" summary="made some changes to the names of fields in the user and profile tables">
+      <created>1415318398100</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1415318398100</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32843137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+>>>>>>> Stashed changes
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22233713" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -320,7 +373,11 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+<<<<<<< Updated upstream
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25825346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3494705" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> Stashed changes
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -357,11 +414,16 @@
     <MESSAGE value="error correction no major adjustments" />
     <MESSAGE value="adjustments to the name of the template table (now schedule)" />
     <MESSAGE value="made final adjustments to the sql and table design based on feedback&#10;from Dylan doubled checked it against the ERD and should be near perfect" />
+<<<<<<< Updated upstream
     <MESSAGE value="Aligned DROP TABLES to order of tables and added DROP TABLE for schedule" />
     <MESSAGE value="Changed ticket_flight to ticketFlight in DROP TABLE" />
     <MESSAGE value="Took out duration and flight number from flight table.  Flight class still in progress....&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
     <MESSAGE value="Set up all core boiler-plate methods.  Still working on decrement and increment methods, and need to work on the set methods for the arrivalDateTime and departureDateTime to deal with validating DATETIME.&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
     <option name="LAST_COMMIT_MESSAGE" value="Set up all core boiler-plate methods.  Still working on decrement and increment methods, and need to work on the set methods for the arrivalDateTime and departureDateTime to deal with validating DATETIME.&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
+=======
+    <MESSAGE value="made some changes to the names of fields in the user and profile tables" />
+    <option name="LAST_COMMIT_MESSAGE" value="made some changes to the names of fields in the user and profile tables" />
+>>>>>>> Stashed changes
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -388,6 +450,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1305">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
@@ -409,6 +472,27 @@
             <marker date="1415318267000" expanded="true" signature="9963:10049" placeholder="UPDATE profi..." />
             <marker date="1415318267000" expanded="true" signature="11911:12008" placeholder="SELECT profi..profile..." />
           </folding>
+=======
+        <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="1479">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="816">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+>>>>>>> Stashed changes
         </state>
       </provider>
     </entry>
@@ -546,6 +630,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="816">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
+<<<<<<< Updated upstream
         </state>
       </provider>
     </entry>
@@ -554,13 +639,20 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="586">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+=======
+>>>>>>> Stashed changes
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state vertical-scroll-proportion="0.48589343" vertical-offset="150" max-vertical-offset="2025">
           <caret line="41" column="21" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+=======
+        <state vertical-scroll-proportion="0.3649374" vertical-offset="0" max-vertical-offset="2346">
+          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+>>>>>>> Stashed changes
           <folding />
         </state>
       </provider>
