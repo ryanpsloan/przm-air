@@ -5,14 +5,14 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 // then require the class under scrutiny
 require_once("../php/profile.php");
 
-// the UserTest is a container for all our tests
-class UserTest extends UnitTestCase {
+// the ProfileTest is a container for all our tests
+class ProfileTest extends UnitTestCase {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
-	// variable to hold the test User object
-	private $user   = null;
 	// variable to hold the test Profile object
 	private $profile = null;
+	// variable to hold the test User object
+	private $user = null;
 	// a few "global" variables for creating test data
 	private $USERFIRSTNAME	= "May";
 	private $USERMIDDLENAME = "Lordes";
@@ -37,6 +37,7 @@ class UserTest extends UnitTestCase {
 		try {
 			$testUser = new User(null, "testUserEmailSetUp@test.com", $testHash, $testSalt, $testAuthToken);
 			$this->user = $testUser;
+			$this->user->insert($mysqli);
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}

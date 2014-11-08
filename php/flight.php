@@ -36,13 +36,18 @@ class Flight {
 	/**
  	* constant for number of seats on a plane. kept small so we can create fake user casers like sold-out flights.
  	**/
-	private const $totalSeatsConstant = 20;
+	private const totalSeatsConstant = 20;
 
 
 	/**
 	 *Questions:
 	 * ?? -- validating datetime for arrival and departure
+	 *      /1 how exactly do you want to validate it? by format -> USE filter_var($dateTime, FILTER_VALIDATE_REGEX,
+	 * $filterOptions) to get the formula for $filterOptions visit www.php.net
+	 * build your own regular expression to use
+	 * throw an exception when it doesn't validate
 	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii").
+	 *
 	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
 	 *			for that specific flightId?
 	 * ?? -- leave constant outside construct method
@@ -363,7 +368,7 @@ class Flight {
 	 * @return mixed Flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-	public static function getFlightByFlightId(&$mysqli, $flightID) {
+	public static function getFlightByFlightId(&$mysqli, $flightId) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
