@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/profile.php" afterPath="$PROJECT_DIR$/php/profile.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/simpletestProfile.php" afterPath="$PROJECT_DIR$/test/simpletestProfile.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="przm-air.iws" />
@@ -523,7 +521,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415482446806</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="began open discussions with teammates inside the code about class building to be of assistance to my team members">
+      <created>1415484509938</created>
+      <option name="number" value="00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1415484509938</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
