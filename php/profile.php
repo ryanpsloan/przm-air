@@ -100,11 +100,11 @@
 		function setUserObject($newUserObj){
 			// handle degenerate cases
 			if(gettype($newUserObj) !== "object" || get_class($newUserObj) !== "User") {
-				throw(new mysqli_sql_exception("input is not a User object"));
+				throw(new UnexpectedValueException("input is not a User object"));
 			}
 			//test if objectId is null
 			if($newUserObj->userId === null) {
-				throw(new mysqli_sql_exception("Unable to set a user that is null"));
+				throw(new UnexpectedValueException("Unable to set a user that is null"));
 			}
 			//set new object into class
 			$this->userObj = $newUserObj;

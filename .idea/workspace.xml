@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/profile.php" afterPath="$PROJECT_DIR$/php/profile.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/traveler.php" afterPath="$PROJECT_DIR$/php/traveler.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -54,14 +55,14 @@
       <file leaf-file-name="profile.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/php/profile.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.769231" vertical-offset="2831" max-vertical-offset="9010">
-              <caret line="183" column="25" selection-start-line="183" selection-start-column="25" selection-end-line="183" selection-end-column="25" />
+            <state vertical-scroll-proportion="-5.769231" vertical-offset="1584" max-vertical-offset="9010">
+              <caret line="102" column="46" selection-start-line="102" selection-start-column="46" selection-end-line="102" selection-end-column="46" />
               <folding>
-                <marker date="1415387663732" expanded="true" signature="9885:10036" placeholder="INSERT INTO ..." />
-                <marker date="1415387663732" expanded="true" signature="11486:11525" placeholder="DELETE FROM ..." />
-                <marker date="1415387663732" expanded="true" signature="12734:12881" placeholder="UPDATE profi..." />
-                <marker date="1415387663732" expanded="true" signature="14545:14685" placeholder="SELECT profi..profile..." />
-                <marker date="1415387663732" expanded="true" signature="17243:17380" placeholder="SELECT profi..profile..." />
+                <marker date="1415425451941" expanded="true" signature="9893:10044" placeholder="INSERT INTO ..." />
+                <marker date="1415425451941" expanded="true" signature="11494:11533" placeholder="DELETE FROM ..." />
+                <marker date="1415425451941" expanded="true" signature="12742:12889" placeholder="UPDATE profi..." />
+                <marker date="1415425451941" expanded="true" signature="14553:14693" placeholder="SELECT profi..profile..." />
+                <marker date="1415425451941" expanded="true" signature="17251:17388" placeholder="SELECT profi..profile..." />
               </folding>
             </state>
           </provider>
@@ -70,9 +71,13 @@
       <file leaf-file-name="traveler.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/php/traveler.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8870432" vertical-offset="3065" max-vertical-offset="3451">
-              <caret line="196" column="1" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
-              <folding />
+            <state vertical-scroll-proportion="0.8305648" vertical-offset="5598" max-vertical-offset="5967">
+              <caret line="344" column="1" selection-start-line="344" selection-start-column="1" selection-end-line="344" selection-end-column="1" />
+              <folding>
+                <marker date="1415425590815" expanded="true" signature="8801:8954" placeholder="INSERT INTO ..." />
+                <marker date="1415425590815" expanded="true" signature="10377:10418" placeholder="DELETE FROM ..." />
+                <marker date="1415425590815" expanded="true" signature="11602:11742" placeholder="UPDATE trave..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -446,7 +451,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415388989748</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="added more set methods to traveler cless">
+      <created>1415395605620</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1415395605620</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -529,7 +540,8 @@
     <MESSAGE value="recommitting previous commit" />
     <MESSAGE value="created simpletestProfile class and along with simpletestUser customized tests to evaluate object data against db input data" />
     <MESSAGE value="created traveler class completed properties and get construct and the first three set methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="created traveler class completed properties and get construct and the first three set methods" />
+    <MESSAGE value="added more set methods to traveler cless" />
+    <option name="LAST_COMMIT_MESSAGE" value="added more set methods to traveler cless" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -632,20 +644,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/php/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.769231" vertical-offset="2831" max-vertical-offset="9010">
-          <caret line="183" column="25" selection-start-line="183" selection-start-column="25" selection-end-line="183" selection-end-column="25" />
-          <folding>
-            <marker date="1415387663732" expanded="true" signature="9885:10036" placeholder="INSERT INTO ..." />
-            <marker date="1415387663732" expanded="true" signature="11486:11525" placeholder="DELETE FROM ..." />
-            <marker date="1415387663732" expanded="true" signature="12734:12881" placeholder="UPDATE profi..." />
-            <marker date="1415387663732" expanded="true" signature="14545:14685" placeholder="SELECT profi..profile..." />
-            <marker date="1415387663732" expanded="true" signature="17243:17380" placeholder="SELECT profi..profile..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-61.2" vertical-offset="0" max-vertical-offset="2295">
@@ -654,11 +652,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/php/profile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.769231" vertical-offset="1584" max-vertical-offset="9010">
+          <caret line="102" column="46" selection-start-line="102" selection-start-column="46" selection-end-line="102" selection-end-column="46" />
+          <folding>
+            <marker date="1415425451941" expanded="true" signature="9893:10044" placeholder="INSERT INTO ..." />
+            <marker date="1415425451941" expanded="true" signature="11494:11533" placeholder="DELETE FROM ..." />
+            <marker date="1415425451941" expanded="true" signature="12742:12889" placeholder="UPDATE profi..." />
+            <marker date="1415425451941" expanded="true" signature="14553:14693" placeholder="SELECT profi..profile..." />
+            <marker date="1415425451941" expanded="true" signature="17251:17388" placeholder="SELECT profi..profile..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/php/traveler.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8870432" vertical-offset="3065" max-vertical-offset="3451">
-          <caret line="196" column="1" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
-          <folding />
+        <state vertical-scroll-proportion="0.8305648" vertical-offset="5598" max-vertical-offset="5967">
+          <caret line="344" column="1" selection-start-line="344" selection-start-column="1" selection-end-line="344" selection-end-column="1" />
+          <folding>
+            <marker date="1415425590815" expanded="true" signature="8801:8954" placeholder="INSERT INTO ..." />
+            <marker date="1415425590815" expanded="true" signature="10377:10418" placeholder="DELETE FROM ..." />
+            <marker date="1415425590815" expanded="true" signature="11602:11742" placeholder="UPDATE trave..." />
+          </folding>
         </state>
       </provider>
     </entry>
