@@ -46,7 +46,7 @@
 		 * @param string $newFirstName
 		 * @param string $newMiddleName
 		 * @param string $newLastName
-		 * @param date $newDateOfBirth
+		 * @param string $newDateOfBirth
 		 * @param string $newCustomerToken
 		 * @throws UnexpectedValueException when a parameter is of the wrong type
 		 * @throws RangeException when a parameter is invalid

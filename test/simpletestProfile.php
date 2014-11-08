@@ -4,6 +4,7 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 
 // then require the class under scrutiny
 require_once("../php/profile.php");
+require_once("../php/user.php");
 
 // the ProfileTest is a container for all our tests
 class ProfileTest extends UnitTestCase {
