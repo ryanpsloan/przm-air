@@ -52,7 +52,7 @@
 		 * @throws RangeException when a parameter is invalid
 		 **/
 		public function __construct($newProfileId, $newUserId, $newFirstName, $newMiddleName,
-											 $newLastName, $newDateOfBirth, $newCustomerToken) {
+											 $newLastName, $newDateOfBirth, $newCustomerToken, $newUserObj = null) {
 			try {
 				$this->setProfileId($newProfileId);
 				$this->setUserId($newUserId);
@@ -61,6 +61,7 @@
 				$this->setLastName($newLastName);
 				$this->setDateOfBirth($newDateOfBirth);
 				$this->setCustomerToken($newCustomerToken);
+				$this->setUserObject($newUserObj);
 			} catch(UnexpectedValueException $unexpectedValue) {
 				// rethrow to the caller
 				throw(new UnexpectedValueException("Unable to construct Profile Object. Check input formats.", 0,

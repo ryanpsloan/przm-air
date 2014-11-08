@@ -42,7 +42,7 @@ class Traveler{
 	 */
 
 	public function __construct($newTravelerId, $newProfileId, $newFirstName, $newMiddleName, $newLastName,
-										 $newDateOfBirth){
+										 $newDateOfBirth,$newProfileObj = null){
 										try{
 												$this->setTravelerId($newTravelerId);
 												$this->setProfileId($newProfileId);
@@ -50,6 +50,7 @@ class Traveler{
 												$this->setMiddleName($newMiddleName);
 												$this->setLastName($newLastName);
 											   $this->setDateOfBirth($newDateOfBirth);
+												$this->setProfileObj($newProfileObj);
 										} catch(UnexpectedValueException $unexpectedValue) {
 											// rethrow to the caller
 											throw(new UnexpectedValueException("Unable to construct Profile Object. Check input formats.", 0,
@@ -94,8 +95,8 @@ class Traveler{
 			throw(new UnexpectedValueException("Argument is not a Profile Object"));
 		}
 
-		if($newProfileObj === null){
-			throw(new UnexpectedValueException("Unable to set a profile that is null"));
+		if($newProfileObj->travelerId === null){
+			throw(new UnexpectedValueException("Unable to set a Profile Object that is null"));
 		}
 
 		$this->profileObj = $newProfileObj;
@@ -341,6 +342,152 @@ class Traveler{
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
+
+	/**
+	 * gets the Traveler by travelerId the Primary Key
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param int $travelerId primary key to search for
+	 * @return mixed Traveler found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getTravelerByTravelerId(&$mysqli, $travelerId)
+	{
+		//handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a mysqli object"));
+		}
+
+		// first, ensure the profileId is an integer
+		if(filter_var($travelerId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("profile id $travelerId is not numeric"));
+		}
+
+		// second, convert the user id to an integer and enforce it's positive
+		$travelerId = intval($travelerId);
+		if($travelerId <= 0) {
+			throw(new RangeException("profile id $travelerId is not positive"));
+		}
+		//CREATE QUERY TEMPLATE
+		$query = "SELECT travelerId, profileId, travelerFirstName, travelerMiddleName, travelerLastName, travelerDateOfBirth
+					FROM traveler WHERE travelerId = ? ";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the profileId to the place holder in the template
+		$wasClean = $statement->bind_param("i", $travelerId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		//execute statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		//get result from the SELECT query
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		/* since this is a unique field, this will only return 0 or 1 results so
+		 * 1) if there's a result, we can make it into a channel object normally
+		 * 2) if there's no result, we can just return null
+		 * */
+		$row = $result->fetch_assoc(); //fetch_assoc() returns a row as an associative array
+
+		//convert the associate array to user
+		if($row !== null) {
+			try {
+				$traveler = new Traveler ($row['travelerId'], $row['profileId'],$row['travelerFirstName'],
+					$row['travelerMiddleName'],$row['travelerLastName'], $row['travelerDateOfBirth']);
+			} catch(Exception $exception) {
+				//if row can't be converted rethrow
+				throw(new mysqli_sql_exception("Unable to convert row to Traveler Object", 0, $exception));
+			}
+
+			//if we got here, the Profile Object is good - return it
+			return ($traveler);
+		} else {
+			//404 profile not found
+			return (null);
+		}
+	}
+
+	/**
+	 * gets the Traveler by profileId the Foreign Key
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param int $travelerId primary key to search for
+	 * @return mixed Traveler found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getTravelerByProfileId(&$mysqli, $profileId)
+	{
+		//handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("Input is not a mysqli object"));
+		}
+
+		// first, ensure the profileId is an integer
+		if(filter_var($profileId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("user id $profileId is not numeric"));
+		}
+
+		// second, convert the profile id to an integer and enforce it's positive
+		$profileId = intval($profileId);
+		if($profileId <= 0) {
+			throw(new RangeException("Profile id $profileId is not positive"));
+		}
+		//CREATE QUERY TEMPLATE
+		$query = "SELECT travelerId, profileId, travelerFirstName, travelerMiddleName, travelerLastName,
+					travelerDateOfBirth
+					FROM traveler WHERE profileId = ? ";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		//bind the profileId to the place holder in the template
+		$wasClean = $statement->bind_param("i", $profileId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		//execute statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		//get result from the SELECT query
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		$row = $result->fetch_assoc(); //fetch_assoc() returns a row as an associative array
+
+		//convert the associate array to user
+		if($row !== null) {
+			try {
+				$traveler = new Traveler ($row['travelerId'], $row['profileId'],$row['travelerFirstName'],
+					$row['travelerMiddleName'],$row['travelerLastName'], $row['travelerDateOfBirth']);
+			} catch(Exception $exception) {
+				//if row can't be converted rethrow
+				throw(new mysqli_sql_exception("Unable to convert row to Traveler Object", 0, $exception));
+			}
+
+			//if we got here, the Traveler Object is good - return it
+			return ($traveler);
+		} else {
+			//404 traveler not found
+			return (null);
+		}
+	}
+
 
 }
 ?>

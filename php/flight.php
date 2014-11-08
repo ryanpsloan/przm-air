@@ -13,15 +13,16 @@
 
 class Flight {
 	/**
-	 * flight id that refers to a specific flight at a specific time on a specific day to the flight
+	 * int flight id that refers to a specific flight at a specific time on a specific day to the flight
 	 **/
 	private $flightId;
 	/**
-	 * id for the instance in the schedule (or template) that matches the selection of the user.  This is Foreign Key.
+	 * int id for the instance in the schedule (or template) that matches the selection of the user.  This is Foreign
+	 * Key.
 	 **/
 	private $scheduleId;
 	/**
-	 * specific date and time of departure
+	 * int specific date and time of departure
 	 **/
 	private $departureDateTime;
 	/**
@@ -34,19 +35,19 @@ class Flight {
 	 **/
 	private $totalSeatsOnPlane;
 	/**
- 	* constant for number of seats on a plane. kept small so we can create fake user casers like sold-out flights.
+ 	* int constant for number of seats on a plane. kept small so we can create fake user casers like sold-out flights.
  	**/
 	private const totalSeatsConstant = 20;
 
 
 	/**
 	 *Questions:
-	 * ?? -- validating datetime for arrival and departure
+	 * ?? -- validating datetime for arrival and departure                //$dateTime Is in the form of a string
 	 *      /1 how exactly do you want to validate it? by format -> USE filter_var($dateTime, FILTER_VALIDATE_REGEX,
-	 * $filterOptions) to get the formula for $filterOptions visit www.php.net
-	 * build your own regular expression to use
-	 * throw an exception when it doesn't validate
-	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii").
+	 *         $filterOptions) to get the formula for $filterOptions visit www.php.net
+	 *         build your own regular expression to use
+	 *         throw an exception when it doesn't validate
+	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii"). /2 Yes you do ("iiii",
 	 *
 	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
 	 *			for that specific flightId?
