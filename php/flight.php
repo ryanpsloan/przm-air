@@ -50,7 +50,9 @@ class Flight {
 	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii"). /2 Yes you do ("iiii",
 	 *
 	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
-	 *			for that specific flightId?
+	 *			for that specific flightId? 3/ you might be able to declare a static property to keep the variable's value
+	 * 		after the object goes out of scope and store the value in the class instead of the database.
+	 *
 	 * ?? -- leave constant outside construct method
 	 * ?? what is 0 in throw exceptions around line 94
 	 *
