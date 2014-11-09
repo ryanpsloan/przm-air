@@ -36,13 +36,12 @@ class ProfileTest extends UnitTestCase {
 		$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
 		$testHash        = hash_pbkdf2("sha512", "tEsTpASs", $testSalt, 2048, 128);
 		try {
-			$testUser = new User(null, "testUserEmailSetUp@test.com", $testHash, $testSalt, $testAuthToken);
-			$this->user = $testUser;
+			$this->user = new User(null, "testUserEmailSetUp@test.com", $testHash, $testSalt, $testAuthToken);
 			$this->user->insert($mysqli);
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}
-		$this->$DATEOFBIRTH = DateTime::createFromFormat(Y-m-d,"2010/10/10");
+		$this->$DATEOFBIRTH = "10/10/2010";
 		$this->CUSTTOKEN    = bin2hex(openssl_random_pseudo_bytes(32));
 	}
 
@@ -185,7 +184,7 @@ class ProfileTest extends UnitTestCase {
 			$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN);
 
 		// third, insert the user to mySQL
-		$this->user->insert($this->mysqli);
+		$this->profile->insert($this->mysqli);
 
 		// fourth, get the user using the static method
 		$staticProfile = Profile::getProfileByUserId($this->mysqli, $this->user->getUserId());

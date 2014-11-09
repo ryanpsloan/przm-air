@@ -67,7 +67,7 @@ class Traveler{
 	 * @param string $name
 	 * @throws ErrorException if $name is not a key value
 	 */
-	public function _get($name){
+	public function __get($name){
 		//updates with the current value of the classes properties and returns the selected key
 		$data = array('profileObj'             => $this->profileObj,
 			           'travelerId' 				=> $this->travelerId,

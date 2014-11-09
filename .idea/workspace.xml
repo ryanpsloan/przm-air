@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/flight.php" afterPath="$PROJECT_DIR$/php/flight.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/profile.php" afterPath="$PROJECT_DIR$/php/profile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/simpletestProfile.php" afterPath="$PROJECT_DIR$/test/simpletestProfile.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/traveler.php" afterPath="$PROJECT_DIR$/php/traveler.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -68,8 +67,8 @@
       <file leaf-file-name="profile.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/php/profile.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.461538" vertical-offset="8645" max-vertical-offset="9027">
-              <caret line="523" column="0" selection-start-line="374" selection-start-column="6" selection-end-line="523" selection-end-column="0" />
+            <state vertical-scroll-proportion="-283.23077" vertical-offset="405" max-vertical-offset="9027">
+              <caret line="457" column="0" selection-start-line="457" selection-start-column="0" selection-end-line="457" selection-end-column="0" />
               <folding>
                 <marker date="1415486052476" expanded="true" signature="9954:10105" placeholder="INSERT INTO ..." />
                 <marker date="1415486052476" expanded="true" signature="11555:11594" placeholder="DELETE FROM ..." />
@@ -81,29 +80,29 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="traveler.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="traveler.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/php/traveler.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.096345514" vertical-offset="8165" max-vertical-offset="8466">
-              <caret line="482" column="39" selection-start-line="482" selection-start-column="39" selection-end-line="482" selection-end-column="39" />
+            <state vertical-scroll-proportion="-0.65384614" vertical-offset="1156" max-vertical-offset="8466">
+              <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
               <folding>
-                <marker date="1415487370061" expanded="true" signature="8892:9045" placeholder="INSERT INTO ..." />
-                <marker date="1415487370061" expanded="true" signature="10468:10509" placeholder="DELETE FROM ..." />
-                <marker date="1415487370061" expanded="true" signature="11693:11833" placeholder="UPDATE trave..." />
-                <marker date="1415487370061" expanded="true" signature="13469:13615" placeholder="SELECT trave..traveler..." />
-                <marker date="1415487370061" expanded="true" signature="16155:16305" placeholder="SELECT trave..traveler..." />
+                <marker date="1415560034012" expanded="true" signature="8893:9046" placeholder="INSERT INTO ..." />
+                <marker date="1415560034012" expanded="true" signature="10469:10510" placeholder="DELETE FROM ..." />
+                <marker date="1415560034012" expanded="true" signature="11694:11834" placeholder="UPDATE trave..." />
+                <marker date="1415560034012" expanded="true" signature="13470:13616" placeholder="SELECT trave..traveler..." />
+                <marker date="1415560034012" expanded="true" signature="16156:16306" placeholder="SELECT trave..traveler..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="simpletestProfile.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="simpletestProfile.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/simpletestProfile.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="4131">
-              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.27070063" vertical-offset="646" max-vertical-offset="4114">
+              <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
               <folding>
-                <marker date="1415483248152" expanded="true" signature="10374:10510" placeholder="SELECT profi..profile..." />
+                <marker date="1415560033982" expanded="true" signature="10317:10453" placeholder="SELECT profi..profile..." />
               </folding>
             </state>
           </provider>
@@ -112,10 +111,10 @@
       <file leaf-file-name="simpletestTraveler.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/simpletestTraveler.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.8076925" vertical-offset="605" max-vertical-offset="4403">
-              <caret line="46" column="34" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
+            <state vertical-scroll-proportion="-0.65384614" vertical-offset="3468" max-vertical-offset="4386">
+              <caret line="205" column="76" selection-start-line="205" selection-start-column="76" selection-end-line="205" selection-end-column="76" />
               <folding>
-                <marker date="1415485494074" expanded="true" signature="10978:11114" placeholder="SELECT profi..profile..." />
+                <marker date="1415560034049" expanded="true" signature="10547:10694" placeholder="SELECT profi..profile..." />
               </folding>
             </state>
           </provider>
@@ -146,11 +145,11 @@
         <option value="$PROJECT_DIR$/test/simpletestUser.php" />
         <option value="$PROJECT_DIR$/php/user.php" />
         <option value="$PROJECT_DIR$/php/ticketFlight.php" />
-        <option value="$PROJECT_DIR$/test/simpletestProfile.php" />
         <option value="$PROJECT_DIR$/php/flight.php" />
-        <option value="$PROJECT_DIR$/test/simpletestTraveler.php" />
         <option value="$PROJECT_DIR$/php/profile.php" />
+        <option value="$PROJECT_DIR$/test/simpletestTraveler.php" />
         <option value="$PROJECT_DIR$/php/traveler.php" />
+        <option value="$PROJECT_DIR$/test/simpletestProfile.php" />
       </list>
     </option>
   </component>
@@ -513,7 +512,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415484550726</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="finished the traveler class ready to test classes">
+      <created>1415487398233</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1415487398233</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -600,11 +605,12 @@
     <MESSAGE value="added insert, delete and update methods to traveler class" />
     <MESSAGE value="began open discussions with teammates inside the code about class building to be of assistance to my team members" />
     <MESSAGE value="continued progress on the TraverlerUnitTest" />
-    <option name="LAST_COMMIT_MESSAGE" value="continued progress on the TraverlerUnitTest" />
+    <MESSAGE value="finished the traveler class ready to test classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished the traveler class ready to test classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -677,16 +683,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/simpletestProfile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="4131">
-          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
-          <folding>
-            <marker date="1415483248152" expanded="true" signature="10374:10510" placeholder="SELECT profi..profile..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/php/user.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.65384614" vertical-offset="1309" max-vertical-offset="7990">
@@ -734,18 +730,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/simpletestTraveler.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.8076925" vertical-offset="605" max-vertical-offset="4403">
-          <caret line="46" column="34" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
+        <state vertical-scroll-proportion="-0.65384614" vertical-offset="3468" max-vertical-offset="4386">
+          <caret line="205" column="76" selection-start-line="205" selection-start-column="76" selection-end-line="205" selection-end-column="76" />
           <folding>
-            <marker date="1415485494074" expanded="true" signature="10978:11114" placeholder="SELECT profi..profile..." />
+            <marker date="1415560034049" expanded="true" signature="10547:10694" placeholder="SELECT profi..profile..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/traveler.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.65384614" vertical-offset="1156" max-vertical-offset="8466">
+          <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
+          <folding>
+            <marker date="1415560034012" expanded="true" signature="8893:9046" placeholder="INSERT INTO ..." />
+            <marker date="1415560034012" expanded="true" signature="10469:10510" placeholder="DELETE FROM ..." />
+            <marker date="1415560034012" expanded="true" signature="11694:11834" placeholder="UPDATE trave..." />
+            <marker date="1415560034012" expanded="true" signature="13470:13616" placeholder="SELECT trave..traveler..." />
+            <marker date="1415560034012" expanded="true" signature="16156:16306" placeholder="SELECT trave..traveler..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/php/profile.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.461538" vertical-offset="8645" max-vertical-offset="9027">
-          <caret line="523" column="0" selection-start-line="374" selection-start-column="6" selection-end-line="523" selection-end-column="0" />
+        <state vertical-scroll-proportion="-283.23077" vertical-offset="405" max-vertical-offset="9027">
+          <caret line="457" column="0" selection-start-line="457" selection-start-column="0" selection-end-line="457" selection-end-column="0" />
           <folding>
             <marker date="1415486052476" expanded="true" signature="9954:10105" placeholder="INSERT INTO ..." />
             <marker date="1415486052476" expanded="true" signature="11555:11594" placeholder="DELETE FROM ..." />
@@ -756,16 +766,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/php/traveler.php">
+    <entry file="file://$PROJECT_DIR$/test/simpletestProfile.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.096345514" vertical-offset="8165" max-vertical-offset="8466">
-          <caret line="482" column="39" selection-start-line="482" selection-start-column="39" selection-end-line="482" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.27070063" vertical-offset="646" max-vertical-offset="4114">
+          <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
           <folding>
-            <marker date="1415487370061" expanded="true" signature="8892:9045" placeholder="INSERT INTO ..." />
-            <marker date="1415487370061" expanded="true" signature="10468:10509" placeholder="DELETE FROM ..." />
-            <marker date="1415487370061" expanded="true" signature="11693:11833" placeholder="UPDATE trave..." />
-            <marker date="1415487370061" expanded="true" signature="13469:13615" placeholder="SELECT trave..traveler..." />
-            <marker date="1415487370061" expanded="true" signature="16155:16305" placeholder="SELECT trave..traveler..." />
+            <marker date="1415560033982" expanded="true" signature="10317:10453" placeholder="SELECT profi..profile..." />
           </folding>
         </state>
       </provider>
