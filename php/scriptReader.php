@@ -15,7 +15,7 @@ function readSchedule(&$mysqli,$fileName)
 	$row = 1;
 	while(($output = fgetcsv($filePointer, 0, ",")) !== false) {
 		$num = count($output);
-		$wasClean = $statement->bind_param("ssi", $output[0], $output[1], $output[2]);
+		$wasClean = $statement->bind_param("ssd", $output[0], $output[1], $output[2]);
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
@@ -27,9 +27,7 @@ function readSchedule(&$mysqli,$fileName)
 		}
 		$row++;
 
-		if($wasClean === false) {
-			throw(new mysqli_sql_exception("Unable to bind parameters"));
-		}
+
 		if(empty($output[3]) === false) {
 
 
