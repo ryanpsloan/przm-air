@@ -32,21 +32,20 @@ CREATE TABLE profile (
 );
 
 CREATE TABLE flight (
-	flightId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	origin VARCHAR(20) NOT NULL,
-	destination VARCHAR(20) NOT NULL,
-	duration TIME NOT NULL,
-	departureDateTime TIME NOT NULL,
-	arrivalDateTime TIME NOT NULL,
-	flightNumber VARCHAR(15) NOT NULL,
-	price DECIMAL NOT NULL,
+	flightId          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	origin            VARCHAR(20)  NOT NULL,
+	destination       VARCHAR(20)  NOT NULL,
+	duration          TIME         NOT NULL,
+	departureDateTime TIME         NOT NULL,
+	arrivalDateTime   TIME         NOT NULL,
+	flightNumber      VARCHAR(15)  NOT NULL,
+	price             DECIMAL      NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
-	INDEX(departureDateTime),
-	INDEX(arrivalDateTime),
-	INDEX(scheduleId),
-	PRIMARY KEY (flightId),
-	FOREIGN KEY (scheduleId) REFERENCES schedule (scheduleId)
+	INDEX (departureDateTime),
+	INDEX (arrivalDateTime),
+	PRIMARY KEY (flightId)
 );
+
 
 CREATE TABLE weekdaySchedule (
 	weekdayScheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -57,10 +56,7 @@ CREATE TABLE weekdaySchedule (
 	arrivalTime TIME NOT NULL,
 	flightNumber VARCHAR(15) NOT NULL,
 	price DECIMAL NOT NULL,
-	PRIMARY KEY (scheduleId),
-	INDEX(flightNumber),
-	INDEX(origin),
-	INDEX(destination)
+	PRIMARY KEY (weekdayScheduleId)
 );
 
 CREATE TABLE weekendSchedule (
@@ -72,10 +68,7 @@ CREATE TABLE weekendSchedule (
 	arrivalTime TIME NOT NULL,
 	flightNumber VARCHAR(15) NOT NULL,
 	price DECIMAL NOT NULL,
-	PRIMARY KEY (scheduleId),
-	INDEX(flightNumber),
-	INDEX(origin),
-	INDEX(destination)
+	PRIMARY KEY (weekendScheduleId)
 );
 
 CREATE TABLE ticket (

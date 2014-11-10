@@ -6,8 +6,7 @@ function readWeekendCSV(&$mysqli,$fileName)
 	}
 
 	$query = "INSERT INTO weekendSchedule (origin, destination, duration, departure, arrival, flightNum, price) VALUES(?, ?, ?,
-?, ?,
-				?,?)";
+				?, ?,	?, ?)";
 	$statement = $mysqli->prepare($query);
 	if($statement === false) {
 		throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -48,7 +47,7 @@ function readWeekendCSV(&$mysqli,$fileName)
 
 			}
 		}
-		echo "Statement Executed, $num fields in line $row  \n";
+		echo "Statement(s) Executed, $num fields in line $row  \n";
 		echo "--------------------------------------------- \n";
 		for ($c=0; $c < $num; $c++) {
 			echo "row: $row position: $c -> ".$output[$c]."\n";
