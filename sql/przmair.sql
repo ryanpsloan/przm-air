@@ -45,21 +45,17 @@ CREATE TABLE flight (
 
 CREATE TABLE schedule (
 	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	origin VARCHAR(20),
-	destination
-	flightNumber VARCHAR(15) NOT NULL,
+	origin VARCHAR(20) NOT NULL,
+	destination VARCHAR(20) NOT NULL,
+	duration TIME NOT NULL,
 	departureTime TIME NOT NULL,
 	arrivalTime TIME NOT NULL,
-	duration TIME NOT NULL,
-	dayOfWeek INT NOT NULL,
-	originAirportId VARCHAR(10) NOT NULL,
-	destinationAirportId VARCHAR(10) NOT NULL,
+	flightNumber VARCHAR(15) NOT NULL,
+	price DECIMAL NOT NULL,
 	PRIMARY KEY (scheduleId),
 	INDEX(flightNumber),
 	INDEX(originAirportId),
-	INDEX(destinationAirportId),
-	FOREIGN KEY(originAirportId)REFERENCES airport(airportId),
-	FOREIGN KEY(destinationAirportId)REFERENCES airport(airportId)
+	INDEX(destinationAirportId)
 );
 
 CREATE TABLE ticket (
