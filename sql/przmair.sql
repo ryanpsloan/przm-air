@@ -33,9 +33,13 @@ CREATE TABLE profile (
 
 CREATE TABLE flight (
 	flightId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	scheduleId INT UNSIGNED NOT NULL,
-	departureDateTime DATETIME NOT NULL,
-	arrivalDateTime DATETIME NOT NULL,
+	origin VARCHAR(20) NOT NULL,
+	destination VARCHAR(20) NOT NULL,
+	duration TIME NOT NULL,
+	departureDateTime TIME NOT NULL,
+	arrivalDateTime TIME NOT NULL,
+	flightNumber VARCHAR(15) NOT NULL,
+	price DECIMAL NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
 	INDEX(departureDateTime),
 	INDEX(arrivalDateTime),
@@ -45,7 +49,7 @@ CREATE TABLE flight (
 );
 
 CREATE TABLE weekdaySchedule (
-	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	weekdayScheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	origin VARCHAR(20) NOT NULL,
 	destination VARCHAR(20) NOT NULL,
 	duration TIME NOT NULL,
@@ -60,7 +64,7 @@ CREATE TABLE weekdaySchedule (
 );
 
 CREATE TABLE weekendSchedule (
-	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	weekendScheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	origin VARCHAR(20) NOT NULL,
 	destination VARCHAR(20) NOT NULL,
 	duration TIME NOT NULL,
