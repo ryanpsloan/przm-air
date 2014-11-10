@@ -19,7 +19,7 @@ function	buildFlights (&$mysqli, $startDate) {
 
 		$format = "Y-m-d hh:mm:ss";
 		$date = DateTime::createFromFormat($format, $startDate);
-		$dayOfWeek = DateTime::weekday;
+		$dayOfWeek = date("N", $date);
 		//fixme!
 
 		if($date = weekday) { //fixme!
@@ -148,8 +148,8 @@ function	buildFlights (&$mysqli, $startDate) {
 				$flightId++;
 			}
 
-		$date++;
-	}
+		$date->add(new DateInterval('P1D'));
+
 }
 
 //end function
