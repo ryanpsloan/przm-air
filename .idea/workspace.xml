@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/flight.php" afterPath="$PROJECT_DIR$/php/flight.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="przm-air.iws" />
@@ -107,10 +106,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="flight.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="flight.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/php/flight.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.72929937" vertical-offset="502" max-vertical-offset="8194">
+            <state vertical-scroll-proportion="-8.807693" vertical-offset="502" max-vertical-offset="8194">
               <caret line="53" column="103" selection-start-line="53" selection-start-column="103" selection-end-line="53" selection-end-column="103" />
               <folding>
                 <marker date="1415571688139" expanded="true" signature="7909:8014" placeholder="INSERT INTO ..." />
@@ -118,6 +117,16 @@
                 <marker date="1415571688139" expanded="true" signature="10581:10706" placeholder="UPDATE fligh..." />
                 <marker date="1415571688139" expanded="true" signature="12528:12623" placeholder="SELECT fligh..flight..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="przmair.sql" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="4.857143" vertical-offset="0" max-vertical-offset="2295">
+              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -538,7 +547,13 @@
       <option name="project" value="LOCAL" />
       <updated>1415560220603</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="finished simpletestTraveler read for testing">
+      <created>1415571704015</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1415571704015</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -696,14 +711,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.4285715" vertical-offset="1980" max-vertical-offset="2295">
-          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/php/user.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.65384614" vertical-offset="1309" max-vertical-offset="7990">
@@ -786,7 +793,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/php/flight.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.72929937" vertical-offset="502" max-vertical-offset="8194">
+        <state vertical-scroll-proportion="-8.807693" vertical-offset="502" max-vertical-offset="8194">
           <caret line="53" column="103" selection-start-line="53" selection-start-column="103" selection-end-line="53" selection-end-column="103" />
           <folding>
             <marker date="1415571688139" expanded="true" signature="7909:8014" placeholder="INSERT INTO ..." />
@@ -794,6 +801,14 @@
             <marker date="1415571688139" expanded="true" signature="10581:10706" placeholder="UPDATE fligh..." />
             <marker date="1415571688139" expanded="true" signature="12528:12623" placeholder="SELECT fligh..flight..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.857143" vertical-offset="0" max-vertical-offset="2295">
+          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
