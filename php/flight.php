@@ -516,4 +516,90 @@ class Flight {
 	}
 }
 
+
+
+
+
+
+
+/**
+ * gets any existing Profile by lastName
+ *
+ * @param resource $mysqli pointer to mySQL connection, by reference
+ * @param string $lastName last name to search for
+ * @return mixed Profile found or null if not found
+ * @throws mysqli_sql_exception when mySQL related errors occur
+ **/
+public static function getProfileByLastName(&$mysqli, $lastName)
+{
+	// handle degenerate cases
+	if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+		throw(new mysqli_sql_exception("input is not a mysqli object"));
+	}
+
+	// first trim, then validate, then sanitize the lastName string before searching.
+	$lastName = trim($lastName);
+
+	if (filter_var($lastName, FILTER_SANITIZE_STRING) === false) {
+		throw (new UnexpectedValueException ("last name of $lastName does not appear to be a string"));
+	}
+	else {
+		$lastName = filter_var($lastName, FILTER_SANITIZE_STRING);
+	}
+
+	// create query template
+	$query = "SELECT profileId, userId, firstName, lastName FROM profile WHERE lastName = ?";
+	$statement = $mysqli->prepare($query);
+	if($statement === false) {
+		throw(new mysqli_sql_exception("Unable to prepare statement"));
+	}
+
+	// bind the last name to the place holder in the template
+	$wasClean = $statement->bind_param("s", $lastName);
+	if($wasClean === false) {
+		throw(new mysqli_sql_exception("Unable to bind parameters"));
+	}
+
+	// execute the statement
+	if($statement->execute() === false) {
+		throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+	}
+
+	// get result from the SELECT query *pounds fists*
+	$result = $statement->get_result();
+	if($result === false) {
+		throw(new mysqli_sql_exception("Unable to get result set"));
+	}
+
+	// since this is not a unique field, this will return as many results as there are profiles with  same last name.
+	// 1) if there's no result, we can just return null
+	// 2) if there's a result, we can make it into Profile objects normally
+	// fetch_assoc() returns row as associative arr until row is null
+//		$arrayCounter = 0;
+	$profileArray = array();
+	// convert the associative array to a Profile and repeat for all last names equal to lastName.
+	while(($row = $result->fetch_assoc()) !== null) {
+
+		// convert the associative array to a Profile for all last names equal to lastName.
+		try {
+			$profile = new Profile($row["profileId"], $row["userId"], $row["firstName"], $row["lastName"]);
+			$profileArray[] = $profile;
+
+		} catch(Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new mysqli_sql_exception("Unable to convert row to Profile", 0, $exception));
+		}
+
+	}
+
+	if(empty($profileArray)) {
+		// 404 User not found - return null
+		return (null);
+	}
+	else {
+		return ($profileArray);
+	}
+}
+
+
 ?>
