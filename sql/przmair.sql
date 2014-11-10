@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS airport;
 DROP TABLE IF EXISTS transaction;
 DROP TABLE IF EXISTS traveler;
 DROP TABLE IF EXISTS ticketFlight;
@@ -46,6 +45,8 @@ CREATE TABLE flight (
 
 CREATE TABLE schedule (
 	scheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	origin VARCHAR(20),
+	destination
 	flightNumber VARCHAR(15) NOT NULL,
 	departureTime TIME NOT NULL,
 	arrivalTime TIME NOT NULL,
@@ -115,15 +116,6 @@ CREATE TABLE transaction (
 
 );
 
-CREATE TABLE airport (
-	airportId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	airportCode VARCHAR(10) NOT NULL,
-	airportDescription VARCHAR(100) NOT NULL,
-	airportSearchField VARCHAR(100) NOT NULL,
-	INDEX(airportCode),
-	INDEX(airportDescription),
-	INDEX(airportSearchField),
-	PRIMARY KEY (airportId)
-);
+
 
 
