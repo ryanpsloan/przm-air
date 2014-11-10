@@ -1,6 +1,6 @@
 <?php
 /**
- * mySQL Enabled User
+ * mySQL Enabled Flight
  *
  * This is a mySQL enabled container for all flights (and their related data) that are created and stored in
  * the database when a passenger selects a flight option from the search.
@@ -13,16 +13,15 @@
 
 class Flight {
 	/**
-	 * int flight id that refers to a specific flight at a specific time on a specific day to the flight
+	 * flight id that refers to a specific flight at a specific time on a specific day to the flight
 	 **/
 	private $flightId;
 	/**
-	 * int id for the instance in the schedule (or template) that matches the selection of the user.  This is Foreign
-	 * Key.
+	 * id for the instance in the schedule (or template) that matches the selection of the user.  This is Foreign Key.
 	 **/
 	private $scheduleId;
 	/**
-	 * int specific date and time of departure
+	 * specific date and time of departure
 	 **/
 	private $departureDateTime;
 	/**
@@ -35,37 +34,30 @@ class Flight {
 	 **/
 	private $totalSeatsOnPlane;
 	/**
- 	* int constant for number of seats on a plane. kept small so we can create fake user casers like sold-out flights.
+ 	* constant for number of seats on a plane. kept small so we can create fake user cases like sold-out flights.
  	**/
-	private const totalSeatsConstant = 20;
+	private static $totalSeatsConstant = 20;
 
 
 	/**
 	 *Questions:
-	 * ?? -- validating datetime for arrival and departure                //$dateTime Is in the form of a string
-	 *      /1 how exactly do you want to validate it? by format -> USE filter_var($dateTime, FILTER_VALIDATE_REGEX,
-	 *         $filterOptions) to get the formula for $filterOptions visit www.php.net
-	 *         build your own regular expression to use
-	 *         throw an exception when it doesn't validate
-	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii"). /2 Yes you do ("iiii",
-	 *
+	 * ?? -- validating datetime for arrival and departure
+	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii").
 	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
-	 *			for that specific flightId? 3/ you might be able to declare a static property to keep the variable's value
-	 * 		after the object goes out of scope and store the value in the class instead of the database.
-	 *
+	 *			for that specific flightId?
 	 * ?? -- leave constant outside construct method
 	 * ?? what is 0 in throw exceptions around line 94
 	 *
-	 *To Do:
-	 * seats decrementer/incrementer
-	 * any method needed for the search function besides finding flight by flight ID? Do we need scheduleId by
+	 * ToDo: seats decrementer/incrementer
+	 * ToDo: search function to make tickets?
+	 * ToDo: besides finding flight by flight ID? Do we need scheduleId by flightId or other similar?
+	 * ToDo: loop within loop function to seed data from the schedule class
+	 * ToDo: fix totalSeats function/calc
+	 * ToDo: clean up __get() or change to __call()
+	 * ToDo: see Dylan's code fragment for DATETIME objects
 	 *
 	 *
 	 **/
-
-
-
-
 
 
 
@@ -113,7 +105,7 @@ class Flight {
 	 *
 	 * @param mixed $newFlightId profile id (or null if new object)
 	 * @throws UnexpectedValueException if not an integer or null
-	 * @throws RangeException if user id isn't positive
+	 * @throws RangeException if flight id isn't positive
 	 **/
 	public function setFlightId($newFlightId) {
 		// zeroth, set allow the flight id to be null if a new object
@@ -152,7 +144,7 @@ class Flight {
 	 *
 	 * @param int $newScheduleId schedule id
 	 * @throws UnexpectedValueException if not an integer or null
-	 * @throws RangeException if user id isn't positive
+	 * @throws RangeException if schedule id isn't positive
 	 **/
 	public function setScheduleId($newScheduleId) {
 		// first, ensure the schedule id is an integer
@@ -211,13 +203,13 @@ class Flight {
 	}
 
 
-		/**
-		 * sets the value of the arrivalDateTime
-		 *
-		 * @param string $newArrivalDateTime of the arrival date and time
-		 * @throws UnexpectedValueException if the input doesn't appear to be a date
-		 * @throws RangeException???
-		 **/
+	/**
+	 * sets the value of the arrivalDateTime
+	 *
+	 * @param string $newArrivalDateTime of the arrival date and time
+	 * @throws UnexpectedValueException if the input doesn't appear to be a date
+	 * @throws RangeException???
+	 **/
 	public function setArrivalDateTime($newArrivalDateTime) {
 		// verify the date and time is a datetime
 		$newArrivalDateTime = trim($newArrivalDateTime);
@@ -229,6 +221,46 @@ class Flight {
 		// finally, take the arrival datetime out of quarantine
 		$this->arrivalDateTime = $newArrivalDateTime;
 	}
+
+
+		/**
+		 * gets the value of schedule id
+		 *
+		 * @return mixed schedule id
+		 **/
+	public function getScheduleId() {
+		return($this->scheduleId);
+	}
+
+
+
+	/**
+	 * sets the value of totalSeatsOnPlane
+	 *
+	 * @param mixed $newTotalSeatsOnPlane available seats
+	 * @throws UnexpectedValueException if not an integer
+	 * @throws RangeException if totalSeatsOnPlane isn't positive
+	 **/
+	public function setTotalSeatsOnPlane($newFlightId) {
+	// first, ensure the total seats on a plane is an integer
+		if(filter_var($newTotalSeatsOnPlane, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("total seats on plane of $newTotalSeatsOnPlane is not numeric"));
+		}
+
+		// second, convert the TotalSeatsOnPlane to an integer and enforce it's positive
+		$newTotalSeatsOnPlane = intval($newTotalSeatsOnPlane);
+		if($newTotalSeatsOnPlane <= 0) {
+			throw(new RangeException("total seats on plane of $newTotalSeatsOnPlane is not positive"));
+		}
+
+		// finally, take the total seats on plane out of quarantine and assign it
+		$this->totalSeatsOnPlane = $newTotalSeatsOnPlane;
+	}
+
+
+
+
+
 
 
 	/**
@@ -256,7 +288,7 @@ class Flight {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("iiii", $this->scheduleId, $this->departureDateTime,
+		$wasClean = $statement->bind_param("issi", $this->scheduleId, $this->departureDateTime,
 			$this->arrivalDateTime, $this->totalSeatsOnPlane);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
@@ -335,7 +367,7 @@ class Flight {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("iiiii", $this->scheduleId, $this->departureDateTime, $this->arrivalDateTime,
+		$wasClean = $statement->bind_param("issii", $this->scheduleId, $this->departureDateTime, $this->arrivalDateTime,
 														$this->totalSeatsOnPlane, $this->flightId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
@@ -371,7 +403,7 @@ class Flight {
 	 * @return mixed Flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-	public static function getFlightByFlightId(&$mysqli, $flightId) {
+	public static function getFlightByFlightId(&$mysqli, $flightID) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));

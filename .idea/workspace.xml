@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="">
+    <list default="true" id="fd1ae8f3-75bc-4f77-b295-f7263d342509" name="Default" comment="Added Seed Data for Schedule tables (propose we make a weekEndSchedule and a weekDaySchedule table, then the loop in the flight class will read through each one depending on the day of the week for a given date).  &#10;&#10;https://app.asana.com/0/19248945971931/19594215856460">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/outline.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/php/weekDAY CSV export-Table 1.csv" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/php/weekEND CSV export-Table 1.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php/flight.php" afterPath="$PROJECT_DIR$/php/flight.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="przm-air.iws" />
@@ -33,117 +37,92 @@
     <favorites_list name="przm-air" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="user.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/php/user.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.65384614" vertical-offset="1309" max-vertical-offset="7990">
-              <caret line="78" column="27" selection-start-line="78" selection-start-column="27" selection-end-line="78" selection-end-column="27" />
-              <folding>
-                <marker date="1415387360661" expanded="true" signature="6977:7046" placeholder="INSERT INTO ..." />
-                <marker date="1415387360661" expanded="true" signature="8357:8390" placeholder="DELETE FROM ..." />
-                <marker date="1415387360661" expanded="true" signature="9550:9631" placeholder="UPDATE user ..." />
-                <marker date="1415387360661" expanded="true" signature="10901:10974" placeholder="SELECT userI..user..." />
-                <marker date="1415387360661" expanded="true" signature="13123:13202" placeholder="SELECT userI..user..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simpletestUser.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/simpletestUser.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3076923" vertical-offset="357" max-vertical-offset="3825">
-              <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-              <folding>
-                <marker date="1415384899733" expanded="true" signature="9061:9142" placeholder="SELECT userI..user..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="profile.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/php/profile.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-283.23077" vertical-offset="405" max-vertical-offset="9027">
-              <caret line="457" column="0" selection-start-line="457" selection-start-column="0" selection-end-line="457" selection-end-column="0" />
-              <folding>
-                <marker date="1415486052476" expanded="true" signature="9954:10105" placeholder="INSERT INTO ..." />
-                <marker date="1415486052476" expanded="true" signature="11555:11594" placeholder="DELETE FROM ..." />
-                <marker date="1415486052476" expanded="true" signature="12803:12950" placeholder="UPDATE profi..." />
-                <marker date="1415486052476" expanded="true" signature="14614:14754" placeholder="SELECT profi..profile..." />
-                <marker date="1415486052476" expanded="true" signature="17312:17449" placeholder="SELECT profi..profile..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="traveler.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/php/traveler.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.65384614" vertical-offset="1156" max-vertical-offset="8466">
-              <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
-              <folding>
-                <marker date="1415560034012" expanded="true" signature="8893:9046" placeholder="INSERT INTO ..." />
-                <marker date="1415560034012" expanded="true" signature="10469:10510" placeholder="DELETE FROM ..." />
-                <marker date="1415560034012" expanded="true" signature="11694:11834" placeholder="UPDATE trave..." />
-                <marker date="1415560034012" expanded="true" signature="13470:13616" placeholder="SELECT trave..traveler..." />
-                <marker date="1415560034012" expanded="true" signature="16156:16306" placeholder="SELECT trave..traveler..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simpletestProfile.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/simpletestProfile.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.2692308" vertical-offset="646" max-vertical-offset="4114">
-              <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
-              <folding>
-                <marker date="1415560033982" expanded="true" signature="10317:10453" placeholder="SELECT profi..profile..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="flight.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/php/flight.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.807693" vertical-offset="502" max-vertical-offset="8194">
-              <caret line="53" column="103" selection-start-line="53" selection-start-column="103" selection-end-line="53" selection-end-column="103" />
-              <folding>
-                <marker date="1415571688139" expanded="true" signature="7909:8014" placeholder="INSERT INTO ..." />
-                <marker date="1415571688139" expanded="true" signature="9375:9412" placeholder="DELETE FROM ..." />
-                <marker date="1415571688139" expanded="true" signature="10581:10706" placeholder="UPDATE fligh..." />
-                <marker date="1415571688139" expanded="true" signature="12528:12623" placeholder="SELECT fligh..flight..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="przmair.sql" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.857143" vertical-offset="0" max-vertical-offset="2295">
-              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simpletestTraveler.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/simpletestTraveler.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.65384614" vertical-offset="3468" max-vertical-offset="4386">
-              <caret line="205" column="76" selection-start-line="205" selection-start-column="76" selection-end-line="205" selection-end-column="76" />
-              <folding>
-                <marker date="1415560034049" expanded="true" signature="10547:10694" placeholder="SELECT profi..profile..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.36227545">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="przmair.sql" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-30.0" vertical-offset="0" max-vertical-offset="2025">
+                  <caret line="50" column="29" selection-start-line="50" selection-start-column="29" selection-end-line="50" selection-end-column="29" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ticketFlight.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/php/ticketFlight.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="180">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="scriptReader.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-5.0" vertical-offset="270" max-vertical-offset="1305">
+                  <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+                  <folding>
+                    <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+                    <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="weekDAY CSV export-Table 1.csv" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/php/weekDAY CSV export-Table 1.csv">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.84805655" vertical-offset="0" max-vertical-offset="1995">
+                  <caret line="32" column="75" selection-start-line="32" selection-start-column="75" selection-end-line="32" selection-end-column="75" />
+                  <folding />
+                </state>
+              </provider>
+              <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+                <state />
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="flight.php" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/php/flight.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-3.78" vertical-offset="5991" max-vertical-offset="7860">
+                  <caret line="412" column="19" selection-start-line="412" selection-start-column="15" selection-end-line="412" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#6#322#0#PHP" expanded="true" />
+                    <marker date="1415644826000" expanded="true" signature="8655:8760" placeholder="INSERT INTO ..." />
+                    <marker date="1415644826000" expanded="true" signature="10121:10158" placeholder="DELETE FROM ..." />
+                    <marker date="1415644826000" expanded="true" signature="11327:11452" placeholder="UPDATE profi..." />
+                    <marker date="1415644826000" expanded="true" signature="13274:13369" placeholder="SELECT profi..profile..." />
+                    <marker date="1415644826000" expanded="true" signature="8627:8687" placeholder="INSERT INTO ..." />
+                    <marker date="1415644826000" expanded="true" signature="10093:10132" placeholder="DELETE FROM ..." />
+                    <marker date="1415644826000" expanded="true" signature="11298:11384" placeholder="UPDATE profi..." />
+                    <marker date="1415644826000" expanded="true" signature="13246:13343" placeholder="SELECT profi..profile..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="outline.php" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/outline.php">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.22689076" vertical-offset="0" max-vertical-offset="595">
+                  <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -159,54 +138,18 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/php/scriptReader.php" />
-        <option value="$PROJECT_DIR$/sql/airportTableSeedData.csv" />
-        <option value="$PROJECT_DIR$/profile.php" />
-        <option value="$PROJECT_DIR$/user.php" />
         <option value="$PROJECT_DIR$/sql/przmair.sql" />
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/php/simpletestProfile.php" />
-        <option value="$PROJECT_DIR$/test/simpletestUser.php" />
-        <option value="$PROJECT_DIR$/php/user.php" />
-        <option value="$PROJECT_DIR$/php/ticketFlight.php" />
-        <option value="$PROJECT_DIR$/php/profile.php" />
-        <option value="$PROJECT_DIR$/test/simpletestTraveler.php" />
-        <option value="$PROJECT_DIR$/php/traveler.php" />
-        <option value="$PROJECT_DIR$/test/simpletestProfile.php" />
+        <option value="$PROJECT_DIR$/outline.php" />
         <option value="$PROJECT_DIR$/php/flight.php" />
       </list>
     </option>
   </component>
-  <component name="PhpServers">
-    <servers>
-      <server deployment_server="b49bc809-3bec-45a7-8749-cfb6c5a3c001" host="bootcamp-coders.cnm.edu" name="bootcamp-coders" use_path_mappings="true" validation_dir="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air">
-        <path_mappings>
-          <mapping local-root="$PROJECT_DIR$" remote-root="/home/rsloan/public_html/przmair" />
-        </path_mappings>
-      </server>
-    </servers>
-  </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
-  </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>Blade files</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
+    <option name="x" value="-235" />
+    <option name="y" value="-1057" />
+    <option name="width" value="1915" />
+    <option name="height" value="1057" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -234,7 +177,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -263,44 +205,17 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="przm-air" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="przm-air" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="przm-air" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="przm-air" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="php" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="options.lastSelected" value="com.intellij.xdebugger.impl.settings.DebuggerConfigurable" />
+    <property name="options.lastSelected" value="web.server" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../ryanpacesloan" />
@@ -311,53 +226,18 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
-    <property name="recentsLimit" value="5" />
-    <property name="restartRequiresConfirmation" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air\test" />
-      <recent name="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air" />
-      <recent name="C:\Users\ryans_000\Desktop\bootcamp\git\przm-air\php" />
+      <recent name="$PROJECT_DIR$/php" />
     </key>
   </component>
-  <component name="RunManager" selected="PHPUnit.przm-air">
-    <configuration default="false" name="simpletestUser.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://bootcamp-coders.cnm.edu/~rsloan/przmair/test/simpletestUser.php">
-      <RunnerSettings RunnerId="JavascriptDebugRunner" />
-      <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="przm-air" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner directory="$PROJECT_DIR$" />
-      <RunnerSettings RunnerId="PhpRunner" />
-      <ConfigurationWrapper RunnerId="PhpRunner" />
-      <method />
-    </configuration>
+  <component name="RunManager">
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner />
       <method />
     </configuration>
-    <configuration default="true" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpWebAppRunConfigurationType" factoryName="PHP Web Application">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" server_name="bootcamp-coders">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="bootcamp-coders">
-      <method />
-    </configuration>
-    <configuration default="true" type="ChromiumRemoteDebugType" factoryName="Chromium Remote">
-      <option name="name" value="" />
-      <method />
-    </configuration>
     <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
-      <method />
-    </configuration>
-    <configuration default="true" type="NodeWebKit" factoryName="Node-webkit">
-      <option name="name" value="" />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -365,12 +245,6 @@
     </configuration>
     <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
       <BehatRunner />
-      <method />
-    </configuration>
-    <configuration default="true" type="AppEnginePhpConfigurationType" factoryName="App Engine for PHP">
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
@@ -381,20 +255,14 @@
       <envs />
       <method />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.simpletestUser.php" />
-      <item index="1" class="java.lang.String" itemvalue="PHPUnit.przm-air" />
-    </list>
-    <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="PHPUnit.przm-air" />
-        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.simpletestUser.php" />
-      </list>
-    </recent_temporary>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" server_id="96a2229d-5a7c-47e7-ba53-1911a64714d9" server_name="przm-air">
+      <method />
+    </configuration>
+    <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnConfiguration">
-    <configuration>C:\Users\ryans_000\AppData\Roaming\Subversion</configuration>
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -445,115 +313,25 @@
       <option name="project" value="LOCAL" />
       <updated>1415247960198</updated>
     </task>
-    <task id="LOCAL-00008" summary="made final adjustments to the sql and table design based on feedback&#10;from Dylan doubled checked it against the ERD and should be near perfect">
-      <created>1415248085203</created>
+    <task id="LOCAL-00008" summary="Aligned DROP TABLES to order of tables and added DROP TABLE for schedule">
+      <created>1415294227853</created>
       <option name="number" value="00008" />
       <option name="project" value="LOCAL" />
-      <updated>1415248085203</updated>
+      <updated>1415294227853</updated>
     </task>
-    <task id="LOCAL-00009" summary="finalization of sql first asana integrated commit https://app.asana.com/0/19128794071947/19594215856456">
-      <created>1415292423309</created>
+    <task id="LOCAL-00009" summary="Took out duration and flight number from flight table.  Flight class still in progress....&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460">
+      <created>1415312634353</created>
       <option name="number" value="00009" />
       <option name="project" value="LOCAL" />
-      <updated>1415292423309</updated>
+      <updated>1415312634353</updated>
     </task>
-    <task id="LOCAL-00010" summary="Added git ignore file to prevent PHPStorm configuration files from flooding us with conflicts https://app.asana.com/0/19128794071947/19594215856456">
-      <created>1415320745575</created>
+    <task id="LOCAL-00010" summary="Set up all core boiler-plate methods.  Still working on decrement and increment methods, and need to work on the set methods for the arrivalDateTime and departureDateTime to deal with validating DATETIME.&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460">
+      <created>1415318279996</created>
       <option name="number" value="00010" />
       <option name="project" value="LOCAL" />
-      <updated>1415320745575</updated>
+      <updated>1415318279996</updated>
     </task>
-    <task id="LOCAL-00011" summary="creation of profile class">
-      <created>1415321726292</created>
-      <option name="number" value="00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1415321726292</updated>
-    </task>
-    <task id="LOCAL-00012" summary="creation of user class">
-      <created>1415321873625</created>
-      <option name="number" value="00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1415321873625</updated>
-    </task>
-    <task id="LOCAL-00013" summary="added test folder and simpletestUser to test user class">
-      <created>1415340384937</created>
-      <option name="number" value="00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1415340384937</updated>
-    </task>
-    <task id="LOCAL-00014" summary="added test folder and simpletestUser to test user class">
-      <created>1415341151358</created>
-      <option name="number" value="00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1415341151358</updated>
-    </task>
-    <task id="LOCAL-00015" summary="recommitting previous commit">
-      <created>1415341974658</created>
-      <option name="number" value="00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1415341974658</updated>
-    </task>
-    <task id="LOCAL-00016" summary="created simpletestProfile class and along with simpletestUser customized tests to evaluate object data against db input data">
-      <created>1415384823435</created>
-      <option name="number" value="00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1415384823435</updated>
-    </task>
-    <task id="LOCAL-00017" summary="created traveler class completed properties and get construct and the first three set methods">
-      <created>1415388989748</created>
-      <option name="number" value="00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1415388989748</updated>
-    </task>
-    <task id="LOCAL-00018" summary="added more set methods to traveler cless">
-      <created>1415395605620</created>
-      <option name="number" value="00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1415395605620</updated>
-    </task>
-    <task id="LOCAL-00019" summary="added insert, delete and update methods to traveler class">
-      <created>1415425630693</created>
-      <option name="number" value="00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1415425630693</updated>
-    </task>
-    <task id="LOCAL-00020" summary="began open discussions with teammates inside the code about class building to be of assistance to my team members">
-      <created>1415482446805</created>
-      <option name="number" value="00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1415482446806</updated>
-    </task>
-    <task id="LOCAL-00021" summary="began open discussions with teammates inside the code about class building to be of assistance to my team members">
-      <created>1415484509938</created>
-      <option name="number" value="00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1415484509938</updated>
-    </task>
-    <task id="LOCAL-00022" summary="continued progress on the TraverlerUnitTest">
-      <created>1415484550726</created>
-      <option name="number" value="00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1415484550726</updated>
-    </task>
-    <task id="LOCAL-00023" summary="finished the traveler class ready to test classes">
-      <created>1415487398233</created>
-      <option name="number" value="00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1415487398233</updated>
-    </task>
-    <task id="LOCAL-00024" summary="finished simpletestTraveler read for testing">
-      <created>1415560220603</created>
-      <option name="number" value="00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1415560220603</updated>
-    </task>
-    <task id="LOCAL-00025" summary="finished simpletestTraveler read for testing">
-      <created>1415571704015</created>
-      <option name="number" value="00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1415571704015</updated>
-    </task>
-    <option name="localTasksCounter" value="26" />
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -577,31 +355,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-235" y="-1057" width="1915" height="1057" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32843137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22233713" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32843137" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3260212" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33055976" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39869282" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1323752" sideWeight="0.50121653" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267974" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32843137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25340393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1323752" sideWeight="0.49878347" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22233713" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941803" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3261745" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32953367" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10838228" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -626,207 +403,270 @@
     <MESSAGE value="error correction no major adjustments" />
     <MESSAGE value="adjustments to the name of the template table (now schedule)" />
     <MESSAGE value="made final adjustments to the sql and table design based on feedback&#10;from Dylan doubled checked it against the ERD and should be near perfect" />
-    <MESSAGE value="more adjustments on table relationships with the advisement of dylan&#10;transaction and ticket now have a direct relationship, ticket and flight no longer have a direct relationship but use an intersection table" />
-    <MESSAGE value="finalization of sql first asana integrated commit https://app.asana.com/0/19128794071947/19594215856456" />
-    <MESSAGE value="Added git ignore file to prevent PHPStorm configuration files from flooding us with conflicts https://app.asana.com/0/19128794071947/19594215856456" />
-    <MESSAGE value="creation of profile class" />
-    <MESSAGE value="creation of user class" />
-    <MESSAGE value="addition and modification of simpleTestUser() to fit the user class in order to begin testing" />
-    <MESSAGE value="added test folder and simpletestUser to test user class" />
-    <MESSAGE value="recommitting previous commit" />
-    <MESSAGE value="created simpletestProfile class and along with simpletestUser customized tests to evaluate object data against db input data" />
-    <MESSAGE value="created traveler class completed properties and get construct and the first three set methods" />
-    <MESSAGE value="added more set methods to traveler cless" />
-    <MESSAGE value="added insert, delete and update methods to traveler class" />
-    <MESSAGE value="began open discussions with teammates inside the code about class building to be of assistance to my team members" />
-    <MESSAGE value="continued progress on the TraverlerUnitTest" />
-    <MESSAGE value="finished the traveler class ready to test classes" />
-    <MESSAGE value="finished simpletestTraveler read for testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished simpletestTraveler read for testing" />
+    <MESSAGE value="Aligned DROP TABLES to order of tables and added DROP TABLE for schedule" />
+    <MESSAGE value="Changed ticket_flight to ticketFlight in DROP TABLE" />
+    <MESSAGE value="Took out duration and flight number from flight table.  Flight class still in progress....&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
+    <MESSAGE value="Set up all core boiler-plate methods.  Still working on decrement and increment methods, and need to work on the set methods for the arrivalDateTime and departureDateTime to deal with validating DATETIME.&#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
+    <MESSAGE value="Added Seed Data for Schedule tables (propose we make a weekEndSchedule and a weekDaySchedule table, then the loop in the flight class will read through each one depending on the day of the week for a given date).  &#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Seed Data for Schedule tables (propose we make a weekEndSchedule and a weekDaySchedule table, then the loop in the flight class will read through each one depending on the day of the week for a given date).  &#10;&#10;https://app.asana.com/0/19248945971931/19594215856460" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="1" />
     </breakpoint-manager>
     <watches-manager />
   </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <PATH>
-      <PATH_ELEMENT>
-        <option name="myItemId" value="przm-air" />
-        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-      </PATH_ELEMENT>
-      <PATH_ELEMENT>
-        <option name="myItemId" value="przm-air" />
-        <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-      </PATH_ELEMENT>
-    </PATH>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../youtube/php/user.php">
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.923077" vertical-offset="10148" max-vertical-offset="11900">
-          <caret line="606" column="4" selection-start-line="530" selection-start-column="3" selection-end-line="606" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sql/airportTableSeedData.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="323">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="2070">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
           <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63309354" vertical-offset="96" max-vertical-offset="1479">
-          <caret line="16" column="27" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="27" />
-          <folding>
-            <marker date="1415339259311" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
-            <marker date="1415339259311" expanded="true" signature="-1:-1" placeholder="INSERT INTO ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05821918" vertical-offset="0" max-vertical-offset="292">
-          <caret line="1" column="9" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sql/przmairERD.dbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5321">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/user.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614" vertical-offset="1309" max-vertical-offset="7990">
-          <caret line="78" column="27" selection-start-line="78" selection-start-column="27" selection-end-line="78" selection-end-column="27" />
-          <folding>
-            <marker date="1415387360661" expanded="true" signature="6977:7046" placeholder="INSERT INTO ..." />
-            <marker date="1415387360661" expanded="true" signature="8357:8390" placeholder="DELETE FROM ..." />
-            <marker date="1415387360661" expanded="true" signature="9550:9631" placeholder="UPDATE user ..." />
-            <marker date="1415387360661" expanded="true" signature="10901:10974" placeholder="SELECT userI..user..." />
-            <marker date="1415387360661" expanded="true" signature="13123:13202" placeholder="SELECT userI..user..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/php/ticketFlight.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8375796" vertical-offset="230" max-vertical-offset="612">
-          <caret line="29" column="41" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/simpletestUser.php">
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3076923" vertical-offset="357" max-vertical-offset="3825">
-          <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1305">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
-            <marker date="1415384899733" expanded="true" signature="9061:9142" placeholder="SELECT userI..user..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/simpletestTraveler.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614" vertical-offset="3468" max-vertical-offset="4386">
-          <caret line="205" column="76" selection-start-line="205" selection-start-column="76" selection-end-line="205" selection-end-column="76" />
-          <folding>
-            <marker date="1415560034049" expanded="true" signature="10547:10694" placeholder="SELECT profi..profile..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/traveler.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.65384614" vertical-offset="1156" max-vertical-offset="8466">
-          <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
-          <folding>
-            <marker date="1415560034012" expanded="true" signature="8893:9046" placeholder="INSERT INTO ..." />
-            <marker date="1415560034012" expanded="true" signature="10469:10510" placeholder="DELETE FROM ..." />
-            <marker date="1415560034012" expanded="true" signature="11694:11834" placeholder="UPDATE trave..." />
-            <marker date="1415560034012" expanded="true" signature="13470:13616" placeholder="SELECT trave..traveler..." />
-            <marker date="1415560034012" expanded="true" signature="16156:16306" placeholder="SELECT trave..traveler..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/php/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-283.23077" vertical-offset="405" max-vertical-offset="9027">
-          <caret line="457" column="0" selection-start-line="457" selection-start-column="0" selection-end-line="457" selection-end-column="0" />
-          <folding>
-            <marker date="1415486052476" expanded="true" signature="9954:10105" placeholder="INSERT INTO ..." />
-            <marker date="1415486052476" expanded="true" signature="11555:11594" placeholder="DELETE FROM ..." />
-            <marker date="1415486052476" expanded="true" signature="12803:12950" placeholder="UPDATE profi..." />
-            <marker date="1415486052476" expanded="true" signature="14614:14754" placeholder="SELECT profi..profile..." />
-            <marker date="1415486052476" expanded="true" signature="17312:17449" placeholder="SELECT profi..profile..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/simpletestProfile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2692308" vertical-offset="646" max-vertical-offset="4114">
-          <caret line="43" column="40" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
-          <folding>
-            <marker date="1415560033982" expanded="true" signature="10317:10453" placeholder="SELECT profi..profile..." />
+            <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+            <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/php/flight.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.807693" vertical-offset="502" max-vertical-offset="8194">
-          <caret line="53" column="103" selection-start-line="53" selection-start-column="103" selection-end-line="53" selection-end-column="103" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2070" max-vertical-offset="15780">
+          <caret line="148" column="22" selection-start-line="148" selection-start-column="22" selection-end-line="148" selection-end-column="22" />
           <folding>
-            <marker date="1415571688139" expanded="true" signature="7909:8014" placeholder="INSERT INTO ..." />
-            <marker date="1415571688139" expanded="true" signature="9375:9412" placeholder="DELETE FROM ..." />
-            <marker date="1415571688139" expanded="true" signature="10581:10706" placeholder="UPDATE fligh..." />
-            <marker date="1415571688139" expanded="true" signature="12528:12623" placeholder="SELECT fligh..flight..." />
+            <element signature="e#6#322#0#PHP" expanded="true" />
+            <marker date="1415644826000" expanded="true" signature="8655:8760" placeholder="INSERT INTO ..." />
+            <marker date="1415644826000" expanded="true" signature="10121:10158" placeholder="DELETE FROM ..." />
+            <marker date="1415644826000" expanded="true" signature="11327:11452" placeholder="UPDATE profi..." />
+            <marker date="1415644826000" expanded="true" signature="13274:13369" placeholder="SELECT profi..profile..." />
+            <marker date="1415644826000" expanded="true" signature="8627:8687" placeholder="INSERT INTO ..." />
+            <marker date="1415644826000" expanded="true" signature="10093:10132" placeholder="DELETE FROM ..." />
+            <marker date="1415644826000" expanded="true" signature="11298:11384" placeholder="UPDATE profi..." />
+            <marker date="1415644826000" expanded="true" signature="13246:13343" placeholder="SELECT profi..profile..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.857143" vertical-offset="0" max-vertical-offset="2295">
-          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="2070">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+    <entry file="file://$PROJECT_DIR$/php/ticketFlight.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1305">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+            <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/flight.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1425" max-vertical-offset="8220">
+          <caret line="148" column="22" selection-start-line="148" selection-start-column="22" selection-end-line="148" selection-end-column="22" />
+          <folding>
+            <element signature="e#6#322#0#PHP" expanded="true" />
+            <marker date="1415644826000" expanded="true" signature="8655:8760" placeholder="INSERT INTO ..." />
+            <marker date="1415644826000" expanded="true" signature="10121:10158" placeholder="DELETE FROM ..." />
+            <marker date="1415644826000" expanded="true" signature="11327:11452" placeholder="UPDATE profi..." />
+            <marker date="1415644826000" expanded="true" signature="13274:13369" placeholder="SELECT profi..profile..." />
+            <marker date="1415644826000" expanded="true" signature="8627:8687" placeholder="INSERT INTO ..." />
+            <marker date="1415644826000" expanded="true" signature="10093:10132" placeholder="DELETE FROM ..." />
+            <marker date="1415644826000" expanded="true" signature="11298:11384" placeholder="UPDATE profi..." />
+            <marker date="1415644826000" expanded="true" signature="13246:13343" placeholder="SELECT profi..profile..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/ticketFlight.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1305">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+            <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1305">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+            <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="816">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+            <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/main.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="586">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/ticketFlight.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="586">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sql/przmair.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-30.0" vertical-offset="0" max-vertical-offset="2025">
+          <caret line="50" column="29" selection-start-line="50" selection-start-column="29" selection-end-line="50" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/scriptReader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.0" vertical-offset="270" max-vertical-offset="1305">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding>
+            <marker date="1415292574000" expanded="true" signature="179:288" placeholder="INSERT INTO ..." />
+            <marker date="1415292574000" expanded="true" signature="1416:1510" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/weekDAY CSV export-Table 1.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.84805655" vertical-offset="0" max-vertical-offset="1995">
+          <caret line="32" column="75" selection-start-line="32" selection-start-column="75" selection-end-line="32" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/php/flight.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.78" vertical-offset="5991" max-vertical-offset="7860">
+          <caret line="412" column="19" selection-start-line="412" selection-start-column="15" selection-end-line="412" selection-end-column="19" />
+          <folding>
+            <element signature="e#6#322#0#PHP" expanded="true" />
+            <marker date="1415644826000" expanded="true" signature="8655:8760" placeholder="INSERT INTO ..." />
+            <marker date="1415644826000" expanded="true" signature="10121:10158" placeholder="DELETE FROM ..." />
+            <marker date="1415644826000" expanded="true" signature="11327:11452" placeholder="UPDATE profi..." />
+            <marker date="1415644826000" expanded="true" signature="13274:13369" placeholder="SELECT profi..profile..." />
+            <marker date="1415644826000" expanded="true" signature="8627:8687" placeholder="INSERT INTO ..." />
+            <marker date="1415644826000" expanded="true" signature="10093:10132" placeholder="DELETE FROM ..." />
+            <marker date="1415644826000" expanded="true" signature="11298:11384" placeholder="UPDATE profi..." />
+            <marker date="1415644826000" expanded="true" signature="13246:13343" placeholder="SELECT profi..profile..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/outline.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22689076" vertical-offset="0" max-vertical-offset="595">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
 
