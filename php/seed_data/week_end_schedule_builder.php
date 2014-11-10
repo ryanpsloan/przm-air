@@ -5,8 +5,8 @@ function readWeekendCSV(&$mysqli,$fileName)
 		throw(new RuntimeException("Unable to Open $fileName"));
 	}
 
-	$query = "INSERT INTO weekendSchedule (origin, destination, duration, departure, arrival, flightNum, price) VALUES(?, ?, ?,
-				?, ?,	?, ?)";
+	$query = "INSERT INTO weekendSchedule (origin, destination, duration, departureTime, arrivalTime, flightNumber, price)
+ 				VALUES(?, ?, ?, ?, ?, ?, ?)";
 	$statement = $mysqli->prepare($query);
 	if($statement === false) {
 		throw(new mysqli_sql_exception("Unable to prepare statement"));

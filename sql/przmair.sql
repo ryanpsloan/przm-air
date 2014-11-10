@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS transaction;
-DROP TABLE IF EXISTS traveler;
 DROP TABLE IF EXISTS ticketFlight;
 DROP TABLE IF EXISTS ticket;
+DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS traveler;
 DROP TABLE IF EXISTS weekendSchedule;
 DROP TABLE IF EXISTS weekdaySchedule;
 DROP TABLE IF EXISTS flight;
@@ -46,7 +46,6 @@ CREATE TABLE flight (
 	PRIMARY KEY (flightId)
 );
 
-
 CREATE TABLE weekdaySchedule (
 	weekdayScheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	origin VARCHAR(20) NOT NULL,
@@ -55,7 +54,7 @@ CREATE TABLE weekdaySchedule (
 	departureTime TIME NOT NULL,
 	arrivalTime TIME NOT NULL,
 	flightNumber VARCHAR(15) NOT NULL,
-	price DECIMAL NOT NULL,
+	price DECIMAL(5,2) NOT NULL,
 	PRIMARY KEY (weekdayScheduleId)
 );
 
@@ -67,8 +66,34 @@ CREATE TABLE weekendSchedule (
 	departureTime TIME NOT NULL,
 	arrivalTime TIME NOT NULL,
 	flightNumber VARCHAR(15) NOT NULL,
-	price DECIMAL NOT NULL,
+	price DECIMAL(5,2) NOT NULL,
 	PRIMARY KEY (weekendScheduleId)
+);
+
+CREATE TABLE traveler (
+	travelerId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	travelerFirstName VARCHAR(75) NOT NULL,
+	travelerMiddleName VARCHAR(75),
+	travelerLastName VARCHAR(75) NOT NULL,
+	travelerDateOfBirth DATE NOT NULL,
+	profileId INT UNSIGNED NOT NULL,
+	INDEX(profileId),
+	PRIMARY KEY (travelerId),
+	FOREIGN KEY (profileId) REFERENCES profile(profileId)
+
+);
+
+CREATE TABLE transaction (
+	transactionId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	profileId INT UNSIGNED NOT NULL,
+	amount DECIMAL(5,2) UNSIGNED,
+	dateApproved DATETIME,
+	cardToken VARCHAR(124),
+	stripeToken VARCHAR(124),
+	PRIMARY KEY (transactionId),
+	INDEX(profileId),
+	FOREIGN KEY (profileId) REFERENCES profile (profileId)
+
 );
 
 CREATE TABLE ticket (
@@ -98,33 +123,5 @@ CREATE TABLE ticketFlight (
 	FOREIGN KEY (ticketId) REFERENCES ticket(ticketId)
 
 );
-
-CREATE TABLE traveler (
-	travelerId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	travelerFirstName VARCHAR(75) NOT NULL,
-	travelerMiddleName VARCHAR(75),
-	travelerLastName VARCHAR(75) NOT NULL,
-	travelerDateOfBirth DATE NOT NULL,
-	profileId INT UNSIGNED NOT NULL,
-	INDEX(profileId),
-	PRIMARY KEY (travelerId),
-	FOREIGN KEY (profileId) REFERENCES profile(profileId)
-
-);
-
-CREATE TABLE transaction (
-	transactionId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	profileId INT UNSIGNED NOT NULL,
-	amount DECIMAL(5,2) UNSIGNED,
-	dateApproved DATETIME,
-	cardToken VARCHAR(124),
-	stripeToken VARCHAR(124),
-	PRIMARY KEY (transactionId),
-	INDEX(profileId),
-	FOREIGN KEY (profileId) REFERENCES profile (profileId)
-
-);
-
-
 
 
