@@ -41,7 +41,7 @@ class ProfileTest extends UnitTestCase {
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}
-		$this->DATEOFBIRTH = "10/10/2010";
+		$this->DATEOFBIRTH = "2010-10-10 12:12:12";
 		$this->CUSTTOKEN    = bin2hex(openssl_random_pseudo_bytes(32));
 	}
 
@@ -74,6 +74,7 @@ class ProfileTest extends UnitTestCase {
 				$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN);
 			// third, insert the profile to mySQL
 			$this->profile->insert($this->mysqli);
+
 		} catch (Exception $exception){
 			$exception->getMessage();
 		}

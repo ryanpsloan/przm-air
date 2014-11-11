@@ -511,12 +511,17 @@ class Traveler{
 	}
 
 	public function __toString(){
-		$date = $this->travelerDateOfBirth;
-		$string = $date->format("Y-m-s H:i:s");
-		return "<p>travelerId = ".$this->travelerId.", travelerName = ".
-		$this->travelerFirstName." ".$this->travlerMiddleName." ".$this->travelerLastName.
-	   ", travelerDateOfBirth = ".$string.", profileObj = ".$this->profileObj.
-		", profileObj->userObj->".$this->profileObj->userObj."</p>";
+//		try {
+			$date = $this->travelerDateOfBirth;
+			$string = $date->format("Y-m-s H:i:s");
+			return "<p>travelerId = " . $this->travelerId . ", travelerName = " .
+			$this->travelerFirstName . " " . $this->travelerMiddleName . " " . $this->travelerLastName .
+			", travelerDateOfBirth = " . $string . ", profileObj-> " . $this->profileObj .
+			"</p>";
+		/*}catch(Exception $exception){
+			return $exception->getMessage();
+
+		}*/
 	}
 
 

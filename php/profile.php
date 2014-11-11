@@ -305,10 +305,10 @@
 				throw(new mysqli_sql_exception("Unable to prepare statement"));
 			}
 			$date = $this->dateOfBirth;
-			$string = $date->format("Y-m-d H:i:s");
+			$dateString = $date->format("Y-m-d H:i:s");
 			// bind the member variables to the place holders in the template
 			$wasClean = $statement->bind_param("iisssss", $this->profileId, $this->userId, $this->userFirstName,
-				$this->userMiddleName, $this->userLastName, $string, $this->customerToken);
+				$this->userMiddleName, $this->userLastName, $dateString, $this->customerToken);
 			if($wasClean === false) {
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
@@ -384,11 +384,11 @@
 			}
 
 			$date = $this->dateOfBirth;
-			$string = $date->format("Y-m-d H:i:s");
+			$dateString = $date->format("Y-m-d H:i:s");
 
 			// bind the member variables to the place holders in the template
 			$wasClean = $statement->bind_param("sssssi", $this->userFirstName, $this->userMiddleName,
-				$this->userLastName, $string, $this->customerToken,$this->profileId);
+				$this->userLastName, $dateString, $this->customerToken,$this->profileId);
 			if($wasClean === false) {
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
@@ -552,10 +552,10 @@
 		public function __toString()
 		{
 			$date = $this->dateOfBirth;
-			$result = $date->format('Y-m-d-H-i-s');
+			$dateString = $date->format('Y-m-d-H-i-s');
 			return "<p> profileId = " . $this->__get("profileId") . " userId = " . $this->__get("userId") .
 			" userName = " . $this->__get("userFirstName") . " " . $this->__get("userMiddleName") .
-			" " . $this->__get("userLastName").", dateOfBirth = ".$result . ", userObj->".$this->userObj."</p>";
+			" " . $this->__get("userLastName").", dateOfBirth = ".$dateString . ", userObj->".$this->userObj."</p>";
 		}
 
 	}

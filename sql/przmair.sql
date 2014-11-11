@@ -49,7 +49,7 @@ CREATE TABLE traveler (
 	travelerFirstName VARCHAR(75) NOT NULL,
 	travelerMiddleName VARCHAR(75),
 	travelerLastName VARCHAR(75) NOT NULL,
-	travelerDateOfBirth DATE NOT NULL,
+	travelerDateOfBirth DATETIME NOT NULL,
 	profileId INT UNSIGNED NOT NULL,
 	INDEX(profileId),
 	PRIMARY KEY (travelerId),
