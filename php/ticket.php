@@ -320,6 +320,6 @@ class Ticket {
 		$this->transaction= $newTransactionId;
 	}
 
-
+	/*Spectacular Coding @Paul*/
 
 }

@@ -233,11 +233,8 @@ class User {
 			$query = "INSERT INTO user(email, password, salt, authToken) VALUES(?, ?, ?, ?)";
 			$statement = $mysqli->prepare($query);
 		} catch(Exception $e){
-			$e->getMessage();
+			$e->getMessage()."Unable to Prepare Statement";
 		}
-		/*if($statement === false) {
-
-		}*/
 
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ssss", $this->email, $this->password,
@@ -247,10 +244,13 @@ class User {
 		}
 
 		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		try {
+			if($statement->execute() === false) {
+				//throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+			}
+		}catch(Exception $exception){
+			$exception->getMessage();
 		}
-
 		// update the null userId with what mySQL just gave us
 		$this->userId = $mysqli->insert_id;
 	}
@@ -379,7 +379,7 @@ class User {
 		// convert the associative array to a User
 		if($row !== null) {
 			try {
-				$user = new User($row["userId"], $row["email"], $row["password"], $row["salt"], $row["authenticationToken"]);
+				$user = new User($row["userId"], $row["email"], $row["password"], $row["salt"], $row["authToken"]);
 			}
 			catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -458,6 +458,9 @@ class User {
 			//404 profile not found
 			return (null);
 		}
+	}
+	public function __toString(){
+		return "<p>userId = ".$this->userId.", email = ".$this->email. "</p>";
 	}
 
 

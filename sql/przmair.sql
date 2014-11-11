@@ -22,7 +22,7 @@ CREATE TABLE profile (
 	userFirstName VARCHAR(75) NOT NULL,
 	userMiddleName VARCHAR(75),
 	userLastName VARCHAR(75) NOT NULL,
-	dateOfBirth DATE NOT NULL,
+	dateOfBirth DATETIME NOT NULL,
 	customerToken VARCHAR(130),
 	PRIMARY KEY (profileId),
 	UNIQUE (userId),

@@ -29,7 +29,7 @@ class ProfileTest extends UnitTestCase {
 	public function setUp() {
 		// connect to mySQL
 		mysqli_report(MYSQLI_REPORT_STRICT);
-		$this->mysqli = new mysqli("localhost", "store_ryan", "", "przm");
+		$this->mysqli = new mysqli("localhost", "przm", "trillpontlureactscala", "przm");
 
 		// randomize the salt, hash, and authentication token for the profile
 		$testSalt        = bin2hex(openssl_random_pseudo_bytes(32));

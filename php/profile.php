@@ -1,5 +1,6 @@
 <?php
-
+	require_once('../lib/stripe-php-1.17.3/lib/Stripe.php');
+	Stripe::setApiKey("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
 	/**
 	 * mySQL enabled profile container for use with user authentication class
 	 * @author Ryan Sloan <ryansdeal@hotmail.com>
@@ -48,6 +49,7 @@
 		 * @param string $newLastName
 		 * @param string $newDateOfBirth
 		 * @param string $newCustomerToken
+		 * @param object $newUserObj
 		 * @throws UnexpectedValueException when a parameter is of the wrong type
 		 * @throws RangeException when a parameter is invalid
 		 **/
@@ -60,8 +62,9 @@
 				$this->setMiddleName($newMiddleName);
 				$this->setLastName($newLastName);
 				$this->setDateOfBirth($newDateOfBirth);
-				$this->setCustomerToken($newCustomerToken);
 				$this->setUserObject($newUserObj);
+				$this->setCustomerToken($newCustomerToken);
+
 			} catch(UnexpectedValueException $unexpectedValue) {
 				// rethrow to the caller
 				throw(new UnexpectedValueException("Unable to construct Profile Object. Check input formats.", 0,
@@ -90,7 +93,7 @@
 				return $data[$name];
 			}
 			else {
-				throw(new ErrorException("Unable to get $name. Check that the key exists."));
+				throw(new ErrorException("Unable to get $name Check that the key exists."));
 			}
 		}
 
@@ -104,7 +107,7 @@
 				throw(new UnexpectedValueException("input is not a User object"));
 			}
 			//test if objectId is null
-			if($newUserObj->userId === null) {
+			if($newUserObj->getUserId() === null) {
 				throw(new UnexpectedValueException("Unable to set a user that is null"));
 			}
 			//set new object into class
@@ -178,7 +181,7 @@
 			//sets up the options for filter_var validation
 			$filterOptions = array("options" => array("regexp" => "/^[a-zA-Z]+$/"));
 			//validates $newFirstName with REGEX
-			if(filter_var($newFirstName, FILTER_VALIDATE_REGEXP, $filterOptions)){
+			if(filter_var($newFirstName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("First name cannot contain spaces numbers or special characters."));
 			}
 			//sets $newFirstName into class property userFirstName
@@ -197,7 +200,7 @@
 			//sets up the options for filter_var validation
 			$filterOptions = array("options" => array("regexp" => "/^[a-zA-Z]+$/"));
 			//validates $newMiddleName with REGEX
-			if(filter_var($newMiddleName, FILTER_VALIDATE_REGEXP, $filterOptions)){
+			if(filter_var($newMiddleName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("Middle name cannot contain spaces numbers or special characters."));
 			}
 			//sets $newMiddleName into class property userFirstName
@@ -215,7 +218,7 @@
 			//sets up the options for filter_var validation
 			$filterOptions = array("options" => array("regexp" => "/^[a-zA-Z]+$/"));
 			//validates $newLastName with REGEX
-			if(filter_var($newLastName, FILTER_VALIDATE_REGEXP, $filterOptions)){
+			if(filter_var($newLastName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("Middle name cannot contain spaces numbers or special characters."));
 			}
 			//sets $newLastName into class property userFirstName
@@ -223,37 +226,57 @@
 		}
 
 		/**
-		 * string in format mm/dd/yyyy comes in is validated and translated to Y-m-d
-		 * @param $newDateOfBirth
+		 * sets the value of date created
 		 *
-		 */
-		public function setDateOfBirth($newDateOfBirth){
-			$newDateOfBirth = trim($newDateOfBirth);
-			$filterOptions = array("options" => array("regexp" => "/^(0[1-9]|1[0-2])\/([0-2][1-9]|3[0-1])\/(19|20)\d{2}$/"));
-			if(filter_var($newDateOfBirth, FILTER_VALIDATE_REGEXP, $filterOptions)){
-				throw(new RangeException("Date entered doesn't match mm/dd/yyyy format or is out of range"));
+		 * @param mixed $newDateOfBirth object or string with the date created
+		 * @throws RangeException if date is not a valid date
+		 **/
+		public function setDateOfBirth($newDateOfBirth)
+		{
+			// zeroth, allow the date to be null if a new object
+			if($newDateOfBirth ===  null) {
+				$this->dateOfBirth = null;
+				return;
 			}
 
-			$dateArray = array('month' => strtok($newDateOfBirth , "\\"), 'day' => strtok("\\"), 'year' => strtok("\\"));
-			$reformattedDate = $dateArray['year']."\\".$dateArray['month']."\\".$dateArray['day'];
-			$format = 'Y-m-d';
-			$this->dateOfBirth = DateTime::createFromFormat($format, $reformattedDate);
+			// zeroth, allow a DateTime object to be directly assigned
+			if(gettype($newDateOfBirth) === "object" && get_class($newDateOfBirth) === "DateTime") {
+				$this->dateOfBirth = $newDateOfBirth;
+				return;
+			}
+
+			// treat the date as a mySQL date string
+			$newDateOfBirth = trim($newDateOfBirth);
+			if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $newDateOfBirth, $matches)) !== 1) {
+				throw(new RangeException("$newDateOfBirth is not a valid date"));
+			}
+
+			// verify the date is really a valid calendar date
+			$year  = intval($matches[1]);
+			$month = intval($matches[2]);
+			$day   = intval($matches[3]);
+			if(checkdate($month, $day, $year) === false) {
+				throw(new RangeException("$newDateOfBirth is not a Gregorian date"));
+			}
+
+			// finally, take the date out of quarantine
+			$newDateOfBirth = DateTime::createFromFormat("Y-m-d H:i:s", $newDateOfBirth);
+			$this->dateOfBirth = $newDateOfBirth;
 		}
 
 		public function setCustomerToken($newCustomerToken){
 			// Create a Customer
-			$customer = Stripe_Customer::create(
+			$customerToken = Stripe_Customer::create(
 					array(
-						"card" => $newCustomerToken,
-						"userId" => $this->userId,
-						"profileId" =>$this->profileId,
-						"userLegalName" =>$this->userFirstName." ".$this->userMiddleName." ".$this->userLastName,
-						"userEmail" =>$this->$userObj->email
+						/*"card" => $newCustomerToken,*/
+						"description" =>$this->userFirstName." ".$this->userMiddleName." ".$this->userLastName,
+						"email" =>$this->userObj->getEmail(),
+						"metadata" => $this->__get("profileId")
 					)
 			);
 
 			// Save the customer ID in your database so you can use it later
-			$this->customerToken = $customer;
+			$this->customerToken = $customerToken;
 		}
 
 		/**
@@ -275,16 +298,17 @@
 
 			// create query template
 			$query     = "INSERT INTO profile (profileId, userId, userFirstName, userMiddleName, userLastName, dateOfBirth,
- 								customerToken)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+ 								customerToken)VALUES(?, ?, ?, ?, ?, ?, ?)";
 			$statement = $mysqli->prepare($query);
 
 			if($statement === false) {
 				throw(new mysqli_sql_exception("Unable to prepare statement"));
 			}
-
+			$date = $this->dateOfBirth;
+			$string = $date->format("Y-m-d H:i:s");
 			// bind the member variables to the place holders in the template
 			$wasClean = $statement->bind_param("iisssss", $this->profileId, $this->userId, $this->userFirstName,
-				$this->userMiddleName, $this->userLastName, $this->dateOfBirth, $this->customerToken);
+				$this->userMiddleName, $this->userLastName, $string, $this->customerToken);
 			if($wasClean === false) {
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
@@ -359,9 +383,12 @@
 				throw(new mysqli_sql_exception("Unable to prepare statement"));
 			}
 
+			$date = $this->dateOfBirth;
+			$string = $date->format("Y-m-d H:i:s");
+
 			// bind the member variables to the place holders in the template
 			$wasClean = $statement->bind_param("sssssi", $this->userFirstName, $this->userMiddleName,
-				$this->userLastName, $this->dateOfBirth, $this->customerToken,$this->profileId);
+				$this->userLastName, $string, $this->customerToken,$this->profileId);
 			if($wasClean === false) {
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
@@ -521,6 +548,26 @@
 				return (null);
 			}
 		}
+
+		public function __toString()
+		{
+			$date = $this->dateOfBirth;
+			$result = $date->format('Y-m-d-H-i-s');
+			return "<p> profileId = " . $this->__get("profileId") . " userId = " . $this->__get("userId") .
+			" userName = " . $this->__get("userFirstName") . " " . $this->__get("userMiddleName") .
+			" " . $this->__get("userLastName") . " dateOfBirth = ".$result . "</p>";
+		}
+
+
+
+
+
+
+
+
+
+
+
 
 	}
 ?>
