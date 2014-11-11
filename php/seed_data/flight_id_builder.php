@@ -55,7 +55,7 @@ function	buildFlights (&$mysqli, $startDate) {
 			}
 		} else if ($dayOfWeek === 0 || $dayOfWeek === 7){
 
-				// create second query template to insert
+				/*// create second query template to insert
 				$query2 = "INSERT INTO flight (flightId, origin, destination, duration, departureTime, arrivalTime,
 																flightNumber, price, totalSeatsOnPlane) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				$statement2 = $mysqli->prepare($query2);
@@ -75,7 +75,7 @@ function	buildFlights (&$mysqli, $startDate) {
 				// execute the statement
 				if($statement2->execute() === false) {
 					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-				}
+				}*/
 
 
 
