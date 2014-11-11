@@ -22,44 +22,9 @@ function	buildFlights (&$mysqli, $startDate) {
 		$dayOfWeek = DateTime::weekday;
 		//fixme!
 
-		if($date = weekday) { //fixme!
-
-			while ($i = 0, $i < count(weekdaySchedule), $i++) {
+		if($dayOfWeek >= 1 && $dayOfWeek <= 5) { //fixme!
 
 
-
-
-				//CREATE QUERY TEMPLATE
-				$query = "SELECT origin, destination, duration, departureTime, arrivalTime, flightNumber, price
-						FROM weekdaySchedule WHERE weekdayScheduleId = ? ";
-				$statement = $mysqli->prepare($query);
-				if($statement === false) {
-					throw(new mysqli_sql_exception("Unable to prepare statement"));
-				}
-
-				// bind the parameters to the place holders in the template
-				$wasClean = $statement->bind_param("i", $i);
-				if($wasClean === false) {
-					throw(new mysqli_sql_exception("Unable to bind parameters"));
-				}
-
-				// execute the statement
-				if($statement->execute() === false) {
-					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-				}
-
-				// get result from the SELECT query *pounds fists*
-				$result = $statement->get_result();
-				if($result === false) {
-					throw(new mysqli_sql_exception("Unable to get result set"));
-				}
-
-
-				// since this is a unique field, this will only return 0 or 1 results. So...
-				// 1) if there's a result, we can make it into a Flight object normally
-				// 2) if there's no result, we can just return null
-				// fetch_assoc() returns a row as an associative array
-				$row = $result->fetch_assoc();
 
 				// create second query template to insert
 				$query2 = "INSERT INTO flight (flightId, origin, destination, duration, departureTime, arrivalTime,
@@ -87,40 +52,7 @@ function	buildFlights (&$mysqli, $startDate) {
 				$flightId++;
 
 			}
-		} else
-			for($i = 0, $i < count(weekendSchedule), $i++) {
-
-				//CREATE QUERY TEMPLATE
-				$query = "SELECT origin, destination, duration, departureTime, arrivalTime, flightNumber, price
-						FROM weekdaySchedule WHERE weekendScheduleId = ? ";
-				$statement = $mysqli->prepare($query);
-				if($statement === false) {
-					throw(new mysqli_sql_exception("Unable to prepare statement"));
-				}
-
-				// bind the parameters to the place holders in the template
-				$wasClean = $statement->bind_param("i", $i);
-				if($wasClean === false) {
-					throw(new mysqli_sql_exception("Unable to bind parameters"));
-				}
-
-				// execute the statement
-				if($statement->execute() === false) {
-					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-				}
-
-				// get result from the SELECT query *pounds fists*
-				$result = $statement->get_result();
-				if($result === false) {
-					throw(new mysqli_sql_exception("Unable to get result set"));
-				}
-
-
-				// since this is a unique field, this will only return 0 or 1 results. So...
-				// 1) if there's a result, we can make it into a Flight object normally
-				// 2) if there's no result, we can just return null
-				// fetch_assoc() returns a row as an associative array
-				$row = $result->fetch_assoc();
+		} else if ($dayOfWeek === 0 || $dayOfWeek === 7){
 
 				// create second query template to insert
 				$query2 = "INSERT INTO flight (flightId, origin, destination, duration, departureTime, arrivalTime,
@@ -145,8 +77,11 @@ function	buildFlights (&$mysqli, $startDate) {
 				}
 
 
-				$flightId++;
-			}
+
+		}
+		else{
+			throw(new Exception("DayOfWeek returned an unmatched value"));
+		}
 
 		$date++;
 	}
