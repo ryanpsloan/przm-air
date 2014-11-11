@@ -2,8 +2,6 @@ DROP TABLE IF EXISTS ticketFlight;
 DROP TABLE IF EXISTS ticket;
 DROP TABLE IF EXISTS transaction;
 DROP TABLE IF EXISTS traveler;
-DROP TABLE IF EXISTS weekendSchedule;
-DROP TABLE IF EXISTS weekdaySchedule;
 DROP TABLE IF EXISTS flight;
 DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS user;
@@ -44,30 +42,6 @@ CREATE TABLE flight (
 	INDEX (departureDateTime),
 	INDEX (arrivalDateTime),
 	PRIMARY KEY (flightId)
-);
-
-CREATE TABLE weekdaySchedule (
-	weekdayScheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	origin VARCHAR(20) NOT NULL,
-	destination VARCHAR(20) NOT NULL,
-	duration TIME NOT NULL,
-	departureTime TIME NOT NULL,
-	arrivalTime TIME NOT NULL,
-	flightNumber VARCHAR(15) NOT NULL,
-	price DECIMAL(5,2) NOT NULL,
-	PRIMARY KEY (weekdayScheduleId)
-);
-
-CREATE TABLE weekendSchedule (
-	weekendScheduleId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	origin VARCHAR(20) NOT NULL,
-	destination VARCHAR(20) NOT NULL,
-	duration TIME NOT NULL,
-	departureTime TIME NOT NULL,
-	arrivalTime TIME NOT NULL,
-	flightNumber VARCHAR(15) NOT NULL,
-	price DECIMAL(5,2) NOT NULL,
-	PRIMARY KEY (weekendScheduleId)
 );
 
 CREATE TABLE traveler (

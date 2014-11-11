@@ -29,7 +29,7 @@ class ProfileTest extends UnitTestCase {
 	public function setUp() {
 		// connect to mySQL
 		mysqli_report(MYSQLI_REPORT_STRICT);
-		$this->mysqli = new mysqli("localhost", "store_dylan", "deepdive", "store_dylan");
+		$this->mysqli = new mysqli("localhost", "store_ryan", "", "przm");
 
 		// randomize the salt, hash, and authentication token for the profile
 		$testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
@@ -41,7 +41,7 @@ class ProfileTest extends UnitTestCase {
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}
-		$this->$DATEOFBIRTH = "10/10/2010";
+		$this->DATEOFBIRTH = "10/10/2010";
 		$this->CUSTTOKEN    = bin2hex(openssl_random_pseudo_bytes(32));
 	}
 
@@ -78,10 +78,10 @@ class ProfileTest extends UnitTestCase {
 			$exception->getMessage();
 		}
 				// compare the fields
-		$this->assertNotNull($this->profile->getProfileId());
-		$this->assertTrue($this->profile->getProfileId() > 0);
-		$this->assertNotNull($this->profile->getUserId());
-		$this->assertTrue($this->profile->getUserId() > 0);
+		$this->assertNotNull($this->profile->__get("profileId"));
+		$this->assertTrue($this->profile->__get("profileId") > 0);
+		$this->assertNotNull($this->profile->__get("userId"));
+		$this->assertTrue($this->profile->__get("userId") > 0);
 		$this->assertIdentical($this->profile->__get("userFirstName"),   $this->USERFIRSTNAME);
 		$this->assertIdentical($this->profile->__get("userMiddleName"),  $this->USERMIDDLENAME);
 		$this->assertIdentical($this->profile->__get("userLastName"),    $this->USERLASTNAME);
