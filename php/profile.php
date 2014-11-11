@@ -555,19 +555,8 @@
 			$result = $date->format('Y-m-d-H-i-s');
 			return "<p> profileId = " . $this->__get("profileId") . " userId = " . $this->__get("userId") .
 			" userName = " . $this->__get("userFirstName") . " " . $this->__get("userMiddleName") .
-			" " . $this->__get("userLastName") . " dateOfBirth = ".$result . "</p>";
+			" " . $this->__get("userLastName").", dateOfBirth = ".$result . ", userObj->".$this->userObj."</p>";
 		}
-
-
-
-
-
-
-
-
-
-
-
 
 	}
 ?>

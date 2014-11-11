@@ -1,7 +1,7 @@
 <?php
 /**
  *	mySQL enabled traveler class to gather input retrieve and store traveler data
- * @author Ryan Sloan <ryansdeal@hotmail.com
+ * @author Ryan Sloan <ryansdeal@hotmail.com>
  */
 class Traveler{
 	private $profileObj;
@@ -44,6 +44,7 @@ class Traveler{
 	public function __construct($newTravelerId, $newProfileId, $newFirstName, $newMiddleName, $newLastName,
 										 $newDateOfBirth,$newProfileObj = null){
 										try{
+											   $this->setProfileObj($newProfileObj);
 												$this->setTravelerId($newTravelerId);
 												$this->setProfileId($newProfileId);
 												$this->setFirstName($newFirstName);
@@ -95,7 +96,7 @@ class Traveler{
 			throw(new UnexpectedValueException("Argument is not a Profile Object"));
 		}
 
-		if($newProfileObj->travelerId === null){
+		if($newProfileObj->profileId === null){
 			throw(new UnexpectedValueException("Unable to set a Profile Object that is null"));
 		}
 
@@ -211,19 +212,36 @@ class Traveler{
 	}
 
 	public function setDateOfBirth($newDateOfBirth){
-		//polish the string
-		$newDateOfBirth = trim($newDateOfBirth);
-		//test if is in date format mm/dd/yyyy
-		$filterOptions = array("options" => array("regexp" => "/^(0[1-9]|1[0-2])\/([0-2][1-9]|3[0-1])\/(19|20)\d{2}$/"));
-		if(filter_var($newDateOfBirth, FILTER_VALIDATE_REGEXP, $filterOptions)){
-			throw(new RangeException("Date entered doesn't match mm/dd/yyyy format or is out of range"));
+		// zeroth, allow the date to be null if a new object
+		if($newDateOfBirth ===  null) {
+			$this->travelerDateOfBirth = null;
+			return;
 		}
-		//tokenize the date string into mm dd and yyyy
-		$dateArray = array('month' => strtok($newDateOfBirth , "\\"), 'day' => strtok("\\"), 'year' => strtok("\\"));
-		//reformat the date for the database
-		$reformattedDate = $dateArray['year']."\\".$dateArray['month']."\\".$dateArray['day'];
-		$format = 'Y-m-d';
-		$this->travelerDateOfBirth = DateTime::createFromFormat($format, $reformattedDate);
+
+		// zeroth, allow a DateTime object to be directly assigned
+		if(gettype($newDateOfBirth) === "object" && get_class($newDateOfBirth) === "DateTime") {
+			$this->travelerDateOfBirth = $newDateOfBirth;
+			return;
+		}
+
+		// treat the date as a mySQL date string
+		$newDateOfBirth = trim($newDateOfBirth);
+		if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $newDateOfBirth, $matches)) !== 1) {
+			throw(new RangeException("$newDateOfBirth is not a valid date"));
+		}
+
+		// verify the date is really a valid calendar date
+		$year  = intval($matches[1]);
+		$month = intval($matches[2]);
+		$day   = intval($matches[3]);
+		if(checkdate($month, $day, $year) === false) {
+			throw(new RangeException("$newDateOfBirth is not a Gregorian date"));
+		}
+
+		// finally, take the date out of quarantine
+		$newDateOfBirth = DateTime::createFromFormat("Y-m-d H:i:s", $newDateOfBirth);
+		$this->travelerDateOfBirth = $newDateOfBirth;
+
 
 	}
 
@@ -253,9 +271,11 @@ class Traveler{
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
+		$date = $this->travelerDateOfBirth;
+		$string = $date->format("Y-m-s H:i:s");
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("iissss", $this->travelerId, $this->profileId, $this->travelerFirstName,
-			$this->travelerMiddleName, $this->travelerLastName, $this->travelerDateOfBirth);
+			$this->travelerMiddleName, $this->travelerLastName, $string);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -330,9 +350,11 @@ class Traveler{
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
+		$date = $this->travelerDateOfBirth;
+		$string = $date->format("Y-m-s H:i:s");
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ssssi", $this->travelerFirstName, $this->travelerMiddleName,
-			$this->travelerLastName, $this->travelerDateOfBirth, $this->travelerId);
+			$this->travelerLastName, $string, $this->travelerId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -486,6 +508,15 @@ class Traveler{
 			//404 traveler not found
 			return (null);
 		}
+	}
+
+	public function __toString(){
+		$date = $this->travelerDateOfBirth;
+		$string = $date->format("Y-m-s H:i:s");
+		return "<p>travelerId = ".$this->travelerId.", travelerName = ".
+		$this->travelerFirstName." ".$this->travlerMiddleName." ".$this->travelerLastName.
+	   ", travelerDateOfBirth = ".$string.", profileObj = ".$this->profileObj.
+		", profileObj->userObj->".$this->profileObj->userObj."</p>";
 	}
 
 
