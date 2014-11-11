@@ -8,6 +8,7 @@
  *
  * Accesses data in the two schedule tables (determined by whether the given date is a weekday or weekend)
  * to assign a flightId to each flight on each day for users to be able to search flights
+ * dkdk
  */
 
 $startDate = "2014-12-01 00:00:00";
