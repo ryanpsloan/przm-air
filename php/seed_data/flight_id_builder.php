@@ -8,18 +8,19 @@
  *
  * Accesses data in the two schedule tables (determined by whether the given date is a weekday or weekend)
  * to assign a flightId to each flight on each day for users to be able to search flights
- * dkdk
  */
 
 $startDate = "2014-12-01 00:00:00";
 $totalSeatsOnPlane = 20;
+$formatDateTime = "Y-m-d hh:mm:ss";
+$date = DateTime::createFromFormat($formatDateTime, $startDate);
 
 function	buildFlights (&$mysqli, $startDate) {
 
 	for($i = 0; $i < 730; $i++) {
 
-		$format = "Y-m-d hh:mm:ss";
-		$date = DateTime::createFromFormat($format, $startDate);
+
+
 		$dayOfWeek = date("N", $date);
 		//fixme!
 
