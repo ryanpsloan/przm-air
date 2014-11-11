@@ -27,7 +27,7 @@ function readWeekdayCSV(&$mysqli,$fileName)
 
 		if(empty($output[7]) === false) {
 			$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $output[7],
-				$output[8], $output[8], $output[9]);
+				$output[8], $output[9], $output[10]);
 			if($wasClean === false) {
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
@@ -36,8 +36,8 @@ function readWeekdayCSV(&$mysqli,$fileName)
 			}
 
 			if(empty($output[10]) === false) {
-				$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $output[10],
-					$output[11], $output[12], $output[13]);
+				$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $output[11],
+					$output[12], $output[13], $output[14]);
 				if($wasClean === false) {
 					throw(new mysqli_sql_exception("Unable to bind parameters"));
 				}
