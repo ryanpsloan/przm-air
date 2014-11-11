@@ -19,7 +19,7 @@ function	buildFlights (&$mysqli, $startDate) {
 
 		$format = "Y-m-d hh:mm:ss";
 		$date = DateTime::createFromFormat($format, $startDate);
-		$dayOfWeek = DateTime::weekday;
+		$dayOfWeek = date("N", $date);
 		//fixme!
 
 		if($dayOfWeek >= 1 && $dayOfWeek <= 5) { //fixme!
@@ -83,8 +83,8 @@ function	buildFlights (&$mysqli, $startDate) {
 			throw(new Exception("DayOfWeek returned an unmatched value"));
 		}
 
-		$date++;
-	}
+		$date->add(new DateInterval('P1D'));
+
 }
 
 //end function
