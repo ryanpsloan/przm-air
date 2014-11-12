@@ -25,30 +25,38 @@ function readWeekdayCSV(&$mysqli,$fileName)
 
 		//$output[0, 1, 5, 9, 13] come in as strings and will be used as such for origin/destination/flight numbers
 
-		//$output[2-4] and [7-8] and [11-12] come in as a string but have to be a number of hours to be used in calcs
+		//$output[2-4] and [7-8] and [11-12] come in as a string but have to be an interval of hours to be used in calcs
 		//except for $output[2] all of these also have to be added to the date of current loop to create a DATETIME
 
-		$formatHourTime = "hh:mm";
-
-		$duration = DateTime::createFromFormat($formatHourTime, $output[2]);
-		$dateTimeDep1 = $date + DateTime::createFromFormat($formatHourTime, $output[3]);
-		$dateTimeArr1 = $date + DateTime::createFromFormat($formatHourTime, $output[4]);
-		$dateTimeDep2 = $date + DateTime::createFromFormat($formatHourTime, $output[7]);
-		$dateTimeArr2 = $date + DateTime::createFromFormat($formatHourTime, $output[8]);
-		$dateTimeDep3 = $date + DateTime::createFromFormat($formatHourTime, $output[11]);
-		$dateTimeArr3 = $date + DateTime::createFromFormat($formatHourTime, $output[12});
-
-
-		//$output[6,10,14] come in as a string but have to be an INT to calculate price
-		$basePriceFlight1 = (int) $output[6];
-		$basePriceFlight2 = (int) $output[10];
-		$basePriceFlight3 = (int) $output[14]l
+		//first, explode the string into an array to be able to turn it into a DateInterval object
+		$explode2 	= explode(":",$output[2]);
+		$explode3 	= explode(":",$output[3]);
+		$explode4 	= explode(":",$output[4]);
 
 
 
+		//second, use the exploded strings to create the DateInteval
+		$duration 			= DateInterval::createFromDateString("$explode2[0] hour + $explode2[1] minutes");
+		$departureTime1 	= DateInterval::createFromDateString("$explode3[0] hour + $explode3[1] minutes");
+		$arrivalTime1 		= DateInterval::createFromDateString("$explode4[0] hour + $explode4[1] minutes");
 
-		$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $output[3],
-			$output[4], $output[5], $output[6]);
+		//third, add the relevant intervals to the current date in the loop to make a DATETIME object for each flight
+		$dateTimeDep1 = $date->add($departureTime1);
+		$dateTimeArr1 = $date->add($arrivalTime1);
+
+
+
+		//FIXME
+		//fourth, $output[6,10,14] come in as a float and need precision set to two decimal places for eventual conversion to dollar format
+		//		$basePriceFlight1 = (int) $output[6];
+		//		$basePriceFlight2 = (int) $output[10];
+		//		$basePriceFlight3 = (int) $output[14];
+
+
+
+
+		$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $duration, $dateTimeDep1,
+														$dateTimeArr1, $output[5], $output[6]);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -57,8 +65,18 @@ function readWeekdayCSV(&$mysqli,$fileName)
 		}
 
 		if(empty($output[7]) === false) {
-			$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $output[7],
-				$output[8], $output[9], $output[10]);
+			$explode7 	= explode(":",$output[7]);
+			$explode8 	= explode(":",$output[8]);
+			$departureTime2 	= DateInterval::createFromDateString("$explode7[0] hour + $explode7[1] minutes");
+			$arrivalTime2 		= DateInterval::createFromDateString("$explode8[0] hour + $explode8[1] minutes");
+			$dateTimeDep2 = $date->add($departureTime2);
+			$dateTimeArr2 = $date->add($arrivalTime2);
+
+
+
+			$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $duration, $dateTimeDep2,
+				$dateTimeArr2, $output[9], $output[10]);
+
 			if($wasClean === false) {
 				throw(new mysqli_sql_exception("Unable to bind parameters"));
 			}
@@ -66,9 +84,18 @@ function readWeekdayCSV(&$mysqli,$fileName)
 				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 			}
 
-			if(empty($output[10]) === false) {
-				$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $output[11],
-					$output[12], $output[13], $output[14]);
+
+
+			if(empty($output[11]) === false) {
+				$explode11	= explode(":",$output[11]);
+				$explode12 	= explode(":",$output[12]);
+				$departureTime3 	= DateInterval::createFromDateString("$explode11[0] hour + $explode11[1] minutes");
+				$arrivalTime3 		= DateInterval::createFromDateString("$explode12[0] hour + $explode12[1] minutes");
+				$dateTimeDep3 = $date->add($departureTime3);
+				$dateTimeArr3 = $date->add($arrivalTime3);
+
+				$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $output[2], $duration, $dateTimeDep3,
+					$dateTimeArr3, $output[13], $output[14]);
 				if($wasClean === false) {
 					throw(new mysqli_sql_exception("Unable to bind parameters"));
 				}

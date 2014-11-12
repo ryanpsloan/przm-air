@@ -13,7 +13,7 @@
 $startDate = "2014-12-01 00:00:00";
 $totalSeatsOnPlane = 20;
 $formatDateTime = "Y-m-d hh:mm:ss";
-$date = DateTime::createFromFormat($formatDateTime, $startDate);
+$date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate);
 
 function	buildFlights (&$mysqli, $startDate) {
 
