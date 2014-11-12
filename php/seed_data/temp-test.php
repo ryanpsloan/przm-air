@@ -75,4 +75,11 @@ var_dump($totalBasePrice);
 var_dump($output[10]);
 var_dump($tp);
 
+
+//add 1 day to immutable $date object
+$loopByDay = DateInterval::createFromDateString("1 day");
+$date=$date->add($loopByDay);
+var_dump($date);
+
+
 ?>
