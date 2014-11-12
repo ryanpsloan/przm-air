@@ -56,13 +56,13 @@
 		public function __construct($newProfileId, $newUserId, $newFirstName, $newMiddleName,
 											 $newLastName, $newDateOfBirth, $newCustomerToken, $newUserObj = null) {
 			try {
+				$this->setUserObject($newUserObj);
 				$this->setProfileId($newProfileId);
 				$this->setUserId($newUserId);
 				$this->setFirstName($newFirstName);
 				$this->setMiddleName($newMiddleName);
 				$this->setLastName($newLastName);
 				$this->setDateOfBirth($newDateOfBirth);
-				$this->setUserObject($newUserObj);
 				$this->setCustomerToken($newCustomerToken);
 
 			} catch(UnexpectedValueException $unexpectedValue) {
@@ -102,14 +102,16 @@
 		 * @param User object $newUserObj
 		 */
 		function setUserObject($newUserObj){
+			if($newUserObj === null) {
+				$this->userObj = null;
+			}
+
 			// handle degenerate cases
 			if(gettype($newUserObj) !== "object" || get_class($newUserObj) !== "User") {
 				throw(new UnexpectedValueException("input is not a User object"));
 			}
-			//test if objectId is null
-			if($newUserObj->getUserId() === null) {
-				throw(new UnexpectedValueException("Unable to set a user that is null"));
-			}
+			//test if object is null
+
 			//set new object into class
 			$this->userObj = $newUserObj;
 
@@ -179,7 +181,7 @@
 			//sets all letter cases to lower
 			$newFirstName = strtolower($newFirstName);
 			//sets up the options for filter_var validation
-			$filterOptions = array("options" => array("regexp" => "/^[a-zA-Z]+$/"));
+			$filterOptions = array("options" => array("regexp" => "/^[a-z]+$/"));
 			//validates $newFirstName with REGEX
 			if(filter_var($newFirstName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("First name cannot contain spaces numbers or special characters."));
@@ -198,7 +200,7 @@
 			//sets all letter cases to lower
 			$newMiddleName = strtolower($newMiddleName);
 			//sets up the options for filter_var validation
-			$filterOptions = array("options" => array("regexp" => "/^[a-zA-Z]+$/"));
+			$filterOptions = array("options" => array("regexp" => "/^[a-z]+$/"));
 			//validates $newMiddleName with REGEX
 			if(filter_var($newMiddleName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("Middle name cannot contain spaces numbers or special characters."));
@@ -216,7 +218,7 @@
 			//sets all letter cases to lower
 			$newLastName = strtolower($newLastName);
 			//sets up the options for filter_var validation
-			$filterOptions = array("options" => array("regexp" => "/^[a-zA-Z]+$/"));
+			$filterOptions = array("options" => array("regexp" => "/^[a-z]+$/"));
 			//validates $newLastName with REGEX
 			if(filter_var($newLastName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("Middle name cannot contain spaces numbers or special characters."));
@@ -240,7 +242,7 @@
 			}
 
 			// zeroth, allow a DateTime object to be directly assigned
-			if(gettype($newDateOfBirth) === "object" && get_class($newDateOfBirth) === "DateTime") {
+			if(gettype($newDateOfBirth) === "object" || get_class($newDateOfBirth) === "DateTime") {
 				$this->dateOfBirth = $newDateOfBirth;
 				return;
 			}
@@ -264,19 +266,14 @@
 			$this->dateOfBirth = $newDateOfBirth;
 		}
 
-		public function setCustomerToken($newCustomerToken){
-			// Create a Customer
-			$customerToken = Stripe_Customer::create(
-					array(
-						/*"card" => $newCustomerToken,*/
-						"description" =>$this->userFirstName." ".$this->userMiddleName." ".$this->userLastName,
-						"email" =>$this->userObj->getEmail(),
-						"metadata" => $this->__get("profileId")
-					)
-			);
+		public function setCustomerToken($newCustomerToken)
+		{
+			$newCustomerToken = trim($newCustomerToken);
+			if(filter_var($newCustomerToken, FILTER_SANITIZE_STRING) === false){
+				throw(new Exception("$newCustomerToken customer token is not valid."));
+			}
 
-			// Save the customer ID in your database so you can use it later
-			$this->customerToken = $customerToken;
+			$this->customerToken = $newCustomerToken;
 		}
 
 		/**
@@ -304,8 +301,9 @@
 			if($statement === false) {
 				throw(new mysqli_sql_exception("Unable to prepare statement"));
 			}
-			$date = $this->dateOfBirth;
-			$dateString = $date->format("Y-m-d H:i:s");
+			$dateObj = $this->dateOfBirth;
+			$dateString = $dateObj->format("Y-m-d H:i:s");
+
 			// bind the member variables to the place holders in the template
 			$wasClean = $statement->bind_param("iisssss", $this->profileId, $this->userId, $this->userFirstName,
 				$this->userMiddleName, $this->userLastName, $dateString, $this->customerToken);
@@ -534,8 +532,9 @@
 			//convert the associate array to user
 			if($row !== null) {
 				try {
+					$dateObj = DateTime::createFromFormat("Y-m-d H:is",$row['dateOfBirth']);
 					$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],
-						$row['userMiddleName'],$row['userLastName'], $row['dateOfBirth'], $row['customerToken']);
+						$row['userMiddleName'],$row['userLastName'], $dateObj, $row['customerToken']);
 				} catch(Exception $exception) {
 					//if row can't be converted rethrow
 					throw(new mysqli_sql_exception("Unable to convert row to Profile Object", 0, $exception));
@@ -556,6 +555,12 @@
 			return "<p> profileId = " . $this->__get("profileId") . " userId = " . $this->__get("userId") .
 			" userName = " . $this->__get("userFirstName") . " " . $this->__get("userMiddleName") .
 			" " . $this->__get("userLastName").", dateOfBirth = ".$dateString . ", userObj->".$this->userObj."</p>";
+		}
+
+		public function createStripeCustomer(){
+			$customer = Stripe_Customer::create(array("description" => $this->userFirstName." ".$this->userMiddleName
+				." ".$this->userLastName." | ".$this->userObj->getEmail()));
+			return $customer;
 		}
 
 	}

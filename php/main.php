@@ -1,5 +1,5 @@
 <?php
-require_once("user.php");
+/*require_once("user.php");
 
 	$mysqli = new mysqli("localhost", "przm", "trillpontlureactscala", "przm");
 	$salt = bin2hex(openssl_random_pseudo_bytes(32));
@@ -33,5 +33,13 @@ echo "After Insert: ".$traveler;
 echo "traveler->profileObj = ".$traveler->__get("profileObj");
 echo "traveler processed";
 echo $traveler;
-echo "---------------------------------------------------------------------------------";
+echo "---------------------------------------------------------------------------------";*/
+
+/*require_once('../lib/stripe-php-1.17.3/lib/Stripe.php');
+Stripe::setApiKey("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
+
+$customerObj = Stripe_Customer::create(array(
+	"description" => "customerEmail@hotzzz.com"
+));
+echo $customerObj->id;*/
 ?>
