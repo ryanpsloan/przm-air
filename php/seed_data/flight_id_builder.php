@@ -11,7 +11,7 @@
  */
 
 $startDate = "2014-12-01 00:00:00";
-$totalSeatsOnPlane = 20;
+$initialTotalSeatsOnPlane = 20;
 $formatDateTime = "Y-m-d hh:mm:ss";
 $date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate);
 
@@ -24,8 +24,8 @@ $date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate);
 function	buildFlights (&$mysqli, $startDate) {
 
 	//first, create query template
-	$query = "INSERT INTO Flight (origin, destination, duration, departureTime, arrivalTime, flightNumber, price)
-				VALUES(?, ?, ?, ?, ?, ?, ?)";
+	$query = "INSERT INTO Flight (origin, destination, duration, departureTime, arrivalTime, flightNumber, price, totalSeatsOnPlane)
+				VALUES(?, ?, ?, ?, ?, ?, ?,?)";
 	$statement = $mysqli->prepare($query);
 	if($statement === false) {
 		throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -36,7 +36,7 @@ function	buildFlights (&$mysqli, $startDate) {
 
 
 		//fixme!
-		$dayOfWeek = date("N", $date);
+		$dayOfWeek = $date("N", $date);
 
 		//"if date is weekday, then do following:"
 		if($dayOfWeek >= 1 && $dayOfWeek <= 5) { //fixme!
@@ -81,8 +81,8 @@ function	buildFlights (&$mysqli, $startDate) {
 				//		$basePriceFlight2 = (int) $output[10];
 				//		$basePriceFlight3 = (int) $output[14];
 
-				$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $duration, $dateTimeDep1,
-					$dateTimeArr1, $output[5], $output[6]);
+				$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep1,
+					$dateTimeArr1, $output[5], $output[6],$initialTotalSeatsOnPlane);
 				if($wasClean === false) {
 					throw(new mysqli_sql_exception("Unable to bind parameters"));
 				}
@@ -102,8 +102,8 @@ function	buildFlights (&$mysqli, $startDate) {
 					$dateTimeDep2 = $date->add($departureTime2);
 					$dateTimeArr2 = $date->add($arrivalTime2);
 
-					$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $duration, $dateTimeDep2,
-						$dateTimeArr2, $output[9], $output[10]);
+					$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep2,
+						$dateTimeArr2, $output[9], $output[10], $initialTotalSeatsOnPlane);
 
 					if($wasClean === false) {
 						throw(new mysqli_sql_exception("Unable to bind parameters"));
@@ -123,8 +123,8 @@ function	buildFlights (&$mysqli, $startDate) {
 						$dateTimeDep3 = $date->add($departureTime3);
 						$dateTimeArr3 = $date->add($arrivalTime3);
 
-						$wasClean = $statement->bind_param("ssssssd", $output[0], $output[1], $duration, $dateTimeDep3,
-							$dateTimeArr3, $output[13], $output[14]);
+						$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep3,
+																		$dateTimeArr3, $output[13], $output[14], $initialTotalSeatsOnPlane);
 						if($wasClean === false) {
 							throw(new mysqli_sql_exception("Unable to bind parameters"));
 						}
