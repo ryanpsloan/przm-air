@@ -25,6 +25,10 @@ class Flight {
 	 **/
 	private $destination;
 	/**
+	 * time of travel from origin to destination
+	 **/
+	private $duration
+	;/**
 	 * specific date and time of departure
 	 **/
 	private $departureDateTime;
@@ -32,6 +36,14 @@ class Flight {
 	 * specific date and time of arrival
 	 **/
 	private $arrivalDateTime;
+	/**
+	 * flight Number that references which flight within any given week, i.e. unique to a given week Monday-Sunday.
+	 **/
+	private $flightNumber;
+	/**
+	 * base price of flight
+	 **/
+	private $price;
 	/**
 	 * number of remaining seats on a given flight.   Once the flight is created and stored, this auto-decrements any
 	 * time a user buys another ticket that contains this flight.
@@ -46,20 +58,14 @@ class Flight {
 
 	/**
 	 *Questions:
-	 * ?? -- validating datetime for arrival and departure
-	 * ?? -- similarly, for mysqli statements, do i list them all as ("iiii").
-	 * ?? -- need constant?  if total seats created for each flight object, then can we not auto-decrement that field
-	 *			for that specific flightId?
-	 * ?? -- leave constant outside construct method
-	 * ?? what is 0 in throw exceptions around line 94
-	 *
 	 * ToDo: seats decrementer/incrementer
 	 * ToDo: search function to make tickets?
+	 * ToDo: see Dylan's code fragment for validating DATETIME objects like how to validate and for mysqli statements, do i list them all as ("iiii").
+
 	 * ToDo: besides finding flight by flight ID? Do we need scheduleId by flightId or other similar?
-	 * ToDo: loop within loop function to seed data from the schedule class
-	 * ToDo: fix totalSeats function/calc
+	 * ToDo: loop within loop function to seed data from the schedule class --(edit: see flight_id_builder)
+	 * ToDo: fix totalSeats function/calc (edit: not sure what this was about)
 	 * ToDo: clean up __get() or change to __call()
-	 * ToDo: see Dylan's code fragment for DATETIME objects
 	 *
 	 *
 	 **/
@@ -69,23 +75,31 @@ class Flight {
 
 	/**
 	 * constructor for Flight
-	 *
+	 *FIXME: types for dates and date objects?
 	 * @param mixed $newFlightId flight id (or null if new object)
-	 * @param mixed $newScheduleId schedule id
+	 * @param string $newOrigin origin
+	 * @param string $newDestination destination
+	 * @param mixed $newDuration duration DateInterval object
 	 * @param string $newDepartureDateTime departure time
 	 * @param string $newArrivalDateTime arrival time
-	 * @param string $newTotalSeatsOnPlane total seats left on plane
+	 * @param string $newFlightNumber flight number
+	 * @param mixed $newPrice price
+	 * @param mixed $newTotalSeatsOnPlane total seats left on plane
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throws RangeException when a parameter is invalid
 	 **/
-	public function __construct($newFlightId, $newOrigin, $newDestination, $newDepartureDateTime, $newArrivalDateTime,$newTotalSeatsOnPlane) {
+	public function __construct($newFlightId, $newOrigin, $newDestination, $newDuration, $newDepartureDateTime, $newArrivalDateTime, $newFlightNumber, $newPrice, $newTotalSeatsOnPlane) {
 		try {
 			$this->setFlightId($newFlightId);
 			$this->setOrigin($newOrigin);
 			$this->setDestination($newDestination);
+			$this->setDuration($newDuration);
 			$this->setDepartureDateTime($newDepartureDateTime);
 			$this->setArrivalDateTime($newArrivalDateTime);
+			$this->setFlightNumber($newFlightNumber);
+			$this->setPrice($newPrice);
 			$this->setTotalSeatsOnPlane($newTotalSeatsOnPlane);
+
 		} catch(UnexpectedValueException $unexpectedValue) {
 			// rethrow to the caller
 			throw(new UnexpectedValueException("Unable to construct Flight", 0, $unexpectedValue));
@@ -137,36 +151,104 @@ class Flight {
 
 
 	/**
-	 * gets the value of schedule id
+	 * gets the value of the flight's origin.
 	 *
-	 * @return mixed schedule id
+	 * @return string of origin
 	 **/
-	public function getScheduleId() {
-		return($this->scheduleId);
+	public function getOrigin() {
+		return($this->origin);
 	}
 
 	/**
-	 * sets the value of schedule id
+	 * sets the value of the origin
 	 *
-	 * @param int $newScheduleId schedule id
-	 * @throws UnexpectedValueException if not an integer or null
-	 * @throws RangeException if schedule id isn't positive
+	 * @param string $newOrigin origin
+	 * @throws UnexpectedValueException if the input doesn't appear to be a string
+	 * @throws RangeException for any string that is not 3 characters
 	 **/
-	public function setScheduleId($newScheduleId) {
-		// first, ensure the schedule id is an integer
-		if(filter_var($newScheduleId, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("schedule id $newScheduleId is not numeric"));
+	public function setOrigin($newOrigin) {
+		// verify the origin is a string
+		$newOrigin = trim($newOrigin);
+
+		if(filter_var($newOrigin, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Origin $newOrigin does not appear to be a string"));
 		}
 
-		// second, convert the schedule id to an integer and enforce it's positive
-		$newScheduleId = intval($newScheduleId);
-		if($newScheduleId <= 0) {
-			throw(new RangeException("schedule id $newScheduleId is not positive"));
+		//check that string is the appropriate length for an airport code
+		if(strlen($newOrigin) !===3) {
+			throw(new RangeException("Origin $newOrigin does not appear to be a three-letter code."));
 		}
-
-		// finally, take the schedule id out of quarantine and assign it
-		$this->scheduleId = $newScheduleId;
+		// finally, take the origin out of quarantine
+		$this->origin = $newOrigin;
 	}
+
+
+
+	/**
+	 * gets the value of the flight's destination.
+	 *
+	 * @return string of destination
+	 **/
+	public function getDestination() {
+		return($this->destination);
+	}
+
+
+	/**
+	 * sets the value of the destination
+	 *
+	 * @param string $newDestination destination
+	 * @throws UnexpectedValueException if the input doesn't appear to be a string
+	 * @throws RangeException for any string that is not 3 characters
+	 **/
+	public function setDestination($newDestination) {
+		// verify the destination is a string
+		$newDestination = trim($newDestination);
+
+		if(filter_var($newDestination, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Destination $newDestination does not appear to be a string"));
+		}
+
+		//check that string is the appropriate length for an airport code
+		if(strlen($newDestination) !===3) {
+			throw(new RangeException("Destination $newDestination does not appear to be a three-letter code."));
+		}
+		// finally, take the departure out of quarantine
+		$this->destination = $newDestination;
+	}
+
+
+
+
+	/**
+	 * gets the value of the flight's duration.
+	 *
+	 * @return mixed value of duration
+	 **/
+	public function getDuration() {
+		return($this->duration);
+	}
+
+
+	/**
+	 * sets the value of the duration
+	 *
+	 * @param string $newDuration of the duration
+	 * @throws UnexpectedValueException if the input doesn't appear to be a time
+	 * @throws RangeException????
+	 **/
+	public function setDuration($newDuration) {
+		// verify the duration is a time (or DATE INTERVAL?) // fixme
+		$newDuration = trim($newDuration);
+
+		if(filter_var($newDuration, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Duration time $newDuration does not appear to be a time"));
+		}
+
+		// finally, take the departure datetime out of quarantine
+		$this->duration = $newDuration;
+	}
+
 
 
 	/**
@@ -182,7 +264,7 @@ class Flight {
 	/**
 	 * sets the value of the departureDateTime
 	 *
-	 * @param string $newDepartureDateTime of the first name
+	 * @param string $newDepartureDateTime of the departure's date and time
 	 * @throws UnexpectedValueException if the input doesn't appear to be a date
 	 * @throws RangeException????
 	 **/
@@ -229,14 +311,78 @@ class Flight {
 	}
 
 
-		/**
-		 * gets the value of schedule id
-		 *
-		 * @return mixed schedule id
-		 **/
-	public function getScheduleId() {
-		return($this->scheduleId);
+	/**
+	 * gets the flight's flight number.
+	 *
+	 * @return string of flight number
+	 **/
+	public function getFlightNumber() {
+		return($this->flightNumber);
 	}
+
+
+	/**
+	 * sets the value of the flightNumber
+	 *
+	 * @param string $newFlightNumber flight number
+	 * @throws UnexpectedValueException if the input doesn't appear to be a string
+	 **/
+	public function setFlightNumber($newFlightNumber) {
+		// verify the flight number is a string
+		$newFlightNumber = trim($newFlightNumber);
+
+		if(filter_var($newFlightNumber, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Flight number $newFlightNumber does not appear to be a string"));
+		}
+
+		// finally, take the flight number out of quarantine
+		$this->flightNumber = $newFlightNumber;
+	}
+
+
+	/**
+	 * gets the value of price
+	 *
+	 * @return mixed price
+	 **/
+	public function getPrice() {
+		return($this->Price);
+	}
+
+	/**
+	 * sets the value of the price
+	 *
+	 * @param mixed $newPrice price
+	 * @throws UnexpectedValueException if not a number or null
+	 * @throws RangeException if schedule id isn't positive
+	 **/
+	public function setPrice($newPrice) {
+		// first, ensure the price is a number
+		if(filter_var($newPrice, FILTER_VALIDATE_FLOAT) === false) {
+			throw(new UnexpectedValueException("price $newPrice is not numeric"));
+		}
+
+		// second, convert the schedule id to an integer and enforce it's positive
+		$newPrice = floatval($newPrice);
+		if($newPrice <= 0) {
+			throw(new RangeException("price $newPrice is not positive"));
+		}
+
+		// finally, take the schedule id out of quarantine and assign it
+		$this->price = $newPrice;
+	}
+
+
+
+	/**
+	 * gets the value of totalSeatsOnPlane
+	 *
+	 * @return mixed totalSeatsOnPlane
+	 **/
+	public function getTotalSeatsOnPlane() {
+		return($this->totalSeatsOnPlane);
+	}
+
 
 
 
@@ -394,9 +540,22 @@ class Flight {
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
 
+	/**
+	 * increments the totalSeatsOnPlane
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param mixed $totalSeatsOnPlane available seats to change
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
 
 
-
+	/**
+	 * searches all flights based on user input to return route options
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param mixed $totalSeatsOnPlane available seats to change
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
 
 
 
@@ -514,9 +673,7 @@ class Flight {
 			throw (new UnexpectedValueException ("We searched for $searchedField and it does not seem to be an appropriate array key"));
 			return null;
 		}
-		//$trace = debug_backtrace();
-		//trigger_error("Undefined property via __get(): " . $searchedField . " in " . $trace[0]['file'] . " on line " . $trace[0]["line"],
-		//	E_USER_NOTICE);
+
 
 
 	}
@@ -524,10 +681,12 @@ class Flight {
 
 
 
+//$trace = debug_backtrace();
+//trigger_error("Undefined property via __get(): " . $searchedField . " in " . $trace[0]['file'] . " on line " . $trace[0]["line"],
+//	E_USER_NOTICE);
 
-
-
-
+/*//
+/*
 /**
  * gets any existing Profile by lastName
  *
@@ -535,7 +694,7 @@ class Flight {
  * @param string $lastName last name to search for
  * @return mixed Profile found or null if not found
  * @throws mysqli_sql_exception when mySQL related errors occur
- **/
+ *
 public static function getProfileByLastName(&$mysqli, $lastName)
 {
 	// handle degenerate cases
@@ -607,5 +766,6 @@ public static function getProfileByLastName(&$mysqli, $lastName)
 	}
 }
 
+*/
 
 ?>
