@@ -15,11 +15,13 @@
  **/
 
 // first require the SimpleTest framework
-require_once("/etc/apache2/capstone-mysql/przm.php");
-$mysqli = MysqliConfiguration::getMysqli();
+require_once("/usr/lib/php5/simpletest/autorun.php");
 
 //then require the class under scrutiny
 require_once("../php/ticket.php");
+
+// require the mysqli
+require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // the ProfileTest is a container for all our tests
 class TicketTest extends UnitTestCase {
@@ -33,15 +35,14 @@ class TicketTest extends UnitTestCase {
 	private $CONFIRMATIONNUMBER  = "ABC123";
 	private $PRICE					  = "100.00";
 	private $STATUS	 			  = "Booked";
-	private $PROFILEID 			  = 1;
-	private $TRAVELERID 			  = 1;
-	private $TRANSACTIONID 		  = 1;
+	private $PROFILEID 			  = null;
+	private $TRAVELERID 			  = null;
+	private $TRANSACTIONID 		  = null;
 
 	// setUp () is a method that is run before each test
 	// here, we use it to connect to my SQL
 	public function setUp() {
-		mysqli_report(MYSQLI_REPORT_STRICT);
-		$this->mysqli = new mysqli("localhost", "store_paul", "deepdive", "store_paul");
+		$mysqli = MysqliConfiguration::getMysqli();
 	}
 
 	// tearDown () is a method that is run after each test
