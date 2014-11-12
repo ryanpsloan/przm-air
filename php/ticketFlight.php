@@ -152,6 +152,6 @@ class TicketFlight {
 		$this->ticketId = $mysqli->insert_id;
 	}
 
-	/*Spectacular Coding* @Paul /
+	// Spectacular Coding* @Paul
 }
 

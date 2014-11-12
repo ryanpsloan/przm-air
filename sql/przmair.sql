@@ -39,8 +39,11 @@ CREATE TABLE flight (
 	flightNumber      VARCHAR(15)  NOT NULL,
 	price             DECIMAL      NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
+	INDEX (origin),
+	INDEX (destination),
 	INDEX (departureDateTime),
 	INDEX (arrivalDateTime),
+	INDEX (totalSeatsOnPlane),
 	PRIMARY KEY (flightId)
 );
 
