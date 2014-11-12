@@ -605,8 +605,8 @@ class Flight {
 		$totalSeatsOnPlane = $result-1;
 
 		// create query template for UPDATE
-		$query1     = 	"UPDATE flight SET totalSeatsOnPlane = ? WHERE flightId = ?";
-		$statement = $mysqli->prepare($query1);
+		$queryUpdate     = 	"UPDATE flight SET totalSeatsOnPlane = ? WHERE flightId = ?";
+		$statement = $mysqli->prepare($queryUpdate);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
@@ -645,7 +645,7 @@ class Flight {
 	 * @return mixed Flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-	public static function getDirectFlightsByUserInput(&$mysqli, $userOrigin, $userDestination, $userArrivalDate, $userDepartureDate) {
+	public static function getDirectFlightsByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDate) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -658,7 +658,7 @@ class Flight {
 
 
 
-		// first trim, then validate, then sanitize the flightId int before searching.
+		// first trim, then validate, then sanitize the USER inputs before searching. //fixme
 		$flightId = trim($flightId);
 
 		if (filter_var($flightId, FILTER_SANITIZE_NUMBER_INT) === false) {
@@ -668,16 +668,19 @@ class Flight {
 			$flightId = filter_var($flightId, FILTER_SANITIZE_NUMBER_INT);
 		}
 
+
+
+
 		// create query template
-		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price
-					FROM flight WHERE $flightId = ?";
+		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price, totalSeatsOnPlane
+					FROM flight WHERE origin = ?, destination = ?, departureDateTime = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the flightId to the place holder in the template
-		$wasClean = $statement->bind_param("i", $flightId);
+		$wasClean = $statement->bind_param("sss", $userOrigin, $userDestination, $userFlyDate);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -692,6 +695,49 @@ class Flight {
 		if($result === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
+
+
+
+
+
+
+		// since these are likely not unique fields (even in combination), this will return as many results as there
+		// 	are flights with same origin + departure + date.
+		//
+		// 1) if there's no result, we can just return null
+		// 2) if there's a result, we can make it into flight objects normally
+		// fetch_assoc() returns row as associative arr until row is null
+		$directFlightArray = array();
+		// convert the associative array to a Profile and repeat for all last names equal to lastName.
+		while(($row = $result->fetch_assoc()) !== null) {
+
+			// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
+			// 	$userDestination, and $userFlyDate.
+			try {
+				$directFlights = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
+														$row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
+														$row["price"], $row["totalSeatsOnPlane"]);
+				$directFlightArray[] = $directFlights;
+
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
+			}
+
+		}
+
+		if(empty($directFlightArray)) {
+			// 404 User not found - return null
+			return (null);
+		}
+		else {
+			return ($directFlightArray);
+		}
+
+
+
+
+
 
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a Flight object normally
@@ -781,8 +827,8 @@ class Flight {
 		// convert the associative array to a Flight
 		if($row !== null) {
 			try {
-				$flight = new Flight ($row["flightId"], $row["scheduleId"], $row["departureDateTime"],
-											$row["arrivalDateTime"], $row["totalSeatsOnPlane"]);
+				$flight = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["departureDateTime"],
+											$row["arrivalDateTime"], $row["flightNumber"], $row["price"], $row["totalSeatsOnPlane"]);
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
