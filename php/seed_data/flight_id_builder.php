@@ -10,21 +10,26 @@
  * to assign a flightId to each flight on each day for users to be able to search flights
  */
 
-$startDate = "2014-12-01 00:00:00";
-$initialTotalSeatsOnPlane = 20;
-$formatDateTime = "Y-m-d hh:mm:ss";
-$date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate);
+
+//set start date for schedule
+private $startDate = "2014-11-15 00:00:00";
+
+//create date object from start date with standard mySQL format
+private $formatDateTime = "Y-m-d hh:mm:ss";
+private $date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate);
+
+//set initial seats available on each plane to 20
+private $initialTotalSeatsOnPlane = 20;
 
 
 
 
 
-
-
+//increment by 1 day, run through schedule files in a loop, build flights from seed data CSV
 function	buildFlights (&$mysqli, $startDate) {
 
 	//first, create query template
-	$query = "INSERT INTO Flight (origin, destination, duration, departureTime, arrivalTime, flightNumber, price, totalSeatsOnPlane)
+	$query = "INSERT INTO Flight (origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price, totalSeatsOnPlane)
 				VALUES(?, ?, ?, ?, ?, ?, ?,?)";
 	$statement = $mysqli->prepare($query);
 	if($statement === false) {
@@ -35,24 +40,22 @@ function	buildFlights (&$mysqli, $startDate) {
 	for($i = 0; $i < 730; $i++) {
 
 
-		//fixme!
-		$dayOfWeek = $date("N", $date);
+		//get day of week for the date in the current loop
+		$dayOfWeek = date("N",$date->getTimestamp());
 
 		//"if date is weekday, then do following:"
-		if($dayOfWeek >= 1 && $dayOfWeek <= 5) { //fixme!
+		if($dayOfWeek < 6) {
 
 
-			//FIXME will need to clean up/understand how the file is accessed/opened
+			//FIXME will need to clean up/understand how the file is opened
+			//open the "(relevant) CSV export-Table 1.csv"
 			if(($filePointer = fopen($fileName, "r")) === false){
 				throw(new RuntimeException("Unable to Open $fileName"));
 			}
 
-
-
+			//FIXME will need to clean up/understand how the file is then accessed
+			//go through each row of the relevant schedule and build all flights for this date
 			while(($output = fgetcsv($filePointer, 0, ",")) !== false) {
-
-				//$num = count($output);
-
 
 				//$output[0, 1, 5, 9, 13] come in as strings and will be used as such for origin/destination/flight numbers
 
@@ -66,7 +69,7 @@ function	buildFlights (&$mysqli, $startDate) {
 				$explode4 = explode(":", $output[4]);
 
 
-				//second, use the exploded strings to create the DateInteval
+				//second, use the exploded strings to create the DateInteval.  Duration will remain a DateInterval.
 				$duration = DateInterval::createFromDateString("$explode2[0] hour + $explode2[1] minutes");
 				$departureTime1 = DateInterval::createFromDateString("$explode3[0] hour + $explode3[1] minutes");
 				$arrivalTime1 = DateInterval::createFromDateString("$explode4[0] hour + $explode4[1] minutes");
@@ -90,50 +93,48 @@ function	buildFlights (&$mysqli, $startDate) {
 					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 				}
 
-				//FIXME: get the Flight ID from mySQL, check if we need to declare it as null above in template query or elsewhere
+						//check for flight 2 on seed row and insert if exists:
+						if(empty($output[7]) === false) {
+							//repeat steps from default case for Flight 2
+							$explode7 = explode(":", $output[7]);
+							$explode8 = explode(":", $output[8]);
+							$departureTime2 = DateInterval::createFromDateString("$explode7[0] hour + $explode7[1] minutes");
+							$arrivalTime2 = DateInterval::createFromDateString("$explode8[0] hour + $explode8[1] minutes");
+							$dateTimeDep2 = $date->add($departureTime2);
+							$dateTimeArr2 = $date->add($arrivalTime2);
 
-				//check for flight 2 and insert if exists:
-				if(empty($output[7]) === false) {
-					//repeat steps from default case for Flight 2
-					$explode7 = explode(":", $output[7]);
-					$explode8 = explode(":", $output[8]);
-					$departureTime2 = DateInterval::createFromDateString("$explode7[0] hour + $explode7[1] minutes");
-					$arrivalTime2 = DateInterval::createFromDateString("$explode8[0] hour + $explode8[1] minutes");
-					$dateTimeDep2 = $date->add($departureTime2);
-					$dateTimeArr2 = $date->add($arrivalTime2);
+							$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep2,
+								$dateTimeArr2, $output[9], $output[10], $initialTotalSeatsOnPlane);
 
-					$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep2,
-						$dateTimeArr2, $output[9], $output[10], $initialTotalSeatsOnPlane);
-
-					if($wasClean === false) {
-						throw(new mysqli_sql_exception("Unable to bind parameters"));
-					}
-					if($statement->execute() === false) {
-						throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-					}
+							if($wasClean === false) {
+								throw(new mysqli_sql_exception("Unable to bind parameters"));
+							}
+							if($statement->execute() === false) {
+								throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+							}
 
 
-					//check for flight 3 and insert if it exists:
-					if(empty($output[11]) === false) {
-						//repeat steps from default case for Flight 3
-						$explode11 = explode(":", $output[11]);
-						$explode12 = explode(":", $output[12]);
-						$departureTime3 = DateInterval::createFromDateString("$explode11[0] hour + $explode11[1] minutes");
-						$arrivalTime3 = DateInterval::createFromDateString("$explode12[0] hour + $explode12[1] minutes");
-						$dateTimeDep3 = $date->add($departureTime3);
-						$dateTimeArr3 = $date->add($arrivalTime3);
+								//check for flight 3 on seed row and insert if it exists:
+								if(empty($output[11]) === false) {
+									//repeat steps from default case for Flight 3
+									$explode11 = explode(":", $output[11]);
+									$explode12 = explode(":", $output[12]);
+									$departureTime3 = DateInterval::createFromDateString("$explode11[0] hour + $explode11[1] minutes");
+									$arrivalTime3 = DateInterval::createFromDateString("$explode12[0] hour + $explode12[1] minutes");
+									$dateTimeDep3 = $date->add($departureTime3);
+									$dateTimeArr3 = $date->add($arrivalTime3);
 
-						$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep3,
-																		$dateTimeArr3, $output[13], $output[14], $initialTotalSeatsOnPlane);
-						if($wasClean === false) {
-							throw(new mysqli_sql_exception("Unable to bind parameters"));
+									$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep3,
+																					$dateTimeArr3, $output[13], $output[14], $initialTotalSeatsOnPlane);
+									if($wasClean === false) {
+										throw(new mysqli_sql_exception("Unable to bind parameters"));
+									}
+									if($statement->execute() === false) {
+										throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+									}
+
+								}
 						}
-						if($statement->execute() === false) {
-							throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-						}
-
-					}
-				}
 			}
 
 
@@ -141,7 +142,7 @@ function	buildFlights (&$mysqli, $startDate) {
 
 
 
-		} else if($dayOfWeek === 0 || $dayOfWeek === 7) {
+		} else if($dayOfWeek === 6 || $dayOfWeek === 7) {
 				//fixme: repeat code above, change file name to weekend csv.
 
 		} else {
@@ -170,6 +171,8 @@ function	buildFlights (&$mysqli, $startDate) {
 	//
 
 /*//
+//$num = count($output);
+
 
 	//$date->add(new DateInterval('P1D'));
 

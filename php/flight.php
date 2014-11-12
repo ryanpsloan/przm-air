@@ -17,9 +17,13 @@ class Flight {
 	 **/
 	private $flightId;
 	/**
-	 * id for the instance in the schedule (or template) that matches the selection of the user.  This is Foreign Key.
+	 * the origin of a flight
 	 **/
-	private $scheduleId;
+	private $origin;
+	/**
+	 * the destination of a flight
+	 **/
+	private $destination;
 	/**
 	 * specific date and time of departure
 	 **/
@@ -36,7 +40,8 @@ class Flight {
 	/**
  	* constant for number of seats on a plane. kept small so we can create fake user cases like sold-out flights.
  	**/
-	private static $totalSeatsConstant = 20;
+	//already inserted in database when seeding data:
+	//private static $totalSeatsConstant = 20;
 
 
 	/**
@@ -73,10 +78,11 @@ class Flight {
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throws RangeException when a parameter is invalid
 	 **/
-	public function __construct($newFlightId, $newScheduleId, $newDepartureDateTime, $newArrivalDateTime,$newTotalSeatsOnPlane) {
+	public function __construct($newFlightId, $newOrigin, $newDestination, $newDepartureDateTime, $newArrivalDateTime,$newTotalSeatsOnPlane) {
 		try {
 			$this->setFlightId($newFlightId);
-			$this->setScheduleId($newScheduleId);
+			$this->setOrigin($newOrigin);
+			$this->setDestination($newDestination);
 			$this->setDepartureDateTime($newDepartureDateTime);
 			$this->setArrivalDateTime($newArrivalDateTime);
 			$this->setTotalSeatsOnPlane($newTotalSeatsOnPlane);
