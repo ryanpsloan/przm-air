@@ -9,44 +9,56 @@
 
 class Transaction {
 	/**
-	 * product id for the Product; this is the primary key
+	 * transaction id for the Transaction; this is the primary key
 	 **/
-	private $productId;
+	private $transactionId;
 	/**
-	 * product name
+	 * profile id; this is a foreign key
 	 **/
-	private $productName;
+	private $profileId;
 	/**
-	 * product description
+	 * amount of the transaction
 	 **/
-	private $description;
+	private $amount;
 	/**
-	 * product price
+	 * date the transaction was approved
 	 **/
-	private $price;
+	private $dateApproved;
+	/*
+	 * card token for the transaction from API stripe.com
+	 */
+	private $cardToken;
+	/*
+	 * stripe token for the transaction from stripe.com
+	 */
+	private $stripeToken;
 
 	/**
-	 * constructor for Product
+	 * constructor for Transaction
 	 *
-	 * @param mixed $newProductId product id (or null if new object)
-	 * @param string $newProductName product name
-	 * @param string $newDescription description
-	 * @param float $newPrice price
+	 * @param mixed $newTransactionId transaction id (or null if new object)
+	 * @param mixed $newProfileId profile id
+	 * @param float $newAmount amount
+	 * @param string $newDateApproved date approved
+	 * @param string $newCardToken card token
+	 * @param string $newStripeToken stripe token
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throws RangeException when a parameter is invalid
 	 **/
-	public function __construct($newProductId, $newProductName, $newDescription, $newPrice) {
+	public function __construct($newTransactionId, $newProfileId, $newAmount, $newDateApproved, $newCardToken, $newStripeToken) {
 		try {
-			$this->setProductId($newProductId);
-			$this->setProductName($newProductName);
-			$this->setDescription($newDescription);
-			$this->setPrice($newPrice);
+			$this->setTransactionId($newTransactionId);
+			$this->setProfileId($newProfileId);
+			$this->setAmount($newAmount);
+			$this->setDateApproved($newDateApproved);
+			$this->setCardToken($newCardToken);
+			$this->setStripeToken($newStripeToken);
 		} catch(UnexpectedValueException $unexpectedValue) {
 			// rethrow to the caller
-			throw(new UnexpectedValueException("Unable to construct Product", 0, $unexpectedValue));
+			throw(new UnexpectedValueException("Unable to construct Transaction", 0, $unexpectedValue));
 		} catch(RangeException $range) {
 			// rethrow to the caller
-			throw(new RangeException("Unable to construct Product", 0, $range));
+			throw(new RangeException("Unable to construct Transaction", 0, $range));
 		}
 	}
 

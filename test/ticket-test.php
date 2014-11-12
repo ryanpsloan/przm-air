@@ -133,7 +133,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNull($hopefulTicket);
 	}
 
-	// test grabbing a Ticket from mySQL
+	// test grabbing a Ticket from mySQL by ticket id
 	public function testGetTicketByTicketId() {
 		// first verify mySQL connected Ok
 		$this->assertNotNull($this->mysqli);
@@ -159,8 +159,8 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTIONID);
 	}
 
-// test grabbing a Ticket from mySQL
-// @todo finish this test
+	// test grabbing a Ticket from mySQL by confirmation number
+	// @todo finish this test
 	public function testGetTicketByConfirmationNumber() {
 		// first verify mySQL connected Ok
 		$this->assertNotNull($this->mysqli);
@@ -172,7 +172,7 @@ class TicketTest extends UnitTestCase {
 		$this->ticket->insert($this->mysqli);
 
 		// fourth, get the ticket using the static method
-		$staticTicket = Ticket::getTicketByTicketId($this->mysqli, $this->ticket);
+		$staticTicket = Ticket::getTicketByConfirmationNumber($this->mysqli, $this->ticket);
 
 		// finally, compare the fields
 		$this->assertNotNull($staticTicket->getTicketId());
@@ -185,6 +185,21 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELERID);
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTIONID);
 	}
+
+
+
+	// test grabbing a Ticket from mySQL by Profile Id
+
+
+
+
+
+
+
+	// test grabbing a Ticket from mySQL by Traveler Id
+
+
+
 
 
 
