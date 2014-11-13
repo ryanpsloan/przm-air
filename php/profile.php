@@ -104,6 +104,7 @@
 		function setUserObject($newUserObj){
 			if($newUserObj === null) {
 				$this->userObj = null;
+				return;
 			}
 
 			// handle degenerate cases
@@ -457,8 +458,10 @@
 			//convert the associate array to user
 			if($row !== null) {
 				try {
+					$dateString = $row['dateOfBirth'];
+					$dateObj = DateTime::createFromFormat("Y-m-d H:i:s",$dateString);
 					$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],
-						$row['userMiddleName'],$row['userLastName'], $row['dateOfBirth'], $row['customerToken']);
+						$row['userMiddleName'],$row['userLastName'], $dateObj, $row['customerToken']);
 				} catch(Exception $exception) {
 					//if row can't be converted rethrow
 					throw(new mysqli_sql_exception("Unable to convert row to Profile Object", 0, $exception));
@@ -532,7 +535,10 @@
 			//convert the associate array to user
 			if($row !== null) {
 				try {
-					$dateObj = DateTime::createFromFormat("Y-m-d H:is",$row['dateOfBirth']);
+					$dateString = $row['dateOfBirth'];
+					var_dump($dateString);
+					$dateObj = DateTime::createFromFormat("Y-m-d H:i:s",$dateString);
+					var_dump($dateObj);
 					$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],
 						$row['userMiddleName'],$row['userLastName'], $dateObj, $row['customerToken']);
 				} catch(Exception $exception) {
@@ -551,7 +557,7 @@
 		public function __toString()
 		{
 			$date = $this->dateOfBirth;
-			$dateString = $date->format('Y-m-d-H-i-s');
+			$dateString = $date->format('Y-m-d H:i:s');
 			return "<p> profileId = " . $this->__get("profileId") . " userId = " . $this->__get("userId") .
 			" userName = " . $this->__get("userFirstName") . " " . $this->__get("userMiddleName") .
 			" " . $this->__get("userLastName").", dateOfBirth = ".$dateString . ", userObj->".$this->userObj."</p>";
