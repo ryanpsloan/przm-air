@@ -101,4 +101,12 @@ CREATE TABLE ticketFlight (
 
 );
 
+DELIMITER //;
+CREATE PROCEDURE combine_flights (userOrigin, userDestination, userDateStart, userDateRange, userStops) {
 
+ 	CREATE TEMPORARY TABLE FROM flight SELECT origin, destination, flightId FROM	flight
+ 	WHERE origin = userOrigin AND departureDateTime BETWEEN userDateStart AND DATE_ADD(userDateStart, userDateRange);
+
+	InnerJoin
+
+}
