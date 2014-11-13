@@ -51,7 +51,7 @@ class Traveler{
 												$this->setMiddleName($newMiddleName);
 												$this->setLastName($newLastName);
 											   $this->setDateOfBirth($newDateOfBirth);
-												$this->setProfileObj($newProfileObj);
+
 										} catch(UnexpectedValueException $unexpectedValue) {
 											// rethrow to the caller
 											throw(new UnexpectedValueException("Unable to construct Profile Object. Check input formats.", 0,
@@ -92,12 +92,13 @@ class Traveler{
 	 */
 	public function setProfileObj($newProfileObj)
 	{
-		if(gettype($newProfileObj) != 'object' || get_class($newProfileObj) != 'Profile') {
-			throw(new UnexpectedValueException("Argument is not a Profile Object"));
+		if($newProfileObj === null){
+			$this->profileObj = null;
+			return;
 		}
 
-		if($newProfileObj->profileId === null){
-			throw(new UnexpectedValueException("Unable to set a Profile Object that is null"));
+		if(gettype($newProfileObj) != 'object' || get_class($newProfileObj) != 'Profile') {
+			throw(new UnexpectedValueException("Argument is not a Profile Object"));
 		}
 
 		$this->profileObj = $newProfileObj;
@@ -165,7 +166,7 @@ class Traveler{
 		//force all characters to lower case
 		$newFirstName = strtolower($newFirstName);
 		//validate the string using REGEX
-		$filterOptions = array('options' => array("regexp" => "/^[a-zA-Z]{1,50}$/"));
+		$filterOptions = array('options' => array("regexp" => "/^[a-z]{1,50}$/"));
 		if(filter_var($newFirstName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 			throw(new InvalidArgumentException("Argument $newFirstName must be [a-zA-Z] no special characters or spaces"));
 		}
@@ -184,7 +185,7 @@ class Traveler{
 		//force all characters to lower case
 		$newMiddleName = strtolower($newMiddleName);
 		//validate the string using REGEX
-		$filterOptions = array('options' => array("regexp" => "/^[a-zA-Z]{1,50}$/"));
+		$filterOptions = array('options' => array("regexp" => "/^[a-z]{1,50}$/"));
 		if(filter_var($newMiddleName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 			throw(new InvalidArgumentException("Argument $newMiddleName must be [a-zA-Z] no special characters or spaces"));
 		}
@@ -203,7 +204,7 @@ class Traveler{
 		//force all characters to lower case
 		$newLastName = strtolower($newLastName);
 		//validate the string using REGEX
-		$filterOptions = array('options' => array("regexp" => "/^[a-zA-Z]{1,50}$/"));
+		$filterOptions = array('options' => array("regexp" => "/^[a-z]{1,50}$/"));
 		if(filter_var($newLastName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 			throw(new InvalidArgumentException("Argument $newLastName must be [a-zA-Z] no special characters or spaces"));
 		}
@@ -272,7 +273,7 @@ class Traveler{
 		}
 
 		$date = $this->travelerDateOfBirth;
-		$string = $date->format("Y-m-s H:i:s");
+		$string = $date->format("Y-m-d H:i:s");
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("iissss", $this->travelerId, $this->profileId, $this->travelerFirstName,
 			$this->travelerMiddleName, $this->travelerLastName, $string);
@@ -351,7 +352,7 @@ class Traveler{
 		}
 
 		$date = $this->travelerDateOfBirth;
-		$string = $date->format("Y-m-s H:i:s");
+		$string = $date->format("Y-m-d H:i:s");
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ssssi", $this->travelerFirstName, $this->travelerMiddleName,
 			$this->travelerLastName, $string, $this->travelerId);

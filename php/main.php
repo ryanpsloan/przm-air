@@ -2,11 +2,12 @@
 require_once("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
+$i = rand(1,100);
 require_once("user.php");
 $salt = bin2hex(openssl_random_pseudo_bytes(32));
 $hash = hash_pbkdf2("sha512", "newPassword", $salt, 2048, 128);
 $token = bin2hex(openssl_random_pseudo_bytes(16));
-$user = new User (null, "thomasjamesparker6@gmail.com", $hash, $salt, $token);
+$user = new User (null, "tjp".++$i."@gmail.com", $hash, $salt, $token);
 echo "Before Insert: ".$user;
 $user->insert($mysqli);
 echo "After Insert: ".$user;

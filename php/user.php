@@ -55,8 +55,8 @@ class User {
 			// rethrow to the caller
 			throw(new RangeException("Unable to construct User", 0, $range));
 		}
-	}
-
+ 	}
+	/*end constructor*/
 	/**
 	 * gets the value of user id
 	 *
