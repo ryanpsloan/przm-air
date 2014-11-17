@@ -3,17 +3,17 @@ require_once("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 require_once("tools.php");
+/*$baseDate = "2014-12-01";
 $fileName = "weekDay01.csv";
-readCSV($mysqli, $fileName);
-echo"<p> weekDay seed data set to flight </p><br>";
+readCSV($mysqli, $fileName,$baseDate,25,5);
+echo"<p> weekDay seed data set to flight </p><br>";*/
 
+
+$baseDate = "2014-12-06";
 $fileName = "weekEnd01.csv";
-readCSV($mysqli, $fileName);
+readCSV($mysqli, $fileName,$baseDate,25,2);
 echo"<p> weekEnd seed data set to flight </p><br>";
-/*for($i = 1; $i <= 500; ++$i){
-	setWeekDay($mysqli, $i, 280);
-}
-echo"<p> weekDay set";*/
+
 /*$i = rand(1,100);
 require_once("user.php");
 $salt = bin2hex(openssl_random_pseudo_bytes(32));

@@ -68,6 +68,17 @@ class Flight {
 	 * ToDo: loop within loop function to seed data from the schedule class --(edit: see flight_id_builder)
 	 * ToDo: fix totalSeats function/calc (edit: not sure what this was about)
 	 * ToDo: clean up __get() or change to __call()
+	 *	DELIMITER //;
+	CREATE PROCEDURE combine_flights (userOrigin, userDestination, userDateStart, userDateRange, userStops) {
+
+	CREATE TEMPORARY TABLE FROM flight SELECT origin, destination, flightId FROM	flight
+	WHERE origin = userOrigin AND departureDateTime BETWEEN userDateStart AND DATE_ADD(userDateStart, userDateRange);
+
+	InnerJoin
+
+	}
+
+	 *
 	 *
 	 **/
 
