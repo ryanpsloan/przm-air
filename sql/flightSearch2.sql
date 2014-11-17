@@ -5,7 +5,7 @@
 DROP PROCEDURE IF EXISTS spFlightSearchR;
 
 -- Create Procedure
-CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), departDate DATETIME, arrivalDate DATETIME)
+CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), departDate DATETIME, arrivalDate DATETIME, minTicket INT)
 		PROC:BEGIN
 		-- Stored Procedure created by Marc Hayes <marc.hayes.tech@gmail.com>
 		-- for use by PRZM capstone group
@@ -30,9 +30,10 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 		INSERT INTO flightSearchR
 			SELECT flightId, flightId, flightId
 			FROM flight
-			WHERE origin = startLoc
-					AND departureDateTime >= departDate
-					AND arrivalDateTime <= arrivalDate;
+			WHERE origin = startLoc -- start at the right location
+					AND departureDateTime >= departDate -- ensure that the date range of seed records is valid
+					AND arrivalDateTime <= arrivalDate -- ensure that the date range of seed records is valid
+					AND totalSeatsOnPlane >= minTicket; -- ensure we are only looking at flights that have enough available tickets
 
 		-- Loop through original results finding all nodes that originate from the arrival of prior loop
 		-- exit loop when no more relevant paths are found in the time window
@@ -44,6 +45,7 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 					INNER JOIN flight F2 ON F1.destination = F2.origin
 					LEFT JOIN flightSearchR R2 ON R2.path = CONCAT(R1.path, ',', CAST(F2.flightId AS CHAR))
 				WHERE F1.destination <> endLoc -- do no process paths that have already terminated at Destination
+						AND F2.totalSeatsOnPlane >= minTicket -- ensure we are only looking at flights that have enough available tickets
 						AND F2.arrivalDateTime <= arrivalDate -- ensure we are not grabbing "nodes" that are outside of time range
 						AND R2.path IS NULL; -- ensure we are not processing nodes that have already been processed.
 		UNTIL (ROW_COUNT() = 0) -- exit when prior iteration has returned 0 results

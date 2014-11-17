@@ -21,14 +21,12 @@ private $date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate)
 //set initial seats available on each plane to 20
 private $initialTotalSeatsOnPlane = 20;
 
-//FIXME: where should we open the files, declare the counter variables, establish $date object etc.  Inside function or outside?
 //open the "weekDayCsv.csv" to have ready for use during loops
 if(($weekDayPointer = fopen("weekDayCsv.csv", "r")) === false){
 	throw(new RuntimeException("Unable to Open 'weekDay CSV export-Table 1.csv'"));
 }
 
 
-//FIXME will need to clean up/understand how the file is opened, move above to set up with two file pointers to open weekday and weekend.
 //open the "weekEndCsv.csv" to have ready for use during loops
 if(($weekEndPointer = fopen("weekEndCsv.csv", "r")) === false){
 	throw(new RuntimeException("Unable to Open 'weekEnd CSV export-Table 1.csv'"));
@@ -66,7 +64,6 @@ function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initi
 		if($dayOfWeek < 6) {
 
 
-			//FIXME will need to clean up/understand how the file is then accessed // then call it down here
 			//go through each row of the relevant schedule and build all flights for this date
 			while(($output = fgetcsv($weekDayPointer, 0, ",")) !== false) {
 
@@ -101,14 +98,14 @@ function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initi
 				//		$basePriceFlight2 = (int) $output[10];
 				//		$basePriceFlight3 = (int) $output[14];
 
-				*/
-
-
 				// First, explode the duration string into an array to be able to turn it into a DateInterval object to be used in calcs
 				$explode2 = explode(":", $output[2]);
 
 				//second, use the exploded string to create the DateInteval.  Duration will remain a DateInterval.
 				$duration = DateInterval::createFromDateString("$explode2[0] hour + $explode2[1] minutes");
+
+				*/
+
 
 				// set index base counter for do while loop to 3 for first flight arrival field
 				$a = 3;
@@ -126,7 +123,7 @@ function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initi
 					// First, explode the string into an array to be able to turn it into a DateInterval object.
 					// Start with the defualt case of the first flight which is always populated.  Then do same for Flight 2 and 3 when they exist.
 
-
+						//fixme to be more elegant
 					$explodeA = explode(":", $output[$a]);
 					$explodeB = explode(":", $output[$b]);
 
@@ -144,11 +141,7 @@ function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initi
 
 					//array to hold all results//fixme: how do we build to an array before inserting
 
-					//$insertAllData = array();
-
-					//$wasClean
-
-					$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $duration, $dateTimeDep,
+					$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $output[2], $dateTimeDep,
 						$dateTimeArr, $output[$a+2], $output[$a+3], $initialTotalSeatsOnPlane);
 
 
