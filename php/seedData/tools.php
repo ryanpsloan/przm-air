@@ -112,5 +112,39 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 	echo "Files were successfully inserted";
 
 }
+
+function setTimeZone($cityCode){
+
+	switch($cityCode){
+		case 'ABQ':
+
+			break;
+		case 'ATL':
+			break;
+		case 'DEN':
+			break;
+		case 'DFW':
+			break;
+		case 'DTW':
+			break;
+		case 'JFK':
+			break;
+		case 'LAX':
+			break;
+		case 'LGA':
+			break;
+		case 'MDW':
+			break;
+		case 'MIA':
+			break;
+		case 'ORD':
+			break;
+		case 'SEA':
+			break;
+		default:
+
+	}
+
+}
 ?>
 

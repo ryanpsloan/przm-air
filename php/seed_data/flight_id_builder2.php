@@ -56,7 +56,7 @@ function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initi
 	}
 
 	//run loop for 2 years worth of data, checking which schedule to pull from on each day
-	for($i = 0; $i < 730; $i++) {
+	for($i = 0; $i < 730; $i++) { //counter number is wrong 845
 
 		//fixme use DateTime to reformat this as an  //won't this mean i have to recreate the object as a string?  ie less elegant?  why do this way?
 		//get day of week for the date in the current loop
