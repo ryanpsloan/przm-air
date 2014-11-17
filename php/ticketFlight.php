@@ -147,11 +147,73 @@ class TicketFlight {
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
-
-		// update the ticketId with what mySQL just gave us
-		$this->ticketId = $mysqli->insert_id;
 	}
 
-	// Spectacular Coding* @Paul
+	/**
+	 * deletes this TicketFlight from mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function delete(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// enforce the ticketId is not null (i.e., don't delete a ticket that hasn't been inserted)
+		if($this->ticketId === null) {
+			throw(new mysqli_sql_exception("Unable to delete a ticket that does not exist"));
+		}
+
+		// create query template
+		$query     = "DELETE FROM ticketFlight WHERE ticketId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the member variables to the place holder in the template
+		$wasClean = $statement->bind_param("i", $this->ticketId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+	}
+
+	/**
+	 * updates this TicketFlight to mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function update(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// create query template
+		$query     = "UPDATE ticketFlight SET flightId = ?, ticketId = ? WHERE  ";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the member variables to the place holders in the template
+		$wasClean = $statement->bind_param("ii", $this->flightId, $this->ticketId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+	}
 }
 

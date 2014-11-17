@@ -636,6 +636,9 @@ class Flight {
 
 	/**
 	 * searches all flights based on user input to return route options
+	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
+	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
+	 * $userOrigin, and the return date inputted as $userFlyDate
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @param mixed $totalSeatsOnPlane available seats to change
@@ -669,14 +672,14 @@ class Flight {
 
 		// create query template for DIRECT FLIGHTS
 		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
-						totalSeatsOnPlane	FROM flight WHERE origin = ?, destination = ?, departureDateTime = ?";
+						totalSeatsOnPlane	FROM flight WHERE origin = ? AND destination = ? AND departureDateTime = ? AND totalSeatsOnPlane > ?";//fixme
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		// bind the user inputs to the place holder in the template
-		$wasClean = $statement->bind_param("sss", $userOrigin, $userDestination, $userFlyDate);
+		// bind the user inputs to the place holder in the template // fixme --> do we have to convert userFlyDate to DATETIME?  if so here and everywhere this pattern is repeated.
+		$wasClean = $statement->bind_param("sssi", $userOrigin, $userDestination, $userFlyDate, 0);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -694,7 +697,7 @@ class Flight {
 
 
 		// since these are likely not unique fields (even in combination), this will return as many results as there
-		// 	are flights with same origin + departure + date.
+		// are flights with same origin + departure + date.
 		//
 		// 1) if there's no result, we can just return null
 		// 2) if there's a result, we can make it into flight objects normally
@@ -748,7 +751,7 @@ class Flight {
 
 
 		// since these are not unique fields (even in combination), this will return as many results as there
-		// 	are flights from that origin on that date.
+		// are flights from that origin on that date.
 		//
 		// 1) if there's no result, we can just return null
 		// 2) if there's a result, we can make it into flight objects normally
@@ -771,6 +774,7 @@ class Flight {
 			}
 
 		}
+
 
 
 		// create query templates for LEG 2 of INDIRECT FLIGHT combos
@@ -801,7 +805,7 @@ class Flight {
 
 
 		// since these are not unique fields (even in combination), this will return as many results as there
-		// 	are flights from that origin on that date.
+		// are flights from that origin on that date.
 		//
 		// 1) if there's no result, we can just return null
 		// 2) if there's a result, we can make it into flight objects normally
