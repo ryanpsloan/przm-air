@@ -765,9 +765,12 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to update a flight that does not exist"));
 		}
 
+		// ensure the changeBy is an integer
+		if(filter_var($changeBy, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("Change amount for number of seats, $changeBy, is not numeric"));
+		}
 
-		//fixme: validate the $changeBy pass through as an integer?
-
+		$changeBy = intval($changeBy);
 
 		// first, get the total seats left on this flightId
 		// create query template for SELECT
@@ -795,11 +798,13 @@ class Flight {
 		}
 
 
+		//next, check that there's enough seats left to execute the $changeBy calc
+		if ($result + $changeBy>0) {
+			$totalSeatsOnPlane = $result + $changeBy;
+		} else {
+			throw (new RangeException("Not enough seats available on this flight to fulfill request for $changeBy passengers."));
+		}
 
-		//second, set total seats remaining to the sum of the result and the amount that needs changing
-		$totalSeatsOnPlane = $result + $changeBy;
-
-		// fixme validate enough seats to take down
 
 		// create query template for UPDATE to update flight with new number
 		$queryUpdate     = 	"UPDATE flight SET totalSeatsOnPlane = ? WHERE flightId = ?";
