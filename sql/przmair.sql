@@ -39,13 +39,13 @@ CREATE TABLE flight (
 	flightNumber      VARCHAR(15)  NOT NULL,
 	price             DECIMAL      NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
-	weekDay 				TINYINT 		 NOT NULL,
+
 	INDEX (origin),
 	INDEX (destination),
 	INDEX (departureDateTime),
 	INDEX (arrivalDateTime),
 	INDEX (totalSeatsOnPlane),
-	INDEX (weekDay),
+
 	PRIMARY KEY (flightId)
 );
 
@@ -103,7 +103,7 @@ CREATE TABLE ticketFlight (
 
 );
 
-DELIMITER //;
+/*DELIMITER //;
 CREATE PROCEDURE combine_flights (userOrigin, userDestination, userDateStart, userDateRange, userStops) {
 
  	CREATE TEMPORARY TABLE FROM flight SELECT origin, destination, flightId FROM	flight
@@ -111,4 +111,4 @@ CREATE PROCEDURE combine_flights (userOrigin, userDestination, userDateStart, us
 
 	InnerJoin
 
-}
+}*/
