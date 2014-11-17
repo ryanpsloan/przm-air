@@ -21,17 +21,16 @@ private $date = DateTimeImmutable::createFromFormat($formatDateTime, $startDate)
 //set initial seats available on each plane to 20
 private $initialTotalSeatsOnPlane = 20;
 
-//FIXME: where should we open the files, declare the counter variables, etc.  Inside function or outside?
-//FIXME will need to clean up/understand how the file is opened, move above to set up with two file pointers to open weekday and weekend.
-//open the "(relevant) CSV export-Table 1.csv"
-if(($weekDayPointer = fopen("weekDay CSV export-Table 1.csv", "r")) === false){
+//FIXME: where should we open the files, declare the counter variables, establish $date object etc.  Inside function or outside?
+//open the "weekDayCsv.csv" to have ready for use during loops
+if(($weekDayPointer = fopen("weekDayCsv.csv", "r")) === false){
 	throw(new RuntimeException("Unable to Open 'weekDay CSV export-Table 1.csv'"));
 }
 
 
 //FIXME will need to clean up/understand how the file is opened, move above to set up with two file pointers to open weekday and weekend.
-//open the "(relevant) CSV export-Table 1.csv"
-if(($weekEndPointer = fopen("weekEnd CSV export-Table 1.csv", "r")) === false){
+//open the "weekEndCsv.csv" to have ready for use during loops
+if(($weekEndPointer = fopen("weekEndCsv.csv", "r")) === false){
 	throw(new RuntimeException("Unable to Open 'weekEnd CSV export-Table 1.csv'"));
 }
 
@@ -39,11 +38,14 @@ if(($weekEndPointer = fopen("weekEnd CSV export-Table 1.csv", "r")) === false){
 //fixme: add full doc-bloc with parameters etc.
 /**
  * increment by 1 day, run through schedule files in a loop, build flights from seed data CSVs
- *
  * @param resource $mysqli pointer to mySQL connection, by reference
+ * @param $weekDayPointer
+ * @param $weekEndPointer
+ * @param $date
+ * @param $initialTotalSeatsOnPlane
  * @throws mysqli_sql_exception when mySQL related errors occur
  **/
-function	buildFlights (&$mysqli) {
+function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initialTotalSeatsOnPlane) {
 
 	//first, create query template
 	$query = "INSERT INTO flight (origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price, totalSeatsOnPlane)
@@ -226,6 +228,8 @@ function	buildFlights (&$mysqli) {
 
 	}
 
+	fclose($weekDayPointer);
+	fclose($weekEndPointer);
 }
 
 //end function
