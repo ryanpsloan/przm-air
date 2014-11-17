@@ -191,7 +191,7 @@ class Flight {
 		}
 
 		//check that string is the appropriate length for an airport code
-		if(strlen($newOrigin) !===3) {
+		if(strlen($newOrigin) !== 3) {
 			throw(new RangeException("Origin $newOrigin does not appear to be a three-letter code."));
 		}
 		// finally, take the origin out of quarantine
@@ -226,7 +226,7 @@ class Flight {
 		}
 
 		//check that string is the appropriate length for an airport code
-		if(strlen($newDestination) !===3) {
+		if(strlen($newDestination) !== 3) {
 			throw(new RangeException("Destination $newDestination does not appear to be a three-letter code."));
 		}
 		// finally, take the departure out of quarantine
