@@ -72,9 +72,9 @@ class Transaction {
 	}
 
 	/**
-	 * sets the value of trasaction id
+	 * sets the value of transaction id
 	 *
-	 * @param mixed $newTransactionId tranaction id (or null if new object)
+	 * @param mixed $newTransactionId transaction id (or null if new object)
 	 * @throws UnexpectedValueException if not an integer or null
 	 * @throws RangeException if transaction id isn't positive
 	 **/
@@ -85,7 +85,7 @@ class Transaction {
 			return;
 		}
 
-		// first, ensure the transactoin id is an integer
+		// first, ensure the transaction id is an integer
 		if(filter_var($newTransactionId, FILTER_VALIDATE_INT) === false) {
 			throw(new UnexpectedValueException("transaction id $newTransactionId is not numeric"));
 		}
@@ -264,7 +264,201 @@ class Transaction {
 		$this->stripeToken = $newStripeToken;
 	}
 
+	/**
+	 * inserts this Transaction in mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function insert(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
 
+		// enforce the TransactionId is not null (i.e., don't update a transaction that hasn't been inserted)
+		if($this->transactionId === null) {
+			throw(new mysqli_sql_exception("Unable to update a transaction that does not exist"));
+		}
+
+		// convert dates to strings
+		if($this->dateApproved === null) {
+			$dateApproved = null;
+		} else {
+			$dateApproved = $this->dateApproved->format("Y-d-m H:i:s");
+		}
+
+		// create query template
+		$query     = "UPDATE transaction SET profileId = ?, amount = ?, dateApproved = ?, cardToken = ?, stripeToken = ? WHERE transactionId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the member variables to the place holders in the template
+		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $this->dateApproved,
+																	 $this->cardToken, $this->stripeToken);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+	}
+
+	/**
+	 * deletes this Transaction from mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function delete(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// enforce the transacionId is not null (i.e., don't delete a transaction that hasn't been inserted)
+		if($this->transactionId === null) {
+			throw(new mysqli_sql_exception("Unable to delete a transacion that does not exist"));
+		}
+
+		// create query template
+		$query     = "DELETE FROM transaction WHERE transactionId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the member variables to the place holder in the template
+		$wasClean = $statement->bind_param("i", $this->transactionId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+	}
+
+	/**
+	 * updates this transaction in mySQL
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public function update(&$mysqli) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// enforce the transactionId is not null (i.e., don't update a transaction that hasn't been inserted)
+		if($this->transactionId === null) {
+			throw(new mysqli_sql_exception("Unable to update a transaction that does not exist"));
+		}
+
+		// convert dates to strings
+		if($this->dateApproved === null) {
+			$dateApproved = null;
+		} else {
+			$dateApproved = $this->dateApproved->format("Y-d-m H:i:s");
+		}
+
+		// create query template
+		$query     = "UPDATE transaciont SET profileId = ?, amount= ?, dateApproved = ?, cardToken= ?, stripeToken= ? WHERE transactionId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the member variables to the place holders in the template
+		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $this->dateApproved,
+			$this->cardToken, $this->stripeToken);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+	}
+
+	/**
+	 * gets the Transaction by TransactionId
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param mixed $transactioId transaction id to search for
+	 * @return mixed Transaction found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getTransactionByTransactionId(&$mysqli, $transactionId) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// first, ensure the transaction id is an integer
+		if(filter_var($transactionId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("transaction id $transactionId is not numeric"));
+		}
+
+		// second, convert the transaction id to an integer and enforce it's positive
+		$transactionId = intval($transactionId);
+		if($transactionId <= 0) {
+			throw(new RangeException("transaction id $transactionId is not positive"));
+		}
+
+		// create query template
+		$query     = "SELECT transactionId, profileId, amount, dateApproved, cardToken, stripeToken FROM transaction WHERE transactionId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the transactionId to the place holder in the template
+		$wasClean = $statement->bind_param("i", $transactionId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a Transaction object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to a Transaction
+		if($row !== null) {
+			try {
+				$transaction = new Transaction($row["transactionId"],$row["profileId"], $row["amount"], $row["dateApproved"], $row["cardToken"], $row["stripeToken"]);
+			}
+			catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Transaction", 0, $exception));
+			}
+
+			// if we got here, the Transaction is good - return it
+			return($transaction);
+		} else {
+			// 404 User not found - return null instead
+			return(null);
+		}
+	}
 
 
 }

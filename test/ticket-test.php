@@ -37,7 +37,7 @@ class TicketTest extends UnitTestCase {
 	private $ticket = null;
 
 	// a few "global" variables for creating test data
-	private $CONFIRMATION_NUMBER  = "ABC123";
+	private $CONFIRMATION_NUMBER  = "ABCDE12345";
 	private $PRICE					   = "100.00";
 	private $STATUS	 			   = "Booked";
 	private $USER						= null;
@@ -291,7 +291,29 @@ class TicketTest extends UnitTestCase {
 
 	// @todo test grabbing a Ticket from mySQL by Transaction Id
 
+	// test grabbing a Ticket from mySQL by Transaction Id
+	public function testGetTicketByTransactionId() {
+		// first verify mySQL connected Ok
+		$this->assertNotNull($this->mysqli);
 
+		// second create a new ticket to post to mySQL
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->getProfileId, $this->TRAVELER->getTravelerId(), $this->TRANSACTION->getTransactionId());
 
+		// third, insert the ticket to mySQL
+		$this->ticket->insert($this->mysqli);
 
+		// fourth, get the ticket using the static method
+		$staticTicket = Ticket::getTicketByTransactionId($this->mysqli, $this->ticket);
+
+		// finally, compare the fields
+		$this->assertNotNull($staticTicket->getTicketId());
+		$this->assertTrue($staticTicket->getTicketId() > 0);
+		$this->assertIdentical($staticTicket->getTicketId(), 				$this->ticket->getTicketId());
+		$this->assertIdentical($staticTicket->getConfirmationNumber(), $this->CONFIRMATION_NUMBER);
+		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
+		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
+		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->getProfileId());
+		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
+	}
 }

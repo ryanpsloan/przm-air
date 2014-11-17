@@ -498,7 +498,7 @@ class Ticket {
 				throw(new mysqli_sql_exception("Unable to convert row to Ticket", 0, $exception));
 			}
 
-			// if we got here, the Ticket User is good - return it
+			// if we got here, the Ticket is good - return it
 			return($ticket);
 		} else {
 			// 404 User not found - return null instead
@@ -716,4 +716,75 @@ class Ticket {
 		}
 	}
 
+	/**
+	 * gets the Ticket by TransactionId
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param mixed $transactionId tranaction id to search for
+	 * @return mixed Ticket found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+	public static function getTicketByTransactionId(&$mysqli, $transactionId) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// first, ensure the tranasaction id is an integer
+		if(filter_var($transactionId, FILTER_VALIDATE_INT) === false) {
+			throw(new UnexpectedValueException("trasaction id $transactionId is not numeric"));
+		}
+
+		// second, convert the transaction id to an integer and enforce it's positive
+		$tranactionId= intval($transactionId);
+		if($tranactionId <= 0) {
+			throw(new RangeException("transaction id $transactionId is not positive"));
+		}
+
+		// create query template
+		$query     = "SELECT ticketId, confirmationNumber, price, status, profileId, travelerId, transactionId FROM ticket WHERE transactionId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the transactionId to the place holder in the template
+		$wasClean = $statement->bind_param("i", $tranactionId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a Ticket object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to a Ticket
+		if($row !== null) {
+			try {
+				$ticket = new Ticket($row["ticketId"],$row["confirmationNumber"], $row["price"], $row["status"], $row["profileId"], $row["travelerId"], $row["transactionId"]);
+			}
+			catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Ticket", 0, $exception));
+			}
+
+			// if we got here, the User is good - return it
+			return($ticket);
+		} else {
+			// 404 User not found - return null instead
+			return(null);
+		}
+	}
 }
