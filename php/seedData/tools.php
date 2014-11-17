@@ -40,10 +40,13 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 		$baseDate = DateTime::createFromFormat("Y-m-d", $baseDate);
 		echo "baseDate";
 		var_dump($baseDate);
-		$baseDate = $baseDate->format("Y-m-d");
-		echo"baseDateStr";
+		$baseDate->add(new DateInterval('P1D')); // P1D means a period of 1 day
+		echo "baseDate + Interval";
 		var_dump($baseDate);
-		for($i = 0; $i < $numOfDays; ++$i){
+		$baseDate->format('Y-m-d');
+		echo "baseDateStr Y-m-d";
+		var_dump($baseDate);
+
 			$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $output[2], $newDateDepStr,
 							$newDateArrStr, $output[5], $output[6], $totalSeats);
 			if($wasClean === false) {
@@ -52,13 +55,10 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 			if($statement->execute() === false) {
 				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 			}
-			$newDepDateObj = DateTime::createFromFormat("Y-m-d", $newDateDepStr);
-			$newDepTimeObj = DateTime::createFromFormat("H;i:s", $newDateDepStr);
-			$newDepDateObj++;
-			$addedDateObj = DateTime::createFromFormat("Y-m-d", $newDepDateObj->format("Y-m-d")." "
-			$newDateDepStr = $addedDateObj->format("Y-m-d H:i:s");
 
-		}
+
+
+
 		if(!empty($output[7])){
 				$baseDateDep = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate." ".$output[7]);
 				$baseDateArr = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate." ".$output[8]);
