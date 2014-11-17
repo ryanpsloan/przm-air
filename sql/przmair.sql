@@ -34,16 +34,18 @@ CREATE TABLE flight (
 	origin            VARCHAR(20)  NOT NULL,
 	destination       VARCHAR(20)  NOT NULL,
 	duration          TIME         NOT NULL,
-	departureDateTime TIME         NOT NULL,
-	arrivalDateTime   TIME         NOT NULL,
+	departureDateTime DATETIME     NOT NULL,
+	arrivalDateTime   DATETIME     NOT NULL,
 	flightNumber      VARCHAR(15)  NOT NULL,
 	price             DECIMAL      NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
+	weekDay 				TINYINT 		 NOT NULL,
 	INDEX (origin),
 	INDEX (destination),
 	INDEX (departureDateTime),
 	INDEX (arrivalDateTime),
 	INDEX (totalSeatsOnPlane),
+	INDEX (weekDay),
 	PRIMARY KEY (flightId)
 );
 

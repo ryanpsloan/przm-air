@@ -58,6 +58,7 @@ class Flight {
 
 	/**
 	 *Questions:
+	 * ToDo: build testFlight test class and test flight get/set insert delete update searchBy
 	 * ToDo: seats decrementer/incrementer
 	 * ToDo: search function to make tickets?
 	 * ToDo: see Dylan's code fragment for validating DATETIME objects like how to validate and for mysqli statements, do i list them all as ("iiii").
