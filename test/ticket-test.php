@@ -50,11 +50,11 @@ class TicketTest extends UnitTestCase {
 	public function setUp() {
 		$mysqli = MysqliConfiguration::getMysqli();
 
-		$this->salt       = bin2hex(openssl_random_pseudo_bytes(32));
-		$this->authToken = bin2hex(openssl_random_pseudo_bytes(16));
-		$this->hash       = hash_pbkdf2("sha512", $this->password, $this->salt, 2048, 128);
+		$salt       			= bin2hex(openssl_random_pseudo_bytes(32));
+		$authenticationToken = bin2hex(openssl_random_pseudo_bytes(16));
+		$hash					   = hash_pbkdf2("sha512", "password", $salt, 2048, 128);
 
-		$this->USER = new User(null, "a@b.net", "Homer", "J", "Simpson", "1956-03-15", "Token");
+		$this->USER = new User(null, "a@b.net", $hash, $salt,  $authenticationToken);
 		$this->USER->insert($mysqli);
 
 		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15", "Token");
@@ -75,22 +75,22 @@ class TicketTest extends UnitTestCase {
 		// delete the profile if we can
 
 		if($this->TRANSACTION !== null) {
-			$this->TRANSACTION->delete($this-mysqli);
+			$this->TRANSACTION->delete($this->mysqli);
 			$this->TRANSACTION = null;
 		}
 
 		if($this->TRAVELER !== null) {
-			$this->TRAVELER->delete($this-mysqli);
+			$this->TRAVELER->delete($this->mysqli);
 			$this->TRAVELER = null;
 		}
 
 		if($this->PROFILE !== null) {
-			$this->PROFILE->delete($this-mysqli);
+			$this->PROFILE->delete($this->mysqli);
 			$this->PROFILE = null;
 		}
 
 		if($this->USER !== null) {
-			$this->USER->delete($this-mysqli);
+			$this->USER->delete($this->mysqli);
 			$this->USER = null;
 		}
 
