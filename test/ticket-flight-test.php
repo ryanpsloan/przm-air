@@ -26,9 +26,40 @@ class TicketFlightTest extends UnitTestCase {
 	private $ticketFlight = null;
 
 	// a few "global" variables for creating test data
+	private $FLIGHT = null;
+	private $TICKET = null;
 
+	// setUp () is a method that is run before each test
+	// here, we use it to connect to my SQL
+	public function setUp() {
+		$mysqli = MysqliConfiguration::getMysqli();
 
-/*A work in progress :0)*/
+		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42", "08:00", "09:42", "1234", "100.00", 5);
+		$this->FLIGHT->insert($mysqli);
+		// todo create objects for dependencies PROFILE, TRAVELER, TRANSACTION
+		$this->TICKET = new Ticket(null, "12345ABCDE", "100.00", "Booked", 1, 1, 1);
+		$this->TICKET->insert($mysqli);
+	}
+
+	// tearDown () is a method that is run after each test
+	// here, we use it to delete the test record and disconnect from mySQL
+	public function tearDown() {
+		// delete the profile if we can
+		if($this->TICKET !== null) {
+			$this->TICKET->delete($this->mysqli);
+			$this->TICKET = null;
+		}
+
+		if($this->FLIGHT !== null) {
+			$this->FLIGHT->delete($this->mysqli);
+			$this->FLIGHT = null;
+		}
+
+		// disconnect from mySQL
+		// if($this->mysqli !== null) {
+		// 	$this->mysqli->close();
+		// }
+	}
 
 
 }

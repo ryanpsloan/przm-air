@@ -16,6 +16,7 @@ require_once("../php/ticket.php");
 require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // require the classes for foreign key
+require_once("../php/user.php");
 require_once("../php/profile.php");
 
 // the TransactionTest is a container for all our tests
@@ -150,5 +151,29 @@ class TransactionTest extends UnitTestCase
 
 	}
 
+	// test grabbing a Transaction from mySQL
+	public function testGetTransactionByTransactionId() {
+		// first verify mySQL connected Ok
+		$this->assertNotNull($this->mysqli);
+
+		// second create a new transaction to post to mySQL
+		$this->transaction = new Transaction(null, $this->PROFILE->getProfileId(), $this->AMOUNT, $this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+
+		// third, insert the transaction to mySQL
+		$this->transaction->insert($this->mysqli);
+
+		// fourth, get the transaction using the static method
+		$staticTransaction = Transaction::getTransactionByTransactionId($this->mysqli, $this->transaction->getTransactionId()					);
+
+		// finally, compare the fields
+		$this->assertNotNull($staticTransaction->getTransactionId());
+		$this->assertTrue($staticTransaction->getTransactionId() > 0);
+		$this->assertIdentical($staticTransaction->getTransactionId(), $this->transaction->getTransactionId());
+		$this->assertIdentical($staticTransaction->getProfileId(), 		$this->PROFILE->getProfileId);
+		$this->assertIdentical($staticTransaction->getAmount(), 			$this->AMOUNT);
+		$this->assertIdentical($staticTransaction->getDateApproved(), 	$this->DATE_APPROVED);
+		$this->assertIdentical($staticTransaction->getCardToke(), 		$this->CARD_TOKEN);
+		$this->assertIdentical($staticTransaction->getStripeToken(), 	$this->STRIPE_TOKEN);
+	}
 
 }

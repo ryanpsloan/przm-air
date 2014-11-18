@@ -294,8 +294,6 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 
-	// @todo test grabbing a Ticket from mySQL by Transaction Id
-
 	// test grabbing a Ticket from mySQL by Transaction Id
 	public function testGetTicketByTransactionId() {
 		// first verify mySQL connected Ok

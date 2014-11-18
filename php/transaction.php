@@ -143,7 +143,7 @@ class Transaction {
 	 *
 	 * @return float amount
 	 **/
-	public function getAmouont() {
+	public function getAmount() {
 		return($this->amount);
 	}
 
