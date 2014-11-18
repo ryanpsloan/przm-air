@@ -253,6 +253,8 @@ class User {
 		}
 		// update the null userId with what mySQL just gave us
 		$this->userId = $mysqli->insert_id;
+		echo "this userId";
+		var_dump($this->userId);
 	}
 
 	/**

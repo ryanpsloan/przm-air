@@ -39,6 +39,7 @@ class ProfileTest extends UnitTestCase {
 		try {
 			$this->user = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
 			$this->user->insert($this->mysqli);
+			var_dump($this->user);
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}
@@ -73,6 +74,13 @@ class ProfileTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 		try {
 			// second, create a profile to post to mySQL
+			var_dump($this->user->getUserId());
+			var_dump($this->USERFIRSTNAME);
+			var_dump($this->USERMIDDLENAME);
+			var_dump($this->USERLASTNAME);
+			var_dump($this->DATEOFBIRTH);
+			var_dump($this->CUSTTOKEN);
+			var_dump($this->user);
 			$this->profile = new Profile(null, $this->user->getUserId(), $this->USERFIRSTNAME, $this->USERMIDDLENAME,
 				$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN, $this->user);
 			// third, insert the profile to mySQL
