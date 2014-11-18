@@ -13,7 +13,10 @@
  * @see http://php.net/manual/en/class.mysqli.php
  * @see http://en.wikipedia.org/wiki/Singleton_pattern
  **/
-
+/****
+ * @author Paul Morbitzer
+ *
+ */
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
@@ -38,7 +41,7 @@ class TicketTest extends UnitTestCase {
 
 	// a few "global" variables for creating test data
 	private $CONFIRMATION_NUMBER  = "ABCDE12345";
-	private $PRICE					   = "100.00";
+	private $PRICE					   = "100.00"; /*Fixme: should be numeric type?*/
 	private $STATUS	 			   = "Booked";
 	private $USER						= null;
 	private $PROFILE				   = null;
@@ -57,12 +60,14 @@ class TicketTest extends UnitTestCase {
 		$this->USER = new User(null, "a@b.net", $hash, $salt,  $authenticationToken);
 		$this->USER->insert($mysqli);
 
-		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15", "Token");
+		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15 00:00:00",
+												"Token", $this->USER);/*see comment below*/
 		$this->PROFILE->insert($mysqli);
 
-		$this->TRAVELER = new Traveler(null, "Marge", "J", "Simpson", "1956-10-01", $this->PROFILE->getProfileId());
+		$this->TRAVELER = new Traveler(null, "Marge", "J", "Simpson", "1956-10-01", $this->PROFILE->getProfileId(),
+			$this->PROFILE);
+		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
 		$this->TRAVELER->insert($mysqli);
-
 		$this->TRANSACTION = new Transaction(null, $this->PROFILE->getProfileId(), "100.00", "2014-11-12", "Token", "Token");
 		$this->TRANSACTION->insert($mysqli);
 

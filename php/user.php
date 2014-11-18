@@ -140,7 +140,7 @@ class User {
 		// verify the password is 128 hex characters
 		$newPassword   = trim($newPassword);
 		$newPassword   = strtolower($newPassword);
-		$filterOptions = arr ay("options" => array("regexp" => "/^[\da-f]{128}$/"));
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{128}$/"));
 		if(filter_var($newPassword, FILTER_VALIDATE_REGEXP, $filterOptions) === false) {
 			throw(new RangeException("password is not a valid SHA512 PBKDF2 hash"));
 		}

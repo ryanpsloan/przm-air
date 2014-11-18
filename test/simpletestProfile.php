@@ -71,17 +71,17 @@ class ProfileTest extends UnitTestCase {
 	public function testInsertNewProfile() {
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
-		//try {
+		try {
 			// second, create a profile to post to mySQL
 			$this->profile = new Profile(null, $this->user->getUserId(), $this->USERFIRSTNAME, $this->USERMIDDLENAME,
 				$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN, $this->user);
 			// third, insert the profile to mySQL
 			$this->profile->insert($this->mysqli);
-			var_dump($this->profile);
+			//var_dump($this->profile);
 
-		/*} catch (Exception $exception){
+		} catch (Exception $exception){
 			$exception->getMessage();
-		}*/
+		}
 				// compare the fields
 		$this->assertNotNull($this->profile->__get("profileId"));
 		$this->assertTrue($this->profile->__get("profileId") > 0);

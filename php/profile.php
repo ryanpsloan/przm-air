@@ -242,7 +242,7 @@
 			}
 
 			// zeroth, allow a DateTime object to be directly assigned
-			if(gettype($newDateOfBirth) === "object" || get_class($newDateOfBirth) === "DateTime") {
+			if(gettype($newDateOfBirth) === "object" && get_class($newDateOfBirth) === "DateTime") {
 				$this->dateOfBirth = $newDateOfBirth;
 				return;
 			}
