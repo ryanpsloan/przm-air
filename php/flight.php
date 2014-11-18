@@ -761,38 +761,75 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
-		// fixme: do we need another step to then use the results to pull array of flight objects with all associated data?
 		// this will return as many results as there are flights and flight combos with same origin + departure + date.
-		//
-		// 1) if there's no result, we can just return null
-		// 2) if there's a result, we can make it into flight objects normally
+		//	1) if there's no result, we can just return null
+		// 2) if there's a result, we can make it into flight objects by using the flight path string
 		// fetch_assoc() returns row as associative arr until row is null
 
-		$allFlightsArray = array();
+		// create query to take results from stored procedure and get all related info for each flight returned
+		$query = "SELECT * FROM flight WHERE flightId IN (?,)";
+
+		$statement = $concreteMysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// set up array to hold all results
+		$allFlightPathsArray = array();
+
 		// convert the associative array to a Profile and repeat for all last names equal to lastName.
+		// fixme: should fetch assoc be fetch array?
 		while(($row = $result->fetch_assoc()) !== null) {
 
 			// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
 			// $userDestination, and $userFlyDate.
 			try {
-				$allFlights = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
-					$row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
-					$row["price"], $row["totalSeatsOnPlane"]);
-				$allFlightsArray[] = $allFlights;
+
+				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of array
+				// of all related info for each flight ID in a path)
+				$wasClean = $statement->bind_param("s", $row[3]);
+
+				if($wasClean === false) {
+					throw(new mysqli_sql_exception("Unable to bind parameters"));
+				}
+
+				// execute the statement
+				if($statement->execute() === false) {
+					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+				}
+
+				// get result from the SELECT query *pounds fists*
+				$eachFlightPath = $statement->get_result();
+				if($eachFlightPath === false) {
+					throw(new mysqli_sql_exception("Unable to get result set"));
+				}
+
+				//put the two dimensional array into another array of all the flight paths each with all
+				//relative data for each flight
+				$allFlightPathsArray[] = $eachFlightPath;
+
+
+					//"SELECT * FROM flight WHERE flightId IN ($row[3])";
+					//	new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
+					// $row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
+					//	$row["price"], $row["totalSeatsOnPlane"]);
 
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
-				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
+				throw(new mysqli_sql_exception("Unable to convert row to Flight path", 0, $exception));
 			}
 
-			if(empty($allFlightsArray)) {
-				// 404 User not found - return null
-				return (null);
-			} else {
-				return ($allFlightsArray);
-			}
+		} // end while loop
 
+
+		if(empty($allFlightsArray)) {
+			// 404 User not found - return null
+			return (null);
+		} else {
+			return ($allFlightsArray);
 		}
+
+
 	}
 
 
