@@ -61,6 +61,133 @@ class TicketFlightTest extends UnitTestCase {
 		// }
 	}
 
+	// test creating a new TicketFlight and inserting it to mySQL
+	public function testInsertNewTicketFlight() {
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
 
+		// second, create a ticketflight to post to mySQL
+
+		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId);
+
+		//third, insert the ticketflight to mySQL
+		$this->ticketFlight->insert($this->mysqli);
+
+		// finally, compare the fields
+		$this->assertNotNull($this->ticketFlight->getFlightId());
+		$this->assertTrue($this->ticketFlight->getFlightId() > 0);
+		$this->assertNotNull($this->ticketFlight->getTicketId());
+		$this->assertTrue($this->ticketFlight->getTicketId() > 0);
+		$this->assertIdentical($this->ticketFlight->getFlightId(), 	$this->FLIGHT->getFlightId());
+		$this->assertIdentical($this->ticketFlight->getTicketId(),  $this->TICKET->getTicketId());
+
+	}
+
+	// test updating a ticketFlight
+	public function testUpdateTicketFlight()
+	{
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a ticketFlight to post to mySQL
+		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId);
+
+		//third, insert the profile to mySQL
+		$this->ticketFlight->insert($this->mysqli);
+		$newFlightId = rand(1, 10000);
+		$newTicketId = rand(1, 10000);
+		$this->ticketFlight->setFlightId($newFlightId);
+		$this->ticketFlight->setTicketId($newTicketId);
+		$this->ticketFlight->update($this->mysqli);
+		// finally, compare the fields
+		$this->assertNotNull($this->ticketFlight->getFlightId());
+		$this->assertTrue($this->ticketFlight->getFlightId() > 0);
+		$this->assertNotNull($this->ticketFlight->getTicketId());
+		$this->assertTrue($this->ticketFlight->getTicketId() > 0);
+		$this->assertIdentical($this->ticketFlight->getFlightId(), $newFlightId);
+		$this->assertIdentical($this->ticketFlight->getTicketId(), $newTicketId);
+	}
+
+	// test deleting a ticketFlight
+	public function testDeleteTicketFlight() {
+		// first, verify my SQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a ticketFlight to post to mySQL
+		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId);
+
+		//third, insert the profile to mySQL
+		$this->ticketFlight->insert($this->mysqli);
+
+		// fourth, verify the ticketFlight was inserted
+		$this->assertNotNull($this->ticketFlight->getFlightId());
+		$this->assertTrue($this->ticketFlight->getFlightId() > 0);
+		$this->assertNotNull($this->ticketFlight->getTicketId());
+		$this->assertTrue($this->ticketFlight->getTicketId() > 0);
+		$flightId = $this->ticketFlight->getFlightId();
+		$ticketId = $this->ticketFlight->getTicketId();
+
+		// fifth, delete the ticket
+		$this->ticketFlight->delete($this->mysqli);
+		$this->ticketFlight = null;
+
+		// finally, try to get the ticketFlight and assert we didn't get a thing
+		$hopefulTicketFlight = TicketFlight::getTicketFlightByFlightId($this->mysqli, $this->$flightId);
+		$this->assertNull($hopefulTicketFlight);
+		$hopefulTicketFlight = TicketFlight::getTicketFlightByTicketId($this->mysqli, $this->$ticketId);
+		$this->assertNull($hopefulTicketFlight);
+
+
+	}
+
+	// test grabbing a ticketFlight from mySQL
+	public function testGetTicketFlightByTicketId() {
+		// first verify mySQL connected Ok
+		$this->assertNotNull($this->mysqli);
+
+		// second create a new ticketFlight to post to mySQL
+		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId);
+
+		// third, insert the ticketFlight to mySQL
+		$this->ticketFlight->insert($this->mysqli);
+
+		// fourth, get the ticketFlight using the static method
+		$staticTicketFlight = TicketFlight::getTicketFlightByTicketId($this->mysqli,
+			$this->ticketFlight->getTicketId());
+
+		// finally, compare the fields
+		$this->assertNotNull($staticTicketFlight->getFlightId());
+		$this->assertTrue($staticTicketFlight->getFlightId() > 0);
+		$this->assertNotNull($staticTicketFlight->getTicketId());
+		$this->assertTrue($staticTicketFlight->getTicketId() > 0);
+		$this->assertIdentical($staticTicketFlight->getFlightId(), $this->ticketFlight->getFlightId());
+		$this->assertIdentical($staticTicketFlight->getTicketId(), $this->ticketFlight->getTicketId());
+
+	}
+
+	// test grabbing a ticketFlight from mySQL
+	public function testGetTicketFlightByFlightId() {
+		// first verify mySQL connected Ok
+		$this->assertNotNull($this->mysqli);
+
+		// second create a new ticketFlight to post to mySQL
+		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId);
+
+		// third, insert the ticketFlight to mySQL
+		$this->ticketFlight->insert($this->mysqli);
+
+		// fourth, get the ticketFlight using the static method
+		$staticTicketFlight = TicketFlight::getTicketFlightByFlightId($this->mysqli,
+			$this->ticketFlight->getFlightId());
+
+		// finally, compare the fields
+		$this->assertNotNull($staticTicketFlight->getFlightId());
+		$this->assertTrue($staticTicketFlight->getFlightId() > 0);
+		$this->assertNotNull($staticTicketFlight->getTicketId());
+		$this->assertTrue($staticTicketFlight->getTicketId() > 0);
+		$this->assertIdentical($staticTicketFlight->getFlightId(), $this->ticketFlight->getFlightId());
+		$this->assertIdentical($staticTicketFlight->getTicketId(), $this->ticketFlight->getTicketId());
+
+	}
 }
 
