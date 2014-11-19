@@ -258,7 +258,7 @@ class User {
 	}
 
 	/**
-	 * deletes this User from mySQL
+	 * deletes this User from mySQL , ,
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @throws mysqli_sql_exception when mySQL related errors occur
