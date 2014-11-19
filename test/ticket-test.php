@@ -56,21 +56,32 @@ class TicketTest extends UnitTestCase {
 		$salt       			= bin2hex(openssl_random_pseudo_bytes(32));
 		$authenticationToken = bin2hex(openssl_random_pseudo_bytes(16));
 		$hash					   = hash_pbkdf2("sha512", "password", $salt, 2048, 128);
-
-		$this->USER = new User(null, "a@b.net", $hash, $salt,  $authenticationToken);
+		$i = rand(1, 1000);
+		$this->USER = new User(null, "a".$i."@b.net", $hash, $salt,  $authenticationToken);
 		$this->USER->insert($mysqli);
+		echo "<p>USER created -> setUp 62</p>";
+		var_dump($this->USER);
 
 		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15 00:00:00",
-												"Token", $this->USER);/*see comment below*/
+					"Token", $this->USER);/*see comment below*/
 		$this->PROFILE->insert($mysqli);
+		echo "<p>PROFILE created -> setUp 67</p>";
+		var_dump($this->PROFILE);
+														//error correction the get profile id statement in profile is not standard
+														//and the argument was not in the right place in the constuctor
 
-		$this->TRAVELER = new Traveler(null, "Marge", "J", "Simpson", "1956-10-01", $this->PROFILE->getProfileId(),
-			$this->PROFILE);
+		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId") ,"Marge", "J", "Simpson",
+			"1956-10-01 12:13:14", $this->PROFILE);//see comment below
 		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
 		$this->TRAVELER->insert($mysqli);
-		$this->TRANSACTION = new Transaction(null, $this->PROFILE->getProfileId(), "100.00", "2014-11-12", "Token", "Token");
-		$this->TRANSACTION->insert($mysqli);
+		echo "<p>TRAVELER created -> setUp 75</p>";
+		var_dump($this->TRAVELER);
 
+		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"), "100.00", "2014-11-12",
+		"Token", "Token");
+		$this->TRANSACTION->insert($mysqli);
+		echo "TRANSACTION created -> setUp 81</p>";
+		var_dump($this->TRANSACTION);
 
 	}
 
@@ -83,27 +94,27 @@ class TicketTest extends UnitTestCase {
 			$this->TRANSACTION->delete($this->mysqli);
 			$this->TRANSACTION = null;
 		}
-
+		echo "<p>TRANSACTION deleted -> tearDown 95</p>";
 		if($this->TRAVELER !== null) {
 			$this->TRAVELER->delete($this->mysqli);
 			$this->TRAVELER = null;
 		}
-
+		echo "<p>TRAVELER deleted -> tearDown 100</p>";
 		if($this->PROFILE !== null) {
 			$this->PROFILE->delete($this->mysqli);
 			$this->PROFILE = null;
 		}
-
+		echo "<p>PROFILE deleted -> tearDown 105</p>";
 		if($this->USER !== null) {
 			$this->USER->delete($this->mysqli);
 			$this->USER = null;
 		}
-
+		echo "<p>USER deleted -> tearDown 110</p>";
 		if($this->ticket !== null) {
 			$this->ticket->delete($this->mysqli);
 			$this->ticket = null;
 		}
-
+		echo"<p>TICKET deleted -> tearDown 115</p>";
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {
 		// 	$this->mysqli->close();
@@ -120,7 +131,8 @@ class TicketTest extends UnitTestCase {
 
 		//third, insert the profile to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo"<p>ticket created -> testInsertNewTicket</p>";
+		var_dump($this->ticket);
 		// finally, compare the fields
 		$this->assertNotNull($this->ticket->getTicketId());
 		$this->assertTrue($this->ticket->getTicketId() > 0);
@@ -142,7 +154,7 @@ class TicketTest extends UnitTestCase {
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo "<p>ticket created -> testUpdateTicket</p>";
 		// fourth, update the ticket and post the changes to mySQL
 		$newStatus = "Confirmed";
 		$this->ticket->setStatus($newStatus);
@@ -170,18 +182,20 @@ class TicketTest extends UnitTestCase {
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo "<p>ticket created -> testDeleteTicket</p>";
 		// fourth, verify the Ticket was inserted
 		$this->assertNotNull($this->ticket->getTicketId());
 		$this->assertTrue($this->ticket->getTicketId() > 0);
-		$ticketId = $this->ticket->getTicketId();
+		$ticketId = $this->ticket->getTicketId(); //you were on the right track with this line
 		// fifth, delete the ticket
 		$this->ticket->delete($this->mysqli);
-		$this->ticket = null;
+		$this->ticket = null; //<----- null obj
 
 		// finally, try to get the ticket and assert we didn't get a thing
-		$hopefulTicket = Ticket::getTicketByTicketId($this->mysqli, $this->$ticketId);
-		$this->assertNull($hopefulTicket);
+		$hopefulTicket = Ticket::getTicketByTicketId($this->mysqli, $ticketId);
+		$this->assertNull($hopefulTicket);									//error corrected
+		echo "<p>Static Call getTicketByTicketId</p>";					//$this->ticket->getTicketID()
+		var_dump($hopefulTicket);												//can't get ticket Id from null obj
 	}
 
 	// test grabbing a Ticket from mySQL by ticket id
@@ -194,10 +208,12 @@ class TicketTest extends UnitTestCase {
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo "<p>ticket created -> testGetTicketByTicketId</p>";
+		var_dump($this->ticket);
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByTicketId($this->mysqli, $this->ticket);
-
+		echo "<p>Static Call getTicketbyTicketId</p>";
+		var_dump($staticTicket);
 		// finally, compare the fields
 		$this->assertNotNull($staticTicket->getTicketId());
 		$this->assertTrue($staticTicket->getTicketId() > 0);
@@ -220,7 +236,8 @@ class TicketTest extends UnitTestCase {
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo "<p>ticket created -> testGetTicketByConfirmationNumber 237</p>";
+		var_dump($this->ticket);
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByConfirmationNumber($this->mysqli, $this->ticket);
 
@@ -278,7 +295,8 @@ class TicketTest extends UnitTestCase {
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo "<p>ticket created -> testGetTicketByTravelerId</p>";
+		var_dump($this->ticket);
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByTravelerId($this->mysqli, $this->ticket);
 
@@ -304,10 +322,12 @@ class TicketTest extends UnitTestCase {
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		echo "<p>ticket created -> testGetTicketByTransactionId</p>";
+		var_dump($this->ticket);
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByTransactionId($this->mysqli, $this->ticket);
-
+		echo "<p>Static Call -> testGetTicketByTicketId</p>";
+		var_dump($staticTicket);
 		// finally, compare the fields
 		$this->assertNotNull($staticTicket->getTicketId());
 		$this->assertTrue($staticTicket->getTicketId() > 0);

@@ -452,8 +452,8 @@
 			 * 2) if there's no result, we can just return null
 			 * */
 			$row = $result->fetch_assoc(); //fetch_assoc() returns a row as an associative array
-			echo "<p>Profile: getProfileByProfileId PROBLEM ROW -> row dump</p>";
-			var_dump($row);
+			//echo "<p>Profile: getProfileByProfileId PROBLEM ROW -> row dump</p>";
+			//var_dump($row);
 			//convert the associate array to user
 			if($row !== null) {
 				try {
@@ -532,8 +532,8 @@
 
 			//convert the associate array to user
 			if($row !== null) {
-				echo "<p>getProfileByUserId - > row dump</p>";
-				var_dump($row);
+				//echo "<p>getProfileByUserId - > row dump</p>";
+				//var_dump($row);
 				try {
 					$dateObj = DateTime::createFromFormat("Y-m-d H:i:s", $row['dateOfBirth']);
 					$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],

@@ -54,11 +54,13 @@ class Traveler{
 
 										} catch(UnexpectedValueException $unexpectedValue) {
 											// rethrow to the caller
-											throw(new UnexpectedValueException("Unable to construct Profile Object. Check input formats.", 0,
+											throw(new UnexpectedValueException("Unable to construct Traveler Object. Check input
+											formats.", 0,
 											$unexpectedValue));
 										} catch(RangeException $range) {
 											// rethrow to the caller
-											throw(new RangeException("Unable to construct Profile Object. Check input formats.", 0, $range));
+											throw(new RangeException("Unable to construct Traveler Object. Check input formats.",
+												0, $range));
 										}
 
 	}
