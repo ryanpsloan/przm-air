@@ -280,9 +280,9 @@ class Transaction {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the TransactionId is not null (i.e., don't update a transaction that hasn't been inserted)
-		if($this->transactionId === null) {
-			throw(new mysqli_sql_exception("Unable to update a transaction that does not exist"));
+		// enforce the TransactionId is null (i.e., don't insert a transaction that already exist)
+		if($this->transactionId !== null) {
+			throw(new mysqli_sql_exception("Unable to insert a transaction that already exists"));
 		}
 
 		// convert dates to strings
