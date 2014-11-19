@@ -18,6 +18,7 @@ require_once("/etc/apache2/capstone-mysql/przm.php");
 // require the classes for foreign key
 require_once("../php/user.php");
 require_once("../php/profile.php");
+require_once("../php/transaction.php");
 
 // the TransactionTest is a container for all our tests
 class TransactionTest extends UnitTestCase
@@ -39,18 +40,21 @@ class TransactionTest extends UnitTestCase
 	// here, we use it to connect to my SQL
 	public function setUp()
 	{
-		$mysqli = MysqliConfiguration::getMysqli();
+		//not $mysqli:  $this->mysqli   you want to set the object into the class
+		$this->mysqli = MysqliConfiguration::getMysqli();
 
 		$salt = bin2hex(openssl_random_pseudo_bytes(32));
 		$authenticationToken = bin2hex(openssl_random_pseudo_bytes(16));
 		$hash = hash_pbkdf2("sha512", "password", $salt, 2048, 128);
-
-		$this->USER = new User(null, "a@b.net", $hash, $salt, $authenticationToken);
-		$this->USER->insert($mysqli);
-
-		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15", "Token");
-		$this->PROFILE->insert($mysqli);
-	}
+		$i = rand(1,1000);//I added this to ensure the uniqueness of user emails to prevent collisions
+		$this->USER = new User(null, "a".$i."@b.net", $hash, $salt, $authenticationToken);
+		$this->USER->insert($this->mysqli);
+								//not $mysqli: $this->mysqli you want to set the object into the class
+		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15 12:34:56",
+			"Token", $this->USER);
+		$this->PROFILE->insert($this->mysqli);
+	}									//not $mysqli: $this->mysqli setting into the class means you can access it
+										//creating it locally makes it inaccessible
 
 	// tearDown () is a method that is run after each test
 	// here, we use it to delete the test record and disconnect from mySQL
@@ -84,7 +88,9 @@ class TransactionTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a transaction to post to mySQL
-		$this->transaction = new Transaction(null, $this->PROFILE->getProfleId(), $this->AMOUNT, $this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
+			$this->DATE_APPROVED,
+			$this->CARD_TOKEN, $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);

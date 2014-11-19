@@ -68,8 +68,8 @@ class TicketTest extends UnitTestCase {
 		echo "<p>PROFILE created -> setUp 67</p>";
 		var_dump($this->PROFILE);
 														//error correction the get profile id statement in profile is not standard
-														//and the argument was not in the right place in the constuctor
-
+														//and the argument was not in the right place in the constructor
+														//both profile and traveler use the __get("fieldName") style of gets
 		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId") ,"Marge", "J", "Simpson",
 			"1956-10-01 12:13:14", $this->PROFILE);//see comment below
 		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
