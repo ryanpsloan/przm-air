@@ -104,14 +104,13 @@
 		function setUserObject($newUserObj){
 			if($newUserObj === null) {
 				$this->userObj = null;
+				return;
 			}
 
 			// handle degenerate cases
 			if(gettype($newUserObj) !== "object" || get_class($newUserObj) !== "User") {
 				throw(new UnexpectedValueException("input is not a User object"));
 			}
-			//test if object is null
-
 			//set new object into class
 			$this->userObj = $newUserObj;
 
@@ -453,14 +452,16 @@
 			 * 2) if there's no result, we can just return null
 			 * */
 			$row = $result->fetch_assoc(); //fetch_assoc() returns a row as an associative array
-
+			echo "<p>Profile: getProfileByProfileId PROBLEM ROW -> row dump</p>";
+			var_dump($row);
 			//convert the associate array to user
 			if($row !== null) {
 				try {
-					$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],
-						$row['userMiddleName'],$row['userLastName'], $row['dateOfBirth'], $row['customerToken']);
+					$profile = new Profile ($row['profileId'], $row['userId'], $row['userFirstName'],
+						$row['userMiddleName'], $row['userLastName'], $row['dateOfBirth'], $row['customerToken']);
 				} catch(Exception $exception) {
 					//if row can't be converted rethrow
+					$exception->getMessage();
 					throw(new mysqli_sql_exception("Unable to convert row to Profile Object", 0, $exception));
 				}
 
@@ -531,12 +532,15 @@
 
 			//convert the associate array to user
 			if($row !== null) {
+				echo "<p>getProfileByUserId - > row dump</p>";
+				var_dump($row);
 				try {
-					$dateObj = DateTime::createFromFormat("Y-m-d H:is",$row['dateOfBirth']);
+					$dateObj = DateTime::createFromFormat("Y-m-d H:i:s", $row['dateOfBirth']);
 					$profile = new Profile ($row['profileId'], $row['userId'],$row['userFirstName'],
 						$row['userMiddleName'],$row['userLastName'], $dateObj, $row['customerToken']);
 				} catch(Exception $exception) {
 					//if row can't be converted rethrow
+					$exception->getMessage();
 					throw(new mysqli_sql_exception("Unable to convert row to Profile Object", 0, $exception));
 				}
 

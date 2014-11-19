@@ -31,14 +31,15 @@ class ProfileTest extends UnitTestCase {
 		$this->mysqli = MysqliConfiguration::getMysqli();
 
 		// randomize the salt, hash, and authentication token for the profile
-
-		$testEmail       = "testUserEmailSetUp@test.com";
+		$i = rand(1,1000);
+		$testEmail       = "testUserEmailSetUp".$i."@test.com";
 		$testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
 		$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
 		$testHash        = hash_pbkdf2("sha512", "tEsTpASs", $testSalt, 2048, 128);
 		try {
 			$this->user = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
 			$this->user->insert($this->mysqli);
+			echo "<p>User Created -> setUp</p>";
 			var_dump($this->user);
 		} catch (Exception $exception) {
 			$exception->getMessage();
@@ -56,10 +57,12 @@ class ProfileTest extends UnitTestCase {
 		if($this->profile !== null) {
 			$this->profile->delete($this->mysqli);
 			$this->profile = null;
+			echo "<p>profile deleted -> tearDown</p><br>";
 		}
 		if($this->user !== null) {
 			$this->user->delete($this->mysqli);
 			$this->user = null;
+			echo "<p>user deleted -> tearDown</p><br>";
 		}
 
 		// disconnect from mySQL
@@ -74,6 +77,7 @@ class ProfileTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 		try {
 			// second, create a profile to post to mySQL
+			echo "<p>var_dump of class properties</p>";
 			var_dump($this->user->getUserId());
 			var_dump($this->USERFIRSTNAME);
 			var_dump($this->USERMIDDLENAME);
@@ -85,7 +89,8 @@ class ProfileTest extends UnitTestCase {
 				$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN, $this->user);
 			// third, insert the profile to mySQL
 			$this->profile->insert($this->mysqli);
-			//var_dump($this->profile);
+			echo "<p>Profile Created -> testInsertNewProfile</p>";
+			var_dump($this->profile);
 
 		} catch (Exception $exception){
 			$exception->getMessage();
@@ -125,8 +130,10 @@ class ProfileTest extends UnitTestCase {
 		// second, create a profile to post to mySQL
 		$this->profile = new Profile(null, $this->user->getUserId(), $this->USERFIRSTNAME, $this->USERMIDDLENAME,
 			$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN, $this->user);
-		// third, insert the profile to mySQL
+				// third, insert the profile to mySQL
 		$this->profile->insert($this->mysqli);
+		echo "<p>Profile Created -> testUpdateProfile</p>";
+		var_dump($this->profile);
 		/*}catch(Exception $ex){
 			$ex->getMessage();
 		}*/
@@ -180,10 +187,12 @@ class ProfileTest extends UnitTestCase {
 		// second, create a user to post to mySQL
 		$this->profile = new Profile(null, $this->user->getUserId(), $this->USERFIRSTNAME, $this->USERMIDDLENAME,
 			$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN,$this->user);
-
 		// third, insert the user to mySQL
 		$this->profile->insert($this->mysqli);
-		$profileId = $this->profile->__get("profileId");
+		echo "<p>Profile Created -> testDeleteProfile</p>";
+		var_dump($this->profile);
+
+		$localProfileId = $this->profile->__get("profileId");
 		// fourth, verify the User was inserted
 		$this->assertNotNull($this->profile->__get("profileId"));
 		$this->assertTrue($this->profile->__get("profileId") > 0);
@@ -191,26 +200,31 @@ class ProfileTest extends UnitTestCase {
 		// fifth, delete the user
 		$this->profile->delete($this->mysqli);
 		$this->profile = null;
+		echo "<p>profile Deleted -> testDeleteProfile</p>";
 
 		// finally, try to get the user and assert we didn't get a thing
-		$hopefulProfile = Profile::getProfileByProfileId($this->mysqli, $profileId);
+		$hopefulProfile = Profile::getProfileByProfileId($this->mysqli, $localProfileId);
 		$this->assertNull($hopefulProfile);
+		echo "Static::Call to getProfileByProfileId ";
+		var_dump($hopefulProfile);
 	}
 
 	public function testGetProfileByProfileId() {
+
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a user to post to mySQL
 		$this->profile = new Profile(null, $this->user->getUserId(), $this->USERFIRSTNAME, $this->USERMIDDLENAME,
 			$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN, $this->user);
-
 		// third, insert the user to mySQL
 		$this->profile->insert($this->mysqli);
-
+		echo "Profile Created -> testGetProfileByProfileId</p>";
+		var_dump($this->profile);
 		// fourth, get the user using the static method
 		$staticProfile = Profile::getProfileByProfileId($this->mysqli, $this->profile->__get("profileId"));
-
+		echo "<p>staticProfile</p>";
+		var_dump($staticProfile);
 		// finally, compare the fields
 		$this->assertNotNull($staticProfile->__get('profileId'));
 		$this->assertTrue($staticProfile->__get('profileId') > 0);
@@ -242,13 +256,14 @@ class ProfileTest extends UnitTestCase {
 		// second, create a user to post to mySQL
 		$this->profile = new Profile(null, $this->user->getUserId(), $this->USERFIRSTNAME, $this->USERMIDDLENAME,
 			$this->USERLASTNAME, $this->DATEOFBIRTH, $this->CUSTTOKEN, $this->user);
-
 		// third, insert the user to mySQL
 		$this->profile->insert($this->mysqli);
-
+		echo "<p>Profile Created -> testGetProfileByUserId</p>";
+		var_dump($this->profile);
 		// fourth, get the user using the static method
 		$staticProfile = Profile::getProfileByUserId($this->mysqli, $this->profile->__get("userId"));
-
+		echo "<p>Static::call to get ProfileByUserId</p>";
+		var_dump($staticProfile);
 		// finally, compare the fields
 		$this->assertNotNull($staticProfile->__get('profileId'));
 		$this->assertTrue($staticProfile->__get('profileId') > 0);
