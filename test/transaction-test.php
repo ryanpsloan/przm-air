@@ -10,7 +10,7 @@
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 //then require the class under scrutiny
-require_once("../php/ticket.php");
+require_once("../php/transaction.php");
 
 // require the mysqli
 require_once("/etc/apache2/capstone-mysql/przm.php");
@@ -67,7 +67,10 @@ class TransactionTest extends UnitTestCase
 	public function tearDown()
 	{
 		// delete the profile if we can
-
+		if($this->transaction !== null) {
+			$this->transaction->delete($this->mysqli);
+			$this->transaction = null;
+		}
 		if($this->PROFILE !== null) {
 			$this->PROFILE->delete($this->mysqli);
 			$this->PROFILE = null;
@@ -90,6 +93,7 @@ class TransactionTest extends UnitTestCase
 		}
 		echo "<p>transaction deleted -> tearDown</p>";
 		var_dump($this->transaction);
+
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {
 		// $this->mysqli->close();
@@ -169,9 +173,9 @@ class TransactionTest extends UnitTestCase
 		echo"<p>transaction created -> testUpdateTransaction</p>";
 		var_dump($this->transaction);
 		// fourth, verify the Transaction was inserted
-		$this->assertNotNull($this->transaction->getTicketId());
-		$this->assertTrue($this->transaction->getTicketId() > 0);
-		$transactionId = $this->transaction->getTicketId();
+		$this->assertNotNull($this->transaction->getTransactionId());
+		$this->assertTrue($this->transaction->getTransactionId() > 0);
+		$transactionId = $this->transaction->getTransactionId();
 		// fifth, delete the ticket
 		$this->transaction->delete($this->mysqli);
 		$this->transaction = null;
@@ -204,7 +208,7 @@ class TransactionTest extends UnitTestCase
 		$this->assertNotNull($staticTransaction->getTransactionId());
 		$this->assertTrue($staticTransaction->getTransactionId() > 0);
 		$this->assertIdentical($staticTransaction->getTransactionId(), $this->transaction->getTransactionId());
-		$this->assertIdentical($staticTransaction->getProfileId(), 		$this->PROFILE->getProfileId);
+		$this->assertIdentical($staticTransaction->getProfileId(), 		$this->PROFILE->__get("profileId"));
 		$this->assertIdentical($staticTransaction->getAmount(), 			$this->AMOUNT);
 		$this->assertIdentical($staticTransaction->getDateApproved(), 	$this->DATE_APPROVED);
 		$this->assertIdentical($staticTransaction->getCardToke(), 		$this->CARD_TOKEN);

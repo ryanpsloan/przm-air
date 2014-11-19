@@ -280,9 +280,9 @@ class Transaction {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the TransactionId is not null (i.e., don't update a transaction that hasn't been inserted)
-		if($this->transactionId === null) {
-			throw(new mysqli_sql_exception("Unable to insert a transaction that does not exist"));
+		// enforce the TransactionId is null (i.e., don't insert a transaction that already exist)
+		if($this->transactionId !== null) {
+			throw(new mysqli_sql_exception("Unable to insert a transaction that already exists"));
 		}
 
 		// convert dates to strings
@@ -293,7 +293,7 @@ class Transaction {
 		}
 
 		// create query template
-		$query     = "UPDATE transaction SET profileId = ?, amount = ?, dateApproved = ?, cardToken = ?, stripeToken = ? WHERE transactionId = ?";
+		$query     = "INSERT INTO transaction(profileId, amount, dateApproved, cardToken, stripeToken) VALUES (?, ?, ?, ?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -324,9 +324,9 @@ class Transaction {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the transacionId is not null (i.e., don't delete a transaction that hasn't been inserted)
+		// enforce the transactionId is not null (i.e., don't delete a transaction that hasn't been inserted)
 		if($this->transactionId === null) {
-			throw(new mysqli_sql_exception("Unable to delete a transacion that does not exist"));
+			throw(new mysqli_sql_exception("Unable to delete a transaction that does not exist"));
 		}
 
 		// create query template
