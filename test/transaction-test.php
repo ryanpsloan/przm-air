@@ -73,17 +73,23 @@ class TransactionTest extends UnitTestCase
 			$this->PROFILE = null;
 		}
 
+		echo "<p>PROFILE deleted -> tearDown</p>";
+		var_dump($this->PROFILE);
+
 		if($this->USER !== null) {
 			$this->USER->delete($this->mysqli);
 			$this->USER = null;
 		}
 
-
+		echo "<p>USER deleted -> tearDown</p>";
+		var_dump($this->USER);
 
 		if($this->transaction !== null) {
 			$this->transaction->delete($this->mysqli);
 			$this->transaction = null;
 		}
+		echo "<p>transaction deleted -> tearDown</p>";
+		var_dump($this->transaction);
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {
 		// $this->mysqli->close();
@@ -97,11 +103,12 @@ class TransactionTest extends UnitTestCase
 
 		// second, create a transaction to post to mySQL
 		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
-			$this->DATE_APPROVED,
-			$this->CARD_TOKEN, $this->STRIPE_TOKEN);
+			$this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
+		echo "<p>transaction created -> testInsertNewTransaction</p>";
+		var_dump($this->transaction);
 
 		// finally, compare the fields
 		$this->assertNotNull($this->transaction->getTransactionId());
@@ -124,7 +131,8 @@ class TransactionTest extends UnitTestCase
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
-
+		echo"<p>transaction created -> testUpdateTransaction</p>";
+		var_dump($this->transaction);
 		// fourth, update the transaction and post the changes to mySQL
 		$newAmount = "200.00";
 		$this->transaction->setAmount($newAmount);
@@ -152,7 +160,8 @@ class TransactionTest extends UnitTestCase
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
-
+		echo"<p>transaction created -> testUpdateTransaction</p>";
+		var_dump($this->transaction);
 		// fourth, verify the Transaction was inserted
 		$this->assertNotNull($this->transaction->getTicketId());
 		$this->assertTrue($this->transaction->getTicketId() > 0);
@@ -160,7 +169,8 @@ class TransactionTest extends UnitTestCase
 		// fifth, delete the ticket
 		$this->transaction->delete($this->mysqli);
 		$this->transaction = null;
-
+		echo"<p>transaction deleted -> testDeleteTransaction </p>";
+		var_dump($this->transaction);
 		// finally, try to get the transaction and assert we didn't get a thing
 		$hopefulTransaction = Transaction::getTransactionByTransactionId($this->mysqli, $this->$transactionId);
 		$this->assertNull($hopefulTransaction);
@@ -178,10 +188,12 @@ class TransactionTest extends UnitTestCase
 
 		// third, insert the transaction to mySQL
 		$this->transaction->insert($this->mysqli);
-
+		echo"<p>transaction created -> testUpdateTransaction</p>";
+		var_dump($this->transaction);
 		// fourth, get the transaction using the static method
 		$staticTransaction = Transaction::getTransactionByTransactionId($this->mysqli, $this->transaction->getTransactionId()					);
-
+		echo"<p>STATIC:: transaction created -> testUpdateTransaction</p>";
+		var_dump($staticTransaction);
 		// finally, compare the fields
 		$this->assertNotNull($staticTransaction->getTransactionId());
 		$this->assertTrue($staticTransaction->getTransactionId() > 0);
