@@ -777,7 +777,6 @@ class Flight {
 
 		// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
 		// $userDestination, and $userFlyDate range.
-		// fixme: should fetch assoc be fetch array?
 		while(($row = $getStoredProcResults->fetch_assoc()) !== null) {
 
 			try {
