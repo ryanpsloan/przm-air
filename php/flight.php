@@ -69,7 +69,8 @@ class Flight {
 	 * @throws UnexpectedValueException when a parameter is of the wrong type
 	 * @throws RangeException when a parameter is invalid
 	 **/
-	public function __construct($newFlightId, $newOrigin, $newDestination, $newDuration, $newDepartureDateTime, $newArrivalDateTime, $newFlightNumber, $newPrice, $newTotalSeatsOnPlane) {
+	public function __construct($newFlightId, $newOrigin, $newDestination, $newDuration, $newDepartureDateTime,
+										 $newArrivalDateTime, $newFlightNumber, $newPrice, $newTotalSeatsOnPlane) {
 		try {
 			$this->setFlightId($newFlightId);
 			$this->setOrigin($newOrigin);
@@ -492,7 +493,8 @@ class Flight {
 
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ssssssfi", $this->origin, $this->destination, $duration, $departureDateTime,
-														$arrivalDateTime, $this->flightNumber, $this->price, $this->totalSeatsOnPlane);
+														$arrivalDateTime, $this->flightNumber, $this->price,
+														$this->totalSeatsOnPlane);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -593,7 +595,8 @@ class Flight {
 
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ssssssfii", $this->origin, $this->destination, $duration, $departureDateTime,
-													$arrivalDateTime, $this->flightNumber, $this->price, $this->totalSeatsOnPlane, $this->flightId);
+													$arrivalDateTime, $this->flightNumber, $this->price, $this->totalSeatsOnPlane,
+													$this->flightId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -664,18 +667,8 @@ class Flight {
 
 
 		// 3.:
-		$userFlyDateStart = trim($userFlyDateStart);
+		$userFlyDateStart = trim ($userFlyDateStart);
 
-		if(filter_var($userDestination, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("Origin $userDestination does not appear to be a string"));
-		}
-
-		//check that string is the appropriate length for an airport code
-		if(strlen($userDestination) !== 3) {
-			throw(new RangeException("Origin $userDestination does not appear to be a three-letter code."));
-		}
-
-		// 4.:
 		if(filter_var($userFlyDateStart, FILTER_SANITIZE_STRING) === false) {
 			throw(new UnexpectedValueException("Start date $userFlyDateStart does not appear to be a string"));
 		}
@@ -695,7 +688,9 @@ class Flight {
 		}
 
 
-		// 5.:
+		// 4.:
+		$userFlyDateEnd = trim($userFlyDateEnd);
+
 		if(filter_var($userFlyDateEnd, FILTER_SANITIZE_STRING) === false) {
 			throw(new UnexpectedValueException("End date $userFlyDateEnd does not appear to be a string"));
 		}
@@ -715,8 +710,7 @@ class Flight {
 		}
 
 
-
-		// 6.:
+		// 5.:
 		$numberOfPassengers = trim($numberOfPassengers);
 
 		if (filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT) === false) {
@@ -735,7 +729,7 @@ class Flight {
 
 
 
-		// Finally, create query template to call the stored procedure to execute search in MySQL
+		// Next, create query template to call the stored procedure and execute search in MySQL
 		$query = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
 
 		$statement = $concreteMysqli->prepare($query);
@@ -756,8 +750,8 @@ class Flight {
 		}
 
 		// get result from the SELECT query *pounds fists*
-		$result = $statement->get_result();
-		if($result === false) {
+		$getStoredProcResults = $statement->get_result();
+		if($getStoredProcResults === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
@@ -767,34 +761,37 @@ class Flight {
 		// fetch_assoc() returns row as associative arr until row is null
 
 		// create query to take results from stored procedure and get all related info for each flight returned
-		$query = "SELECT * FROM flight WHERE flightId IN (?,)";
+		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
+ 					totalSeatsOnPlane FROM flight WHERE flightId IN (?)";
 
-		$statement = $concreteMysqli->prepare($query);
-		if($statement === false) {
+		$statement2 = $concreteMysqli->prepare($query);
+		if($statement2 === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
+
 
 		// set up array to hold all results
 		$allFlightPathsArray = array();
 
-		// convert the associative array to a Profile and repeat for all last names equal to lastName.
-		// fixme: should fetch assoc be fetch array?
-		while(($row = $result->fetch_assoc()) !== null) {
 
-			// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
-			// $userDestination, and $userFlyDate.
+
+		// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
+		// $userDestination, and $userFlyDate range.
+		// fixme: should fetch assoc be fetch array?
+		while(($row = $getStoredProcResults->fetch_assoc()) !== null) {
+
 			try {
 
-				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of array
+				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of arrays
 				// of all related info for each flight ID in a path)
-				$wasClean = $statement->bind_param("s", $row[3]);
+				$wasClean = $statement2->bind_param("s", $row["path"]);
 
 				if($wasClean === false) {
 					throw(new mysqli_sql_exception("Unable to bind parameters"));
 				}
 
 				// execute the statement
-				if($statement->execute() === false) {
+				if($statement2->execute() === false) {
 					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 				}
 
@@ -806,6 +803,8 @@ class Flight {
 
 				//put the two dimensional array into another array of all the flight paths each with all
 				//relative data for each flight
+
+
 				$allFlightPathsArray[] = $eachFlightPath;
 
 
@@ -897,19 +896,21 @@ class Flight {
 
 		// create query template for UPDATE to update flight with new number
 		$queryUpdate     = 	"UPDATE flight SET totalSeatsOnPlane = ? WHERE flightId = ?";
-		$statement = $mysqli->prepare($queryUpdate);
-		if($statement === false) {
+
+		//prepare the statement
+		$makeChange = $mysqli->prepare($queryUpdate);
+		if($makeChange === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ii", $totalSeatsOnPlane, $this->flightId);//fixme - no $this for totalSeats but yes for flightId?
+		$wasClean = $makeChange->bind_param("ii", $totalSeatsOnPlane, $this->flightId);//fixme - no $this for totalSeats but yes for flightId?
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
 
 		// execute the statement
-		if($statement->execute() === false) {
+		if($makeChange->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
@@ -941,8 +942,8 @@ class Flight {
 		}
 
 		// create query template
-		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price, totalSeatsOnPlane
-					FROM flight WHERE $flightId = ?";
+		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber,
+					price, totalSeatsOnPlane FROM flight WHERE $flightId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -1000,9 +1001,10 @@ class Flight {
 	 */
 	public function __toString() {
 		return ("<p>" . "Flight Id: " . $this->flightId . "<br/>" . "Origin: " . $this->origin . "<br/>" . "Destination: "
-			. $this->destination . "<br/>" . "Duration: " . $this->duration . "<br/>" . "Departure: " . $this->departureDateTime . "<br/>" . "Arrival: " .
-			$this->arrivalDateTime . "<br/>" . "Flight Number: " . $this->flightNumber . "<br/>" . "Price: " .
-			$this->price . "<br/>" . "Remaining Seats Available: " . $this->totalSeatsOnPlane . "<br/>" . "</p>");
+			. $this->destination . "<br/>" . "Duration: " . $this->duration . "<br/>" . "Departure: " .
+			$this->departureDateTime . "<br/>" . "Arrival: " .	$this->arrivalDateTime . "<br/>" . "Flight Number: " .
+			$this->flightNumber . "<br/>" . "Price: " . $this->price . "<br/>" . "Remaining Seats Available: " .
+			$this->totalSeatsOnPlane . "<br/>" . "</p>");
 	}
 
 }
