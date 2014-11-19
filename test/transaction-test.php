@@ -50,9 +50,15 @@ class TransactionTest extends UnitTestCase
 		$this->USER = new User(null, "a".$i."@b.net", $hash, $salt, $authenticationToken);
 		$this->USER->insert($this->mysqli);
 								//not $mysqli: $this->mysqli you want to set the object into the class
+		echo "<p>USER created -> setUp</p>";
+		var_dump($this->USER);
+
 		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Homer", "J", "Simpson", "1956-03-15 12:34:56",
 			"Token", $this->USER);
 		$this->PROFILE->insert($this->mysqli);
+		echo "<p>PROFILE created -> setUp</p>";
+		var_dump($this->PROFILE);
+
 	}									//not $mysqli: $this->mysqli setting into the class means you can access it
 										//creating it locally makes it inaccessible
 
@@ -71,6 +77,8 @@ class TransactionTest extends UnitTestCase
 			$this->USER->delete($this->mysqli);
 			$this->USER = null;
 		}
+
+
 
 		if($this->transaction !== null) {
 			$this->transaction->delete($this->mysqli);
@@ -98,7 +106,7 @@ class TransactionTest extends UnitTestCase
 		// finally, compare the fields
 		$this->assertNotNull($this->transaction->getTransactionId());
 		$this->assertTrue($this->transaction->getTransactionId() > 0);
-		$this->assertIdentical($this->transaction->getProfileId(), 	$this->PROFILE->getProfileId());
+		$this->assertIdentical($this->transaction->getProfileId(), 	$this->PROFILE->__get("profileId"));
 		$this->assertIdentical($this->transaction->getAmount(),  		$this->AMOUNT);
 		$this->assertIdentical($this->transaction->getDateApproved(), $this->DATE_APPROVED);
 		$this->assertIdentical($this->transaction->getCardToken(), 	$this->CARD_TOKEN);
@@ -111,7 +119,8 @@ class TransactionTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a transaction to post to mySQL
-		$this->transaction = new Transaction(null, $this->PROFILE->getProfleId(), $this->AMOUNT, $this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
+			$this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
@@ -124,7 +133,7 @@ class TransactionTest extends UnitTestCase
 		// finally, compare the fields
 		$this->assertNotNull($this->transaction->getTransactionId());
 		$this->assertTrue($this->transaction->getTransactionId() > 0);
-		$this->assertIdentical($this->transaction->getProfileId(), 	$this->PROFILE->getProfileId());
+		$this->assertIdentical($this->transaction->getProfileId(), 	$this->PROFILE->__get("profileId"));
 		$this->assertIdentical($this->transaction->getAmount(),  		$newAmount);
 		$this->assertIdentical($this->transaction->getDateApproved(), $this->DATE_APPROVED);
 		$this->assertIdentical($this->transaction->getCardToken(), 	$this->CARD_TOKEN);
@@ -137,7 +146,9 @@ class TransactionTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a transaction to post to mySQL
-		$this->transaction = new Transaction(null, $this->PROFILE->getProfleId(), $this->AMOUNT, $this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
+		$this->DATE_APPROVED,
+			$this->CARD_TOKEN, $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
@@ -163,7 +174,7 @@ class TransactionTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new transaction to post to mySQL
-		$this->transaction = new Transaction(null, $this->PROFILE->getProfileId(), $this->AMOUNT, $this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT, $this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
 
 		// third, insert the transaction to mySQL
 		$this->transaction->insert($this->mysqli);

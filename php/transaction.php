@@ -278,7 +278,7 @@ class Transaction {
 
 		// enforce the TransactionId is not null (i.e., don't update a transaction that hasn't been inserted)
 		if($this->transactionId === null) {
-			throw(new mysqli_sql_exception("Unable to update a transaction that does not exist"));
+			throw(new mysqli_sql_exception("Unable to insert a transaction that does not exist"));
 		}
 
 		// convert dates to strings
@@ -369,7 +369,7 @@ class Transaction {
 		}
 
 		// create query template
-		$query     = "UPDATE transaciont SET profileId = ?, amount= ?, dateApproved = ?, cardToken= ?, stripeToken= ? WHERE transactionId = ?";
+		$query     = "UPDATE transaction SET profileId = ?, amount= ?, dateApproved = ?, cardToken= ?, stripeToken= ? WHERE transactionId = ?";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
