@@ -162,7 +162,7 @@ class Transaction {
 
 		// second, convert the amount to a double and enforce it's positive
 		$newAmount = floatval($newAmount);
-		if($newAmount <= 0) {
+		if($newAmount <= 0.0) {
 			throw(new RangeException("amount $newAmount is not positive"));
 		}
 
@@ -235,7 +235,9 @@ class Transaction {
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
 		$newCardToken = trim($newCardToken);
-		$newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING);
+		if($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING) === false){
+			throw(new Exception("$newCardToken Token value is not valid"));
+		}
 
 		// then just take the card token out of quarantine
 		$this->cardToken = $newCardToken;
@@ -258,7 +260,9 @@ class Transaction {
 	public function setStripeToken($newStripeToken) {
 		// filter the stripe token as a generic string
 		$newStripeToken = trim($newStripeToken);
-		$newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING);
+		if($newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING) === false){
+			throw(new Exception("$newStripeToken Token value is not valid"));
+		}
 
 		// then just take the stripe token out of quarantine
 		$this->stripeToken = $newStripeToken;

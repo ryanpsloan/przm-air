@@ -29,10 +29,10 @@ class TransactionTest extends UnitTestCase
 	private $transaction = null;
 
 // a few "global" variables for creating test data
-	private $AMOUNT = "100.00";
+	private $AMOUNT = 100.00;
 	private $DATE_APPROVED = "2014-11-11 12:00:00";
-	private $CARD_TOKEN = 1;
-	private $STRIPE_TOKEN = 1;
+	private $CARD_TOKEN = "card_14oo18o9fh39";
+	private $STRIPE_TOKEN = "transaction_1532o45ipo4";
 	private $USER = null;
 	private $PROFILE = null;
 
@@ -102,6 +102,12 @@ class TransactionTest extends UnitTestCase
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a transaction to post to mySQL
+		echo"<p>Test Class Variable Dump -> testInsertNewTransaction</p>";
+		var_dump($this->PROFILE->__get("profileId"));
+		var_dump($this->AMOUNT);
+		var_dump($this->DATE_APPROVED);
+		var_dump($this->CARD_TOKEN);
+		var_dump($this->STRIPE_TOKEN);
 		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
 			$this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
 
@@ -134,7 +140,7 @@ class TransactionTest extends UnitTestCase
 		echo"<p>transaction created -> testUpdateTransaction</p>";
 		var_dump($this->transaction);
 		// fourth, update the transaction and post the changes to mySQL
-		$newAmount = "200.00";
+		$newAmount = 200.00;
 		$this->transaction->setAmount($newAmount);
 		$this->transaction->update($this->mysqli);
 
