@@ -236,7 +236,7 @@ class Transaction {
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
 		$newCardToken = trim($newCardToken);
-		if($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING) === false){
+		if(($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING)) === false){
 			throw(new UnexpectedValueException("$newCardToken Token value is not valid"));
 		}
 
@@ -262,7 +262,7 @@ class Transaction {
 	public function setStripeToken($newStripeToken) {
 		// filter the stripe token as a generic string
 		$newStripeToken = trim($newStripeToken);
-		if($newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING) === false){
+		if(($newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING)) === false){
 			throw(new UnexpectedValueException("$newStripeToken Token value is not valid"));
 		}
 
@@ -313,7 +313,7 @@ class Transaction {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 
-		// update the null transctionId with what mySQL just gave us
+		// update the null transactionId with what mySQL just gave us
 		$this->transactionId = $mysqli->insert_id;
 
 	}

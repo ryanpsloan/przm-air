@@ -29,12 +29,12 @@ class TransactionTest extends UnitTestCase
 	private $transaction = null;
 
 // a few "global" variables for creating test data
-	private $AMOUNT = 100.00;
-	private $DATE_APPROVED = "2014-11-11 12:00:00";
-	private $CARD_TOKEN = "card_14oo18o9fh39";
-	private $STRIPE_TOKEN = "transaction_1532o45ipo4";
-	private $USER = null;
-	private $PROFILE = null;
+	private $AMOUNT 		  = 100.00;
+	private $DATE_APPROVED = null;
+	private $CARD_TOKEN 	  = "card_14oo18o9fh39";
+	private $STRIPE_TOKEN  = "transaction_1532o45ipo4";
+	private $USER 			  = null;
+	private $PROFILE 		  = null;
 
 // setUp () is a method that is run before each test
 	// here, we use it to connect to my SQL
@@ -59,6 +59,7 @@ class TransactionTest extends UnitTestCase
 		echo "<p>PROFILE created -> setUp</p>";
 		var_dump($this->PROFILE);
 
+		$this->DATE_APPROVED = DateTime::createFromFormat("Y-m-d H:i:s", "2014-11-11 12:00:00");
 	}									//not $mysqli: $this->mysqli setting into the class means you can access it
 										//creating it locally makes it inaccessible
 
@@ -165,8 +166,8 @@ class TransactionTest extends UnitTestCase
 
 		// second, create a transaction to post to mySQL
 		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
-		$this->DATE_APPROVED,
-			$this->CARD_TOKEN, $this->STRIPE_TOKEN);
+																 $this->DATE_APPROVED, 					 $this->CARD_TOKEN,
+																 $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
