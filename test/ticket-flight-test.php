@@ -10,14 +10,16 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 
 //then require the class under scrutiny
 require_once("../php/ticket.php");
+require_once("../php/flight.php");
 
 // require the mysqli
 require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // require the classes for foreign keys
-require_once("../php/flight.php");
-require_once("../php/ticket.php");
-
+require_once("../php/profile.php");
+require_once("../php/user.php");
+require_once("../php/transaction.php");
+require_once("../php/traveler.php");
 // the TicketFlightTest is a container for all our tests
 class TicketFlightTest extends UnitTestCase {
 	// variable to hold the mySQL connection
@@ -28,23 +30,74 @@ class TicketFlightTest extends UnitTestCase {
 	// a few "global" variables for creating test data
 	private $FLIGHT = null;
 	private $TICKET = null;
+	private $TRANSACTION = null;
+	private $TRAVELER = null;
+	private $PROFILE = null;
+	private $USER = null;
 
 	// setUp () is a method that is run before each test
 	// here, we use it to connect to my SQL
 	public function setUp() {
-		$mysqli = MysqliConfiguration::getMysqli();
+		$this->mysqli = MysqliConfiguration::getMysqli();
 
-		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42", "08:00", "09:42", "1234", "100.00", 5);
+		$i = rand(1,1000);
+		$testEmail       = "useremailsetup".$i."@test.com";
+		$testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
+		$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
+		$testHash        = hash_pbkdf2("sha512", "tEsTpASs", $testSalt, 2048, 128);
+
+		$this->USER = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
+		$this->USER->insert($this->mysqli);
+		echo "<p>USER created -> setUp 45</p>";
+		var_dump($this->USER);
+
+		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Jameson", "Harold", "Jenkins",
+			"1956-12-01 00:00:00", "customer_000000000000000", $this->USER);
+		$this->PROFILE->insert($this->mysqli);
+		echo "<p>PROFILE created -> setUp 50</p>";
+		var_dump($this->PROFILE);
+
+		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId"),
+												 $this->PROFILE->__get("userFirstName"),
+												 $this->PROFILE->__get("userMiddleName"),
+												 $this->PROFILE->__get("userLastName"),
+			 									 $this->PROFILE->__get("dateOfBirth"), $this->PROFILE);
+		$this->TRAVELER->insert($this->mysqli);
+		echo "<p>TRAVELER created -> setUp 60</p>";
+		var_dump($this->TRAVELER);
+
+		$testAmount = 111.11;
+		$testDateApproved = DateTime::createFromFormat("Y-m-d H:i:s", "2014-11-20 07:08:09");
+		$testCardToken = "card_1238y823409u";
+		$testStripeToken = "stripe_2139084jf0fa94";
+
+		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"),
+															$testAmount, $testDateApproved,
+															$testCardToken, $testStripeToken);
+
+		$this->TRANSACTION->insert($this->mysqli);
+		echo "<p>TRANSACTION created -> setUp 65</p>";
+		var_dump($this->TRANSACTION);
+
+
+		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42", "08:00", "09:42", "1234", 100.00, 25);
 		$this->FLIGHT->insert($mysqli);
-		// todo create objects for dependencies PROFILE, TRAVELER, TRANSACTION
-		$this->TICKET = new Ticket(null, "12345ABCDE", "100.00", "Booked", 1, 1, 1);
+		echo "<p>FLIGHT created -> setUp 81</p>";
+		var_dump($this->FLIGHT);
+
+
+		$this->TICKET = new Ticket(null, "12345ABCDE", 100.00, "Booked", $this->PROFILE->__get("profileId"),
+											$this->TRAVELER->__get("travelerId"),
+											$this->TRANSACTION->getTransactionId());
 		$this->TICKET->insert($mysqli);
+		echo "<p>TICKET created -> setUp 89</p>";
+		var_dump($this->TICKET);
 	}
 
 	// tearDown () is a method that is run after each test
 	// here, we use it to delete the test record and disconnect from mySQL
 	public function tearDown() {
-		// delete the profile if we can
+		// delete the object if we can
 		if($this->TICKET !== null) {
 			$this->TICKET->delete($this->mysqli);
 			$this->TICKET = null;
@@ -54,6 +107,29 @@ class TicketFlightTest extends UnitTestCase {
 			$this->FLIGHT->delete($this->mysqli);
 			$this->FLIGHT = null;
 		}
+
+		if($this->TRANSACTION !== null) {
+			$this->TRANSACTION->delete($this->mysqli);
+			$this->TRANSACTION = null;
+		}
+
+		if($this->TRAVELER !== null) {
+			$this->TRAVELER->delete($this->mysqli);
+			$this->TRAVELER = null;
+		}
+
+		if($this->PROFILE !== null) {
+			$this->PROFILE->delete($this->mysqli);
+			$this->PROFILE = null;
+		}
+
+		if($this->USER !== null) {
+			$this->USER->delete($this->mysqli);
+			$this->USER = null;
+		}
+		echo "<p>Objected Deleted -> tearDown 130</p>";
+
+
 
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {

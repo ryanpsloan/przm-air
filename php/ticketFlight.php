@@ -189,37 +189,6 @@ class TicketFlight {
 	}
 
 	/**
-	 * updates this TicketFlight to mySQL
-	 *
-	 * @param resource $mysqli pointer to mySQL connection, by reference
-	 * @throws mysqli_sql_exception when mySQL related errors occur
-	 **/
-	public function update(&$mysqli) {
-		// handle degenerate cases
-		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-			throw(new mysqli_sql_exception("input is not a mysqli object"));
-		}
-
-		// create query template
-		$query     = "UPDATE ticketFlight SET flightId = ?, ticketId = ?";
-		$statement = $mysqli->prepare($query);
-		if($statement === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
-
-		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ii", $this->flightId, $this->ticketId);
-		if($wasClean === false) {
-			throw(new mysqli_sql_exception("Unable to bind parameters"));
-		}
-
-		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-		}
-	}
-
-	/**
 	 * gets the TicketFlight by flightId
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference

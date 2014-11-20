@@ -298,9 +298,9 @@ class Transaction {
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
-
+		$dateString = $this->dateApproved->format("Y-m-d H:i:s");
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $this->dateApproved,
+		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $dateString,
 																	 $this->cardToken, $this->stripeToken);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
@@ -369,7 +369,7 @@ class Transaction {
 		if($this->dateApproved === null) {
 			$dateApproved = null;
 		} else {
-			$dateApproved = $this->dateApproved->format("Y-d-m H:i:s");
+			$dateApproved = $this->dateApproved->format("Y-m-d H:i:s");
 		}
 
 		// create query template
@@ -380,7 +380,7 @@ class Transaction {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $this->dateApproved,
+		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $dateApproved,
 			$this->cardToken, $this->stripeToken);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
