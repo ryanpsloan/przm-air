@@ -369,7 +369,7 @@ class Flight {
 	 * @return mixed price
 	 **/
 	public function getPrice() {
-		return($this->Price);
+		return($this->price);
 	}
 
 	/**
@@ -387,7 +387,7 @@ class Flight {
 
 		// second, convert the price to a float and enforce it's positive
 		$newPrice = floatval($newPrice);
-		if($newPrice <= 0) {
+		if($newPrice <= 0.00) {
 			throw(new RangeException("price $newPrice is not positive"));
 		}
 
@@ -492,7 +492,7 @@ class Flight {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssssfi", $this->origin, $this->destination, $duration, $departureDateTime,
+		$wasClean = $statement->bind_param("ssssssdi", $this->origin, $this->destination, $duration, $departureDateTime,
 														$arrivalDateTime, $this->flightNumber, $this->price,
 														$this->totalSeatsOnPlane);
 		if($wasClean === false) {
@@ -575,14 +575,14 @@ class Flight {
 		if($this->departureDateTime === null) {
 			$departureDateTime = null;
 		} else {
-			$departureDateTime = $this->departureDateTime->format("Y-d-m H:i:s");
+			$departureDateTime = $this->departureDateTime->format("Y-m-d H:i:s");
 		}
 
 		// convert arrivalDateTime to string
 		if($this->arrivalDateTime === null) {
 			$arrivalDateTime = null;
 		} else {
-			$arrivalDateTime = $this->arrivalDateTime->format("Y-d-m H:i:s");
+			$arrivalDateTime = $this->arrivalDateTime->format("Y-m-d H:i:s");
 		}
 
 		// create query template
@@ -594,7 +594,7 @@ class Flight {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("ssssssfii", $this->origin, $this->destination, $duration, $departureDateTime,
+		$wasClean = $statement->bind_param("ssssssdii", $this->origin, $this->destination, $duration, $departureDateTime,
 													$arrivalDateTime, $this->flightNumber, $this->price, $this->totalSeatsOnPlane,
 													$this->flightId);
 		if($wasClean === false) {
