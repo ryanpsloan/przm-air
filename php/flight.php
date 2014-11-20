@@ -628,6 +628,7 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
+	//fixme send down a layover amount to SP
 	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers)
 	{
@@ -795,17 +796,20 @@ class Flight {
 				}
 
 				// get result from the SELECT query *pounds fists*
+				// this represents the two dimensional array (flight ids with all their associated data)
 				$eachFlightPath = $statement->get_result();
 				if($eachFlightPath === false) {
 					throw(new mysqli_sql_exception("Unable to get result set"));
 				}
 
-				//put the two dimensional array into another array of all the flight paths each with all
+				// fixme have to add total price and total duration for eachFlightPath onto the end of the 2nd level array.
+
+
+				//put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
 
 
 				$allFlightPathsArray[] = $eachFlightPath;
-
 
 					//"SELECT * FROM flight WHERE flightId IN ($row[3])";
 					//	new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
@@ -840,8 +844,8 @@ class Flight {
 	 * @return mixed Flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-
-	public function changeNumberOfSeats(&$mysqli, $flightId, $changeBy, $totalSeatsConstant) {
+//fixme need the degenerate cases here and elsewhere (and also ask about concrete in test)
+	public static function changeNumberOfSeats(&$mysqli, $flightId, $changeBy) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -885,11 +889,12 @@ class Flight {
 		}
 
 		//next, check that there's enough seats left to execute the $changeBy calc
-		if ($result + $changeBy>=0 && $result + $changeBy <= $totalSeatsConstant) {
+		if ($result + $changeBy>=0 && $result + $changeBy <= self::$totalSeatsConstant) {
 			$totalSeatsOnPlane = $result + $changeBy;
 		} else {
 			throw (new RangeException("There are not enough seats on this flight to increment or decrement by $changeBy
 												seats."));
+
 		}
 
 
@@ -903,7 +908,7 @@ class Flight {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $makeChange->bind_param("ii", $totalSeatsOnPlane, $this->flightId);//fixme - no $this for totalSeats but yes for flightId?
+		$wasClean = $makeChange->bind_param("ii", $totalSeatsOnPlane, $flightId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}

@@ -231,6 +231,7 @@ class Transaction {
 	 * sets the value of card token
 	 *
 	 * @param string $newCardToken card token
+	 * @throws UnexpectedValueException if not a string
 	 **/
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
@@ -255,7 +256,8 @@ class Transaction {
 	/**
 	 * sets the value of stripe token
 	 *
-	 * @param string $newStripToken stripe token
+	 * @param string $newStripeToken stripe token
+	 * @throws UnexpectedValueException if not a string
 	 **/
 	public function setStripeToken($newStripeToken) {
 		// filter the stripe token as a generic string
@@ -285,7 +287,7 @@ class Transaction {
 			throw(new mysqli_sql_exception("Unable to insert a transaction that already exists"));
 		}
 
-		// convert dates to strings
+		// convert date to string
 		if($this->dateApproved === null) {
 			$dateApproved = null;
 		} else {
@@ -310,6 +312,10 @@ class Transaction {
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
+
+		// update the null transactionId with what mySQL just gave us
+		$this->transactionId = $mysqli->insert_id;
+
 	}
 
 	/**
@@ -369,7 +375,7 @@ class Transaction {
 		if($this->dateApproved === null) {
 			$dateApproved = null;
 		} else {
-			$dateApproved = $this->dateApproved->format("Y-m-d H:i:s");
+			$dateApproved = $this->dateApproved->format("Y-d-m H:i:s");
 		}
 
 		// create query template
@@ -382,6 +388,8 @@ class Transaction {
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $dateApproved,
 			$this->cardToken, $this->stripeToken);
+		$wasClean = $statement->bind_param("idsssi",   $this->profileId, $this->amount, 		 $dateApproved,
+																	  $this->cardToken, $this->stripeToken, $this->transactionId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
