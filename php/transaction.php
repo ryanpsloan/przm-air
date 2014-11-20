@@ -236,7 +236,8 @@ class Transaction {
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
 		$newCardToken = trim($newCardToken);
-		if($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING) === false){
+
+		if(($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING)) === false){
 			throw(new Exception("$newCardToken Token value is not valid"));
 		}
 
@@ -262,7 +263,7 @@ class Transaction {
 	public function setStripeToken($newStripeToken) {
 		// filter the stripe token as a generic string
 		$newStripeToken = trim($newStripeToken);
-		if($newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING) === false){
+		if(($newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING)) === false){
 			throw(new Exception("$newStripeToken Token value is not valid"));
 		}
 
@@ -291,7 +292,7 @@ class Transaction {
 		if($this->dateApproved === null) {
 			$dateApproved = null;
 		} else {
-			$dateApproved = $this->dateApproved->format("Y-d-m H:i:s");
+			$dateApproved = $this->dateApproved->format("Y-m-d H:i:s");
 		}
 
 		// create query template

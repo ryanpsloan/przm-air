@@ -68,8 +68,8 @@ class TicketFlightTest extends UnitTestCase {
 
 		$testAmount = 111.11;
 		$testDateApproved = DateTime::createFromFormat("Y-m-d H:i:s", "2014-11-20 07:08:09");
-		$testCardToken = "card_1238y823409u";
-		$testStripeToken = "stripe_2139084jf0fa94";
+		$testCardToken = "card1238y823409u1234324yu7897";
+		$testStripeToken = "stripe2139084jf0fa94fdghsrt78";
 
 		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"),
 															$testAmount, $testDateApproved,
@@ -247,7 +247,7 @@ class TicketFlightTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticketFlight to post to mySQL
-		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId);
+		$this->ticketFlight = new TicketFlight(null, $this->FLIGHT->getFlightId(), $this->TICKET->getTicketId());
 
 		// third, insert the ticketFlight to mySQL
 		$this->ticketFlight->insert($this->mysqli);
