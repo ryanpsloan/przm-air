@@ -183,7 +183,7 @@ class TransactionTest extends UnitTestCase
 		echo"<p>transaction deleted -> testDeleteTransaction </p>";
 		var_dump($this->transaction);
 		// finally, try to get the transaction and assert we didn't get a thing
-		$hopefulTransaction = Transaction::getTransactionByTransactionId($this->mysqli, $this->$transactionId);
+		$hopefulTransaction = Transaction::getTransactionByTransactionId($this->mysqli, $transactionId);
 		$this->assertNull($hopefulTransaction);
 
 
@@ -212,7 +212,7 @@ class TransactionTest extends UnitTestCase
 		$this->assertIdentical($staticTransaction->getProfileId(), 		$this->PROFILE->__get("profileId"));
 		$this->assertIdentical($staticTransaction->getAmount(), 			$this->AMOUNT);
 		$this->assertIdentical($staticTransaction->getDateApproved(), 	$this->DATE_APPROVED);
-		$this->assertIdentical($staticTransaction->getCardToke(), 		$this->CARD_TOKEN);
+		$this->assertIdentical($staticTransaction->getCardToken(), 		$this->CARD_TOKEN);
 		$this->assertIdentical($staticTransaction->getStripeToken(), 	$this->STRIPE_TOKEN);
 	}
 
