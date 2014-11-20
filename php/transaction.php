@@ -231,12 +231,13 @@ class Transaction {
 	 * sets the value of card token
 	 *
 	 * @param string $newCardToken card token
+	 * @throws UnexpectedValueException if not a string
 	 **/
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
 		$newCardToken = trim($newCardToken);
 		if($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING) === false){
-			throw(new Exception("$newCardToken Token value is not valid"));
+			throw(new UnexpectedValueException("$newCardToken Token value is not valid"));
 		}
 
 		// then just take the card token out of quarantine
@@ -255,13 +256,14 @@ class Transaction {
 	/**
 	 * sets the value of stripe token
 	 *
-	 * @param string $newStripToken stripe token
+	 * @param string $newStripeToken stripe token
+	 * @throws UnexpectedValueException if not a string
 	 **/
 	public function setStripeToken($newStripeToken) {
 		// filter the stripe token as a generic string
 		$newStripeToken = trim($newStripeToken);
 		if($newStripeToken = filter_var($newStripeToken, FILTER_SANITIZE_STRING) === false){
-			throw(new Exception("$newStripeToken Token value is not valid"));
+			throw(new UnexpectedValueException("$newStripeToken Token value is not valid"));
 		}
 
 		// then just take the stripe token out of quarantine
@@ -285,7 +287,7 @@ class Transaction {
 			throw(new mysqli_sql_exception("Unable to insert a transaction that already exists"));
 		}
 
-		// convert dates to strings
+		// convert date to string
 		if($this->dateApproved === null) {
 			$dateApproved = null;
 		} else {
@@ -300,7 +302,7 @@ class Transaction {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $this->dateApproved,
+		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $dateApproved,
 																	 $this->cardToken, $this->stripeToken);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
@@ -310,6 +312,10 @@ class Transaction {
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
+
+		// update the null transctionId with what mySQL just gave us
+		$this->transactionId = $mysqli->insert_id;
+
 	}
 
 	/**
@@ -380,8 +386,8 @@ class Transaction {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $this->dateApproved,
-			$this->cardToken, $this->stripeToken);
+		$wasClean = $statement->bind_param("idsssi",   $this->profileId, $this->amount, 		 $dateApproved,
+																	  $this->cardToken, $this->stripeToken, $this->transactionId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}

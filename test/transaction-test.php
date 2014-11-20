@@ -18,7 +18,7 @@ require_once("/etc/apache2/capstone-mysql/przm.php");
 // require the classes for foreign key
 require_once("../php/user.php");
 require_once("../php/profile.php");
-require_once("../php/transaction.php");
+
 
 // the TransactionTest is a container for all our tests
 class TransactionTest extends UnitTestCase
@@ -71,6 +71,10 @@ class TransactionTest extends UnitTestCase
 			$this->transaction->delete($this->mysqli);
 			$this->transaction = null;
 		}
+
+		echo "<p>transaction deleted -> tearDown</p>";
+		var_dump($this->transaction);
+
 		if($this->PROFILE !== null) {
 			$this->PROFILE->delete($this->mysqli);
 			$this->PROFILE = null;
@@ -87,12 +91,6 @@ class TransactionTest extends UnitTestCase
 		echo "<p>USER deleted -> tearDown</p>";
 		var_dump($this->USER);
 
-		if($this->transaction !== null) {
-			$this->transaction->delete($this->mysqli);
-			$this->transaction = null;
-		}
-		echo "<p>transaction deleted -> tearDown</p>";
-		var_dump($this->transaction);
 
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {
@@ -113,7 +111,8 @@ class TransactionTest extends UnitTestCase
 		var_dump($this->CARD_TOKEN);
 		var_dump($this->STRIPE_TOKEN);
 		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
-			$this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+																 $this->DATE_APPROVED, 					 $this->CARD_TOKEN,
+																 $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
@@ -123,11 +122,11 @@ class TransactionTest extends UnitTestCase
 		// finally, compare the fields
 		$this->assertNotNull($this->transaction->getTransactionId());
 		$this->assertTrue($this->transaction->getTransactionId() > 0);
-		$this->assertIdentical($this->transaction->getProfileId(), 	$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($this->transaction->getAmount(),  		$this->AMOUNT);
+		$this->assertIdentical($this->transaction->getProfileId(),    $this->PROFILE->__get("profileId"));
+		$this->assertIdentical($this->transaction->getAmount(),  	  $this->AMOUNT);
 		$this->assertIdentical($this->transaction->getDateApproved(), $this->DATE_APPROVED);
-		$this->assertIdentical($this->transaction->getCardToken(), 	$this->CARD_TOKEN);
-		$this->assertIdentical($this->transaction->getStripeToken(), 	$this->STRIPE_TOKEN);
+		$this->assertIdentical($this->transaction->getCardToken(), 	  $this->CARD_TOKEN);
+		$this->assertIdentical($this->transaction->getStripeToken(),  $this->STRIPE_TOKEN);
 	}
 
 	// test updating a Transaction
@@ -137,7 +136,8 @@ class TransactionTest extends UnitTestCase
 
 		// second, create a transaction to post to mySQL
 		$this->transaction = new Transaction(null, $this->PROFILE->__get("profileId"), $this->AMOUNT,
-			$this->DATE_APPROVED, $this->CARD_TOKEN, $this->STRIPE_TOKEN);
+																 $this->DATE_APPROVED, 					 $this->CARD_TOKEN,
+																 $this->STRIPE_TOKEN);
 
 		//third, insert the profile to mySQL
 		$this->transaction->insert($this->mysqli);
@@ -151,11 +151,11 @@ class TransactionTest extends UnitTestCase
 		// finally, compare the fields
 		$this->assertNotNull($this->transaction->getTransactionId());
 		$this->assertTrue($this->transaction->getTransactionId() > 0);
-		$this->assertIdentical($this->transaction->getProfileId(), 	$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($this->transaction->getAmount(),  		$newAmount);
+		$this->assertIdentical($this->transaction->getProfileId(), 	  $this->PROFILE->__get("profileId"));
+		$this->assertIdentical($this->transaction->getAmount(),  	  $newAmount);
 		$this->assertIdentical($this->transaction->getDateApproved(), $this->DATE_APPROVED);
-		$this->assertIdentical($this->transaction->getCardToken(), 	$this->CARD_TOKEN);
-		$this->assertIdentical($this->transaction->getStripeToken(), 	$this->STRIPE_TOKEN);
+		$this->assertIdentical($this->transaction->getCardToken(), 	  $this->CARD_TOKEN);
+		$this->assertIdentical($this->transaction->getStripeToken(),  $this->STRIPE_TOKEN);
 	}
 
 	// test deleting a Transaction
