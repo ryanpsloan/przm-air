@@ -116,7 +116,7 @@ class Flight {
 	public function setFlightId($newFlightId) {
 		// zeroth, set allow the flight id to be null if a new object
 		if($newFlightId === null) {
-			$this->$flightId = null;
+			$this->flightId = null;
 			return;
 		}
 
@@ -233,7 +233,7 @@ class Flight {
 
 		// treat the date as a mySQL date string
 		$newDuration = trim($newDuration);
-		if((preg_match("/^(\d{2}):(\d{2}))$/", $newDuration, $matches)) !== 1) {
+		if((preg_match("/^(\d{2}):(\d{2})$/", $newDuration, $matches)) !== 1) {
 			throw(new RangeException("$newDuration is not a valid duration time"));
 		}
 

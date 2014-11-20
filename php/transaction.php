@@ -386,8 +386,6 @@ class Transaction {
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("idsss",   $this->profileId, $this->amount, $dateApproved,
-			$this->cardToken, $this->stripeToken);
 		$wasClean = $statement->bind_param("idsssi",   $this->profileId, $this->amount, 		 $dateApproved,
 																	  $this->cardToken, $this->stripeToken, $this->transactionId);
 		if($wasClean === false) {
