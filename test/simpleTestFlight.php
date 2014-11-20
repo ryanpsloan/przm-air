@@ -23,13 +23,13 @@ class FlightTest extends UnitTestCase {
 	private $flight = null;
 
 	// a few "global" variables for creating test data
-	private $ORIGIN      		= "LAX";
+	private $ORIGIN      		= "SEA";
 	private $DESTINATION   		= "JFK";
 	private $DURATION       	= "06:09";
 	private $DEPARTUREDATETIME = "2014-12-25 12:00:00";
 	private $ARRIVALDATETIME   = "2014-12-25 18:09:00";
 	private $FLIGHTNUMBER      = "90";
-	private $PRICE 				= "640.63";
+	private $PRICE 				= 640.63;
 	private $TOTALSEATSONPLANE = 20;
 
 	// setUp() is a method that is run before each test
@@ -66,14 +66,19 @@ class FlightTest extends UnitTestCase {
 		// third, insert the flight to mySQL
 		$this->flight->insert($this->mysqli);
 
+		//convert input strings to DateTimeObjects to compare against flight get methods
+		$DURATION       	= DateTime::createFromFormat("H:i", $this->DURATION);
+		$DEPARTUREDATETIME = DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
+		$ARRIVALDATETIME   = DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
+
 		// finally, compare the fields
 		$this->assertNotNull		($this->flight->getFlightId());
 		$this->assertTrue			($this->flight->getFlightId() > 0);
 		$this->assertIdentical	($this->flight->getOrigin(),               	$this->ORIGIN);
 		$this->assertIdentical	($this->flight->getDestination(),          	$this->DESTINATION);
-		$this->assertIdentical	($this->flight->getDuration(),             	$this->DURATION);
-		$this->assertIdentical	($this->flight->getDepartureDateTime(), 		$this->DEPARTUREDATETIME);
-		$this->assertIdentical	($this->flight->getArrivalDateTime(),      	$this->ARRIVALDATETIME);
+		$this->assertIdentical	($this->flight->getDuration(),             	$DURATION);
+		$this->assertIdentical	($this->flight->getDepartureDateTime(), 		$DEPARTUREDATETIME);
+		$this->assertIdentical	($this->flight->getArrivalDateTime(),      	$ARRIVALDATETIME);
 		$this->assertIdentical	($this->flight->getFlightNumber(),         	$this->FLIGHTNUMBER);
 		$this->assertIdentical	($this->flight->getPrice(),                	$this->PRICE);
 		$this->assertIdentical	($this->flight->getTotalSeatsOnPlane(), 		$this->TOTALSEATSONPLANE);
@@ -93,25 +98,48 @@ class FlightTest extends UnitTestCase {
 		$this->flight->insert($this->mysqli);
 
 		// fourth, update the flight and post the changes to mySQL
-		$newOrigin = "ABQ";
-		$newDestination = "LAX";
-		$newDuration = "01:50";
+		$newOrigin 					= "ABQ";
+		$newDestination 			= "LAX";
+		$newDuration 				= "01:50";
+		$newDEPARTUREDATETIME 	= "2014-12-31 12:00:00";
+		$newARRIVALDATETIME   	= "2014-12-31 18:09:00";
+		$newFLIGHTNUMBER      	= "100";
+		$newPRICE 					= 1040.63;
+		$newTOTALSEATSONPLANE 	= 19;
 
-		//fixme: update all fields or just a sample?
+		$this->ORIGIN 					= $newOrigin;
+		$this->DESTINATION 			= $newDestination;
+		$this->DURATION 				= $newDuration;
+		$this->DEPARTUREDATETIME 	= $newDEPARTUREDATETIME;
+		$this->ARRIVALDATETIME 		= $newARRIVALDATETIME;
+		$this->FLIGHTNUMBER 			= $newFLIGHTNUMBER;
+		$this->PRICE 					= $newPRICE;
+		$this->TOTALSEATSONPLANE 	= $newTOTALSEATSONPLANE;
+
 		$this->flight->setOrigin($newOrigin);
 		$this->flight->setDestination($newDestination);
 		$this->flight->setDuration($newDuration);
-
+		$this->flight->setDepartureDateTime($newDEPARTUREDATETIME);
+		$this->flight->setArrivalDateTime($newARRIVALDATETIME);
+		$this->flight->setFlightNumber($newFLIGHTNUMBER);
+		$this->flight->setPrice($newPRICE);
+		$this->flight->setTotalSeatsOnPlane($newTOTALSEATSONPLANE);
 		$this->flight->update($this->mysqli);
+
+		//convert date input strings to DateTimeObjects to compare against flight get methods
+		$DURATION       	= DateTime::createFromFormat("H:i", $this->DURATION);
+		$DEPARTUREDATETIME = DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
+		$ARRIVALDATETIME   = DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
+
 
 		// finally, compare the fields
 		$this->assertNotNull		($this->flight->getFlightId());
 		$this->assertTrue			($this->flight->getFlightId() > 0);
 		$this->assertIdentical	($this->flight->getOrigin(),               	$this->ORIGIN);
 		$this->assertIdentical	($this->flight->getDestination(),          	$this->DESTINATION);
-		$this->assertIdentical	($this->flight->getDuration(),             	$this->DURATION);
-		$this->assertIdentical	($this->flight->getDepartureDateTime(), 		$this->DEPARTUREDATETIME);
-		$this->assertIdentical	($this->flight->getArrivalDateTime(),      	$this->ARRIVALDATETIME);
+		$this->assertIdentical	($this->flight->getDuration(),             	$DURATION);
+		$this->assertIdentical	($this->flight->getDepartureDateTime(), 		$DEPARTUREDATETIME);
+		$this->assertIdentical	($this->flight->getArrivalDateTime(),      	$ARRIVALDATETIME);
 		$this->assertIdentical	($this->flight->getFlightNumber(),         	$this->FLIGHTNUMBER);
 		$this->assertIdentical	($this->flight->getPrice(),                	$this->PRICE);
 		$this->assertIdentical	($this->flight->getTotalSeatsOnPlane(), 		$this->TOTALSEATSONPLANE);
@@ -129,16 +157,17 @@ class FlightTest extends UnitTestCase {
 		// third, insert the flight to mySQL
 		$this->flight->insert($this->mysqli);
 
+		$localFlightID = $this->flight->getFlightId();
 		// fourth, verify the Flight was inserted
-		$this->assertNotNull($this->flight->getUserId());
-		$this->assertTrue($this->flight->getUserId() > 0);
+		$this->assertNotNull($this->flight->getFlightId());
+		$this->assertTrue($this->flight->getFlightId() > 0);
 
 		// fifth, delete the flight
 		$this->flight->delete($this->mysqli);
 		$this->flight = null;
 
 		// finally, try to get the flight and assert we didn't get a thing
-		$hopefulFlight = Flight::getFlightByFlightId ($this->mysqli, $this->flight->getFlightId());
+		$hopefulFlight = Flight::getFlightByFlightId ($this->mysqli, $localFlightID);
 		$this->assertNull($hopefulFlight);
 	}
 

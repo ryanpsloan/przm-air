@@ -208,7 +208,7 @@ class Flight {
 
 
 	/**
-	 * gets the value of the flight's duration.
+	 * gets the value of the flight's duration as a DateTimeObject.
 	 *
 	 * @return mixed value of duration
 	 **/
@@ -218,7 +218,7 @@ class Flight {
 
 
 	/**
-	 * sets the value of the duration
+	 * sets the value of the duration as a DateTimeObject
 	 *
 	 * @param string $newDuration of the duration
 	 * @throws UnexpectedValueException if the input doesn't appear to be a time
@@ -245,7 +245,7 @@ class Flight {
 
 
 	/**
-	 * gets the value of the flight's departure datetime.
+	 * gets the value of the flight's departure datetime as a DateTimeObject.
 	 *
 	 * @return mixed value of departure datetime
 	 **/
@@ -255,7 +255,7 @@ class Flight {
 
 
 	/**
-	 * sets the value of the departureDateTime
+	 * sets the value of the departureDateTime as a DateTimeObject
 	 *
 	 * @param string $newDepartureDateTime of the departure's date and time
 	 * @throws UnexpectedValueException if the input doesn't appear to be a date
@@ -290,7 +290,7 @@ class Flight {
 
 
 	/**
-	 * gets the value of arrival datetime
+	 * gets the value of arrival datetime as a DateTimeObject
 	 *
 	 * @return mixed value of arrival datetime
 	 **/
@@ -300,7 +300,7 @@ class Flight {
 
 
 	/**
-	 * sets the value of the arrivalDateTime
+	 * sets the value of the arrivalDateTime as a DateTimeObject
 	 *
 	 * @param string $newArrivalDateTime of the arrival date and time
 	 * @throws UnexpectedValueException if the input doesn't appear to be a date
@@ -628,6 +628,7 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
+	/*
 	//fixme send down a layover amount to SP
 	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers)
@@ -876,7 +877,7 @@ class Flight {
 
 
 	}
-
+*/
 
 	/**
 	 * increments or decrements totalSeatsOnPlane for given flightId in mySQL
@@ -895,7 +896,7 @@ class Flight {
 		}
 
 		// enforce the flightId is not null (i.e., don't update a flight that hasn't been inserted)
-		if($this->flightId === null) {
+		if($flightId === null) {
 			throw(new mysqli_sql_exception("Unable to update a flight that does not exist"));
 		}
 
@@ -931,13 +932,27 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
+		// since this field is unique to this flightId, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can use it to calc
+		// 2) if there's no result, we can just return null
+		$row1 = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+
+		// convert the associative array to a variable
+		if($row1 !== null) {
+			try {
+				$currentSeatsAvailable = $row1["totalSeatsOnPlane"];
+
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to integer", 0, $exception));
+			}
+		}
 		//next, check that there's enough seats left to execute the $changeBy calc
-		if ($result + $changeBy>=0 && $result + $changeBy <= self::$totalSeatsConstant) {
-			$totalSeatsOnPlane = $result + $changeBy;
+		if ($currentSeatsAvailable + $changeBy>=0 && $currentSeatsAvailable + $changeBy <= self::$totalSeatsConstant) {
+			$totalSeatsOnPlane = $currentSeatsAvailable + $changeBy;
 		} else {
 			throw (new RangeException("There are not enough seats on this flight to increment or decrement by $changeBy
 												seats."));
-
 		}
 
 
@@ -971,12 +986,12 @@ class Flight {
 	 * @return mixed Flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
+
 	public static function getFlightByFlightId(&$mysqli, $flightId) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
-
 
 		// first trim, then validate, then sanitize the flightId int before searching.
 		$flightId = trim($flightId);
@@ -1017,6 +1032,7 @@ class Flight {
 		// 1) if there's a result, we can make it into a Flight object normally
 		// 2) if there's no result, we can just return null
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+		var_dump($row);
 
 		// convert the associative array to a Flight
 		if($row !== null) {
