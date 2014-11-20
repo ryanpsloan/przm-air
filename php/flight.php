@@ -473,14 +473,14 @@ class Flight {
 		if($this->departureDateTime === null) {
 			$departureDateTime = null;
 		} else {
-			$departureDateTime = $this->departureDateTime->format("Y-d-m H:i:s");
+			$departureDateTime = $this->departureDateTime->format("Y-m-d H:i:s");
 		}
 
 		// convert arrivalDateTime to string
 		if($this->arrivalDateTime === null) {
 			$arrivalDateTime = null;
 		} else {
-			$arrivalDateTime = $this->arrivalDateTime->format("Y-d-m H:i:s");
+			$arrivalDateTime = $this->arrivalDateTime->format("Y-m-d H:i:s");
 		}
 
 		// create query template
@@ -802,11 +802,54 @@ class Flight {
 					throw(new mysqli_sql_exception("Unable to get result set"));
 				}
 
-				// fixme have to add total price and total duration for eachFlightPath onto the end of the 2nd level array.
+				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
 
+				// get size of array for calc of price and duration
+				$sizeEachFlightPath = count($eachFlightPath);
+
+				// calc discount for paths with multiple flights
+				if($sizeEachFlightPath < 2) {
+					$multipleFlightDiscount = 1;
+
+					if($sizeEachFlightPath > 1 &&  $sizeEachFlightPath < 4 ) {
+						$multipleFlightDiscount = 1 - (.1 * $sizeEachFlightPath);
+
+					}
+				} else $multipleFlightDiscount = 0.65;
+
+				// calc additional charge for nearby time windows
+				$daysTillFlight = 13; // fixme
+				if($daysTillFlight < 7) {
+
+					$priceWindowFactor = 1.75;
+
+					if($daysTillFlight < 14) {
+						$priceWindowFactor = 1.5;
+
+						if($daysTillFlight < 28) {
+							$priceWindowFactor = 1.25;
+						}
+						else $priceWindowFactor = 1;
+					}
+				}
+
+				// calc total base price in path
+				$sumBasePricesInPath = 0;
+				for ($i=0, $eachFlightPath[$i] !== null, $i++) {
+					$sumBasePricesInPath = $sumBasePricesInPath + $eachFlightPath[$i][8];
+				}
+
+				// calc total price for the path using the discount and time factor and base price
+				$totalPriceForPath = $priceWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
+
+				$flightId1Departure = $eachFlightPath [0][5];
+				$flightIdLastArrival = $eachFlightPath [$sizeEachFlightPath][6];
+				$totalDurationForPath = $flightIdLastArrival - $flightId1Departure;
 
 				//put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
+
+				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath;
 
 
 				$allFlightPathsArray[] = $eachFlightPath;

@@ -49,9 +49,9 @@ class FlightTest extends UnitTestCase {
 		}
 
 		// disconnect from mySQL
-		if($this->mysqli !== null) {
+		/*if($this->mysqli !== null) {
 			$this->mysqli->close();
-		}
+		}*/
 	}
 
 	// test creating a new Flight and inserting it to mySQL
