@@ -25,7 +25,7 @@ class Flight {
 	 **/
 	private $destination;
 	/**
-	 * time of travel from origin to destination, set as a DateInterval //fixme
+	 * time of travel from origin to destination, set as DateInterval object
 	 **/
 	private $duration
 	;/**
@@ -464,13 +464,17 @@ class Flight {
 			throw(new mysqli_sql_exception("not a new flight"));
 		}
 
+		echo "<p>line 467 of Flight var dump of duration in insert method before formatting</p>";
+		var_dump($this->duration);
 		// convert duration to string
 		if($this->duration === null) {
-			$duration = null;
+			$duration = "fix me!";
 		} else {
-			$duration = $this->duration->format("H:i:s");
+			$duration = $this->duration->format("%H:%I:%S");
 		}
 
+		echo "<p>line 467 of Flight var dump of duration in insert method after formatting</p>";
+		var_dump($duration);
 
 		// convert departureDateTime to string
 		if($this->departureDateTime === null) {
@@ -612,7 +616,107 @@ class Flight {
 
 
 
-	// ****CUSTOM FUNCTIONS: increment/decrement, searchByFlightId, searchByUser********
+	// ****CUSTOM FUNCTIONS: searchByFlightId, increment/decrement, searchByUser********
+
+
+	/**
+	 * gets the Flight by flightId
+	 *
+	 * @param resource $mysqli pointer to mySQL connection, by reference
+	 * @param string $flightId flight ID to search for
+	 * @return mixed Flight found or null if not found
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 **/
+
+	public static function getFlightByFlightId(&$mysqli, $flightId) {
+		// handle degenerate cases
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+		// first trim, then validate, then sanitize the flightId int before searching.
+		$flightId = trim($flightId);
+
+		if (filter_var($flightId, FILTER_SANITIZE_NUMBER_INT) === false) {
+			throw (new UnexpectedValueException ("flight id $flightId does not appear to be an integer"));
+		}
+		else {
+			$flightId = filter_var($flightId, FILTER_SANITIZE_NUMBER_INT);
+		}
+
+		// create query template
+		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber,
+					price, totalSeatsOnPlane FROM flight WHERE flightId = ?";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		echo "<p>1017 flightId that comes into get flight by flight id before binding</p>";
+		var_dump($flightId);
+
+
+		// bind the flightId to the place holder in the template
+		$wasClean = $statement->bind_param("i", $flightId);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+
+		echo "<p>line 1039 of FLIGHT var dump of RESULT OBJECT in getFlightByFlightID before fetchassoc</p>";
+		var_dump($result->num_rows);
+
+
+		// since this is a unique field, this will only return 0 or 1 results. So...
+		// 1) if there's a result, we can make it into a Flight object normally
+		// 2) if there's no result, we can just return null
+		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+		echo "<p>line 1035 of FLIGHT var dump of ROW in getFlightByFlightID object after fetchassoc</p>";
+		var_dump($row);
+
+		// convert the associative array to a Flight
+		if($row !== null) {
+			try {
+				//$floatPrice = (float) $row['price'];
+
+				//echo "<p>line 1042 of FLIGHT var dump of float price in getFlightByFlightID object after fetchassoc</p>";
+				//var_dump($floatPrice);
+
+				$flight = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
+					$row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
+					$row["price"], $row["totalSeatsOnPlane"]);
+
+
+
+			} catch(Exception $exception) {
+
+				echo "<p>line 1054 dump of exception before throws</p>";
+				var_dump($exception);
+
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
+			}
+
+			// if we got here, the Flight is good - return it
+			return ($flight);
+		} else {
+			// 404 User not found - return null instead
+			return (null);
+		}
+	}
+
+
 	/**
 	 * increments or decrements totalSeatsOnPlane for given flightId in mySQL
 	 * @param mixed $flightId flight ID to search for
@@ -712,104 +816,6 @@ class Flight {
 
 
 	/**
-	 * gets the Flight by flightId
-	 *
-	 * @param resource $mysqli pointer to mySQL connection, by reference
-	 * @param string $flightId flight ID to search for
-	 * @return mixed Flight found or null if not found
-	 * @throws mysqli_sql_exception when mySQL related errors occur
-	 **/
-
-	public static function getFlightByFlightId(&$mysqli, $flightId) {
-		// handle degenerate cases
-		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
-			throw(new mysqli_sql_exception("input is not a mysqli object"));
-		}
-
-		// first trim, then validate, then sanitize the flightId int before searching.
-		$flightId = trim($flightId);
-
-		if (filter_var($flightId, FILTER_SANITIZE_NUMBER_INT) === false) {
-			throw (new UnexpectedValueException ("flight id $flightId does not appear to be an integer"));
-		}
-		else {
-			$flightId = filter_var($flightId, FILTER_SANITIZE_NUMBER_INT);
-		}
-
-		// create query template
-		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber,
-					price, totalSeatsOnPlane FROM flight WHERE $flightId = ?";
-		$statement = $mysqli->prepare($query);
-		if($statement === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
-
-		echo "<p>1017 flightId that comes into get flight by flight id before binding</p>";
-		var_dump($flightId);
-
-
-		// bind the flightId to the place holder in the template
-		$wasClean = $statement->bind_param("i", $flightId);
-		if($wasClean === false) {
-			throw(new mysqli_sql_exception("Unable to bind parameters"));
-		}
-
-		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-		}
-
-		// get result from the SELECT query *pounds fists*
-		$result = $statement->get_result();
-		if($result === false) {
-			throw(new mysqli_sql_exception("Unable to get result set"));
-		}
-
-
-		echo "<p>line 1039 of FLIGHT var dump of RESULT OBJECT in getFlightByFlightID before fetchassoc</p>";
-		var_dump($result);
-
-
-		// since this is a unique field, this will only return 0 or 1 results. So...
-		// 1) if there's a result, we can make it into a Flight object normally
-		// 2) if there's no result, we can just return null
-		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
-		echo "<p>line 1035 of FLIGHT var dump of ROW in getFlightByFlightID object after fetchassoc</p>";
-		var_dump($row);
-
-		// convert the associative array to a Flight
-		if($row !== null) {
-			try {
-				//$floatPrice = (float) $row['price'];
-
-				//echo "<p>line 1042 of FLIGHT var dump of float price in getFlightByFlightID object after fetchassoc</p>";
-				//var_dump($floatPrice);
-
-				$flight = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
-												$row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
-												$row["price"], $row["totalSeatsOnPlane"]);
-
-
-
-			} catch(Exception $exception) {
-
-				echo "<p>line 1054 dump of exception before throws</p>";
-				var_dump($exception);
-
-				// if the row couldn't be converted, rethrow it
-				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
-			}
-
-			// if we got here, the Flight is good - return it
-			return ($flight);
-		} else {
-			// 404 User not found - return null instead
-			return (null);
-		}
-	}
-
-
-	/**
 	 * searches all flights based on user input to return route options
 	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
 	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
@@ -826,7 +832,8 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-/* //fixme take out the slash star here and below to activate the search function when ready to test
+/*
+	//fixme take out the slash star here and below to activate the search function when ready to test
 	//fixme send down a layover amount to SP
 	//fixme send need $concretemysqli in test?
 	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
@@ -997,6 +1004,7 @@ class Flight {
 
 				// get result from the SELECT query *pounds fists*
 				// this represents the two dimensional array (flight ids with all their associated data)
+				// fixme: isn't this just a result object tho?  Have to convert it to an array of arrays?
 				$eachFlightPath = $statement->get_result();
 				if($eachFlightPath === false) {
 					throw(new mysqli_sql_exception("Unable to get result set"));

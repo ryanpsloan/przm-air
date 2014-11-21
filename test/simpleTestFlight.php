@@ -72,6 +72,7 @@ class FlightTest extends UnitTestCase {
 
 		echo "<p>line 72 of testFlight var dump of flight object after insert in in insert function</p>";
 		var_dump($this->flight);
+		// fixme: we need a way to have datetimes set in set functions as correct timezone and converted to UTC upon insertion
 
 		//convert input strings to DateTimeObjects or Interval to compare against flight get methods
 		$explode 				= explode(":", $this->DURATION);
@@ -134,7 +135,7 @@ class FlightTest extends UnitTestCase {
 		$this->flight->setTotalSeatsOnPlane($newTOTALSEATSONPLANE);
 		$this->flight->update($this->mysqli);
 
-		//convert date input strings to DateTimeObjects to compare against flight get methods
+		//convert date input strings to DateTimeObjects or Interval to compare against flight get methods
 		$explode 				= explode(":", $this->DURATION);
 		$DURATION       		= DateInterval::createFromDateString("$explode[0] hour + $explode[1] minutes + 0 seconds");
 		$DEPARTUREDATETIME 	= DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
@@ -200,6 +201,15 @@ class FlightTest extends UnitTestCase {
 		var_dump($this->flight);
 		var_dump($this->flight->getFlightId());
 
+		//convert date input strings to DateTimeObjects or Interval to compare against flight get methods
+		$explode 				= explode(":", $this->DURATION);
+		$DURATION       		= DateInterval::createFromDateString("$explode[0] hour + $explode[1] minutes + 0 seconds");
+		$DEPARTUREDATETIME 	= DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
+		$ARRIVALDATETIME   	= DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
+
+		echo "<p>line 210 of testFlight var dump of duration</p>";
+		var_dump($DURATION);
+
 		// fourth, get the flight using the static method
 		$staticFlight = Flight::getFlightByFlightId($this->mysqli, $this->flight->getFlightId());
 
@@ -209,9 +219,9 @@ class FlightTest extends UnitTestCase {
 		$this->assertIdentical	($staticFlight->getFlightId(),              	$this->flight->getFlightId());
 		$this->assertIdentical	($staticFlight->getOrigin(),               	$this->ORIGIN);
 		$this->assertIdentical	($staticFlight->getDestination(),          	$this->DESTINATION);
-		$this->assertIdentical	($staticFlight->getDuration(),             	$this->DURATION);
-		$this->assertIdentical	($staticFlight->getDepartureDateTime(), 		$this->DEPARTUREDATETIME);
-		$this->assertIdentical	($staticFlight->getArrivalDateTime(),      	$this->ARRIVALDATETIME);
+		$this->assertIdentical	($staticFlight->getDuration(),             	$DURATION);
+		$this->assertIdentical	($staticFlight->getDepartureDateTime(), 		$DEPARTUREDATETIME);
+		$this->assertIdentical	($staticFlight->getArrivalDateTime(),      	$ARRIVALDATETIME);
 		$this->assertIdentical	($staticFlight->getFlightNumber(),         	$this->FLIGHTNUMBER);
 		$this->assertIdentical	($staticFlight->getPrice(),                	$this->PRICE);
 		$this->assertIdentical	($staticFlight->getTotalSeatsOnPlane(), 		$this->TOTALSEATSONPLANE);
@@ -286,6 +296,7 @@ class FlightTest extends UnitTestCase {
 
 
 /*
+	// fixme remove slash star when ready to test user search
 	// var_dump results from executing the search function for a weekday and a weekend day.
 	public function testGetRoutesByUserInput($ORIGIN, $DESTINATION) {
 		// first, verify mySQL connected OK
@@ -301,10 +312,10 @@ class FlightTest extends UnitTestCase {
 		build array of origins
 		build array of destinations
 		count size of both arrays
-		date variables
-		layover variable // fixme add layover variable to mySQL and ask where arrival departure criteria is in SP
-		starting number of passengers variable
-		range variable between fly start time and end time.
+		declare date variables for search
+		declare min layover variable // fixme add layover variable to mySQL and ask where "arrival<departure" criteria is in SP
+		declare starting number of passengers variable
+		declare range variable between fly start time and end time.
 
 		NESTED LOOPS:
 		LOOP 1: for number of origins, assign each in the array to $USER_ORIGIN variable
@@ -315,28 +326,30 @@ class FlightTest extends UnitTestCase {
 			(i.e. add two instead of 1 to array index counter)
 
 		Loop 3: USER_NUMBER_PASSENGERS = 15, <30, +10 (verifies null results if
-			call static method to get results
+			call static user search method to get result in form of 3D array
 			if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
 			else verify results ARE null for over 20 passengers and return;
-		Loop 4: for loop to iterate through dimension 1 result array "P[]"
-			for (i=0, P[i] !== null, i++) {
-				count size of 2nd dimension array P[i]
-				assert P[i][0][1] =  this.origin of loop 1
-				assert P[i][size of P[i] array][2] = this.destination of loop 2
-				assert P[i][size of P[i] array][4] - P [i][0][3] <= range variable
+
+		Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
+			for (i=0, allPaths[i] !== null, i++) {
+				count size of 2nd dimension array allPaths[i]
+				assert allPaths[i][0]["origin"] =  this.origin of loop 1
+				assert allPaths[i][size of allPaths[i]]["destination"] = this.destination of loop 2
+				assert allPaths[i][size of allPaths[i]]["arrivalDateTime"] - allPaths[i][0]["departureDateTime"] <= range variable
 			}
+//fixme continue
 
 		Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
-			for (a=0, P[i][a+1] !== null, a++) {
-				P[i][a+1][3] - P[i][a][4] >= minLayover;
+			for (a=0, allPaths[i][a+1] !== null, a++) {
+				allPaths[i][a+1][3] - allPaths[i][a][4] >= minLayover;
 			}
 		Loop 5B (sibling not child of A): Assert identical each flightId's info with a select from the database
-			for (a=0, P[i][a] !== null, a++) {
-				SELECT FROM flight (all fields) WHERE flightId = P[i][a];
+			for (a=0, allPaths[i][a] !== null, a++) {
+				SELECT FROM flight (all fields) WHERE flightId = allPaths[i][a];
 				row = result-> fetch_assoc();
 
-				for (b=0, P[i][a][b] !== null, b++) {
-					Assert P[i][a][b] identical to row[b]
+				for (b=0, allPaths[i][a][b] !== null, b++) {
+					Assert allPaths[i][a][b] identical to row[b]
 				}
 			}
 
