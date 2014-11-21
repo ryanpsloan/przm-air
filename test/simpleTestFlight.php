@@ -167,6 +167,7 @@ class FlightTest extends UnitTestCase {
 		$this->flight->insert($this->mysqli);
 
 		$localFlightID = $this->flight->getFlightId();
+
 		// fourth, verify the Flight was inserted
 		$this->assertNotNull($this->flight->getFlightId());
 		$this->assertTrue($this->flight->getFlightId() > 0);
