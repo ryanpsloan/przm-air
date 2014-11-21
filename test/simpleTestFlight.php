@@ -308,6 +308,10 @@ class FlightTest extends UnitTestCase {
 		returned ALL POSSIBLE results.  Just that all returned results are valid.  In other words, a search that returned
 		no results, for valid or invalid reasons, would pass regardless.
 
+		To offset this and make a null results FAIL when results should exists, I assert simply that results not be null in those cases.
+
+		Note that outer array and midlevel array can NOT be associative so that we can loop through them, while inner ray might be associative if it wasn't for loop 5B.
+
 		SET UP:
 		build array of origins
 		build array of destinations
@@ -337,13 +341,12 @@ class FlightTest extends UnitTestCase {
 				assert allPaths[i][size of allPaths[i]]["destination"] = this.destination of loop 2
 				assert allPaths[i][size of allPaths[i]]["arrivalDateTime"] - allPaths[i][0]["departureDateTime"] <= range variable
 			}
-//fixme continue
 
 		Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
 			for (a=0, allPaths[i][a+1] !== null, a++) {
-				allPaths[i][a+1][3] - allPaths[i][a][4] >= minLayover;
+				allPaths[i][a+1]["departureDateTime"] - allPaths[i][a]["arrivalDateTime] >= minLayover;
 			}
-		Loop 5B (sibling not child of A): Assert identical each flightId's info with a select from the database
+		Loop 5B (sibling not child of 5A): Assert identical each flightId's info with a select from the database
 			for (a=0, allPaths[i][a] !== null, a++) {
 				SELECT FROM flight (all fields) WHERE flightId = allPaths[i][a];
 				row = result-> fetch_assoc();
@@ -353,7 +356,7 @@ class FlightTest extends UnitTestCase {
 				}
 			}
 
-
+		//repeat whole thing for a different day, like a weekend instead of weekday
 
 		/
 
