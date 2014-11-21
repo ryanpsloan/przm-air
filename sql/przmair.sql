@@ -37,7 +37,7 @@ CREATE TABLE flight (
 	departureDateTime DATETIME     NOT NULL,
 	arrivalDateTime   DATETIME     NOT NULL,
 	flightNumber      VARCHAR(15)  NOT NULL,
-	price             DECIMAL      NOT NULL,
+	price             DECIMAL(10,2)  NOT NULL,
 	totalSeatsOnPlane INT UNSIGNED NOT NULL,
 
 	INDEX (origin),
@@ -77,7 +77,7 @@ CREATE TABLE transaction (
 
 CREATE TABLE ticket (
 	ticketId INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	confirmationNumber VARCHAR(10),
+	confirmationNumber VARCHAR(30),
 	price DECIMAL(5,2) UNSIGNED,
 	status VARCHAR(30),
 	profileId INT UNSIGNED NOT NULL,

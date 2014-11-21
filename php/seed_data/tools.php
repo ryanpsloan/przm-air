@@ -148,7 +148,7 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 
 function getTimeZone($cityCode){
 
-	switch($cityCode){
+	switch($cityCode){//or an enum couldve worked here
 		case 'ABQ':
 
 			break;

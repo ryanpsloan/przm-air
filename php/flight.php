@@ -508,8 +508,6 @@ class Flight {
 		$this->flightId = $mysqli->insert_id;
 	}
 
-
-
 	/**
 	 * deletes this Flight from mySQL
 	 *
@@ -570,7 +568,6 @@ class Flight {
 			$duration = $this->duration->format("H:i");
 		}
 
-
 		// convert departureDateTime to string
 		if($this->departureDateTime === null) {
 			$departureDateTime = null;
@@ -628,7 +625,7 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-	//fixme send down a layover amount to SP
+	/*//fixme send down a layover amount to SP
 	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers)
 	{

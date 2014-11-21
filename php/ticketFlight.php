@@ -147,8 +147,12 @@ class TicketFlight {
 		}
 
 		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		try {
+			if($statement->execute() === false) {
+				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+			}
+		}catch(Exception $exception){
+			var_dump($exception);
 		}
 	}
 

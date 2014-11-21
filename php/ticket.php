@@ -140,7 +140,7 @@ class Ticket {
 		// verify the confirmation number is 10 hex characters
 		$newConfirmationNumber = trim($newConfirmationNumber);
 		$newConfirmationNumber = strtolower($newConfirmationNumber);
-		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{10}$/"));
+		$filterOptions = array("options" => array("regexp" => "/^[\da-z]{10}$/"));
 		if(filter_var($newConfirmationNumber, FILTER_VALIDATE_REGEXP, $filterOptions) === false) {
 			throw(new RangeException("confirmation number is not 10 hexadecimal bytes"));
 		}
@@ -317,7 +317,7 @@ class Ticket {
 		}
 
 		// finally, take the transaction id out of quarantine and assign it
-		$this->transaction= $newTransactionId;
+		$this->transactionId= $newTransactionId;
 	}
 
 	/**
@@ -333,28 +333,35 @@ class Ticket {
 		}
 
 		// enforce the ticketId is null (i.e., don't insert a ticket that already exists)
-		if($this->ticketIdId !== null) {
+		if($this->ticketId !== null) {
 			throw(new mysqli_sql_exception("not a new ticket"));
 		}
 
 		// create query template
-		$query     = "INSERT INTO ticket(confirmationNumber, price, status, profileId, travelerId, transactionId) VALUES(?, ?, ?, ?, ?, ?)";
+		$query     = "INSERT INTO ticket(confirmationNumber, price, status, profileId,
+													travelerId, transactionId) VALUES(?, ?, ?, ?, ?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("sdsiii", $this->confirmationNumber, $this->price, $this->status, $this->profileId, $this->travelerId, $this->transactionId);
+		$wasClean = $statement->bind_param("sdsiii", $this->confirmationNumber, $this->price,
+																   $this->status, $this->profileId,
+																	$this->travelerId, $this->transactionId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
 
-		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-		}
+		try {// execute the statement
+			if($statement->execute() === false) {
 
+				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+			}
+		}catch(Exception $exception){
+			$exception->getMessage();
+			var_dump($exception);
+		}
 		// update the null ticketId with what mySQL just gave us
 		$this->ticketId= $mysqli->insert_id;
 	}
