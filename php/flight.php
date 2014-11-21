@@ -25,7 +25,7 @@ class Flight {
 	 **/
 	private $destination;
 	/**
-	 * time of travel from origin to destination
+	 * time of travel from origin to destination, set as a DateInterval //fixme
 	 **/
 	private $duration
 	;/**
@@ -87,6 +87,7 @@ class Flight {
 			throw(new UnexpectedValueException("Unable to construct Flight", 0, $unexpectedValue));
 		} catch(RangeException $range) {
 			// rethrow to the caller
+			var_dump($range);
 			throw(new RangeException("Unable to construct Flight", 0, $range));
 		}
 	}
@@ -226,19 +227,21 @@ class Flight {
 	 **/
 	public function setDuration($newDuration) {
 		// zeroth, allow a DateTime object to be directly assigned
-		if(gettype($newDuration) === "object" && get_class($newDuration) === "DateTime") {
+		if(gettype($newDuration) === "object" && get_class($newDuration) === "DateInterval") {
 			$this->duration = $newDuration;
 			return;
 		}
 
 		// treat the date as a mySQL date string
 		$newDuration = trim($newDuration);
-		if((preg_match("/^(\d{2}):(\d{2})$/", $newDuration, $matches)) !== 1) {
+		if((preg_match("/^(\d{2}):(\d{2}):(\d{2})$/", $newDuration, $matches)) !== 1) {
 			throw(new RangeException("$newDuration is not a valid duration time"));
 		}
 
-		// finally, take the date out of quarantine
-		$newDuration = DateTime::createFromFormat("H:i", $newDuration);
+		// finally, make the duration a DateInterval and take out of quarantine
+
+		$explode = explode(":", $newDuration);
+		$newDuration = DateInterval::createFromDateString("$explode[0] hour + $explode[1] minutes + 0 seconds");
 		$this->duration = $newDuration;
 	}
 
@@ -392,7 +395,7 @@ class Flight {
 		}
 
 		// finally, take the price out of quarantine and assign it
-		$this->price = $newPrice;
+		$this->price = floatval($newPrice);
 	}
 
 
@@ -465,7 +468,7 @@ class Flight {
 		if($this->duration === null) {
 			$duration = null;
 		} else {
-			$duration = $this->duration->format("H:i");
+			$duration = $this->duration->format("H:i:s");
 		}
 
 
@@ -567,7 +570,7 @@ class Flight {
 		if($this->duration === null) {
 			$duration = null;
 		} else {
-			$duration = $this->duration->format("H:i");
+			$duration = $this->duration->format("H:i:s");
 		}
 
 
@@ -628,7 +631,7 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-	/*
+/*
 	//fixme send down a layover amount to SP
 	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers)
@@ -1011,6 +1014,10 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
+		echo "<p>1017 flightId that comes into get flight by flight id before binding</p>";
+		var_dump($flightId);
+
+
 		// bind the flightId to the place holder in the template
 		$wasClean = $statement->bind_param("i", $flightId);
 		if($wasClean === false) {
@@ -1028,15 +1035,26 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
+
+		echo "<p>line 1039 of FLIGHT var dump of RESULT OBJECT in getFlightByFlightID before fetchassoc</p>";
+		var_dump($result);
+
+
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a Flight object normally
 		// 2) if there's no result, we can just return null
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+		echo "<p>line 1035 of FLIGHT var dump of ROW in getFlightByFlightID object after fetchassoc</p>";
 		var_dump($row);
 
 		// convert the associative array to a Flight
 		if($row !== null) {
 			try {
+				//$floatPrice = (float) $row['price'];
+
+				//echo "<p>line 1042 of FLIGHT var dump of float price in getFlightByFlightID object after fetchassoc</p>";
+				//var_dump($floatPrice);
+
 				$flight = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
 												$row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
 												$row["price"], $row["totalSeatsOnPlane"]);
@@ -1044,6 +1062,10 @@ class Flight {
 
 
 			} catch(Exception $exception) {
+
+				echo "<p>line 1054 dump of exception before throws</p>";
+				var_dump($exception);
+
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
 			}

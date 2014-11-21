@@ -8,6 +8,7 @@
  * tests all functions of the flight class
  */
 
+//fixme: fix duration to be a time only not a datetime
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("/etc/apache2/capstone-mysql/przm.php");
@@ -19,13 +20,13 @@ require_once("../php/flight.php");
 class FlightTest extends UnitTestCase {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
-	// variable to hold the test database row
+	// variable to hold the test database row object
 	private $flight = null;
 
 	// a few "global" variables for creating test data
 	private $ORIGIN      		= "SEA";
 	private $DESTINATION   		= "JFK";
-	private $DURATION       	= "06:09";
+	private $DURATION       	= "06:09:00";
 	private $DEPARTUREDATETIME = "2014-12-25 12:00:00";
 	private $ARRIVALDATETIME   = "2014-12-25 18:09:00";
 	private $FLIGHTNUMBER      = "90";
@@ -48,6 +49,9 @@ class FlightTest extends UnitTestCase {
 			$this->flight = null;
 		}
 
+		echo "<p>line 51 of testFlight in tear down flight object should be deleted</p>";
+
+		var_dump($this->flight);
 		// disconnect from mySQL
 		/*if($this->mysqli !== null) {
 			$this->mysqli->close();
@@ -66,10 +70,14 @@ class FlightTest extends UnitTestCase {
 		// third, insert the flight to mySQL
 		$this->flight->insert($this->mysqli);
 
-		//convert input strings to DateTimeObjects to compare against flight get methods
-		$DURATION       	= DateTime::createFromFormat("H:i", $this->DURATION);
-		$DEPARTUREDATETIME = DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
-		$ARRIVALDATETIME   = DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
+		echo "<p>line 72 of testFlight var dump of flight object after insert in in insert function</p>";
+		var_dump($this->flight);
+
+		//convert input strings to DateTimeObjects or Interval to compare against flight get methods
+		$explode 				= explode(":", $this->DURATION);
+		$DURATION       		= DateInterval::createFromDateString("$explode[0] hour + $explode[1] minutes + 0 seconds");
+		$DEPARTUREDATETIME 	= DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
+		$ARRIVALDATETIME   	= DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
 
 		// finally, compare the fields
 		$this->assertNotNull		($this->flight->getFlightId());
@@ -100,7 +108,7 @@ class FlightTest extends UnitTestCase {
 		// fourth, update the flight and post the changes to mySQL
 		$newOrigin 					= "ABQ";
 		$newDestination 			= "LAX";
-		$newDuration 				= "01:50";
+		$newDuration 				= "01:50:00";
 		$newDEPARTUREDATETIME 	= "2014-12-31 12:00:00";
 		$newARRIVALDATETIME   	= "2014-12-31 18:09:00";
 		$newFLIGHTNUMBER      	= "100";
@@ -127,9 +135,10 @@ class FlightTest extends UnitTestCase {
 		$this->flight->update($this->mysqli);
 
 		//convert date input strings to DateTimeObjects to compare against flight get methods
-		$DURATION       	= DateTime::createFromFormat("H:i", $this->DURATION);
-		$DEPARTUREDATETIME = DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
-		$ARRIVALDATETIME   = DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
+		$explode 				= explode(":", $this->DURATION);
+		$DURATION       		= DateInterval::createFromDateString("$explode[0] hour + $explode[1] minutes + 0 seconds");
+		$DEPARTUREDATETIME 	= DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
+		$ARRIVALDATETIME   	= DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
 
 
 		// finally, compare the fields
@@ -179,9 +188,16 @@ class FlightTest extends UnitTestCase {
 		// second, create a flight to post to mySQL
 		$this->flight = new Flight (null, $this->ORIGIN, $this->DESTINATION, $this->DURATION, $this->DEPARTUREDATETIME,
 											$this->ARRIVALDATETIME, $this->FLIGHTNUMBER, $this->PRICE, $this->TOTALSEATSONPLANE);
+		echo "<p>line 182 of testFlight var dump of flight object before insert in testGetFlightbyID</p>";
+		var_dump($this->flight);
+
 
 		// third, insert the flight to mySQL
 		$this->flight->insert($this->mysqli);
+
+		echo "<p>line 189 of testFlight var dump of flight object after insert in testGetFlightbyID</p>";
+		var_dump($this->flight);
+		var_dump($this->flight->getFlightId());
 
 		// fourth, get the flight using the static method
 		$staticFlight = Flight::getFlightByFlightId($this->mysqli, $this->flight->getFlightId());
