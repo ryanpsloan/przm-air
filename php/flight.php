@@ -612,276 +612,7 @@ class Flight {
 
 
 
-	// ****CUSTOM FUNCTIONS: increment/decrement, searchByUser, searchByFlightId********
-
-	/**
-	 * searches all flights based on user input to return route options
-	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
-	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
-	 * $userOrigin, and the return date inputted as $userFlyDate
-	 *
-	 * @param resource $concreteMysqli pointer to concrete mySQL connection, by reference
-	 * @param string $userOrigin
-	 * @param string $userDestination
-	 * @param string $userFlyDateStart to search for
-	 * @param string $userFlyDateEnd to search for
-	 * @param string $numberOfPassengers to search for
-	 * @throws RangeException if number
-	 * @throws mysqli_sql_exception when mySQL related errors occur
-	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
-
-	 **/
-/*
-	//fixme send down a layover amount to SP
-	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
-															  $userFlyDateEnd, $numberOfPassengers)
-	{
-		// handle degenerate cases
-		if(gettype($concreteMysqli) !== "object" || get_class($concreteMysqli) !== "mysqli") {
-			throw(new mysqli_sql_exception("input is not a mysqli object"));
-		}
-
-
-		// first trim, then validate, then sanitize the USER inputs before searching.
-		// verify all strings as a string and dates as strings in correct format
-
-		// 1.:
-		$userOrigin = trim($userOrigin);
-
-		if(filter_var($userOrigin, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("Origin $userOrigin does not appear to be a string"));
-		}
-
-		//check that string is the appropriate length for an airport code
-		if(strlen($userOrigin) !== 3) {
-			throw(new RangeException("Origin $userOrigin does not appear to be a three-letter code."));
-		}
-
-
-		// 2.:
-		$userDestination = trim($userDestination);
-
-		if(filter_var($userDestination, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("Origin $userDestination does not appear to be a string"));
-		}
-
-		//check that string is the appropriate length for an airport code
-		if(strlen($userDestination) !== 3) {
-			throw(new RangeException("Destination $userDestination does not appear to be a three-letter code."));
-		}
-
-
-		// 3.:
-		$userFlyDateStart = trim ($userFlyDateStart);
-
-		if(filter_var($userFlyDateStart, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("Start date $userFlyDateStart does not appear to be a string"));
-		}
-
-		// treat the date as a mySQL date string
-		$userFlyDateStart = trim($userFlyDateStart);
-		if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $userFlyDateStart, $matches)) !== 1) {
-			throw(new RangeException("$userFlyDateStart is not a valid date"));
-		}
-
-		// verify the date is really a valid calendar date
-		$year  = intval($matches[1]);
-		$month = intval($matches[2]);
-		$day   = intval($matches[3]);
-		if(checkdate($month, $day, $year) === false) {
-			throw(new RangeException("$userFlyDateStart is not a Gregorian date"));
-		}
-
-
-		// 4.:
-		$userFlyDateEnd = trim($userFlyDateEnd);
-
-		if(filter_var($userFlyDateEnd, FILTER_SANITIZE_STRING) === false) {
-			throw(new UnexpectedValueException("End date $userFlyDateEnd does not appear to be a string"));
-		}
-
-		// treat the date as a mySQL date string
-		$userFlyDateEnd = trim($userFlyDateEnd);
-		if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $userFlyDateEnd, $matches)) !== 1) {
-			throw(new RangeException("$userFlyDateEnd is not a valid date"));
-		}
-
-		// verify the date is really a valid calendar date
-		$year  = intval($matches[1]);
-		$month = intval($matches[2]);
-		$day   = intval($matches[3]);
-		if(checkdate($month, $day, $year) === false) {
-			throw(new RangeException("$userFlyDateEnd is not a Gregorian date"));
-		}
-
-
-		// 5.:
-		$numberOfPassengers = trim($numberOfPassengers);
-
-		if (filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT) === false) {
-		throw (new UnexpectedValueException ("Number of requested seats $numberOfPassengers does not appear to be an
-														integer"));
-		}
-		else {
-			$numberOfPassengers = filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT);
-		}
-
-		// convert the $numberOfPassengers to an integer and enforce it's positive
-		$numberOfPassengers = intval($numberOfPassengers);
-		if($numberOfPassengers <= 0) {
-			throw(new RangeException("Number of requested seats $numberOfPassengers is not positive"));
-		}
-
-
-
-		// Next, create query template to call the stored procedure and execute search in MySQL
-		$query = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
-
-		$statement = $concreteMysqli->prepare($query);
-		if($statement === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
-
-		// bind the user inputs to the place holder in the template
-		$wasClean = $statement->bind_param("ssssi", $userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd,
-			$numberOfPassengers);
-		if($wasClean === false) {
-			throw(new mysqli_sql_exception("Unable to bind parameters"));
-		}
-
-		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-		}
-
-		// get result from the SELECT query *pounds fists*
-		$getStoredProcResults = $statement->get_result();
-		if($getStoredProcResults === false) {
-			throw(new mysqli_sql_exception("Unable to get result set"));
-		}
-
-		// this will return as many results as there are flights and flight combos with same origin + departure + date.
-		//	1) if there's no result, we can just return null
-		// 2) if there's a result, we can make it into flight objects by using the flight path string
-		// fetch_assoc() returns row as associative arr until row is null
-
-		// create query to take results from stored procedure and get all related info for each flight returned
-		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
- 					totalSeatsOnPlane FROM flight WHERE flightId IN (?)";
-
-		$statement2 = $concreteMysqli->prepare($query);
-		if($statement2 === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
-
-
-		// set up array to hold all results
-		$allFlightPathsArray = array();
-
-
-
-		// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
-		// $userDestination, and $userFlyDate range.
-		while(($row = $getStoredProcResults->fetch_assoc()) !== null) {
-
-			try {
-
-				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of arrays
-				// of all related info for each flight ID in a path)
-				$wasClean = $statement2->bind_param("s", $row["path"]);
-
-				if($wasClean === false) {
-					throw(new mysqli_sql_exception("Unable to bind parameters"));
-				}
-
-				// execute the statement
-				if($statement2->execute() === false) {
-					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-				}
-
-				// get result from the SELECT query *pounds fists*
-				// this represents the two dimensional array (flight ids with all their associated data)
-				$eachFlightPath = $statement->get_result();
-				if($eachFlightPath === false) {
-					throw(new mysqli_sql_exception("Unable to get result set"));
-				}
-
-				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
-
-				// get size of array for calc of price and duration
-				$sizeEachFlightPath = count($eachFlightPath);
-
-				// calc discount for paths with multiple flights
-				if($sizeEachFlightPath < 2) {
-					$multipleFlightDiscount = 1;
-
-					if($sizeEachFlightPath > 1 &&  $sizeEachFlightPath < 4 ) {
-						$multipleFlightDiscount = 1 - (.1 * $sizeEachFlightPath);
-
-					}
-				} else $multipleFlightDiscount = 0.65;
-
-				// calc additional charge for nearby time windows
-				$daysTillFlight = 13; // fixme
-				if($daysTillFlight < 7) {
-
-					$priceWindowFactor = 1.75;
-
-					if($daysTillFlight < 14) {
-						$priceWindowFactor = 1.5;
-
-						if($daysTillFlight < 28) {
-							$priceWindowFactor = 1.25;
-						}
-						else $priceWindowFactor = 1;
-					}
-				}
-
-				// calc total base price in path
-				$sumBasePricesInPath = 0;
-				for ($i=0, $eachFlightPath[$i] !== null, $i++) {
-					$sumBasePricesInPath = $sumBasePricesInPath + $eachFlightPath[$i][8];
-				}
-
-				// calc total price for the path using the discount and time factor and base price
-				$totalPriceForPath = $priceWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
-
-				$flightId1Departure = $eachFlightPath [0][5];
-				$flightIdLastArrival = $eachFlightPath [$sizeEachFlightPath][6];
-				$totalDurationForPath = $flightIdLastArrival - $flightId1Departure;
-
-				//put the two dimensional array into another array of all the possible flight paths each with all
-				//relative data for each flight
-
-				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath;
-
-
-				$allFlightPathsArray[] = $eachFlightPath;
-
-					//"SELECT * FROM flight WHERE flightId IN ($row[3])";
-					//	new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
-					// $row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
-					//	$row["price"], $row["totalSeatsOnPlane"]);
-
-			} catch(Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new mysqli_sql_exception("Unable to convert row to Flight path", 0, $exception));
-			}
-
-		} // end while loop
-
-
-		if(empty($allFlightsArray)) {
-			// 404 User not found - return null
-			return (null);
-		} else {
-			return ($allFlightsArray);
-		}
-
-
-	}
-*/
-
+	// ****CUSTOM FUNCTIONS: increment/decrement, searchByFlightId, searchByUser********
 	/**
 	 * increments or decrements totalSeatsOnPlane for given flightId in mySQL
 	 * @param mixed $flightId flight ID to search for
@@ -891,7 +622,6 @@ class Flight {
 	 * @return mixed Flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-//fixme need the degenerate cases here and elsewhere (and also ask about concrete in test)
 	public static function changeNumberOfSeats(&$mysqli, $flightId, $changeBy) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
@@ -1077,6 +807,286 @@ class Flight {
 			return (null);
 		}
 	}
+
+
+	/**
+	 * searches all flights based on user input to return route options
+	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
+	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
+	 * $userOrigin, and the return date inputted as $userFlyDate
+	 *
+	 * @param resource $concreteMysqli pointer to concrete mySQL connection, by reference
+	 * @param string $userOrigin
+	 * @param string $userDestination
+	 * @param string $userFlyDateStart to search for
+	 * @param string $userFlyDateEnd to search for
+	 * @param string $numberOfPassengers to search for
+	 * @throws RangeException if number
+	 * @throws mysqli_sql_exception when mySQL related errors occur
+	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
+
+	 **/
+/* //fixme take out the slash star here and below to activate the search function when ready to test
+	//fixme send down a layover amount to SP
+	//fixme send need $concretemysqli in test?
+	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
+															  $userFlyDateEnd, $numberOfPassengers)
+	{
+		// handle degenerate cases
+		if(gettype($concreteMysqli) !== "object" || get_class($concreteMysqli) !== "mysqli") {
+			throw(new mysqli_sql_exception("input is not a mysqli object"));
+		}
+
+
+		// first trim, then validate, then sanitize the USER inputs before searching.
+		// verify all strings as a string and dates as strings in correct format
+
+		// 1.:
+		$userOrigin = trim($userOrigin);
+
+		if(filter_var($userOrigin, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Origin $userOrigin does not appear to be a string"));
+		}
+
+		//check that string is the appropriate length for an airport code
+		if(strlen($userOrigin) !== 3) {
+			throw(new RangeException("Origin $userOrigin does not appear to be a three-letter code."));
+		}
+
+
+		// 2.:
+		$userDestination = trim($userDestination);
+
+		if(filter_var($userDestination, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Origin $userDestination does not appear to be a string"));
+		}
+
+		//check that string is the appropriate length for an airport code
+		if(strlen($userDestination) !== 3) {
+			throw(new RangeException("Destination $userDestination does not appear to be a three-letter code."));
+		}
+
+
+		// 3.:
+		$userFlyDateStart = trim ($userFlyDateStart);
+
+		if(filter_var($userFlyDateStart, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("Start date $userFlyDateStart does not appear to be a string"));
+		}
+
+		// treat the date as a mySQL date string
+		$userFlyDateStart = trim($userFlyDateStart);
+		if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $userFlyDateStart, $matches)) !== 1) {
+			throw(new RangeException("$userFlyDateStart is not a valid date"));
+		}
+
+		// verify the date is really a valid calendar date
+		$year  = intval($matches[1]);
+		$month = intval($matches[2]);
+		$day   = intval($matches[3]);
+		if(checkdate($month, $day, $year) === false) {
+			throw(new RangeException("$userFlyDateStart is not a Gregorian date"));
+		}
+
+
+		// 4.:
+		$userFlyDateEnd = trim($userFlyDateEnd);
+
+		if(filter_var($userFlyDateEnd, FILTER_SANITIZE_STRING) === false) {
+			throw(new UnexpectedValueException("End date $userFlyDateEnd does not appear to be a string"));
+		}
+
+		// treat the date as a mySQL date string
+		$userFlyDateEnd = trim($userFlyDateEnd);
+		if((preg_match("/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/", $userFlyDateEnd, $matches)) !== 1) {
+			throw(new RangeException("$userFlyDateEnd is not a valid date"));
+		}
+
+		// verify the date is really a valid calendar date
+		$year  = intval($matches[1]);
+		$month = intval($matches[2]);
+		$day   = intval($matches[3]);
+		if(checkdate($month, $day, $year) === false) {
+			throw(new RangeException("$userFlyDateEnd is not a Gregorian date"));
+		}
+
+
+		// 5.:
+		$numberOfPassengers = trim($numberOfPassengers);
+
+		if (filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT) === false) {
+			throw (new UnexpectedValueException ("Number of requested seats $numberOfPassengers does not appear to be an
+														integer"));
+		}
+		else {
+			$numberOfPassengers = filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT);
+		}
+
+		// convert the $numberOfPassengers to an integer and enforce it's positive
+		$numberOfPassengers = intval($numberOfPassengers);
+		if($numberOfPassengers <= 0) {
+			throw(new RangeException("Number of requested seats $numberOfPassengers is not positive"));
+		}
+
+
+
+		// Next, create query template to call the stored procedure and execute search in MySQL
+		$query = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
+
+		$statement = $concreteMysqli->prepare($query);
+		if($statement === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// bind the user inputs to the place holder in the template
+		$wasClean = $statement->bind_param("ssssi", $userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd,
+			$numberOfPassengers);
+		if($wasClean === false) {
+			throw(new mysqli_sql_exception("Unable to bind parameters"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$getStoredProcResults = $statement->get_result();
+		if($getStoredProcResults === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		// this will return as many results as there are flights and flight combos with same origin + departure + date.
+		//	1) if there's no result, we can just return null
+		// 2) if there's a result, we can make it into flight objects by using the flight path string
+		// fetch_assoc() returns row as associative arr until row is null
+
+		// create query to take results from stored procedure and get all related info for each flight returned
+		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
+ 					totalSeatsOnPlane FROM flight WHERE flightId IN (?)";
+
+		$statement2 = $concreteMysqli->prepare($query);
+		if($statement2 === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+
+		// set up array to hold all results
+		$allFlightPathsArray = array();
+
+
+
+		// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
+		// $userDestination, and $userFlyDate range.
+		while(($row = $getStoredProcResults->fetch_assoc()) !== null) {
+
+			try {
+
+				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of arrays
+				// of all related info for each flight ID in a path)
+				$wasClean = $statement2->bind_param("s", $row["path"]);
+
+				if($wasClean === false) {
+					throw(new mysqli_sql_exception("Unable to bind parameters"));
+				}
+
+				// execute the statement
+				if($statement2->execute() === false) {
+					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+				}
+
+				// get result from the SELECT query *pounds fists*
+				// this represents the two dimensional array (flight ids with all their associated data)
+				$eachFlightPath = $statement->get_result();
+				if($eachFlightPath === false) {
+					throw(new mysqli_sql_exception("Unable to get result set"));
+				}
+
+				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
+
+				// get size of array for calc of price and duration
+				$sizeEachFlightPath = count($eachFlightPath);
+
+				// calc discount for paths with multiple flights
+				if($sizeEachFlightPath < 1.5) {
+					$multipleFlightDiscount = 1;
+				}
+				else if($sizeEachFlightPath >= 1.5 &&  $sizeEachFlightPath < 3.5 ) {
+					$multipleFlightDiscount = 1 - (.1 * $sizeEachFlightPath);
+				}
+				else $multipleFlightDiscount = 0.65;
+
+				// calc additional charge for nearby time windows.
+				// first set today's date as of 12 noon to use as marker for calc.
+				$today = DateTime::createFromFormat("H:i:s", "12:00:00");
+
+				//fixme assumes departure time is returned from result array(s) as datetime object.  if not will have to be made into one. see http://php.net/manual/en/datetime.diff.php
+				// then get difference with first flight Id's departure
+				$daysTillFlight = $today->diff($eachFlightPath[0][4]);
+
+				// set value of factor for each window
+				if($daysTillFlight < 7.5) {
+					$priceWindowFactor = 1.75;
+				}
+				else if($daysTillFlight < 14.5 && $daysTillFlight >= 7.5) {
+					$priceWindowFactor = 1.5;
+				}
+				else if($daysTillFlight < 28 && $daysTillFlight >= 14.5) {
+					$priceWindowFactor = 1.25;
+				}
+				else $priceWindowFactor = 1;
+
+
+
+				// calc total base price in path
+				$sumBasePricesInPath = 0;
+				for ($i=0; $eachFlightPath[$i] !== null; $i++) {
+					$sumBasePricesInPath = $sumBasePricesInPath + $eachFlightPath[$i][8];
+				}
+
+				// calc total price for the path using the discount and time factor and base price
+				$totalPriceForPath = $priceWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
+
+
+				//calc the duration
+				//fixme assumes departure time is returned from result array(s) as datetime object.  if not will have to be made into one. see http://php.net/manual/en/datetime.diff.php
+				$flightIdFirstDeparture = $eachFlightPath [0][5];
+				$flightIdLastArrival = $eachFlightPath [$sizeEachFlightPath][6];
+				$totalDurationForPath = $flightIdFirstDeparture->diff($flightIdLastArrival);
+
+				//push the duration and the price into the $eachFlightPath array
+				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath);
+
+
+				//put the two dimensional array into another array of all the possible flight paths each with all
+				//relative data for each flight
+				$allFlightPathsArray[] = $eachFlightPath;
+
+				//"SELECT * FROM flight WHERE flightId IN ($row[3])";
+				//	new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
+				// $row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
+				//	$row["price"], $row["totalSeatsOnPlane"]);
+
+			} catch(Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new mysqli_sql_exception("Unable to convert row to Flight path", 0, $exception));
+			}
+
+		} // end while loop
+
+
+		if(empty($allFlightsArray)) {
+			// 404 User not found - return null
+			return (null);
+		} else {
+			return ($allFlightsArray);
+		}
+
+
+	}
+*///fixme take out star slash
+
+
 
 
 	// ****AUXILIARY FUNCTION********
