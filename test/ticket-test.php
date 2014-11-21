@@ -51,13 +51,13 @@ class TicketTest extends UnitTestCase {
 	// setUp () is a method that is run before each test
 	// here, we use it to connect to my SQL
 	public function setUp() {
-		$mysqli = MysqliConfiguration::getMysqli();
+		$this->mysqli = MysqliConfiguration::getMysqli();
 
 		$salt       			= bin2hex(openssl_random_pseudo_bytes(32));
 		$authenticationToken = bin2hex(openssl_random_pseudo_bytes(16));
 		$hash					   = hash_pbkdf2("sha512", "password", $salt, 2048, 128);
 		$i = rand(1, 1000);
-		$this->USER = new User(null, "a".$i."@b.net", $hash, $salt,  $authenticationToken);
+		$this->USER = new User(null, "a".$i."@b.net", $hash, $salt, $authenticationToken);
 		$this->USER->insert($mysqli);
 		echo "<p>USER created -> setUp 62</p>";
 		var_dump($this->USER);
@@ -70,15 +70,13 @@ class TicketTest extends UnitTestCase {
 														//error correction the get profile id statement in profile is not standard
 														//and the argument was not in the right place in the constructor
 														//both profile and traveler use the __get("fieldName") style of gets
-		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId") ,"Marge", "J", "Simpson",
-			"1956-10-01 12:13:14", $this->PROFILE);//see comment below
+		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId"),"Marge", "J", "Simpson", "1956-10-01 12:13:14", $this->PROFILE);//see comment below
 		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
 		$this->TRAVELER->insert($mysqli);
 		echo "<p>TRAVELER created -> setUp 75</p>";
 		var_dump($this->TRAVELER);
 
-		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"), "100.00", "2014-11-12",
-		"Token", "Token");
+		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"), 100.00, "2014-11-12 12:11:10", "Token", "Token");
 		$this->TRANSACTION->insert($mysqli);
 		echo "TRANSACTION created -> setUp 81</p>";
 		var_dump($this->TRANSACTION);
@@ -89,6 +87,12 @@ class TicketTest extends UnitTestCase {
 	// here, we use it to delete the test record and disconnect from mySQL
 	public function tearDown() {
 		// delete the profile if we can
+
+		if($this->ticket !== null) {
+			$this->ticket->delete($this->mysqli);
+			$this->ticket = null;
+		}
+		echo"<p>TICKET deleted -> tearDown 115</p>";
 
 		if($this->TRANSACTION !== null) {
 			$this->TRANSACTION->delete($this->mysqli);
@@ -110,11 +114,7 @@ class TicketTest extends UnitTestCase {
 			$this->USER = null;
 		}
 		echo "<p>USER deleted -> tearDown 110</p>";
-		if($this->ticket !== null) {
-			$this->ticket->delete($this->mysqli);
-			$this->ticket = null;
-		}
-		echo"<p>TICKET deleted -> tearDown 115</p>";
+
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {
 		// 	$this->mysqli->close();
@@ -127,9 +127,9 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a ticket to post to mySQL
-		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE, $this->TRAVELER, $this->TRANSACTION);
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
 
-		//third, insert the profile to mySQL
+		//third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
 		echo"<p>ticket created -> testInsertNewTicket</p>";
 		var_dump($this->ticket);
@@ -140,7 +140,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($this->ticket->getPrice(),  					  $this->PRICE);
 		$this->assertIdentical($this->ticket->getStatus(), 					  $this->STATUS);
 		$this->assertIdentical($this->ticket->getProfileId(), 				  $this->PROFILE->__get("profileId"));
-		$this->assertIdentical($this->ticket->getTravelerId(), 				  $this->TRAVELER->getTravelerId());
+		$this->assertIdentical($this->ticket->getTravelerId(), 				  $this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($this->ticket->getTransactionId(), 			  $this->TRANSACTION->getTransactionId());
 	}
 
@@ -150,7 +150,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a ticket to post to mySQL
-		$this->ticket= new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE, $this->TRAVELER, $this->TRANSACTION);
+		$this->ticket= new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId);
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
@@ -167,7 +167,7 @@ class TicketTest extends UnitTestCase {
 		$this->asertIdentical($this->ticket->getPrice(), 					$this->PRICE);
 		$this->assertIdentical($this->ticket->getStatus(),				   $newStatus);
 		$this->assertIdentical($this->ticket->getProfileId(),			   $this->PROFILE->__get("profileId"));
-		$this->assertIdentical($this->ticket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($this->ticket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($this->ticket->getTransactionId(),	   $this->TRANSACTION->getTransactionId());
 	}
 
@@ -204,7 +204,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticket to post to mySQL
-		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE, $this->TRAVELER, $this->TRANSACTION);
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTrasactionId);
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
@@ -212,7 +212,7 @@ class TicketTest extends UnitTestCase {
 		var_dump($this->ticket);
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByTicketId($this->mysqli, $this->ticket);
-		echo "<p>Static Call getTicketbyTicketId</p>";
+		echo "<p>Static Call getTicketByTicketId</p>";
 		var_dump($staticTicket);
 		// finally, compare the fields
 		$this->assertNotNull($staticTicket->getTicketId());
@@ -222,7 +222,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
 		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
 		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 
@@ -232,7 +232,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticket to post to mySQL
-		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->getTravelerId(), $this->TRANSACTION->getTransactionId());
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
@@ -249,7 +249,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
 		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
 		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 
@@ -261,7 +261,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticket to post to mySQL
-		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->getTravelerId(), $this->TRANSACTION->getTransactionId());
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
@@ -277,7 +277,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
 		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
 		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 
@@ -291,7 +291,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticket to post to mySQL
-		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->getTravelerId(), $this->TRANSACTION->getTransactionId());
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
@@ -308,7 +308,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
 		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
 		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 
@@ -318,7 +318,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticket to post to mySQL
-		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->getTravelerId(), $this->TRANSACTION->getTransactionId());
+		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
@@ -336,7 +336,7 @@ class TicketTest extends UnitTestCase {
 		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
 		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
 		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->getTravelerId());
+		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
 		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 }

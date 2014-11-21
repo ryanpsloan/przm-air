@@ -104,13 +104,13 @@ class Ticket {
 			throw(new UnexpectedValueException("ticket id $newTicketId is not numeric"));
 		}
 
-		// second, convert the ticket id to an integer and enforce it's positve
+		// second, convert the ticket id to an integer and enforce it's positive
 		$newTicketId = intval($newTicketId);
 		if($newTicketId <= 0) {
 			throw(new RangeException("ticket it $newTicketId is not positive"));
 		}
 
-		// finally, take the tickt id out of quarantine and assign it
+		// finally, take the ticket id out of quarantine and assign it
 		$this->ticketId = $newTicketId;
 	}
 
@@ -140,7 +140,7 @@ class Ticket {
 		// verify the confirmation number is 10 hex characters
 		$newConfirmationNumber = trim($newConfirmationNumber);
 		$newConfirmationNumber = strtolower($newConfirmationNumber);
-		$filterOptions = array("options" => array("regexp" => "/^[\da-z]{10}$/"));
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{10}$/"));
 		if(filter_var($newConfirmationNumber, FILTER_VALIDATE_REGEXP, $filterOptions) === false) {
 			throw(new RangeException("confirmation number is not 10 hexadecimal bytes"));
 		}
@@ -294,7 +294,7 @@ class Ticket {
 	/*
 	 * sets transaction id
 	 *
-	 * @param mixed $newTravelerId traveler id (or null if new object)
+	 * @param mixed $newTransactionId transaction id (or null if new object)
 	 * @throws UnexpectedValueException if not an integer
 	 * @throws RangeException if traveler id isn't positive
 	 */
@@ -317,7 +317,7 @@ class Ticket {
 		}
 
 		// finally, take the transaction id out of quarantine and assign it
-		$this->transactionId= $newTransactionId;
+		$this->transactionId = $newTransactionId;
 	}
 
 	/**
@@ -338,32 +338,25 @@ class Ticket {
 		}
 
 		// create query template
-		$query     = "INSERT INTO ticket(confirmationNumber, price, status, profileId,
-													travelerId, transactionId) VALUES(?, ?, ?, ?, ?, ?)";
+		$query     = "INSERT INTO ticket(confirmationNumber, price, status, profileId, travelerId, transactionId) VALUES(?, ?, ?, ?, ?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
 		// bind the member variables to the place holders in the template
-		$wasClean = $statement->bind_param("sdsiii", $this->confirmationNumber, $this->price,
-																   $this->status, $this->profileId,
-																	$this->travelerId, $this->transactionId);
+		$wasClean = $statement->bind_param("sdsiii", $this->confirmationNumber, $this->price, $this->status, $this->profileId, $this->travelerId, $this->transactionId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
 
-		try {// execute the statement
-			if($statement->execute() === false) {
-
-				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-			}
-		}catch(Exception $exception){
-			$exception->getMessage();
-			var_dump($exception);
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
+
 		// update the null ticketId with what mySQL just gave us
-		$this->ticketId= $mysqli->insert_id;
+		$this->ticketId = $mysqli->insert_id;
 	}
 
 	/**
@@ -378,7 +371,7 @@ class Ticket {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the ticketId is not null (i.e., don't delete a user that hasn't been inserted)
+		// enforce the ticketId is not null (i.e., don't delete a ticket that hasn't been inserted)
 		if($this->ticketId === null) {
 			throw(new mysqli_sql_exception("Unable to delete a ticket that does not exist"));
 		}
@@ -414,7 +407,7 @@ class Ticket {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
-		// enforce the userId is not null (i.e., don't update a user that hasn't been inserted)
+		// enforce the ticketId is not null (i.e., don't update a ticket that hasn't been inserted)
 		if($this->ticketId === null) {
 			throw(new mysqli_sql_exception("Unable to update a ticket that does not exist"));
 		}

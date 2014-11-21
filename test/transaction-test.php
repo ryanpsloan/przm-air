@@ -64,7 +64,7 @@ class TransactionTest extends UnitTestCase
 	// here, we use it to delete the test record and disconnect from mySQL
 	public function tearDown()
 	{
-		// delete the profile if we can
+		// delete the transaction if we can
 		if($this->transaction !== null) {
 			$this->transaction->delete($this->mysqli);
 			$this->transaction = null;
