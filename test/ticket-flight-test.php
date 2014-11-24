@@ -29,12 +29,12 @@ class TicketFlightTest extends UnitTestCase {
 	private $ticketFlight = null;
 
 	// a few "global" variables for creating test data
-	private $FLIGHT = null;
-	private $TICKET = null;
-	private $TRANSACTION = null;
-	private $TRAVELER = null;
-	private $PROFILE = null;
-	private $USER = null;
+	private $flight = null;
+	private $ticket = null;
+	private $transaction = null;
+	private $traveler = null;
+	private $profile = null;
+	private $user = null;
 
 	// setUp () is a method that is run before each test
 	// here, we use it to connect to my SQL
@@ -47,80 +47,82 @@ class TicketFlightTest extends UnitTestCase {
 		$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
 		$testHash        = hash_pbkdf2("sha512", "tEsTpASs", $testSalt, 2048, 128);
 
-		$this->USER = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
-		$this->USER->insert($this->mysqli);
+		$this->user = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
+		$this->user->insert($this->mysqli);
 
-		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Jameson", "Harold", "Jenkins",
-			"1956-12-01 00:00:00", "customer_000000000000000", $this->USER);
-		$this->PROFILE->insert($this->mysqli);
+		$this->profile = new Profile(null, $this->user->getUserId(), "Jameson", "Harold", "Jenkins",
+			"1956-12-01 00:00:00", "customer_000000000000000", $this->user);
+		$this->profile->insert($this->mysqli);
 
-		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId"),
-												 $this->PROFILE->__get("userFirstName"),
-												 $this->PROFILE->__get("userMiddleName"),
-												 $this->PROFILE->__get("userLastName"),
-			 									 $this->PROFILE->__get("dateOfBirth"), $this->PROFILE);
-		$this->TRAVELER->insert($this->mysqli);
+		$this->traveler = new Traveler(null, $this->profile->__get("profileId"),
+												 $this->profile->__get("userFirstName"),
+												 $this->profile->__get("userMiddleName"),
+												 $this->profile->__get("userLastName"),
+			 									 $this->profile->__get("dateOfBirth"), $this->profile);
+		$this->traveler->insert($this->mysqli);
 
 		$testAmount = 111.11;
 		$testDateApproved = DateTime::createFromFormat("Y-m-d H:i:s", "2014-11-20 07:08:09");
 		$testCardToken = "card1238y823409u1234324yu7897";
 		$testStripeToken = "stripe2139084jf0fa94fdghsrt78";
 
-		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"),
+		$this->transaction = new Transaction(null, $this->profile->__get("profileId"),
 															$testAmount, $testDateApproved,
 															$testCardToken, $testStripeToken);
-		$this->TRANSACTION->insert($this->mysqli);
+
+		$this->transaction->insert($this->mysqli);
+
+		$this->flight = new Flight(null, "ABQ", "DFW", "01:42:00", "2014-12-30 08:00:00", "2014-12-30 09:42:00", "1234",
+			100.00, 25);
+		$this->flight->insert($this->mysqli);
 
 		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(5));
 		$this->TICKET = new Ticket(null, $testConfirmationNumber, 100.00, "Booked",
-			$this->PROFILE->__get("profileId"),
-			$this->TRAVELER->__get("travelerId"),
-			$this->TRANSACTION->getTransactionId());
+												$this->PROFILE->__get("profileId"),
+												$this->TRAVELER->__get("travelerId"),
+												$this->TRANSACTION->getTransactionId());
 		$this->TICKET->insert($this->mysqli);
 		echo "<p>TICKET created -> setUp 89</p>";
 		var_dump($this->TICKET);
-
-		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42:00", "2014-12-30 08:00:00", "2014-12-30 09:42:00", "1234",
-			100.00, 25);
-		$this->FLIGHT->insert($this->mysqli);
-		echo "<p>FLIGHT created -> setUp 81</p>";
-		var_dump($this->FLIGHT);
 	}
 
 	// tearDown () is a method that is run after each test
 	// here, we use it to delete the test record and disconnect from mySQL
 	public function tearDown() {
 		// delete the object if we can
-
-
-		if($this->FLIGHT !== null) {
-			$this->FLIGHT->delete($this->mysqli);
-			$this->FLIGHT = null;
+		if($this->ticketFlight !== null) {
+			$this->ticketFlight->delete($this->mysqli);
+			$this->ticketFlight = null;
 		}
 
-		if($this->TICKET !== null) {
-			$this->TICKET->delete($this->mysqli);
-			$this->TICKET = null;
+		if($this->ticket !== null) {
+			$this->ticket->delete($this->mysqli);
+			$this->ticket = null;
 		}
 
-		if($this->TRANSACTION !== null) {
-			$this->TRANSACTION->delete($this->mysqli);
-			$this->TRANSACTION = null;
+		if($this->flight !== null) {
+			$this->flight->delete($this->mysqli);
+			$this->flight = null;
 		}
 
-		if($this->TRAVELER !== null) {
-			$this->TRAVELER->delete($this->mysqli);
-			$this->TRAVELER = null;
+		if($this->transaction !== null) {
+			$this->transaction->delete($this->mysqli);
+			$this->transaction = null;
 		}
 
-		if($this->PROFILE !== null) {
-			$this->PROFILE->delete($this->mysqli);
-			$this->PROFILE = null;
+		if($this->traveler !== null) {
+			$this->traveler->delete($this->mysqli);
+			$this->traveler = null;
 		}
 
-		if($this->USER !== null) {
-			$this->USER->delete($this->mysqli);
-			$this->USER = null;
+		if($this->profile !== null) {
+			$this->profile->delete($this->mysqli);
+			$this->profile = null;
+		}
+
+		if($this->user !== null) {
+			$this->user->delete($this->mysqli);
+			$this->user = null;
 		}
 		echo "<p>All Objects Successfully Deleted -> tearDown 130</p>";
 
@@ -134,55 +136,39 @@ class TicketFlightTest extends UnitTestCase {
 
 	// test creating a new TicketFlight and inserting it to mySQL
 	public function testInsertNewTicketFlight() {
-		echo"<p>begin testInsertNewTicketFlight</p>";
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
 
-		// second, create a ticketflight to post to mySQL
+		// second, create a ticketFlight to post to mySQL
 
-		$this->ticketFlight = new TicketFlight($this->FLIGHT->getFlightId(), $this->TICKET->getTicketId());
-		echo "<p>ticketFlight created before insert line 143 testInsertNewTicketFlight</p>";
-		var_dump($this->ticketFlight);
-		//third, insert the ticketflight to mySQL
+		$this->ticketFlight = new TicketFlight($this->flight->getFlightId(), $this->ticket->getTicketId());
+
+		//third, insert the ticketFlight to mySQL
 		$this->ticketFlight->insert($this->mysqli);
-		echo "<p>ticketFlight after insert created line 146 testInsertNewTicketFlight</p>";
-		var_dump($this->ticketFlight);
+
 		// finally, compare the fields
 		$this->assertNotNull($this->ticketFlight->getFlightId());
 		$this->assertTrue($this->ticketFlight->getFlightId() > 0);
 		$this->assertNotNull($this->ticketFlight->getTicketId());
 		$this->assertTrue($this->ticketFlight->getTicketId() > 0);
-		$this->assertIdentical($this->ticketFlight->getFlightId(), 	$this->FLIGHT->getFlightId());
-		$this->assertIdentical($this->ticketFlight->getTicketId(),  $this->TICKET->getTicketId());
+		$this->assertIdentical($this->ticketFlight->getFlightId(), 	$this->flight->getFlightId());
+		$this->assertIdentical($this->ticketFlight->getTicketId(),  $this->ticket->getTicketId());
 
-		echo "<p>end of testInsertNewTicketFlight</p>";
 	}
 
 	// test updating a ticketFlight
-	public function testUpdateTicketFlight()
+/*	public function testUpdateTicketFlight()
 	{
-		echo "<p>begin testUpdateTicketFlight</p>";
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a ticketFlight to post to mySQL
-		$this->ticketFlight = new TicketFlight($this->FLIGHT->getFlightId(), $this->TICKET->getTicketId());
+		$this->ticketFlight = new TicketFlight(null, $this->flight->getFlightId(), $this->ticket->getTicketId());
 
 		//third, insert the profile to mySQL
 		$this->ticketFlight->insert($this->mysqli);
-		$newFlight = new Flight(null,"DEN", "LGA","04:02:00","2014-12-02 15:45:00",
-											  "2014-12-04 19:47:00", "26", 1.00, 13);
-		$newFlight->insert($this->mysqli);
-		echo "<p> newFlight inserted -> line 172 testUpdateTicketFlight</p>";
-		var_dump($newFlight);
-		$newFlightId = $newFlight->getFlightId();
-		$newTicket = new Ticket(null,"ABCDE12345", 100.00,"Booked",$this->PROFILE->__get("profileId"),
-																			$this->TRAVELER->__get("travelerId"),
-																			$this->TRANSACTION->getTransactionId());
-		$newTicket->insert($this->mysqli);
-		$newTicketId = $newTicket->getTicketId();
-		echo "<p>newTicket inserted -> line 184 testUpdateTicketFlight</p>";
-		var_dump($newTicket);
+		$newFlightId = rand(1, 10000);
+		$newTicketId = rand(1, 10000);
 		$this->ticketFlight->setFlightId($newFlightId);
 		$this->ticketFlight->setTicketId($newTicketId);
 		$this->ticketFlight->update($this->mysqli);
@@ -193,22 +179,18 @@ class TicketFlightTest extends UnitTestCase {
 		$this->assertTrue($this->ticketFlight->getTicketId() > 0);
 		$this->assertIdentical($this->ticketFlight->getFlightId(), $newFlightId);
 		$this->assertIdentical($this->ticketFlight->getTicketId(), $newTicketId);
-		//delete created
-		$newFlight->delete($this->mysqli);
-		$newTicket->delete($this->mysqli);
-	}
+	}*/
 
 	// test deleting a ticketFlight
 	public function testDeleteTicketFlight() {
-		echo "<p>begin testDeleteTicketFlight</p>";
 		// first, verify my SQL connected OK
 		$this->assertNotNull($this->mysqli);
 
 		// second, create a ticketFlight to post to mySQL
-		$this->ticketFlight = new TicketFlight($this->FLIGHT->getFlightId(),
-																	$this->TICKET->getTicketId());
+		$this->ticketFlight = new TicketFlight($this->flight->getFlightId(),
+															$this->ticket->getTicketId());
 
-		//third, insert the profile to mySQL
+		//third, insert the ticketFlight to mySQL
 		$this->ticketFlight->insert($this->mysqli);
 		$localFlightId = $this->ticketFlight->getFlightId();
 		// fourth, verify the ticketFlight was inserted
@@ -228,7 +210,7 @@ class TicketFlightTest extends UnitTestCase {
 		$this->assertNull($hopefulTicketFlight);
 
 		$hopefulTicketFlight = TicketFlight::getTicketFlightByTicketId($this->mysqli,
-																							$this->TICKET->getTicketId());
+																							$this->ticket->getTicketId());
 		$this->assertNull($hopefulTicketFlight);
 
 
@@ -240,8 +222,8 @@ class TicketFlightTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticketFlight to post to mySQL
-		$this->ticketFlight = new TicketFlight($this->FLIGHT->getFlightId(),
-																	$this->TICKET->getTicketId());
+		$this->ticketFlight = new TicketFlight($this->flight->getFlightId(),
+															$this->ticket->getTicketId());
 
 		// third, insert the ticketFlight to mySQL
 		$this->ticketFlight->insert($this->mysqli);
@@ -249,8 +231,7 @@ class TicketFlightTest extends UnitTestCase {
 		// fourth, get the ticketFlight using the static method
 		$staticTicketFlight = TicketFlight::getTicketFlightByTicketId($this->mysqli,
 			$this->ticketFlight->getTicketId());
-		echo "<p>staticTicketFlight -> testGetTicketFlightByTicketId line 240</p>";
-		var_dump($staticTicketFlight);
+
 		// finally, compare the fields
 		$this->assertNotNull($staticTicketFlight->getFlightId());
 		$this->assertTrue($staticTicketFlight->getFlightId() > 0);
@@ -267,18 +248,16 @@ class TicketFlightTest extends UnitTestCase {
 		$this->assertNotNull($this->mysqli);
 
 		// second create a new ticketFlight to post to mySQL
-		$this->ticketFlight = new TicketFlight($this->FLIGHT->getFlightId(),
-																	$this->TICKET->getTicketId());
+		$this->ticketFlight = new TicketFlight($this->flight->getFlightId(),
+															$this->ticket->getTicketId());
 
 		// third, insert the ticketFlight to mySQL
 		$this->ticketFlight->insert($this->mysqli);
-		echo"<p>ticketFlight created -> line 263 testGetTicketFlightByFlightId</p>";
-		var_dump($this->ticketFlight);
+
 		// fourth, get the ticketFlight using the static method
 		$staticTicketFlight = TicketFlight::getTicketFlightByFlightId($this->mysqli,
 			$this->ticketFlight->getFlightId());
-		echo "<p>staticTicketFlight -> line 259 testGetTicketFlightByFlightId</p>";
-		var_dump($staticTicketFlight);
+
 		// finally, compare the fields
 		$this->assertNotNull($staticTicketFlight->getFlightId());
 		$this->assertTrue($staticTicketFlight->getFlightId() > 0);
