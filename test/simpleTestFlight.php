@@ -49,9 +49,9 @@ class FlightTest extends UnitTestCase {
 			$this->flight = null;
 		}
 
-		echo "<p>line 51 of testFlight in tear down flight object should be deleted</p>";
+		//echo "<p>line 51 of testFlight in tear down flight object should be deleted</p>";
 
-		var_dump($this->flight);
+		//var_dump($this->flight);
 		// disconnect from mySQL
 		/*if($this->mysqli !== null) {
 			$this->mysqli->close();
@@ -70,8 +70,8 @@ class FlightTest extends UnitTestCase {
 		// third, insert the flight to mySQL
 		$this->flight->insert($this->mysqli);
 
-		echo "<p>line 72 of testFlight var dump of flight object after insert in in insert function</p>";
-		var_dump($this->flight);
+		//echo "<p>line 72 of testFlight var dump of flight object after insert in in insert function</p>";
+		//var_dump($this->flight);
 		// fixme: we need a way to have datetimes set in set functions as correct timezone and converted to UTC upon insertion
 
 		//convert input strings to DateTimeObjects or Interval to compare against flight get methods
@@ -190,16 +190,16 @@ class FlightTest extends UnitTestCase {
 		// second, create a flight to post to mySQL
 		$this->flight = new Flight (null, $this->ORIGIN, $this->DESTINATION, $this->DURATION, $this->DEPARTUREDATETIME,
 											$this->ARRIVALDATETIME, $this->FLIGHTNUMBER, $this->PRICE, $this->TOTALSEATSONPLANE);
-		echo "<p>line 182 of testFlight var dump of flight object before insert in testGetFlightbyID</p>";
-		var_dump($this->flight);
+		//echo "<p>line 182 of testFlight var dump of flight object before insert in testGetFlightbyID</p>";
+		//var_dump($this->flight);
 
 
 		// third, insert the flight to mySQL
 		$this->flight->insert($this->mysqli);
 
-		echo "<p>line 189 of testFlight var dump of flight object after insert in testGetFlightbyID</p>";
-		var_dump($this->flight);
-		var_dump($this->flight->getFlightId());
+		//echo "<p>line 189 of testFlight var dump of flight object after insert in testGetFlightbyID</p>";
+		//var_dump($this->flight);
+		//var_dump($this->flight->getFlightId());
 
 		//convert date input strings to DateTimeObjects or Interval to compare against flight get methods
 		$explode 				= explode(":", $this->DURATION);
@@ -207,8 +207,8 @@ class FlightTest extends UnitTestCase {
 		$DEPARTUREDATETIME 	= DateTime::createFromFormat("Y-m-d H:i:s", $this->DEPARTUREDATETIME);
 		$ARRIVALDATETIME   	= DateTime::createFromFormat("Y-m-d H:i:s", $this->ARRIVALDATETIME);
 
-		echo "<p>line 210 of testFlight var dump of duration</p>";
-		var_dump($DURATION);
+		//echo "<p>line 210 of testFlight var dump of duration</p>";
+		//var_dump($DURATION);
 
 		// fourth, get the flight using the static method
 		$staticFlight = Flight::getFlightByFlightId($this->mysqli, $this->flight->getFlightId());
@@ -297,7 +297,7 @@ class FlightTest extends UnitTestCase {
 
 /*
 	// fixme remove slash star when ready to test user search
-	// var_dump results from executing the search function for a weekday and a weekend day.
+	// //var_dump results from executing the search function for a weekday and a weekend day.
 	public function testGetRoutesByUserInput($ORIGIN, $DESTINATION) {
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
@@ -317,7 +317,7 @@ class FlightTest extends UnitTestCase {
 		build array of destinations
 		count size of both arrays
 		declare date variables for search
-		declare min layover variable // fixme add layover variable to mySQL and ask where "arrival<departure" criteria is in SP
+		declare min layover variable
 		declare starting number of passengers variable
 		declare range variable between fly start time and end time.
 
@@ -374,7 +374,7 @@ class FlightTest extends UnitTestCase {
 			// call the user search function and var dump the results for visual verification
 			$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_ORIGIN, $USER_DESTINATION, $USER_FLY_DATE_START,
 				$USER_FLY_DATE_END, $USER_NUMBER_PASSENGERS);
-			var_dump($staticPaths);
+			//var_dump($staticPaths);
 
 			$USER_NUMBER_PASSENGERS = $USER_NUMBER_PASSENGERS + 5;
 
@@ -395,7 +395,7 @@ class FlightTest extends UnitTestCase {
 			// call the user search function with reversed origin/destination and var dump the results for visual verification
 			$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_DESTINATION, $USER_ORIGIN, $USER_RETURN_DATE_START,
 																		$USER_RETURN_DATE_END, $USER_NUMBER_PASSENGERS2);
-			var_dump($staticPaths);
+			//var_dump($staticPaths);
 
 			$USER_NUMBER_PASSENGERS2 = $USER_NUMBER_PASSENGERS2 + 5;
 

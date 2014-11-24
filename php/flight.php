@@ -832,11 +832,9 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-
+/*
 	//fixme take out the slash star here and below to activate the search function when ready to test
-	//fixme send down a layover amount to SP as int with number of minutes
 	//fixme send need $tempmysqli in test?
-	//fixme change temp to temp
 	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
 	{
@@ -957,7 +955,8 @@ class Flight {
 
 		// fixme change call command and include variables with ticks for strings
 		// Next, create query template to call the stored procedure and execute search in MySQL
-		$getStoredProcResults = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
+		$getStoredProcResults = "CALL spFlightSearchR($userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd,
+			$numberOfPassengers, $minLayover)";
 
 
 		/* commented out due to new call statement
@@ -984,7 +983,7 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
-		*/
+		//fixme add back in star
 
 
 		// this will return as many results as there are flights and flight combos with same origin + departure + date.
@@ -1052,9 +1051,11 @@ class Flight {
 				// first set today's date as of 12 noon to use as marker for calc.
 				$today = DateTime::createFromFormat("H:i:s", "12:00:00");
 
-				//fixme assumes departure time is returned from result array(s) as datetime object.  if not will have to be made into one. see http://php.net/manual/en/datetime.diff.php
+				// assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
+				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0][4]);
+
 				// then get difference with first flight Id's departure
-				$daysTillFlight = $today->diff($eachFlightPath[0][4]);
+				$daysTillFlight = $today->diff($departureDay);
 
 				// set value of factor for each window
 				if($daysTillFlight < 7.5) {
@@ -1080,17 +1081,17 @@ class Flight {
 				$totalPriceForPath = $priceWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
 
 
-				//calc the duration
-				//fixme assumes departure time is returned from result array(s) as datetime object.  if not will have to be made into one. see http://php.net/manual/en/datetime.diff.php
-				$flightIdFirstDeparture = $eachFlightPath [0][5];
-				$flightIdLastArrival = $eachFlightPath [$sizeEachFlightPath][6];
+				//Calc the duration
+				//assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
+				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0][5]);
+				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[$sizeEachFlightPath][6]);
 				$totalDurationForPath = $flightIdFirstDeparture->diff($flightIdLastArrival);
 
 				//push the duration and the price into the $eachFlightPath array
 				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath);
 
 
-				//put the two dimensional array into another array of all the possible flight paths each with all
+				// put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
 				$allFlightPathsArray[] = $eachFlightPath;
 
@@ -1116,7 +1117,7 @@ class Flight {
 
 
 	}
-// fixme take out star slash
+*///fixme take out star slash
 
 
 
