@@ -832,10 +832,11 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-/*
+
 	//fixme take out the slash star here and below to activate the search function when ready to test
-	//fixme send down a layover amount to SP
+	//fixme send down a layover amount to SP as int with number of minutes
 	//fixme send need $concretemysqli in test?
+	//fixme change concrete to temp
 	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers)
 	{
@@ -936,7 +937,7 @@ class Flight {
 		}
 
 
-
+		// fixme change call command and include variables with ticks for strings
 		// Next, create query template to call the stored procedure and execute search in MySQL
 		$query = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
 

@@ -5,7 +5,7 @@
 DROP PROCEDURE IF EXISTS spFlightSearchR;
 
 -- Create Procedure
-CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), departDate DATETIME, arrivalDate DATETIME, minTicket INT)
+CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), departDate DATETIME, arrivalDate DATETIME, minTicket INT, layOver INT)
 		PROC:BEGIN
 		-- Stored Procedure created by Marc Hayes <marc.hayes.tech@gmail.com>
 		-- for use by PRZM capstone group
@@ -42,7 +42,7 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 				SELECT R1.startId, F2.flightId, CONCAT(R1.path, ',', CAST(F2.flightId AS CHAR))
 				FROM flightSearchR R1
 					INNER JOIN flight F1 ON R1.endId = F1.flightId
-					INNER JOIN flight F2 ON F1.destination = F2.origin
+					INNER JOIN flight F2 ON F1.destination = F2.origin AND DATE_ADD(F1.arrivalDateTime, INTERVAL layOver MINUTE) <= F2.departureDateTime
 					LEFT JOIN flightSearchR R2 ON R2.path = CONCAT(R1.path, ',', CAST(F2.flightId AS CHAR))
 				WHERE F1.destination <> endLoc -- do no process paths that have already terminated at Destination
 						AND F2.totalSeatsOnPlane >= minTicket -- ensure we are only looking at flights that have enough available tickets
