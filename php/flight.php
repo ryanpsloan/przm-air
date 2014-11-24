@@ -87,7 +87,7 @@ class Flight {
 			throw(new UnexpectedValueException("Unable to construct Flight", 0, $unexpectedValue));
 		} catch(RangeException $range) {
 			// rethrow to the caller
-			var_dump($range);
+			//var_dump($range);
 			throw(new RangeException("Unable to construct Flight", 0, $range));
 		}
 	}
@@ -464,8 +464,8 @@ class Flight {
 			throw(new mysqli_sql_exception("not a new flight"));
 		}
 
-		echo "<p>line 467 of Flight var dump of duration in insert method before formatting</p>";
-		var_dump($this->duration);
+		//echo "<p>line 467 of Flight var dump of duration in insert method before formatting</p>";
+		//var_dump($this->duration);
 		// convert duration to string
 		if($this->duration === null) {
 			$duration = "fix me!";
@@ -473,8 +473,8 @@ class Flight {
 			$duration = $this->duration->format("%H:%I:%S");
 		}
 
-		echo "<p>line 467 of Flight var dump of duration in insert method after formatting</p>";
-		var_dump($duration);
+		//echo "<p>line 467 of Flight var dump of duration in insert method after formatting</p>";
+		//var_dump($duration);
 
 		// convert departureDateTime to string
 		if($this->departureDateTime === null) {
@@ -652,8 +652,8 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
 
-		echo "<p>1017 flightId that comes into get flight by flight id before binding</p>";
-		var_dump($flightId);
+		//echo "<p>1017 flightId that comes into get flight by flight id before binding</p>";
+		//var_dump($flightId);
 
 
 		// bind the flightId to the place holder in the template
@@ -674,24 +674,24 @@ class Flight {
 		}
 
 
-		echo "<p>line 1039 of FLIGHT var dump of RESULT OBJECT in getFlightByFlightID before fetchassoc</p>";
-		var_dump($result->num_rows);
+		//echo "<p>line 1039 of FLIGHT var dump of RESULT OBJECT in getFlightByFlightID before fetchassoc</p>";
+		//var_dump($result->num_rows);
 
 
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a Flight object normally
 		// 2) if there's no result, we can just return null
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
-		echo "<p>line 1035 of FLIGHT var dump of ROW in getFlightByFlightID object after fetchassoc</p>";
-		var_dump($row);
+		//echo "<p>line 1035 of FLIGHT var dump of ROW in getFlightByFlightID object after fetchassoc</p>";
+		//var_dump($row);
 
 		// convert the associative array to a Flight
 		if($row !== null) {
 			try {
 				//$floatPrice = (float) $row['price'];
 
-				//echo "<p>line 1042 of FLIGHT var dump of float price in getFlightByFlightID object after fetchassoc</p>";
-				//var_dump($floatPrice);
+				////echo "<p>line 1042 of FLIGHT var dump of float price in getFlightByFlightID object after fetchassoc</p>";
+				////var_dump($floatPrice);
 
 				$flight = new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
 					$row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
@@ -701,8 +701,8 @@ class Flight {
 
 			} catch(Exception $exception) {
 
-				echo "<p>line 1054 dump of exception before throws</p>";
-				var_dump($exception);
+				//echo "<p>line 1054 dump of exception before throws</p>";
+				//var_dump($exception);
 
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to Flight", 0, $exception));
@@ -832,11 +832,9 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-
+/*
 	//fixme take out the slash star here and below to activate the search function when ready to test
-	//fixme send down a layover amount to SP as int with number of minutes
 	//fixme send need $tempmysqli in test?
-	//fixme change temp to temp
 	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
 	{
@@ -937,28 +935,31 @@ class Flight {
 		}
 
 		// 6.:
-		$numberOfPassengers = trim($numberOfPassengers);
+		$minLayover = trim($minLayover);
 
-		if (filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT) === false) {
-			throw (new UnexpectedValueException ("Number of requested seats $numberOfPassengers does not appear to be an
+		if (filter_var($minLayover, FILTER_SANITIZE_NUMBER_INT) === false) {
+			throw (new UnexpectedValueException ("Number of layover minutes of $minLayover does not appear to be an
 														integer"));
 		}
 		else {
-			$numberOfPassengers = filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT);
+			$minLayover = filter_var($minLayover, FILTER_SANITIZE_NUMBER_INT);
 		}
 
 		// convert the $numberOfPassengers to an integer and enforce it's positive
-		$numberOfPassengers = intval($numberOfPassengers);
-		if($numberOfPassengers <= 0) {
-			throw(new RangeException("Number of requested seats $numberOfPassengers is not positive"));
+		$minLayover = intval($minLayover);
+		if($minLayover <= 0) {
+			throw(new RangeException("Number of layover minutes of $minLayover is not positive"));
 		}
 
 
 
 		// fixme change call command and include variables with ticks for strings
 		// Next, create query template to call the stored procedure and execute search in MySQL
-		$query = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
+		$getStoredProcResults = "CALL spFlightSearchR($userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd,
+			$numberOfPassengers, $minLayover)";
 
+
+		/* commented out due to new call statement
 		$statement = $tempMysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -981,6 +982,9 @@ class Flight {
 		if($getStoredProcResults === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
+
+		//fixme add back in star
+
 
 		// this will return as many results as there are flights and flight combos with same origin + departure + date.
 		//	1) if there's no result, we can just return null
@@ -1047,9 +1051,11 @@ class Flight {
 				// first set today's date as of 12 noon to use as marker for calc.
 				$today = DateTime::createFromFormat("H:i:s", "12:00:00");
 
-				//fixme assumes departure time is returned from result array(s) as datetime object.  if not will have to be made into one. see http://php.net/manual/en/datetime.diff.php
+				// assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
+				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0][4]);
+
 				// then get difference with first flight Id's departure
-				$daysTillFlight = $today->diff($eachFlightPath[0][4]);
+				$daysTillFlight = $today->diff($departureDay);
 
 				// set value of factor for each window
 				if($daysTillFlight < 7.5) {
@@ -1075,17 +1081,17 @@ class Flight {
 				$totalPriceForPath = $priceWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
 
 
-				//calc the duration
-				//fixme assumes departure time is returned from result array(s) as datetime object.  if not will have to be made into one. see http://php.net/manual/en/datetime.diff.php
-				$flightIdFirstDeparture = $eachFlightPath [0][5];
-				$flightIdLastArrival = $eachFlightPath [$sizeEachFlightPath][6];
+				//Calc the duration
+				//assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
+				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0][5]);
+				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[$sizeEachFlightPath][6]);
 				$totalDurationForPath = $flightIdFirstDeparture->diff($flightIdLastArrival);
 
 				//push the duration and the price into the $eachFlightPath array
 				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath);
 
 
-				//put the two dimensional array into another array of all the possible flight paths each with all
+				// put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
 				$allFlightPathsArray[] = $eachFlightPath;
 
@@ -1111,7 +1117,7 @@ class Flight {
 
 
 	}
-// fixme take out star slash
+*///fixme take out star slash
 
 
 
