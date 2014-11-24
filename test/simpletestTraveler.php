@@ -33,7 +33,7 @@ class TravelerTest extends UnitTestCase {
 
 		$this->mysqli = MysqliConfiguration::getMysqli();
 		// randomize the salt, hash, and authentication token for the profile
-		$i = rand(1,100); /*to randomize (must be unique) the email for correct insertion*/
+		$i = rand(1,10000); /*to randomize (must be unique) the email for correct insertion*/
 		$testEmail       = "johnmax".++$i."@test.com";
 		$testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
 		$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
@@ -48,13 +48,11 @@ class TravelerTest extends UnitTestCase {
 		try {
 			$this->user = new User(null, $testEmail , $testHash, $testSalt, $testAuthToken);
 			$this->user->insert($this->mysqli);
-			echo "setUp line 51";
-			var_dump($this->user);
+
 			$this->profile = new Profile (null,$this->user->getUserId(),$testFirstName, $testMiddleName, $testLastName,
 															$testDateOfBirth, $testCustomerToken, $this->user);
 			$this->profile->insert($this->mysqli);
-			echo "setUp line 56";
-			var_dump($this->profile);
+
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}
@@ -68,20 +66,17 @@ class TravelerTest extends UnitTestCase {
 	{
 		// delete the traveler/profile/user if we can
 		if($this->traveler != null) {
-			echo "tearDown line 69";
-			var_dump($this->traveler);
+
 			$this->traveler->delete($this->mysqli);
 			$this->traveler = null;
 		}
 			if($this->profile !== null) {
-				echo "tearDown line 75";
-				var_dump($this->profile);
+
 				$this->profile->delete($this->mysqli);
 				$this->profile = null;
 			}
 				if($this->user !== null) {
-					echo "tearDown line 81";
-					var_dump($this->user);
+
 					$this->user->delete($this->mysqli);
 					$this->user = null;
 				}
@@ -104,8 +99,7 @@ class TravelerTest extends UnitTestCase {
 				$this->TRAVELERMIDDLENAME,$this->TRAVELERLASTNAME, $this->TRAVELERDATEOFBIRTH, $this->profile);
 			// third, insert the traveler to mySQL
 			$this->traveler->insert($this->mysqli);
-			echo "insertNewTraveler line 102";
-			var_dump($this->traveler);
+
 		} catch (Exception $exception){
 			$exception->getMessage();
 		}
@@ -125,8 +119,7 @@ class TravelerTest extends UnitTestCase {
 		$row = $this->selectRow();
 		echo $dateString = $row['travelerDateOfBirth'];
 		$date = DateTime::createFromFormat("Y-m-d H:i:s", $dateString);
-		echo "DateTime Obj created from row data line 128";
-		var_dump($date);
+
 		// finally, compare the fields against the row data pulled from the database
 		$this->assertIdentical($this->traveler->__get('travelerId'),						   $row['travelerId']);
 		$this->assertIdentical($this->traveler->__get('profileId'),							   $row['profileId']);
@@ -149,8 +142,7 @@ class TravelerTest extends UnitTestCase {
 								$this->profile);
 		// third, insert the Traveler to mySQL
 		$this->traveler->insert($this->mysqli);
-		echo "updateTraveler line 150";
-		var_dump($this->traveler);
+
 		}catch(Exception $ex){
 			$ex->getMessage();
 		}
@@ -166,8 +158,7 @@ class TravelerTest extends UnitTestCase {
 		$this->traveler->setDateOfBirth($newDateOfBirth);
 
 		$this->traveler->update($this->mysqli);
-		echo "after update updateTraveler line 167";
-		var_dump($this->traveler);
+
 		//compare testClass values against traveler object values
 		$this->assertNotNull($this->traveler->__get("travelerId"));
 		$this->assertTrue($this->traveler->__get("travelerId") > 0);
@@ -181,10 +172,9 @@ class TravelerTest extends UnitTestCase {
 
 		//---------------------------------------------------------------------------------------------------------
 		$row = $this->selectRow();
-		echo "value of row data => ".$dateString = $row['travelerDateOfBirth'];
+		$dateString = $row['travelerDateOfBirth'];
 		$date = DateTime::createFromFormat("Y-m-d H:i:s", $dateString);
-		echo "DateTime Obj from row data line 186";
-		var_dump($date);
+
 		// finally, compare the fields against the row data pulled from the database
 		$this->assertIdentical($this->traveler->__get("travelerId"),						  $row['travelerId']);
 		$this->assertIdentical($this->traveler->__get("profileId"),							  $row['profileId']);
@@ -206,8 +196,7 @@ class TravelerTest extends UnitTestCase {
 
 		// third, insert the user to mySQL
 		$this->traveler->insert($this->mysqli);
-		echo "deleteTraveler line 205";
-		var_dump($this->traveler);
+
 		$travelerId = $this->traveler->__get("travelerId");
 		// fourth, verify the User was inserted
 		$this->assertNotNull($this->traveler->__get("travelerId"));
@@ -216,8 +205,7 @@ class TravelerTest extends UnitTestCase {
 		// fifth, delete the user
 		$this->traveler->delete($this->mysqli);
 		$this->traveler = null;
-		echo "after delete deleteTraveler line 215";
-		var_dump($this->traveler);
+
 		// finally, try to get the user and assert we didn't get a thing
 		$hopefulTraveler = Traveler::getTravelerByTravelerId($this->mysqli, $travelerId);
 		$this->assertNull($hopefulTraveler);
@@ -234,8 +222,7 @@ class TravelerTest extends UnitTestCase {
 
 		// third, insert the user to mySQL
 		$this->traveler->insert($this->mysqli);
-		echo "getTravelerbyProfileId line 233";
-		var_dump($this->traveler);
+
 		// fourth, get the user using the static method
 		$staticTraveler = Traveler::getTravelerByProfileId($this->mysqli, $this->profile->__get("profileId"));
 

@@ -49,14 +49,10 @@ class TicketFlightTest extends UnitTestCase {
 
 		$this->USER = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
 		$this->USER->insert($this->mysqli);
-		echo "<p>USER created -> setUp 45</p>";
-		var_dump($this->USER);
 
 		$this->PROFILE = new Profile(null, $this->USER->getUserId(), "Jameson", "Harold", "Jenkins",
 			"1956-12-01 00:00:00", "customer_000000000000000", $this->USER);
 		$this->PROFILE->insert($this->mysqli);
-		echo "<p>PROFILE created -> setUp 50</p>";
-		var_dump($this->PROFILE);
 
 		$this->TRAVELER = new Traveler(null, $this->PROFILE->__get("profileId"),
 												 $this->PROFILE->__get("userFirstName"),
@@ -64,8 +60,6 @@ class TicketFlightTest extends UnitTestCase {
 												 $this->PROFILE->__get("userLastName"),
 			 									 $this->PROFILE->__get("dateOfBirth"), $this->PROFILE);
 		$this->TRAVELER->insert($this->mysqli);
-		echo "<p>TRAVELER created -> setUp 60</p>";
-		var_dump($this->TRAVELER);
 
 		$testAmount = 111.11;
 		$testDateApproved = DateTime::createFromFormat("Y-m-d H:i:s", "2014-11-20 07:08:09");
@@ -77,9 +71,6 @@ class TicketFlightTest extends UnitTestCase {
 															$testCardToken, $testStripeToken);
 
 		$this->TRANSACTION->insert($this->mysqli);
-		echo "<p>TRANSACTION created -> setUp 65</p>";
-		var_dump($this->TRANSACTION);
-
 
 		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42", "2014-12-30 08:00:00", "2014-12-30 09:42:00", "1234",
 			100.00, 25);
@@ -87,15 +78,12 @@ class TicketFlightTest extends UnitTestCase {
 		echo "<p>FLIGHT created -> setUp 81</p>";
 		var_dump($this->FLIGHT);
 
-		try {
-			$this->TICKET = new Ticket(null, "CA57TW1234", 100.00, "Booked",
+		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(5));
+		$this->TICKET = new Ticket(null, $testConfirmationNumber, 100.00, "Booked",
 												$this->PROFILE->__get("profileId"),
 												$this->TRAVELER->__get("travelerId"),
 												$this->TRANSACTION->getTransactionId());
-			$this->TICKET->insert($this->mysqli);
-		} catch (Exception $exception){
-			var_dump($exception);
-		}
+		$this->TICKET->insert($this->mysqli);
 		echo "<p>TICKET created -> setUp 89</p>";
 		var_dump($this->TICKET);
 	}
@@ -240,7 +228,8 @@ class TicketFlightTest extends UnitTestCase {
 		// fourth, get the ticketFlight using the static method
 		$staticTicketFlight = TicketFlight::getTicketFlightByTicketId($this->mysqli,
 			$this->ticketFlight->getTicketId());
-
+		echo "<p>staticTicketFlight -> testGetTicketFlightByTicketId line 240</p>";
+		var_dump($staticTicketFlight);
 		// finally, compare the fields
 		$this->assertNotNull($staticTicketFlight->getFlightId());
 		$this->assertTrue($staticTicketFlight->getFlightId() > 0);
@@ -262,7 +251,7 @@ class TicketFlightTest extends UnitTestCase {
 
 		// third, insert the ticketFlight to mySQL
 		$this->ticketFlight->insert($this->mysqli);
-
+		echo"<p>ticketFlight created -> line 263 testGetTicketFlightByFlightId</p>";
 		// fourth, get the ticketFlight using the static method
 		$staticTicketFlight = TicketFlight::getTicketFlightByFlightId($this->mysqli,
 			$this->ticketFlight->getFlightId());

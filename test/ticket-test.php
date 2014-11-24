@@ -57,8 +57,6 @@ class TicketTest extends UnitTestCase {
 		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
 		$this->TRAVELER->insert($this->mysqli);
 
-
-
 		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"), 100.00, "2014-11-12 12:11:10", "Token", "Token");
 		$this->TRANSACTION->insert($this->mysqli);
 

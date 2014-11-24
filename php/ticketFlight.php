@@ -127,14 +127,15 @@ class TicketFlight {
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
-	public function insert(&$mysqli) {
+	public function insert(&$mysqli)
+	{
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
 		// create query template
-		$query     = "INSERT INTO ticketFlight(flightId, ticketId) VALUES(?, ?)";
+		$query = "INSERT INTO ticketFlight(flightId, ticketId) VALUES(?, ?)";
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -142,20 +143,19 @@ class TicketFlight {
 
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ii", $this->flightId, $this->ticketId);
+		echo "<p>this->flightId line 146 insert</p>";
+		var_dump($this->flightId);
+		echo "<p>this->ticketId line 148 insert</p>";
+		var_dump($this->ticketId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
 
 		// execute the statement
-		try {
-			if($statement->execute() === false) {
-				throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-			}
-		}catch(Exception $exception){
-			var_dump($exception);
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
 	}
-
 	/**
 	 * deletes this TicketFlight from mySQL
 	 *
