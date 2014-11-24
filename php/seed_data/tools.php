@@ -34,29 +34,29 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 		//echo "storeDate outside of for loop";
 		//var_dump($baseDate);
 		for($i = 0; $i < $numOfDays; ++$i) {
-			echo "baseDate at top of for loop";
-			var_dump($baseDate);
+			//echo "baseDate at top of for loop";
+			//var_dump($baseDate);
 			$baseDateDep = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate . " " . $output[3],
 				new DateTimeZone("America/Phoenix"));
 			$baseDateDep->setTimezone(new DateTimeZone("UTC"));
-			echo "baseDeptObj";
-			var_dump($baseDateDep);
+			//echo "baseDeptObj";
+			//var_dump($baseDateDep);
 
 			$newDateDepStr = $baseDateDep->format("Y-m-d H:i:s");
-			//echo "newDeptStr";
+			////echo "newDeptStr";
 			//var_dump($newDateDepStr);
 
 			$baseDateArr = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate . " " . $output[4],
 					new DateTimeZone("America/Phoenix"));
-			echo" baseArrObj Phoenix Timezone";
-			var_dump($baseDateArr);
+			//echo" baseArrObj Phoenix Timezone";
+			//var_dump($baseDateArr);
 			$baseDateArr->setTimezone(new DateTimeZone("UTC"));
-			echo "baseArrObj after setTimezone UTC";
-			var_dump($baseDateArr);
+			//echo "baseArrObj after setTimezone UTC";
+			//var_dump($baseDateArr);
 
 			$newDateArrStr = $baseDateArr->format("Y-m-d H:i:s");
-			echo "newArrStr";
-			var_dump($newDateArrStr);
+			//echo "newArrStr";
+			//var_dump($newDateArrStr);
 			$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $output[2], $newDateDepStr,
 					   													  $newDateArrStr, $output[5], $output[6], $totalSeats);
 			if($wasClean === false) {
@@ -69,24 +69,24 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 			if(!empty($output[7])) {
 				$baseDateDep = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate . " " . $output[7],
 					new DateTimeZone("America/Phoenix"));
-				echo "7 baseDateDep Arizona";
-				var_dump($baseDateDep);
+				//echo "7 baseDateDep Arizona";
+				//var_dump($baseDateDep);
 				$baseDateDep->setTimezone(new DateTimeZone("UTC"));
-				echo "7 baseDateDep UTC";
-				var_dump($baseDateDep);
+				//echo "7 baseDateDep UTC";
+				//var_dump($baseDateDep);
 				$newDateDepStr = $baseDateDep->format("Y-m-d H:i:s");
-				echo "7 newDeptStr";
-				var_dump($newDateDepStr);
+				//echo "7 newDeptStr";
+				//var_dump($newDateDepStr);
 				$baseDateArr = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate . " " . $output[8],
 					new DateTimeZone("America/Phoenix"));
-				echo "7 baseDateArr Phoenix";
-				var_dump($baseDateDep);
+				//echo "7 baseDateArr Phoenix";
+				//var_dump($baseDateDep);
 				$baseDateArr->setTimezone(new DateTimeZone("UTC"));
-				echo "7 baseDateDep";
-				var_dump($baseDateArr);
+				//echo "7 baseDateDep";
+				//var_dump($baseDateArr);
 				$newDateArrStr = $baseDateArr->format("Y-m-d H:i:s");
-				echo "7 newArrStr";
-				var_dump($newDateArrStr);
+				//echo "7 newArrStr";
+				//var_dump($newDateArrStr);
 				$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $output[2], $newDateDepStr,
 						                                            $newDateArrStr, $output[9], $output[10], $totalSeats);
 
@@ -101,18 +101,18 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 					$baseDateDep = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate . " " . $output[11],
 						new DateTimeZone("America/Phoenix"));
 					$baseDateDep->setTimezone(new DateTimeZone("UTC"));
-					//echo "11 baseDateDep";
-					//var_dump($baseDateDep);
+					////echo "11 baseDateDep";
+					////var_dump($baseDateDep);
 					$newDateDepStr = $baseDateDep->format("Y-m-d H:i:s");
-					//echo "11 newDeptStr";
+					////echo "11 newDeptStr";
 					//var_dump($newDateDepStr);
 					$baseDateArr = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate . " " . $output[12],
 						new DateTimeZone("America/Phoenix"));
 					$baseDateArr->setTimezone(new DateTimeZone("UTC"));
-					//echo "11 baseDateArr";
+					////echo "11 baseDateArr";
 					//var_dump($baseDateArr);
 					$newDateArrStr = $baseDateArr->format("Y-m-d H:i:s");
-					//echo "11 newArrStr";
+					////echo "11 newArrStr";
 					//var_dump($newDateArrStr);
 					$wasClean = $statement->bind_param("ssssssdi", $output[0], $output[1], $output[2], $newDateDepStr,
 						$newDateArrStr, $output[13], $output[14], $totalSeats);
@@ -128,21 +128,21 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 
 				$baseDate = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate." 00:00:00");
 
-//				echo "baseDate Obj Y-m-d 00:00:00";
-//				var_dump($baseDate);
+//				//echo "baseDate Obj Y-m-d 00:00:00";
+//				//var_dump($baseDate);
 
 				$baseDate->add(new DateInterval('P1D')); // P1D means a period of 1 day
-				//echo "baseDate + Interval";
+				////echo "baseDate + Interval";
 				//var_dump($baseDate);
 
 				$baseDate = $baseDate->format('Y-m-d');
-//				echo "final transformation baseDateStr Y-m-d";
-//				var_dump($baseDate);
+//				//echo "final transformation baseDateStr Y-m-d";
+//				//var_dump($baseDate);
 
 		}
 	}
 	fclose($filePointer);
-	echo "Files were successfully inserted";
+	////echo "Files were successfully inserted";
 
 }
 

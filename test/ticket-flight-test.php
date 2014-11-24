@@ -155,31 +155,6 @@ class TicketFlightTest extends UnitTestCase {
 
 	}
 
-	// test updating a ticketFlight
-/*	public function testUpdateTicketFlight()
-	{
-		// first, verify mySQL connected OK
-		$this->assertNotNull($this->mysqli);
-
-		// second, create a ticketFlight to post to mySQL
-		$this->ticketFlight = new TicketFlight(null, $this->flight->getFlightId(), $this->ticket->getTicketId());
-
-		//third, insert the profile to mySQL
-		$this->ticketFlight->insert($this->mysqli);
-		$newFlightId = rand(1, 10000);
-		$newTicketId = rand(1, 10000);
-		$this->ticketFlight->setFlightId($newFlightId);
-		$this->ticketFlight->setTicketId($newTicketId);
-		$this->ticketFlight->update($this->mysqli);
-		// finally, compare the fields
-		$this->assertNotNull($this->ticketFlight->getFlightId());
-		$this->assertTrue($this->ticketFlight->getFlightId() > 0);
-		$this->assertNotNull($this->ticketFlight->getTicketId());
-		$this->assertTrue($this->ticketFlight->getTicketId() > 0);
-		$this->assertIdentical($this->ticketFlight->getFlightId(), $newFlightId);
-		$this->assertIdentical($this->ticketFlight->getTicketId(), $newTicketId);
-	}*/
-
 	// test deleting a ticketFlight
 	public function testDeleteTicketFlight() {
 		// first, verify my SQL connected OK
