@@ -51,4 +51,6 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 		WHERE F.destination = endLoc
 				AND R1.userSession
 		ORDER BY Stops;
+
+		DELETE FROM flightSearchR WHERE userSession = userSesID;
 	END;
