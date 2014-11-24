@@ -21,14 +21,13 @@ require_once("../php/profile.php");
 
 
 // the TransactionTest is a container for all our tests
-class TransactionTest extends UnitTestCase
-{
+class TransactionTest extends UnitTestCase {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
 	// variable to hold the test database row
 	private $transaction = null;
 
-// a few "global" variables for creating test data
+	// a few "global" variables for creating test data
 	private $AMOUNT 		  = 100.00;
 	private $DATE_APPROVED = null;
 	private $CARD_TOKEN 	  = "card_14oo18o9fh39";
@@ -36,7 +35,7 @@ class TransactionTest extends UnitTestCase
 	private $USER 			  = null;
 	private $PROFILE 		  = null;
 
-// setUp () is a method that is run before each test
+	// setUp () is a method that is run before each test
 	// here, we use it to connect to my SQL
 	public function setUp()
 	{
@@ -96,7 +95,7 @@ class TransactionTest extends UnitTestCase
 																 $this->DATE_APPROVED, 					 $this->CARD_TOKEN,
 																 $this->STRIPE_TOKEN);
 
-		//third, insert the profile to mySQL
+		//third, insert the transaction to mySQL
 		$this->transaction->insert($this->mysqli);
 
 

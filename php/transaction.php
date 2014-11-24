@@ -231,7 +231,7 @@ class Transaction {
 	 * sets the value of card token
 	 *
 	 * @param string $newCardToken card token
-	 * @throws UnexpectedValueException if not a string
+	 * @throws Exception if not a string
 	 **/
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
@@ -258,7 +258,7 @@ class Transaction {
 	 * sets the value of stripe token
 	 *
 	 * @param string $newStripeToken stripe token
-	 * @throws UnexpectedValueException if not a string
+	 * @throws Exception if not a string
 	 **/
 	public function setStripeToken($newStripeToken) {
 		// filter the stripe token as a generic string
