@@ -77,13 +77,12 @@ class TicketFlightTest extends UnitTestCase {
 		$this->flight->insert($this->mysqli);
 
 		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(5));
-		$this->TICKET = new Ticket(null, $testConfirmationNumber, 100.00, "Booked",
-												$this->PROFILE->__get("profileId"),
-												$this->TRAVELER->__get("travelerId"),
-												$this->TRANSACTION->getTransactionId());
-		$this->TICKET->insert($this->mysqli);
-		echo "<p>TICKET created -> setUp 89</p>";
-		var_dump($this->TICKET);
+		$this->ticket = new Ticket(null, $testConfirmationNumber, 100.00, "Booked",
+												$this->profile->__get("profileId"),
+												$this->traveler->__get("travelerId"),
+												$this->transaction->getTransactionId());
+		$this->ticket->insert($this->mysqli);
+
 	}
 
 	// tearDown () is a method that is run after each test
