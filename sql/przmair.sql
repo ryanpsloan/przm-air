@@ -5,6 +5,18 @@ DROP TABLE IF EXISTS traveler;
 DROP TABLE IF EXISTS flight;
 DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS flightSearchR;
+
+CREATE TABLE flightSearchR (
+	startId INT,
+	endId INT,
+	path VARCHAR(256),
+	userSession VARCHAR(40),
+	INDEX (startId),
+	INDEX (endId),
+	INDEX (path),
+	INDEX (userSession)
+);
 
 CREATE TABLE user (
 	userId INT UNSIGNED NOT NULL AUTO_INCREMENT,
