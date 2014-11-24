@@ -821,7 +821,7 @@ class Flight {
 	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
 	 * $userOrigin, and the return date inputted as $userFlyDate
 	 *
-	 * @param resource $concreteMysqli pointer to concrete mySQL connection, by reference
+	 * @param resource $tempMysqli pointer to temp mySQL connection, by reference
 	 * @param string $userOrigin
 	 * @param string $userDestination
 	 * @param string $userFlyDateStart to search for
@@ -835,13 +835,13 @@ class Flight {
 
 	//fixme take out the slash star here and below to activate the search function when ready to test
 	//fixme send down a layover amount to SP as int with number of minutes
-	//fixme send need $concretemysqli in test?
-	//fixme change concrete to temp
-	public static function getRoutesByUserInput(&$concreteMysqli, $userOrigin, $userDestination, $userFlyDateStart,
-															  $userFlyDateEnd, $numberOfPassengers)
+	//fixme send need $tempmysqli in test?
+	//fixme change temp to temp
+	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
+															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
 	{
 		// handle degenerate cases
-		if(gettype($concreteMysqli) !== "object" || get_class($concreteMysqli) !== "mysqli") {
+		if(gettype($tempMysqli) !== "object" || get_class($tempMysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
@@ -936,12 +936,30 @@ class Flight {
 			throw(new RangeException("Number of requested seats $numberOfPassengers is not positive"));
 		}
 
+		// 6.:
+		$numberOfPassengers = trim($numberOfPassengers);
+
+		if (filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT) === false) {
+			throw (new UnexpectedValueException ("Number of requested seats $numberOfPassengers does not appear to be an
+														integer"));
+		}
+		else {
+			$numberOfPassengers = filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT);
+		}
+
+		// convert the $numberOfPassengers to an integer and enforce it's positive
+		$numberOfPassengers = intval($numberOfPassengers);
+		if($numberOfPassengers <= 0) {
+			throw(new RangeException("Number of requested seats $numberOfPassengers is not positive"));
+		}
+
+
 
 		// fixme change call command and include variables with ticks for strings
 		// Next, create query template to call the stored procedure and execute search in MySQL
 		$query = "CALL spFlightSearchR(?, ?, ?, ?, ?)";
 
-		$statement = $concreteMysqli->prepare($query);
+		$statement = $tempMysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
@@ -973,7 +991,7 @@ class Flight {
 		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
  					totalSeatsOnPlane FROM flight WHERE flightId IN (?)";
 
-		$statement2 = $concreteMysqli->prepare($query);
+		$statement2 = $tempMysqli->prepare($query);
 		if($statement2 === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
