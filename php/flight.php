@@ -1093,7 +1093,7 @@ class Flight {
 
 
 	}
-*///fixme take out star slash
+// fixme take out star slash
 
 
 

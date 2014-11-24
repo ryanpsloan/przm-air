@@ -69,23 +69,22 @@ class TicketFlightTest extends UnitTestCase {
 		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"),
 															$testAmount, $testDateApproved,
 															$testCardToken, $testStripeToken);
-
 		$this->TRANSACTION->insert($this->mysqli);
 
-		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42", "2014-12-30 08:00:00", "2014-12-30 09:42:00", "1234",
+		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(5));
+		$this->TICKET = new Ticket(null, $testConfirmationNumber, 100.00, "Booked",
+			$this->PROFILE->__get("profileId"),
+			$this->TRAVELER->__get("travelerId"),
+			$this->TRANSACTION->getTransactionId());
+		$this->TICKET->insert($this->mysqli);
+		echo "<p>TICKET created -> setUp 89</p>";
+		var_dump($this->TICKET);
+
+		$this->FLIGHT = new Flight(null, "ABQ", "DFW", "01:42:00", "2014-12-30 08:00:00", "2014-12-30 09:42:00", "1234",
 			100.00, 25);
 		$this->FLIGHT->insert($this->mysqli);
 		echo "<p>FLIGHT created -> setUp 81</p>";
 		var_dump($this->FLIGHT);
-
-		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(5));
-		$this->TICKET = new Ticket(null, $testConfirmationNumber, 100.00, "Booked",
-												$this->PROFILE->__get("profileId"),
-												$this->TRAVELER->__get("travelerId"),
-												$this->TRANSACTION->getTransactionId());
-		$this->TICKET->insert($this->mysqli);
-		echo "<p>TICKET created -> setUp 89</p>";
-		var_dump($this->TICKET);
 	}
 
 	// tearDown () is a method that is run after each test
@@ -93,16 +92,15 @@ class TicketFlightTest extends UnitTestCase {
 	public function tearDown() {
 		// delete the object if we can
 
-		if($this->TICKET !== null) {
-			$this->TICKET->delete($this->mysqli);
-			$this->TICKET = null;
-		}
-		echo "<p>TICKET deleted tearDown line 100</p>";
-		var_dump($this->TICKET);
 
 		if($this->FLIGHT !== null) {
 			$this->FLIGHT->delete($this->mysqli);
 			$this->FLIGHT = null;
+		}
+
+		if($this->TICKET !== null) {
+			$this->TICKET->delete($this->mysqli);
+			$this->TICKET = null;
 		}
 
 		if($this->TRANSACTION !== null) {
@@ -172,8 +170,8 @@ class TicketFlightTest extends UnitTestCase {
 
 		//third, insert the profile to mySQL
 		$this->ticketFlight->insert($this->mysqli);
-		$newFlight = new Flight(null,"DEN", "LGA","04:02:00","2014-12-02 15:45:00", "2014-12-04 19:47:00", "26", 1.00,
-			13);
+		$newFlight = new Flight(null,"DEN", "LGA","04:02:00","2014-12-02 15:45:00",
+											  "2014-12-04 19:47:00", "26", 1.00, 13);
 		$newFlight->insert($this->mysqli);
 		echo "<p> newFlight inserted -> line 172 testUpdateTicketFlight</p>";
 		var_dump($newFlight);
