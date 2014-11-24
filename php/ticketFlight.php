@@ -143,10 +143,6 @@ class TicketFlight {
 
 		// bind the member variables to the place holders in the template
 		$wasClean = $statement->bind_param("ii", $this->flightId, $this->ticketId);
-		echo "<p>this->flightId line 146 insert</p>";
-		var_dump($this->flightId);
-		echo "<p>this->ticketId line 148 insert</p>";
-		var_dump($this->ticketId);
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}

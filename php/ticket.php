@@ -162,7 +162,7 @@ class Ticket {
 	 * sets the price
 	 *
 	 * @param float $newPrice price
-	 * @throws UnexpectedValuelException if not a double
+	 * @throws UnexpectedValueException if not a double
 	 * @throws RangeException if price isn't positive
 	 */
 
