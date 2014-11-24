@@ -123,10 +123,8 @@ class TicketFlightTest extends UnitTestCase {
 			$this->user->delete($this->mysqli);
 			$this->user = null;
 		}
-		echo "<p>All Objects Successfully Deleted -> tearDown 130</p>";
 
-
-
+		
 		// disconnect from mySQL
 		// if($this->mysqli !== null) {
 		// 	$this->mysqli->close();
