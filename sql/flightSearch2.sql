@@ -33,13 +33,12 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 				FROM flightSearchR R1
 					INNER JOIN flight F1 ON R1.endId = F1.flightId
 					INNER JOIN flight F2 ON F1.destination = F2.origin AND DATE_ADD(F1.arrivalDateTime, INTERVAL layOver MINUTE) <= F2.departureDateTime
- 					LEFT JOIN flightSearchR R2 ON R2.path = CONCAT(R1.path, ',', CAST(F2.flightId AS CHAR))
+					LEFT JOIN flightSearchR R2 ON R2.path = CONCAT(R1.path, ',', CAST(F2.flightId AS CHAR)) AND R2.userSession = userSesID
 				WHERE F1.destination <> endLoc -- do no process paths that have already terminated at Destination
 						AND F2.totalSeatsOnPlane >= minTicket -- ensure we are only looking at flights that have enough available tickets
 						AND F2.arrivalDateTime <= arrivalDate -- ensure we are not grabbing "nodes" that are outside of time range
 						AND R2.path IS NULL -- ensure we are not processing nodes that have already been processed.
-						AND R1.userSession = userSesID --
-						AND R2.userSession = userSesID;
+						AND R1.userSession = userSesID;
 		UNTIL (ROW_COUNT() = 0) -- exit when prior iteration has returned 0 results
 		END REPEAT
 		;
@@ -49,7 +48,7 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 		FROM flightSearchR R
 			INNER JOIN flight F ON F.flightId = R.endId
 		WHERE F.destination = endLoc
-				AND R1.userSession
+				AND R.userSession = userSesID
 		ORDER BY Stops;
 
 		DELETE FROM flightSearchR WHERE userSession = userSesID;
