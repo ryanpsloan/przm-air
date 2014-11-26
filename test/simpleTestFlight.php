@@ -308,7 +308,7 @@ class FlightTest extends UnitTestCase {
 		returned ALL POSSIBLE results.  Just that all returned results are valid.  In other words, a search that returned
 		no results, for valid or invalid reasons, would pass regardless.
 
-		To offset this and make a null results FAIL when results should exists, I assert simply that results not be null in those cases.
+		To offset this and make a null result FAIL when results should exists, I assert simply that results not be null in those cases.
 
 		Note that outer array and midlevel array can NOT be associative so that we can loop through them, while inner ray might be associative if it wasn't for loop 5B.
 

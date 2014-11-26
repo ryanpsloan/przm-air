@@ -832,7 +832,7 @@ class Flight {
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
 
 	 **/
-/*
+/**/
 	//fixme take out the slash star here and below to activate the search function when ready to test
 	//fixme send need $tempmysqli in test?
 	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
@@ -983,7 +983,7 @@ class Flight {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
-		//fixme add back in star
+		*///fixme add back in star
 
 
 		// this will return as many results as there are flights and flight combos with same origin + departure + date.
