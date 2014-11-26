@@ -10,6 +10,7 @@
  * @Date: 11/6/14
  * @Time: 10:13 AM
  */
+require_once('../php/results.php');
 
 class Flight {
 	/**
@@ -955,35 +956,12 @@ class Flight {
 
 		// fixme change call command and include variables with ticks for strings
 		// Next, create query template to call the stored procedure and execute search in MySQL
-		$getStoredProcResults = "CALL spFlightSearchR($userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd,
+		$query = "CALL spFlightSearchR('$userOrigin', '$userDestination', '$userFlyDateStart', '$userFlyDateEnd',
 			$numberOfPassengers, $minLayover)";
 
+		$getStoredProcResults = Results::db_all($query);
 
-		/* commented out due to new call statement
-		$statement = $tempMysqli->prepare($query);
-		if($statement === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
-
-		// bind the user inputs to the place holder in the template
-		$wasClean = $statement->bind_param("ssssi", $userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd,
-			$numberOfPassengers);
-		if($wasClean === false) {
-			throw(new mysqli_sql_exception("Unable to bind parameters"));
-		}
-
-		// execute the statement
-		if($statement->execute() === false) {
-			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-		}
-
-		// get result from the SELECT query *pounds fists*
-		$getStoredProcResults = $statement->get_result();
-		if($getStoredProcResults === false) {
-			throw(new mysqli_sql_exception("Unable to get result set"));
-		}
-
-		*///fixme add back in star
+		//fixme add back in star
 
 
 		// this will return as many results as there are flights and flight combos with same origin + departure + date.
@@ -1028,7 +1006,7 @@ class Flight {
 				// get result from the SELECT query *pounds fists*
 				// this represents the two dimensional array (flight ids with all their associated data)
 				// fixme: isn't this just a result object tho?  Have to convert it to an array of arrays?
-				$eachFlightPath = $statement->get_result();
+				$eachFlightPath = $statement2->get_result();
 				if($eachFlightPath === false) {
 					throw(new mysqli_sql_exception("Unable to get result set"));
 				}
@@ -1117,7 +1095,6 @@ class Flight {
 
 
 	}
-*///fixme take out star slash
 
 
 
