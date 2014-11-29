@@ -12,6 +12,9 @@
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<style>
 		h1{
 			text-align: center;
@@ -19,6 +22,11 @@
 		}
 
 	</style>
+	<script>
+		$(function() {
+			$( ".datepicker" ).datepicker();
+		});
+	</script>
 </head>
 <body>
 <header>
@@ -44,7 +52,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="sign-in.php">Sign In<span class="sr-only">(current)</span></a></li>
+					<li class="active"><a href="signIn.php">Sign In<span class="sr-only">(current)</span></a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
@@ -69,6 +77,9 @@
 	<div id="myTabContent" class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab"><p>Search
 			Components	and Content Go Here</p>
+			<!-- datepickers go here -->
+			<p><label>Departure Date</label><input type="text" class="datepicker"></p>
+			<p><label>Arrival Date</label><input type="text" class="datepicker"></p>
 			<form class="navbar-form navbar-right" role="search">
 				<div class="form-group">
 					<input type="text" class="form-control" placeholder="Search">
