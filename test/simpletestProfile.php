@@ -43,7 +43,7 @@ class ProfileTest extends UnitTestCase {
 		} catch (Exception $exception) {
 			$exception->getMessage();
 		}
-		$customer = $customer = Stripe_Customer::create(array("description" => "Null Customer"));
+		$customer = Stripe_Customer::create(array("description" => "Null Customer"));
 		$this->DATEOFBIRTH = DateTime::createFromFormat("Y-m-d H:i:s","2010-10-10 12:12:12");
 		$this->CUSTTOKEN  = $customer->id;
 

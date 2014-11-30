@@ -11,6 +11,8 @@ include("../lib/csrf.php");
 <body>
 <form action="signUpProcessor.php" method="POST">
 	<?php echo generateInputTags();?>
+	<fieldset>
+		<legend>Create a Profile</legend>
 	<p><label>First Name</label>
 	<input type="text" id="first" name="first" required="true"></p>
 	<p><label>Middle Name</label>
@@ -25,6 +27,8 @@ include("../lib/csrf.php");
 	<input type="password" id="password" name="password" required="true"></p>
 	<p><label>Confirm Password</label>
 	<input type="password" id="confPassword" name="confPassword" required="true"></p>
+	<button type="submit">Register</button>
+	</fieldset>
 </form>
 </body>
 </html>

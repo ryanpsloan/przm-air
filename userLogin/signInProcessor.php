@@ -1,7 +1,7 @@
 <?php
 //include("/etc/apache2/capstone-mysql/przm.php");
 include("../lib/csrf.php");
-
+require("/etc/apache2/capstone-mysql/przm.php");
 try {
 	// verify the form was submitted OK
 	session_start();

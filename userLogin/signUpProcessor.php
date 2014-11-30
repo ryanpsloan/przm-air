@@ -1,6 +1,14 @@
 <?php
+require("/etc/apache2/capstone-mysql/przm.php");
+require("../php/user.php");
+require("../php/profile.php");
+include("../lib/csrf.php");
+$mysqli = MysqliConfiguration::getMysqli();
+require('../lib/stripe-php-1.17.3/lib/Stripe.php');
+Stripe::setApiKey("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
 
 // verify the form was submitted OK
+try{
 session_start();
 if(@isset($_POST["first"]) === false || @isset($_POST["middle"]) === false
 		|| @isset($_POST["last"]) === false || @isset($_POST["dob"]) === false
@@ -42,17 +50,51 @@ if(checkdate($month, $day, $year) === false) {
 }
 
 $DOB = DateTime::createFromFormat("Y-m-d H:i:s", $DOB);
-
+$fullName = $firstNm." ".$middleNm." ".$lastNm;
+$customer = Stripe_Customer::create(array('description' => $fullName." | ".$email));
+$custToken = $customer->id;
 
 if($email = filter_input(INPUT_POST,"email",FILTER_SANITIZE_STRING) === false){
-	throw(new RuntimeException("Enter your email"));
+	throw(new RuntimeException("Invalid email"));
 }
+try {
+	$query = "SELECT userId FROM user WHERE email = ?";
+	$statement = $mysqli->prepare($query);
+	$statement->bind_param("s", $email);
+	$statement->execute();
+	$result = $statement->get_result();
+	if($result !== null){
+		throw(new Exception("Email has already been registered"));
+	}
+} catch (mysqli_sql_exception $exception){
+	$exception->getMessage();
+}
+
 if($password = filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING) === false){
-	throw(new RuntimeException("Enter a password"));
+	throw(new RuntimeException("Invalid password"));
 }
-if($password = filter_input(INPUT_POST,"confPassword",FILTER_SANITIZE_STRING) === false){
-	throw(new RuntimeException("Confirm your password"));
+if($confPassword = filter_input(INPUT_POST,"confPassword",FILTER_SANITIZE_STRING) === false){
+	throw(new RuntimeException("Invalid password"));
 }
-$newUser = new User($email, $password, $salt, $authToken);
-$newProfile = new Profile($firstNm, $middleNm, $lastNm, $DOB, $custToken, $newUser);
+
+if($password === $confPassword){
+	$salt             = bin2hex(openssl_random_pseudo_bytes(32));
+	$authToken        = bin2hex(openssl_random_pseudo_bytes(16));
+	$hash 		      = hash_pbkdf2("sha512", $confPassword, $salt, 2048, 128);
+}
+else{
+	throw(new RuntimeException("Passwords entered do not match"));
+}
+$newUser = new User(null, $email, $hash, $salt, $authToken);
+$newUser->insert($mysqli);
+$_SESSION['userObj'] = $newUser;
+	echo "<p>User Created -> signUpProcessor __LINE__</p>";
+	var_dump($newUser);
+$newProfile = new Profile(null, $newUser->getUserId(), $firstNm, $middleNm, $lastNm, $DOB, $custToken, $newUser);
+$newProfile->insert($mysqli);
+$_SESSION['profileObj'] = $newProfile;
+	echo "<p>Profile Created -> signUpProcessor __LINE__</p>";
+}catch(RuntimeException $exception){
+	$exception->getMessage();
+}
 ?>

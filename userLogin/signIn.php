@@ -9,7 +9,7 @@ include("../lib/csrf.php");
 	<title>Sign In</title>
 </head>
 <body>
-<form id="sign>InForm" action="signInProcessor.php" method="POST">
+<form id="signInForm" action="signInProcessor.php" method="POST">
 <?php echo generateInputTags();?>
 	<label for="email">Email:</label>
 	<input type="email" id="email" name="email"><br>
@@ -17,6 +17,10 @@ include("../lib/csrf.php");
 	<input type="password" id="password" name="password"><br>
 	<button type="submit">Sign In</button>
 
+</form>
+<form id="signUpForm" action="signUpProcessor.php" method="POST">
+	<p>OR</p>
+	<button type="submit">Sign Up</button>
 </form>
 </body>
 </html>
