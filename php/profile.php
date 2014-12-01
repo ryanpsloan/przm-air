@@ -199,7 +199,7 @@
 			//sets all letter cases to lower
 			$newMiddleName = strtolower($newMiddleName);
 			//sets up the options for filter_var validation
-			$filterOptions = array("options" => array("regexp" => "/^[a-z]+$/"));
+			$filterOptions = array("options" => array("regexp" => "/^[a-z]*$/"));
 			//validates $newMiddleName with REGEX
 			if(filter_var($newMiddleName, FILTER_VALIDATE_REGEXP, $filterOptions) === false){
 				throw(new RangeException("Middle name cannot contain spaces numbers or special characters."));

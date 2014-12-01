@@ -9,6 +9,7 @@ include("../lib/csrf.php");
 	<title>Sign Up</title>
 </head>
 <body>
+<a href="index.html">PRZM AIR</a>
 <form action="signUpProcessor.php" method="POST">
 	<?php echo generateInputTags();?>
 	<fieldset>
@@ -20,7 +21,8 @@ include("../lib/csrf.php");
 	<p><label>First Name</label>
 	<input type="text" id="last" name="last" required="true"></p>
 	<p><label>Date Of Birth</label>
-	<input type="datetime" id="dob" name="dob" required="true"></p>
+	<input type="date" id="dob" name="dob" required="true" value="mm/dd/yyyy"
+			 pattern="/^(\d{2})/(\d{2})/(\d{4})$/"></p>
 	<p><label>Email</label>
 	<input type="email" id="email" name="email" required="true"></p>
 	<p><label>Password</label>

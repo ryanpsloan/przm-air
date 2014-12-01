@@ -12,13 +12,13 @@ include("../lib/csrf.php");
 <form id="signInForm" action="signInProcessor.php" method="POST">
 <?php echo generateInputTags();?>
 	<label for="email">Email:</label>
-	<input type="email" id="email" name="email"><br>
+	<input type="email" id="email" name="email" required="true"><br>
 	<label for="password">Password:</label>
-	<input type="password" id="password" name="password"><br>
+	<input type="password" id="password" name="password" required="true"><br>
 	<button type="submit">Sign In</button>
 
 </form>
-<form id="signUpForm" action="signUpProcessor.php" method="POST">
+<form id="signUpForm" action="signUp.php" method="POST">
 	<p>OR</p>
 	<button type="submit">Sign Up</button>
 </form>
