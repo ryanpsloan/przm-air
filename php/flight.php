@@ -834,7 +834,7 @@ class Flight {
 
 	 **/
 /**/
-	//fixme take out the slash star here and below to activate the search function when ready to test
+//fixme take out the slash star here and below to activate the search function when ready to test
 	//fixme need $tempmysqli in test?
 	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
@@ -955,14 +955,11 @@ class Flight {
 
 
 		// fixme change call command and include variables with ticks for strings
-		// Next, create query template to call the stored procedure and execute search in MySQL
+		// fixme, create query template? to call the stored procedure and execute search in MySQL
 		$query = "CALL spFlightSearchR('$userOrigin', '$userDestination', '$userFlyDateStart', '$userFlyDateEnd',
 			$numberOfPassengers, $minLayover)";
 
 		$getStoredProcResults = Results::db_all($query);
-
-		//fixme add back in star
-
 
 		// this will return as many results as there are flights and flight combos with same origin + departure + date.
 		//	1) if there's no result, we can just return null
@@ -1005,22 +1002,28 @@ class Flight {
 
 				// get result from the SELECT query *pounds fists*
 				// this represents the two dimensional array (flight ids with all their associated data)
-				// fixme: isn't this just a result object tho?  Have to convert it to an array of arrays?
-				$eachFlightPath = $statement2->get_result();
-				if($eachFlightPath === false) {
+				$eachFlightPathObject = $statement2->get_result();
+				if($eachFlightPathObject === false) {
 					throw(new mysqli_sql_exception("Unable to get result set"));
 				}
+
+				// fixme: isn't this just a result object tho?  Have to convert it to an array of arrays? think we need to fetch assoc again for this new result object, but how are multidimensional associative arrays indexed in this case...
+				$eachFlightPath = $eachFlightPathObject->fetch_assoc();
+
+
+
 
 				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
 
 				// get size of array for calc of price and duration
-				$sizeEachFlightPath = count($eachFlightPath);
+				$sizeEachFlightPath = $row["Stops"] + 1;
+					//or, = count($eachFlightPath); fixme
 
 				// calc discount for paths with multiple flights
-				if($sizeEachFlightPath < 1.5) {
+				if($sizeEachFlightPath < 2) {
 					$multipleFlightDiscount = 1;
 				}
-				else if($sizeEachFlightPath >= 1.5 &&  $sizeEachFlightPath < 3.5 ) {
+				else if($sizeEachFlightPath >= 2 &&  $sizeEachFlightPath <= 3) {
 					$multipleFlightDiscount = 1 - (.1 * $sizeEachFlightPath);
 				}
 				else $multipleFlightDiscount = 0.65;
@@ -1030,40 +1033,46 @@ class Flight {
 				$today = DateTime::createFromFormat("H:i:s", "12:00:00");
 
 				// assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
-				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0][4]);
+				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $userFlyDateStart);
+						//fixme: used userFlyDateStart instead of $eachFlightPath[0][4]
+
 
 				// then get difference with first flight Id's departure
 				$daysTillFlight = $today->diff($departureDay);
 
 				// set value of factor for each window
-				if($daysTillFlight < 7.5) {
-					$priceWindowFactor = 1.75;
+				if($daysTillFlight <= 7) {
+					$timeWindowFactor = 1.75;
 				}
-				else if($daysTillFlight < 14.5 && $daysTillFlight >= 7.5) {
-					$priceWindowFactor = 1.5;
+				else if($daysTillFlight <= 14 && $daysTillFlight > 7) {
+					$timeWindowFactor = 1.5;
 				}
-				else if($daysTillFlight < 28 && $daysTillFlight >= 14.5) {
-					$priceWindowFactor = 1.25;
+				else if($daysTillFlight <= 28 && $daysTillFlight > 14) {
+					$timeWindowFactor = 1.25;
 				}
-				else $priceWindowFactor = 1;
+				else $timeWindowFactor = 1;
 
 
 
 				// calc total base price in path
 				$sumBasePricesInPath = 0;
 				for ($i=0; $eachFlightPath[$i] !== null; $i++) {
-					$sumBasePricesInPath = $sumBasePricesInPath + $eachFlightPath[$i][8];
+					$sumBasePricesInPath = $sumBasePricesInPath + $eachFlightPath[$i]["price"];
 				}
+						//fixme: name of index if assoc array instead?  USE FOR EACH LOOP TO GET AROUND THIS HERE
+
 
 				// calc total price for the path using the discount and time factor and base price
-				$totalPriceForPath = $priceWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
+				$totalPriceForPath = $timeWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
 
 
 				//Calc the duration
 				//assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
-				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0][5]);
-				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[$sizeEachFlightPath][6]);
+				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0]["departureDateTime"]);
+				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[$sizeEachFlightPath]["arrivalDateTime"]);
 				$totalDurationForPath = $flightIdFirstDeparture->diff($flightIdLastArrival);
+						//fixme: name of index if assoc array instead?  NEED TO PULL LAST INDEX IN OUTER ARRAY so how get around needing to use numbers?  no loops involved.
+
 
 				//push the duration and the price into the $eachFlightPath array
 				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath);
@@ -1072,11 +1081,6 @@ class Flight {
 				// put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
 				$allFlightPathsArray[] = $eachFlightPath;
-
-				//"SELECT * FROM flight WHERE flightId IN ($row[3])";
-				//	new Flight ($row["flightId"], $row["origin"], $row["destination"], $row["duration"],
-				// $row["departureDateTime"], $row["arrivalDateTime"], $row["flightNumber"],
-				//	$row["price"], $row["totalSeatsOnPlane"]);
 
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it

@@ -295,114 +295,209 @@ class FlightTest extends UnitTestCase {
 	}
 
 
-/*
-	// fixme remove slash star when ready to test user search
+
 	// //var_dump results from executing the search function for a weekday and a weekend day.
 	public function testGetRoutesByUserInput($ORIGIN, $DESTINATION) {
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
+/*
+			// fixme remove slash star when ready to test user search
+				pseudo code outline for testGetRoutesByUserInput:
+				This would verify that results for a given date are valid across all Origin/destination pairs and that flight data
+				matches the data in the database associated with each returned flightId.  But it DOESN't verify whether search
+				returned ALL POSSIBLE results.  Just that all returned results are valid.  In other words, a search that returned
+				no results, for valid or invalid reasons, would pass regardless.
 
-		/*pseudo code outline for testGetRoutesByUserInput:
-		This would verify that results for a given date are valid across all Origin/destination pairs and that flight data
-		matches the data in the database associated with each returned flightId.  But it DOESN't verify whether search
-		returned ALL POSSIBLE results.  Just that all returned results are valid.  In other words, a search that returned
-		no results, for valid or invalid reasons, would pass regardless.
+				To offset this and make a null result FAIL when results should exists, I assert simply that results not be null in those cases.
 
-		To offset this and make a null result FAIL when results should exists, I assert simply that results not be null in those cases.
+				Note that outer array and midlevel array can NOT be associative so that we can loop through them, while inner ray might be associative if it wasn't for loop 5B.
 
-		Note that outer array and midlevel array can NOT be associative so that we can loop through them, while inner ray might be associative if it wasn't for loop 5B.
+				SET UP:
 
-		SET UP:
-		build array of origins
-		build array of destinations
-		count size of both arrays
-		declare date variables for search
-		declare min layover variable
-		declare starting number of passengers variable
-		declare range variable between fly start time and end time.
 
-		NESTED LOOPS:
-		LOOP 1: for number of origins, assign each in the array to $USER_ORIGIN variable
+*/
+		// SETUP:
+		// 1. build array of origins and count size
+		// create query and put results into an array
+		$query = "SELECT origin FROM flight";
+		$statement = $mysqli->prepare($query);
+		if($statement === false) {
+		throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
 
-		Loop 2: same for destinations
-			but i think a do/while to skip first origin/origin overlap, then....
-			after that, if  next.destination in loop is same as this.origin, skip destination
-			(i.e. add two instead of 1 to array index counter)
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
 
-		Loop 3: USER_NUMBER_PASSENGERS = 15, <30, +10 (verifies null results if
-			call static user search method to get result in form of 3D array
-			if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
-			else verify results ARE null for over 20 passengers and return;
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
 
-		Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
-			for (i=0, allPaths[i] !== null, i++) {
-				count size of 2nd dimension array allPaths[i]
-				assert allPaths[i][0]["origin"] =  this.origin of loop 1
-				assert allPaths[i][size of allPaths[i]]["destination"] = this.destination of loop 2
-				assert allPaths[i][size of allPaths[i]]["arrivalDateTime"] - allPaths[i][0]["departureDateTime"] <= range variable
-			}
+		$allOriginsArray = $result->fetch_assoc();
+		$sizeAllOrigins = count($allOriginsArray);
 
-		Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
-			for (a=0, allPaths[i][a+1] !== null, a++) {
-				allPaths[i][a+1]["departureDateTime"] - allPaths[i][a]["arrivalDateTime] >= minLayover;
-			}
-		Loop 5B (sibling not child of 5A): Assert identical each flightId's info with a select from the database
-			for (a=0, allPaths[i][a] !== null, a++) {
-				SELECT FROM flight (all fields) WHERE flightId = allPaths[i][a];
-				row = result-> fetch_assoc();
 
-				for (b=0, allPaths[i][a][b] !== null, b++) {
-					Assert allPaths[i][a][b] identical to row[b]
+
+		// 2. build array of destinations and count size
+		// create query and put results into an array
+		$query2 = "SELECT destination FROM flight";
+		$statement2 = $mysqli->prepare($query2);
+		if($statement2 === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+
+		// execute the statement
+		if($statement->execute() === false) {
+			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+		}
+
+		// get result from the SELECT query *pounds fists*
+		$result = $statement->get_result();
+		if($result === false) {
+			throw(new mysqli_sql_exception("Unable to get result set"));
+		}
+
+		$allDestinationsArray = $result->fetch_assoc();
+		$sizeAllDestinations = count($allDestinationsArray);
+
+
+
+
+
+		// declare date variables for search (put these in a loop if want to test multiple days.
+		$userFlyDateStart = "2014-12-02 00:00:00";
+		$userFlyDateEnd = "2014-12-03 00:00:00";
+
+
+		// declare min layover variable (put in loop to test multiple)
+		$minLayover = 15;
+
+
+		// declare starting number of passengers variable
+		//$numberOfPassengersRequested = 5; //fixme if need different number or if don't declare here but in loop3 instead
+
+
+		// declare range variable between fly start time and end time.
+		$maxDurationRange = 24;  //fixme not sure if we need this now?
+
+
+		// NESTED LOOPS:
+		// LOOP 1: for number of origins, assign each in the array to $userOrigin variable
+		for ($a=0; $a<$sizeAllOrigins; $a++) {
+			$userOrigin = $allOriginsArray [$a];
+
+
+			// Loop 2: for number of destinations, assign each in the array to $userDestination variable
+			for ($b=0; $b<$sizeAllDestinations; $b++) {
+
+				// skip cases of identical origin and destination
+				if($userOrigin = $allDestinationsArray[$b]) {
+					$b = $b + 1;
 				}
+
+				$userDestination = $allDestinationsArray[$b];
+
+
+				// Loop 3: check different numbers of passengers
+				for ($numberOfPassengersRequested = 5; $numberOfPassengersRequested <30; $numberOfPassengersRequested = $numberOfPassengersRequested + 10) {
+
+//		call static user search method to get result in form of 3D array
+//		if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
+//		else verify results ARE null for over 20 passengers and return;
+
+					// Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
+					for (i=0, allPaths[i] !== null, i++) {
+
+					}
+				}
+
 			}
+		}
+}
 
-		//repeat whole thing for a different day, like a weekend instead of weekday
+/*
+	Loop 2: same for destinations
+		but i think a do/while to skip first origin/origin overlap, then....
+		after that, if  next.destination in loop is same as this.origin, skip destination
+		(i.e. add two instead of 1 to array index counter)
 
-		/
+	Loop 3: USER_NUMBER_PASSENGERS = 15, <30, +10 (verifies null results if
+		call static user search method to get result in form of 3D array
+		if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
+		else verify results ARE null for over 20 passengers and return;
 
-		// declare necessary variables to send to function for weekday
-		$USER_ORIGIN = $ORIGIN;
-		$USER_DESTINATION = $DESTINATION;
-		$USER_FLY_DATE_START = "2014-12-04 00:00:00";
-		$USER_FLY_DATE_END = "2014-12-05 00:00:00";
+	Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
+		for (i=0, allPaths[i] !== null, i++) {
+			count size of 2nd dimension array allPaths[i]
+			assert allPaths[i][0]["origin"] =  this.origin of loop 1
+			assert allPaths[i][size of allPaths[i]]["destination"] = this.destination of loop 2
+			assert allPaths[i][size of allPaths[i]]["arrivalDateTime"] - allPaths[i][0]["departureDateTime"] <= range variable
+		}
 
-		do {
+	Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
+		for (a=0, allPaths[i][a+1] !== null, a++) {
+			allPaths[i][a+1]["departureDateTime"] - allPaths[i][a]["arrivalDateTime] >= minLayover;
+		}
+	Loop 5B (sibling not child of 5A): Assert identical each flightId's info with a select from the database
+		for (a=0, allPaths[i][a] !== null, a++) {
+			SELECT FROM flight (all fields) WHERE flightId = allPaths[i][a];
+			row = result-> fetch_assoc();
 
-			$USER_NUMBER_PASSENGERS = 1;
+			for (b=0, allPaths[i][a][b] !== null, b++) {
+				Assert allPaths[i][a][b] identical to row[b]
+			}
+		}
 
-			//fixme concrete mysqli?
-			// call the user search function and var dump the results for visual verification
-			$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_ORIGIN, $USER_DESTINATION, $USER_FLY_DATE_START,
-				$USER_FLY_DATE_END, $USER_NUMBER_PASSENGERS);
-			//var_dump($staticPaths);
+	//repeat whole thing for a different day, like a weekend instead of weekday
 
-			$USER_NUMBER_PASSENGERS = $USER_NUMBER_PASSENGERS + 5;
+	/
 
+	// declare necessary variables to send to function for weekday
+	$USER_ORIGIN = $ORIGIN;
+	$USER_DESTINATION = $DESTINATION;
+	$USER_FLY_DATE_START = "2014-12-04 00:00:00";
+	$USER_FLY_DATE_END = "2014-12-05 00:00:00";
 
-		} while ($USER_NUMBER_PASSENGERS < 30);
+	do {
 
+		$USER_NUMBER_PASSENGERS = 1;
 
+		//fixme concrete mysqli?
+		// call the user search function and var dump the results for visual verification
+		$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_ORIGIN, $USER_DESTINATION, $USER_FLY_DATE_START,
+			$USER_FLY_DATE_END, $USER_NUMBER_PASSENGERS);
+		//var_dump($staticPaths);
 
-		// declare necessary new variables to send to function for weekend return flight
-		$USER_RETURN_DATE_START = "2014-12-07 00:00:00";
-		$USER_RETURN_DATE_END = "2014-12-08 00:00:00";
-
-		do {
-
-			$USER_NUMBER_PASSENGERS2 = 1;
-
-			//fixme concrete mysqli?
-			// call the user search function with reversed origin/destination and var dump the results for visual verification
-			$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_DESTINATION, $USER_ORIGIN, $USER_RETURN_DATE_START,
-																		$USER_RETURN_DATE_END, $USER_NUMBER_PASSENGERS2);
-			//var_dump($staticPaths);
-
-			$USER_NUMBER_PASSENGERS2 = $USER_NUMBER_PASSENGERS2 + 5;
+		$USER_NUMBER_PASSENGERS = $USER_NUMBER_PASSENGERS + 5;
 
 
-		} while ($USER_NUMBER_PASSENGERS2 < 30);
+	} while ($USER_NUMBER_PASSENGERS < 30);
 
-	}
+
+
+	// declare necessary new variables to send to function for weekend return flight
+	$USER_RETURN_DATE_START = "2014-12-07 00:00:00";
+	$USER_RETURN_DATE_END = "2014-12-08 00:00:00";
+
+	do {
+
+		$USER_NUMBER_PASSENGERS2 = 1;
+
+		//fixme concrete mysqli?
+		// call the user search function with reversed origin/destination and var dump the results for visual verification
+		$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_DESTINATION, $USER_ORIGIN, $USER_RETURN_DATE_START,
+																	$USER_RETURN_DATE_END, $USER_NUMBER_PASSENGERS2);
+		//var_dump($staticPaths);
+
+		$USER_NUMBER_PASSENGERS2 = $USER_NUMBER_PASSENGERS2 + 5;
+
+
+	} while ($USER_NUMBER_PASSENGERS2 < 30);
+
+}
 */
 }
 
