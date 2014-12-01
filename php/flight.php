@@ -835,7 +835,7 @@ class Flight {
 	 **/
 /**/
 	//fixme take out the slash star here and below to activate the search function when ready to test
-	//fixme send need $tempmysqli in test?
+	//fixme need $tempmysqli in test?
 	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
 	{
