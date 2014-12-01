@@ -410,7 +410,7 @@ class FlightTest extends UnitTestCase {
 
 					// Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
 					for (i=0, allPaths[i] !== null, i++) {
-
+						//
 					}
 				}
 
