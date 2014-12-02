@@ -17,7 +17,7 @@ if($password !== $confPassword) {
 else {
 	$email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
 
-	if(User::getUserByEmail($mysqli, $email) !== null || User::getUserByEmail($mysqli, $email) !== null) {
+	if(User::getUserByEmail($mysqli, $email) !== null) {
 		echo <<<EOF
 		<p>That email is already in use. Sign-in or use a different email</p>
 		<p><a href='signIn.php'>Sign in</a></p>
