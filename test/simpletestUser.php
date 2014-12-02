@@ -202,6 +202,39 @@ class UserTest extends UnitTestCase {
 
 	}
 
+	// test grabbing a User from mySQL
+	public function testGetUserByAuthToken() {
+		// first, verify mySQL connected OK
+		$this->assertNotNull($this->mysqli);
+
+		// second, create a user to post to mySQL
+		$this->user = new User(null, $this->EMAIL, $this->HASH, $this->SALT, $this->AUTH_TOKEN);
+
+		// third, insert the user to mySQL
+		$this->user->insert($this->mysqli);
+
+		// fourth, get the user using the static method
+		$staticUser = User::getUserByAuthToken($this->mysqli, $this->user->getAuthenticationToken());
+
+		// finally, compare the fields
+		$this->assertNotNull($staticUser->getUserId());
+		$this->assertTrue($staticUser->getUserId() > 0);
+		$this->assertIdentical($staticUser->getUserId(),              $this->user->getUserId());
+		$this->assertIdentical($staticUser->getEmail(),               $this->EMAIL);
+		$this->assertIdentical($staticUser->getPassword(),            $this->HASH);
+		$this->assertIdentical($staticUser->getSalt(),                $this->SALT);
+		$this->assertIdentical($staticUser->getAuthenticationToken(), $this->AUTH_TOKEN);
+		//-----------------------------------------------------------------------------------------
+		$row = $this->selectRow();
+		// finally, compare the fields against the row data pulled from the database
+		$this->assertIdentical($staticUser->getUserId(),						  	     $row['userId']);
+		$this->assertIdentical($staticUser->getEmail(),							        $row['email']);
+		$this->assertIdentical($staticUser->getPassword(),                        $row['password']);
+		$this->assertIdentical($staticUser->getSalt(),                            $row['salt']);
+		$this->assertIdentical($staticUser->getAuthenticationToken(),             $row['authToken']);
+
+	}
+
 	private function selectRow(){
 	//pull the data from the update to compare against it
 		try {

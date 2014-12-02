@@ -1,5 +1,5 @@
 <?php
-	require_once('../lib/stripe-php-1.17.3/lib/Stripe.php');
+	require("/home/rsloan/public_html/przmair/lib/stripe-php-1.17.3/lib/Stripe.php");
 	Stripe::setApiKey("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
 	/**
 	 * mySQL enabled profile container for use with user authentication class

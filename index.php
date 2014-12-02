@@ -1,3 +1,26 @@
+<?php
+	include("php/user.php");
+	include("php/profile.php");
+	session_start();
+	var_dump($_SESSION);
+
+	if(isset($_SESSION['userId'])){
+		$status = <<< EOF
+			<a href="userLogin/signOut.php">Sign Out</a>
+
+EOF;
+		$account = <<< EOF
+		<li><a href="userLogin/editUserProfile.php">Edit Profile</a></li>
+EOF;
+	}else{
+		$status = <<< EOF
+			<a href="userLogin/signIn.php">Sign In</a>
+EOF;
+		$account = "";
+	}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -30,6 +53,7 @@
 </head>
 <body>
 <header>
+
 	<h1> PRZM AIR</h1>
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
@@ -52,7 +76,8 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="signIn.php">Sign In<span class="sr-only">(current)</span></a></li>
+					<li class="active"><?php echo $status?></li>
+					<li><?php echo $account?></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
