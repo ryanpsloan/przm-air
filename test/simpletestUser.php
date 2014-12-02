@@ -13,8 +13,8 @@ class UserTest extends UnitTestCase {
 	// variable to hold the test database row
 	private $user   = null;
 	// a few "global" variables for creating test data
-	private $EMAIL		  = "rp@rps.com";
-	private $PASSWORD   = "RyanGeek158*";
+	private $EMAIL		  = null;
+	private $PASSWORD   = "RyanGeek158";
 	private $HASH       = null;
 	private $SALT       = null;
 	private $AUTH_TOKEN = null;
@@ -25,7 +25,8 @@ class UserTest extends UnitTestCase {
 	public function setUp() {
 		// connect to mySQL
 		$this->mysqli = MysqliConfiguration::getMysqli();
-
+		$i = rand(1,100000);
+		$this->EMAIL = "rp".$i."@rp.com";
 		// randomize the salt, hash, and authentication token
 		$this->SALT       = bin2hex(openssl_random_pseudo_bytes(32));
 		$this->AUTH_TOKEN = bin2hex(openssl_random_pseudo_bytes(16));

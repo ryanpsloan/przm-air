@@ -3,7 +3,7 @@ require("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 include("../php/user.php");
 include("../php/profile.php");
-
+session_start();
 echo "<p>Authenticating your account</p>";
 $authToken = $_GET['authToken'];
 

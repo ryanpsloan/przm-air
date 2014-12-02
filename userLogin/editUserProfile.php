@@ -50,6 +50,11 @@ $dateOfBirth = $newDateObj->format("Y-m-d");
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="editUserProfile.js"></script>
+	<script>
+		$(function() {
+			$( ".datepicker" ).datepicker();
+		});
+	</script>
 </head>
 <body>
 <form id="editProfile" action="editUserProfileProcessor.php" method="POST">
@@ -61,7 +66,8 @@ $dateOfBirth = $newDateObj->format("Y-m-d");
 	<p><label>Last Name</label>
 		<input type="text" id="last" name="last" value="<?php echo $lastName ?>"></p>
 	<p><label>Date Of Birth</label>
-		<input type="text" id="dob" name="dob" value="<?php echo $dateOfBirth ?>"></p>
+	<input type="text" id="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
+		<input type="text" id="dob" name="dob" ></p>
 	<p><label>Email</label>
 		<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
 	<button type="submit">Submit Changes</button>
