@@ -8,12 +8,12 @@
  * tests all functions of the flight class
  */
 
-//fixme: fix duration to be a time only not a datetime
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // then require the class under scrutiny
+require_once("../php/results.php");
 require_once("../php/flight.php");
 
 // the FlightTest is a container for all our tests
@@ -301,21 +301,23 @@ class FlightTest extends UnitTestCase {
 		// first, verify mySQL connected OK
 		$this->assertNotNull($this->mysqli);
 /*
-			// fixme remove slash star when ready to test user search
+			// fixme clean up comments
 				pseudo code outline for testGetRoutesByUserInput:
 				This would verify that results for a given date are valid across all Origin/destination pairs and that flight data
 				matches the data in the database associated with each returned flightId.  But it DOESN't verify whether search
 				returned ALL POSSIBLE results.  Just that all returned results are valid.  In other words, a search that returned
 				no results, for valid or invalid reasons, would pass regardless.
 
-				To offset this and make a null result FAIL when results should exists, I assert simply that results not be null in those cases.
+				To offset this and make a null result FAIL when results should exist, I assert simply that results not be null where possible.
 
 				Note that outer array and midlevel array can NOT be associative so that we can loop through them, while inner ray might be associative if it wasn't for loop 5B.
 
 				SET UP:
-
-
 */
+
+
+
+
 		// SETUP:
 		// 1. build array of origins and count size
 		// create query and put results into an array
@@ -336,6 +338,7 @@ class FlightTest extends UnitTestCase {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
+		// turn result into a associative array and count size for use in loops
 		$allOriginsArray = $result->fetch_assoc();
 		$sizeAllOrigins = count($allOriginsArray);
 
@@ -360,6 +363,7 @@ class FlightTest extends UnitTestCase {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
+		// turn result into a associative array and count size for use in loops
 		$allDestinationsArray = $result->fetch_assoc();
 		$sizeAllDestinations = count($allDestinationsArray);
 
@@ -380,128 +384,97 @@ class FlightTest extends UnitTestCase {
 		//$numberOfPassengersRequested = 5; //fixme if need different number or if don't declare here but in loop3 instead
 
 
-		// declare range variable between fly start time and end time.
-		$maxDurationRange = 24;  //fixme not sure if we need this now?
+		// declare range variable between fly start time and end time in fractions of days.
+		$maxDurationRange = 1;
 
 
 		// NESTED LOOPS:
 		// LOOP 1: for number of origins, assign each in the array to $userOrigin variable
 		for ($a=0; $a<$sizeAllOrigins; $a++) {
-			$userOrigin = $allOriginsArray [$a];
-
+			$userOrigin = $allOriginsArray[$a];
 
 			// Loop 2: for number of destinations, assign each in the array to $userDestination variable
-			for ($b=0; $b<$sizeAllDestinations; $b++) {
+			for($b = 0; $b < $sizeAllDestinations; $b++) {
 
 				// skip cases of identical origin and destination
-				if($userOrigin = $allDestinationsArray[$b]) {
+				if($allDestinationsArray[$b] = $userOrigin) {
 					$b = $b + 1;
 				}
 
 				$userDestination = $allDestinationsArray[$b];
 
-
 				// Loop 3: check different numbers of passengers
-				for ($numberOfPassengersRequested = 5; $numberOfPassengersRequested <30; $numberOfPassengersRequested = $numberOfPassengersRequested + 10) {
+				for($numberOfPassengersRequested = 5; $numberOfPassengersRequested < 30; $numberOfPassengersRequested = $numberOfPassengersRequested + 10) {
 
-//		call static user search method to get result in form of 3D array
-//		if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
-//		else verify results ARE null for over 20 passengers and return;
+					//		call static user search method to get result in form of 2D array of objects
+					try {
+						$thisArrayOfPaths = Flight::getRoutesByUserInput($mysqli, $userOrigin, $userDestination, $userFlyDateStart, $userFlyDateEnd, $numberOfPassengersRequested, $minLayover);
+					} catch(Exception $exception) {
+						throw (new mysqli_sql_exceptio("Unable to create flight for this many passengers."));
+						return;
+					}
 
-					// Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
-					for (i=0, allPaths[i] !== null, i++) {
-						//
+					// if there should be results of some sort returned for the given amount of passengers, then assert that it was so.
+					if($numberOfPassengersRequested < 20) {
+						$this->assertNotNull($thisArrayOfPaths);
+					}
+
+
+					// Loop 4: for loop to iterate through dimension 1 result array $thisArrayOfPaths[]
+					for($d = 0; $thisArrayOfPaths[$d] !== null; $d++) {
+
+						//count size of 2nd dimension array $sizeOfEachPath
+						$sizeOfEachPath = count($thisArrayOfPaths[$d]);
+
+
+						$this->assertIdentical($thisArrayOfPaths[$d][0]->getOrigin(), 								$userOrigin);
+						$this->assertIdentical($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination(), $userDestination);
+
+
+						// To assert that duration of flights is within specified range, first convert to DateTime Object.
+						$arrival = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][$sizeOfEachPath]->getArrivalDateTime());
+						$departure = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][0]->getDepartureDateTime());
+						$totalDuration = $departure->diff($arrival);
+
+						$this->assertTrue($totalDuration <= $maxDurationRange);
+
+
+						// Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
+						for ($e=0; $thisArrayOfPaths[$d][$e+1] !== null; $e++) {
+							$checkEachFlightDeparture = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][$e+1]->getDepartureDateTime());
+							$checkEachFlightArrival = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][$e]->getArrivalDateTime());
+							$layover = $checkEachFlightDeparture->diff($checkEachFlightArrival);
+
+
+							$this->assertTrue($layover >= ($minLayover/(60*24)));
+						}
+
+
+						// Loop 5B: (sibling not child of 5A) Assert identical each flightId's info with a select from the database
+						for ($f=0; $thisArrayOfPaths[$d][$f] !== null; $f++) {
+
+							$flightObject = Flight::getFlightByFlightId($mysqli, $thisArrayOfPaths[$d][$f]->getFlightId());
+
+							// run through each field of each flight and assert Identical to results
+							$this->assertNotNull	($thisArrayOfPaths[$d][$f]->getFlightId());
+							$this->assertTrue		($thisArrayOfPaths[$d][$f]->getFlightId() > 0);
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getFlightId(), 				$flightObject->getFlightID());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getOrigin(), 				$flightObject->getOrigin());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getDestination(), 			$flightObject->getDestination());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getDuration(), 				$flightObject->getDuration());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getDepartureDateTime(), 	$flightObject->getDepartureDateTime());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getArrivalDateTime(), 	$flightObject->getArrivalDateTime());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getFlightNumber(), 		$flightObject->getFlightNumber());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getPrice(), 					$flightObject->getPrice());
+							$this->assertIdentical($thisArrayOfPaths[$d][$f]->getTotalSeatsOnPlane(), 	$flightObject->getTotalSeatsOnPlane());
+
+							}
+
+							}
+						}
 					}
 				}
-
 			}
 		}
-}
-
-/*
-	Loop 2: same for destinations
-		but i think a do/while to skip first origin/origin overlap, then....
-		after that, if  next.destination in loop is same as this.origin, skip destination
-		(i.e. add two instead of 1 to array index counter)
-
-	Loop 3: USER_NUMBER_PASSENGERS = 15, <30, +10 (verifies null results if
-		call static user search method to get result in form of 3D array
-		if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
-		else verify results ARE null for over 20 passengers and return;
-
-	Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
-		for (i=0, allPaths[i] !== null, i++) {
-			count size of 2nd dimension array allPaths[i]
-			assert allPaths[i][0]["origin"] =  this.origin of loop 1
-			assert allPaths[i][size of allPaths[i]]["destination"] = this.destination of loop 2
-			assert allPaths[i][size of allPaths[i]]["arrivalDateTime"] - allPaths[i][0]["departureDateTime"] <= range variable
-		}
-
-	Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
-		for (a=0, allPaths[i][a+1] !== null, a++) {
-			allPaths[i][a+1]["departureDateTime"] - allPaths[i][a]["arrivalDateTime] >= minLayover;
-		}
-	Loop 5B (sibling not child of 5A): Assert identical each flightId's info with a select from the database
-		for (a=0, allPaths[i][a] !== null, a++) {
-			SELECT FROM flight (all fields) WHERE flightId = allPaths[i][a];
-			row = result-> fetch_assoc();
-
-			for (b=0, allPaths[i][a][b] !== null, b++) {
-				Assert allPaths[i][a][b] identical to row[b]
-			}
-		}
-
-	//repeat whole thing for a different day, like a weekend instead of weekday
-
-	/
-
-	// declare necessary variables to send to function for weekday
-	$USER_ORIGIN = $ORIGIN;
-	$USER_DESTINATION = $DESTINATION;
-	$USER_FLY_DATE_START = "2014-12-04 00:00:00";
-	$USER_FLY_DATE_END = "2014-12-05 00:00:00";
-
-	do {
-
-		$USER_NUMBER_PASSENGERS = 1;
-
-		//fixme concrete mysqli?
-		// call the user search function and var dump the results for visual verification
-		$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_ORIGIN, $USER_DESTINATION, $USER_FLY_DATE_START,
-			$USER_FLY_DATE_END, $USER_NUMBER_PASSENGERS);
-		//var_dump($staticPaths);
-
-		$USER_NUMBER_PASSENGERS = $USER_NUMBER_PASSENGERS + 5;
-
-
-	} while ($USER_NUMBER_PASSENGERS < 30);
-
-
-
-	// declare necessary new variables to send to function for weekend return flight
-	$USER_RETURN_DATE_START = "2014-12-07 00:00:00";
-	$USER_RETURN_DATE_END = "2014-12-08 00:00:00";
-
-	do {
-
-		$USER_NUMBER_PASSENGERS2 = 1;
-
-		//fixme concrete mysqli?
-		// call the user search function with reversed origin/destination and var dump the results for visual verification
-		$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_DESTINATION, $USER_ORIGIN, $USER_RETURN_DATE_START,
-																	$USER_RETURN_DATE_END, $USER_NUMBER_PASSENGERS2);
-		//var_dump($staticPaths);
-
-		$USER_NUMBER_PASSENGERS2 = $USER_NUMBER_PASSENGERS2 + 5;
-
-
-	} while ($USER_NUMBER_PASSENGERS2 < 30);
-
-}
-*/
-}
-
-
-
-
+	}
 ?>

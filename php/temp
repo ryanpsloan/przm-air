@@ -472,3 +472,198 @@ function	buildFlights (&$mysqli, $weekDayPointer, $weekEndPointer, $date, $initi
 
 
 ?>
+
+
+
+
+
+//pseudo code for testFlight
+
+
+
+/*
+
+
+// NESTED LOOPS:
+	// LOOP 1: for number of origins, assign each in the array to $userOrigin variable	}
+}
+
+/*
+	Loop 2: same for destinations
+		but i think a do/while to skip first origin/origin overlap, then....
+		after that, if  next.destination in loop is same as this.origin, skip destination
+		(i.e. add two instead of 1 to array index counter)
+
+	Loop 3: USER_NUMBER_PASSENGERS = 15, <30, +10 (verifies null results if
+		call static user search method to get result in form of 3D array
+		if USER_NUMBER_PASSENGERS < totalSeatsOnPlane of 20, verify results not null or throw exception
+		else verify results ARE null for over 20 passengers and return;
+
+	Loop 4: for loop to iterate through dimension 1 result array "allPaths[]"
+		for (i=0, allPaths[i] !== null, i++) {
+			count size of 2nd dimension array allPaths[i]
+			assert allPaths[i][0]["origin"] =  this.origin of loop 1
+			assert allPaths[i][size of allPaths[i]]["destination"] = this.destination of loop 2
+			assert allPaths[i][size of allPaths[i]]["arrivalDateTime"] - allPaths[i][0]["departureDateTime"] <= range variable
+		}
+
+	Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
+		for (a=0, allPaths[i][a+1] !== null, a++) {
+			allPaths[i][a+1]["departureDateTime"] - allPaths[i][a]["arrivalDateTime] >= minLayover;
+		}
+	Loop 5B (sibling not child of 5A): Assert identical each flightId's info with a select from the database
+		for (a=0, allPaths[i][a] !== null, a++) {
+			SELECT FROM flight (all fields) WHERE flightId = allPaths[i][a];
+			row = result-> fetch_assoc();
+
+			for (b=0, allPaths[i][a][b] !== null, b++) {
+				Assert allPaths[i][a][b] identical to row[b]
+
+//fixme: need it to be 3D array instead of 2D array of objects to check each field?
+for($g=0; $thisArrayOfPaths[$d][$f][$g] !== null; $g++) {
+
+
+/*
+// create query template for SELECT
+$querySelect = "SELECT * FROM flight WHERE flightId = ?";
+$statement = $mysqli->prepare($querySelect);
+if($statement === false) {
+throw(new mysqli_sql_exception("Unable to prepare statement"));
+}
+
+// bind the flightId to the place holder in the template
+$wasClean = $statement->bind_param("i", );
+if($wasClean === false) {
+throw(new mysqli_sql_exception("Unable to bind parameters"));
+}
+
+// execute the statement
+if($statement->execute() === false) {
+throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+}
+
+// get result from the SELECT query *pounds fists*
+$result = $statement->get_result();
+if($result === false) {
+throw(new mysqli_sql_exception("Unable to get result set"));
+}
+
+// since this field is unique to this flightId, this will only return 0 or 1 results. So...
+// 1) if there's a result, we can use it to calc
+// 2) if there's no result, we can just return null
+$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+*/
+
+
+}
+		}
+
+	//repeat whole thing for a different day, like a weekend instead of weekday
+
+	/
+
+	// declare necessary variables to send to function for weekday
+	$USER_ORIGIN = $ORIGIN;
+	$USER_DESTINATION = $DESTINATION;
+	$USER_FLY_DATE_START = "2014-12-04 00:00:00";
+	$USER_FLY_DATE_END = "2014-12-05 00:00:00";
+
+	do {
+
+		$USER_NUMBER_PASSENGERS = 1;
+
+		//fixme concrete mysqli?
+		// call the user search function and var dump the results for visual verification
+		$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_ORIGIN, $USER_DESTINATION, $USER_FLY_DATE_START,
+			$USER_FLY_DATE_END, $USER_NUMBER_PASSENGERS);
+		//var_dump($staticPaths);
+
+		$USER_NUMBER_PASSENGERS = $USER_NUMBER_PASSENGERS + 5;
+
+
+	} while ($USER_NUMBER_PASSENGERS < 30);
+
+
+
+	// declare necessary new variables to send to function for weekend return flight
+	$USER_RETURN_DATE_START = "2014-12-07 00:00:00";
+	$USER_RETURN_DATE_END = "2014-12-08 00:00:00";
+
+	do {
+
+		$USER_NUMBER_PASSENGERS2 = 1;
+
+		//fixme concrete mysqli?
+		// call the user search function with reversed origin/destination and var dump the results for visual verification
+		$staticPaths = Flight::getRoutesByUserInput($this->mysqli, $USER_DESTINATION, $USER_ORIGIN, $USER_RETURN_DATE_START,
+																	$USER_RETURN_DATE_END, $USER_NUMBER_PASSENGERS2);
+		//var_dump($staticPaths);
+
+		$USER_NUMBER_PASSENGERS2 = $USER_NUMBER_PASSENGERS2 + 5;
+
+
+	} while ($USER_NUMBER_PASSENGERS2 < 30);
+
+}
+*/
+
+
+
+// discarded code for flight user search:
+
+/* old code: fixme delete eventually
+				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of arrays
+				// of all related info for each flight ID in a path)
+				$wasClean = $statement2->bind_param("s", $row["path"]);
+
+				if($wasClean === false) {
+					throw(new mysqli_sql_exception("Unable to bind parameters"));
+				}
+
+				// execute the statement
+				if($statement2->execute() === false) {
+					echo "<p>line 1000 of flight, dump of statement2 error for eachflightpathobject before throwing error</p>";
+					var_dump($statement2->error);
+					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
+				}
+
+				echo "<p>line 1004 of flight dump of statement2 before getting eachflightpathobject result</p>";
+				var_dump($statement2);
+
+
+				// get result from the SELECT query *pounds fists*
+				// this represents the two dimensional array (flight ids with all their associated data)
+				$eachFlightPathObject = $statement2->get_result();
+				if($eachFlightPathObject === false) {
+					throw(new mysqli_sql_exception("Unable to get result set"));
+				}
+
+				echo "<p>line 1016 of flight dump of eachFlightPathObject</p>";
+				var_dump($eachFlightPathObject);
+
+
+				// fixme: isn't this just a result object tho?  Have to convert it to an array of arrays? think we need to fetch assoc again for this new result object, but how are multidimensional associative arrays indexed in this case... use array of objects
+				// fixme: so if we have an array of flight objects, instead of an array of flightIDs, each of which is an array of info with that flight, we can still access those flight specific variables we need to do necessary math and add to the array?  How do we reference those variables within each flight object?
+				// fixme: So final array would be array of objects + 2 variables of duration and price.
+				$eachFlightPath = $eachFlightPathObject->fetch_assoc();
+				echo "<p>line 1024 of flight dump of eachFlightPath after fetchassoc for eachflightpathobject</p>";
+				var_dump($eachFlightPathObject);
+*/
+
+
+/* old code: fixme delete eventually
+
+		// this will return as many results as there are flights and flight combos with same origin + departure + date.
+		//	1) if there's no result, we can just return null
+		// 2) if there's a result, we can make it into flight objects by using the flight path string
+		// fetch_assoc() returns row as associative arr until row is null
+
+		// create query to take results from stored procedure and get all related info for each flight returned
+		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
+ 					totalSeatsOnPlane FROM flight WHERE flightId IN (?)";
+
+		$statement2 = $mysqli->prepare($query);
+		if($statement2 === false) {
+			throw(new mysqli_sql_exception("Unable to prepare statement"));
+		}
+*/

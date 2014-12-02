@@ -10,7 +10,8 @@
  * @Date: 11/6/14
  * @Time: 10:13 AM
  */
-require_once('../php/results.php');
+require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("results.php");
 
 class Flight {
 	/**
@@ -625,7 +626,7 @@ class Flight {
 	 *
 	 * @param resource $mysqli pointer to mySQL connection, by reference
 	 * @param string $flightId flight ID to search for
-	 * @return mixed Flight found or null if not found
+	 * @return mixed $flight found or null if not found
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 **/
 
@@ -682,7 +683,9 @@ class Flight {
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a Flight object normally
 		// 2) if there's no result, we can just return null
-		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
+		// fetch_assoc() returns a row as an associative array
+		$row = $result->fetch_assoc();
+
 		//echo "<p>line 1035 of FLIGHT var dump of ROW in getFlightByFlightID object after fetchassoc</p>";
 		//var_dump($row);
 
@@ -821,26 +824,22 @@ class Flight {
 	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
 	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
 	 * $userOrigin, and the return date inputted as $userFlyDate
-	 *
-	 * @param resource $tempMysqli pointer to temp mySQL connection, by reference
-	 * @param string $userOrigin
-	 * @param string $userDestination
-	 * @param string $userFlyDateStart to search for
-	 * @param string $userFlyDateEnd to search for
-	 * @param string $numberOfPassengers to search for
-	 * @throws RangeException if number
+	 * @param resource $mysqli pointer to temp mySQL connection, by reference
+	 * @param string $userOrigin with 3 letter origin city
+	 * @param string $userDestination with 3 letter destination city
+	 * @param string $userFlyDateStart of midnight on user's chosen fly date
+	 * @param string $userFlyDateEnd defined by range of time all paths must be complete by.  (Default should be 24 hours).
+	 * @param string $numberOfPassengers of number of passengers flying together on the same flight path as part of same search and eventual purchase
+	 * @throws RangeException if origin or destination codes are not 3 letters.
 	 * @throws mysqli_sql_exception when mySQL related errors occur
 	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
-
 	 **/
-/**/
-//fixme take out the slash star here and below to activate the search function when ready to test
-	//fixme need $tempmysqli in test?
-	public static function getRoutesByUserInput(&$tempMysqli, $userOrigin, $userDestination, $userFlyDateStart,
+	// fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
+	public static function getRoutesByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
 	{
 		// handle degenerate cases
-		if(gettype($tempMysqli) !== "object" || get_class($tempMysqli) !== "mysqli") {
+		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
 		}
 
@@ -925,9 +924,9 @@ class Flight {
 			throw (new UnexpectedValueException ("Number of requested seats $numberOfPassengers does not appear to be an
 														integer"));
 		}
-		else {
-			$numberOfPassengers = filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT);
-		}
+
+		$numberOfPassengers = filter_var($numberOfPassengers, FILTER_SANITIZE_NUMBER_INT);
+
 
 		// convert the $numberOfPassengers to an integer and enforce it's positive
 		$numberOfPassengers = intval($numberOfPassengers);
@@ -942,9 +941,9 @@ class Flight {
 			throw (new UnexpectedValueException ("Number of layover minutes of $minLayover does not appear to be an
 														integer"));
 		}
-		else {
-			$minLayover = filter_var($minLayover, FILTER_SANITIZE_NUMBER_INT);
-		}
+
+		$minLayover = filter_var($minLayover, FILTER_SANITIZE_NUMBER_INT);
+
 
 		// convert the $numberOfPassengers to an integer and enforce it's positive
 		$minLayover = intval($minLayover);
@@ -954,70 +953,36 @@ class Flight {
 
 
 
-		// fixme change call command and include variables with ticks for strings
-		// fixme, create query template? to call the stored procedure and execute search in MySQL
+		// fixme, create query template if possible to call the stored procedure and execute search in MySQL.  IF not possible COMMENT LIKE CRAZY so people aware of this bug.
+		// run stored procedure in MySQL and then get results from the results.php file.
 		$query = "CALL spFlightSearchR('$userOrigin', '$userDestination', '$userFlyDateStart', '$userFlyDateEnd',
 			$numberOfPassengers, $minLayover)";
 
 		$getStoredProcResults = Results::db_all($query);
 
-		// this will return as many results as there are flights and flight combos with same origin + departure + date.
-		//	1) if there's no result, we can just return null
-		// 2) if there's a result, we can make it into flight objects by using the flight path string
-		// fetch_assoc() returns row as associative arr until row is null
-
-		// create query to take results from stored procedure and get all related info for each flight returned
-		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber, price,
- 					totalSeatsOnPlane FROM flight WHERE flightId IN (?)";
-
-		$statement2 = $tempMysqli->prepare($query);
-		if($statement2 === false) {
-			throw(new mysqli_sql_exception("Unable to prepare statement"));
-		}
-
-
 		// set up array to hold all results
 		$allFlightPathsArray = array();
 
-
-
-		// convert the associative array to a Flight for all origin + departure + date equal to $userOrigin,
-		// $userDestination, and $userFlyDate range.
+		// convert the path within associative array to individual Flight objects for all origin + departure + date equal to $userOrigin,
+		// $userDestination, and $userFlyDate range.  Do math with these objects, then add these objects and the math results to the array for all paths.
+		// fixme does the $arrayOfPathFlightObjects reset to empty at top before running through rest of loop again?
 		while(($row = $getStoredProcResults->fetch_assoc()) !== null) {
 
 			try {
 
-				// bind the user inputs to the place holder in the template to make a 2 dimensional array (array of arrays
-				// of all related info for each flight ID in a path)
-				$wasClean = $statement2->bind_param("s", $row["path"]);
+				$explodedPath = explode(",", $row["path"]);
+				$arrayOfPathFlightObjects[] = array();
+				$counterWithinPath = 0;
 
-				if($wasClean === false) {
-					throw(new mysqli_sql_exception("Unable to bind parameters"));
-				}
-
-				// execute the statement
-				if($statement2->execute() === false) {
-					throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
-				}
-
-				// get result from the SELECT query *pounds fists*
-				// this represents the two dimensional array (flight ids with all their associated data)
-				$eachFlightPathObject = $statement2->get_result();
-				if($eachFlightPathObject === false) {
-					throw(new mysqli_sql_exception("Unable to get result set"));
-				}
-
-				// fixme: isn't this just a result object tho?  Have to convert it to an array of arrays? think we need to fetch assoc again for this new result object, but how are multidimensional associative arrays indexed in this case...
-				$eachFlightPath = $eachFlightPathObject->fetch_assoc();
-
-
-
+				do {
+					$flightObject = Flight::getFlightByFlightId($mysqli, $explodedPath[$counterWithinPath]);
+					$arrayOfPathFlightObjects = $flightObject;
+					$counterWithinPath++;
+				} while ($g < count($explodedPath));
 
 				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
-
 				// get size of array for calc of price and duration
 				$sizeEachFlightPath = $row["Stops"] + 1;
-					//or, = count($eachFlightPath); fixme
 
 				// calc discount for paths with multiple flights
 				if($sizeEachFlightPath < 2) {
@@ -1033,8 +998,7 @@ class Flight {
 				$today = DateTime::createFromFormat("H:i:s", "12:00:00");
 
 				// assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
-				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $userFlyDateStart);
-						//fixme: used userFlyDateStart instead of $eachFlightPath[0][4]
+				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $arrayOfPathFlightObjects[0]->getDepartureDateTime());
 
 
 				// then get difference with first flight Id's departure
@@ -1056,11 +1020,9 @@ class Flight {
 
 				// calc total base price in path
 				$sumBasePricesInPath = 0;
-				for ($i=0; $eachFlightPath[$i] !== null; $i++) {
-					$sumBasePricesInPath = $sumBasePricesInPath + $eachFlightPath[$i]["price"];
+				for ($i=0; $arrayOfPathFlightObjects[$i] !== null; $i++) {
+					$sumBasePricesInPath = $sumBasePricesInPath + $arrayOfPathFlightObjects[$i]->getPrice();
 				}
-						//fixme: name of index if assoc array instead?  USE FOR EACH LOOP TO GET AROUND THIS HERE
-
 
 				// calc total price for the path using the discount and time factor and base price
 				$totalPriceForPath = $timeWindowFactor * $multipleFlightDiscount * $sumBasePricesInPath;
@@ -1068,19 +1030,18 @@ class Flight {
 
 				//Calc the duration
 				//assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
-				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[0]["departureDateTime"]);
-				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $eachFlightPath[$sizeEachFlightPath]["arrivalDateTime"]);
+				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $arrayOfPathFlightObjects[0]->getDepartureDateTime());
+				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $arrayOfPathFlightObjects[$sizeEachFlightPath-1]->getArrivalDateTime());
 				$totalDurationForPath = $flightIdFirstDeparture->diff($flightIdLastArrival);
-						//fixme: name of index if assoc array instead?  NEED TO PULL LAST INDEX IN OUTER ARRAY so how get around needing to use numbers?  no loops involved.
 
-
-				//push the duration and the price into the $eachFlightPath array
-				array_push($eachFlightPath, $totalDurationForPath, $totalPriceForPath);
+				//push the duration and the price into the $arrayOfPathFlightObjects array
+				$arrayOfPathFlightObjects[] = $totalDurationForPath;
+				$arrayOfPathFlightObjects[] = $totalPriceForPath;
 
 
 				// put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
-				$allFlightPathsArray[] = $eachFlightPath;
+				$allFlightPathsArray[] = $arrayOfPathFlightObjects;
 
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -1091,7 +1052,7 @@ class Flight {
 
 
 		if(empty($allFlightsArray)) {
-			// 404 User not found - return null
+			// 404 path not found - return null
 			return (null);
 		} else {
 			return ($allFlightsArray);
