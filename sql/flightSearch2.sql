@@ -44,7 +44,7 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 		;
 
 		-- Return only paths with ending nodes at destination, include stop count
-		SELECT R.startId, R.endId, R.path, CHAR_LENGTH(path) - CHAR_LENGTH(REPLACE(path,',','')) AS Stops
+		SELECT DISTINCT R.startId, R.endId, R.path, CHAR_LENGTH(path) - CHAR_LENGTH(REPLACE(path,',','')) AS Stops
 		FROM flightSearchR R
 			INNER JOIN flight F ON F.flightId = R.endId
 		WHERE F.destination = endLoc
