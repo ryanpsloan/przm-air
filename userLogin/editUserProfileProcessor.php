@@ -2,9 +2,13 @@
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/user.php");
 require("../php/profile.php");
+include("../lib/csrf.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
-session_start();
+	session_start();
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+		echo "<p>Make sure cookies are enabled</p>";
+	}
 
 	$profile = $_SESSION['profileObj'];
 

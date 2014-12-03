@@ -45,14 +45,30 @@ $dateOfBirth = $newDateObj->format("Y-m-d");
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>Edit Profile</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="editUserProfile.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script>
 		$(function() {
-			$( ".datepicker" ).datepicker();
+			$( ".datepicker" ).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				maxDate: "0d",
+				minDate: "-100y"
+			});
 		});
 	</script>
 </head>
@@ -66,10 +82,10 @@ $dateOfBirth = $newDateObj->format("Y-m-d");
 	<p><label>Last Name</label>
 		<input type="text" id="last" name="last" value="<?php echo $lastName ?>"></p>
 	<p><label>Date Of Birth</label>
-	<input type="text" id="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
-		<input type="text" id="dob" name="dob" ></p>
+	<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
 	<p><label>Email</label>
 		<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
+	<?php generateInputTags(); ?>
 	<button type="submit">Submit Changes</button>
 </form>
 <div id="outputArea"></div>

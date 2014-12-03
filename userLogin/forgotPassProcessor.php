@@ -1,8 +1,14 @@
 <?php
+include('../php/user.php');
+include('../lib/csrf.php');
 require_once("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
-include('../php/user.php');
+
 session_start();
+
+if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+	throw(new RuntimeException("CSRF tokens incorrect or missing. Make sure cookies are enabled."));
+}
 
 $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 $user = User::getUserByEmail($mysqli,$email);

@@ -47,7 +47,12 @@ EOF;
 	</style>
 	<script>
 		$(function() {
-			$( ".datepicker" ).datepicker();
+			$( ".datepicker" ).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				maxDate: "+1y",
+				minDate: "0d"
+			});
 		});
 	</script>
 </head>
@@ -121,5 +126,6 @@ EOF;
 		</div>
 	</div>
 </div>
+
 </body>
 </html>

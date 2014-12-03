@@ -6,7 +6,9 @@ require("../php/profile.php");
 require("Mail.php");
 session_start();
 //var_dump($_SESSION);
-
+if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+	echo "<p>CSRF tokens incorrect or missing. Make sure cookies are enabled</p>";
+}
 //filter and process input
 
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);

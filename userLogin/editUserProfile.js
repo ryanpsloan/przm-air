@@ -14,9 +14,7 @@ $(document).ready(function()
 					required: true
 				},
 				dob   : {
-					required: true,
-					dateISO: true,
-					pattern: /^(\d{4})-(\d{2})-(\d{2})$/
+					required: true
 				},
 				email : {
 					required: true,
@@ -35,8 +33,7 @@ $(document).ready(function()
 					required: "Please enter your last name"
 				},
 				dob   : {
-					required: "Enter your date of birth.",
-					dateISO: "yyyy-mm-dd format please"
+					required: "Enter your date of birth."
 				},
 				email : {
 					required: "Please enter a valid email"
