@@ -1,9 +1,9 @@
 <?php
 	include("php/user.php");
 	include("php/profile.php");
-try {
 	require("php/flight.php");
-	session_start();
+try {
+   session_start();
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
 			<a href="userLogin/signOut.php">Sign Out</a>
@@ -30,14 +30,14 @@ EOF;
 	<meta charset="UTF-8">
 	<title>PRZM AIR</title>
 
-	<!--fixme Zach added: delete or keep??-->
+	<!--fixme keep excellent zach-->
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 
-	<!--fixme Zach added: delete or keep??-->
+	<!--fixme Zach added: keep excellent-->
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
@@ -52,7 +52,6 @@ EOF;
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
 	<!-- Latest compiled and minified JavaScript -->
-	<!--fixme Zach added: types below-->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -124,12 +123,11 @@ EOF;
 		</li>
 	</ul>
 	<div id="myTabContent" class="tab-content">
-		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab"><p>Search
-			Components	and Content Go Here</p>
-			<!-- datepickers go here -->
+		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
+
 			<form class="navbar-form navbar-left" role="search" action="flight_search_processor.php" method="POST">
 				<div class="form-group">
-
+	<!-- This looks good zach! -->
 					<div class="btn-group" data-toggle="buttons">
 						<label class="btn btn-primary active">
 							<input type="radio" name="roundTrip" id="roundTrip" autocomplete="off" checked>
