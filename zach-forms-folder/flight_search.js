@@ -11,10 +11,12 @@ $(document).ready(function()
 				/**fixme do i need to require and either/or for roundtrip/one way
 				 * fixme what other rules needed for data*/
 				origin            : {
-					required: true
+					required: true,
+					pattern: /[A-Za-z]{3}/
 				},
 				destination       : {
-					required: true
+					required: true,
+					pattern: /[A-Za-z]{3}/
 				},
 				departDate        : {
 					required: true
