@@ -91,7 +91,7 @@ try {
 	<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
 	<p><label>Email</label>
 		<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
-	<?php generateInputTags(); ?>
+	<?php echo generateInputTags(); ?>
 	<button type="submit">Submit Changes</button>
 </form>
 <div id="outputArea"></div>

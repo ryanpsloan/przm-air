@@ -56,7 +56,7 @@ session_start();
 	<p><label>Confirm Password</label>
 	<input type="password" id="confPassword" name="confPassword"></p>
 	<button id="button" type="submit">Register</button>
-	<?php generateInputTags(); ?>
+	<?php echo generateInputTags(); ?>
 	</fieldset>
 	<div id="outputArea">
 
