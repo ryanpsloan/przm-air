@@ -839,8 +839,7 @@ class Flight {
 	 **/
 	// fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
 	public static function getRoutesByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDateStart,
-															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
-	{
+															  $userFlyDateEnd, $numberOfPassengers, $minLayover) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -964,17 +963,13 @@ class Flight {
 
 		// get 2D array of results from the stored procedure:
 		$getStoredProcResults = Results::db_all($query);
-
-		echo "<p>line 967 dump of getStoredProcResults in user search in flight</p>";
-		var_dump($getStoredProcResults);
+//
+//		echo "<p>line 967 dump of getStoredProcResults in user search in flight</p>";
+//		var_dump($getStoredProcResults);
 
 
 		// set up array to hold all actual User Search results after processing the Stored Procedure Results
 		$allFlightPathsArray = array();
-
-		// set counter for loop
-		$a = 0;
-
 
 		// convert the path within associative array to individual Flight objects for all origin + departure + date equal to $userOrigin,
 		// $userDestination, and $userFlyDate range.  Do math with these objects, then add these objects and the math results to the array for all paths.
@@ -988,9 +983,9 @@ class Flight {
 				// set up counter for loop
 				$explodedPath = explode(",", $getStoredProcResults[$a]["path"]);
 				$arrayOfPathFlightObjects[] = array();
-
-				echo "<p>line 992 dump of arrayOfPathFlightObjects at start of while loop</p>";
-				var_dump($arrayOfPathFlightObjects);
+//
+//				echo "<p>line 992 dump of arrayOfPathFlightObjects at start of while loop</p>";
+//				var_dump($arrayOfPathFlightObjects);
 
 				$counterWithinPath = 0;
 
@@ -1009,9 +1004,9 @@ class Flight {
 					$counterWithinPath++;
 
 				} while ($counterWithinPath < count($explodedPath));
-
-				echo "<p>line 1013 dump of arrayOfPathFlightObjects after do loop</p>";
-				var_dump($arrayOfPathFlightObjects);
+//
+//				echo "<p>line 1013 dump of arrayOfPathFlightObjects after do loop</p>";
+//				var_dump($arrayOfPathFlightObjects);
 
 
 				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
@@ -1057,8 +1052,8 @@ class Flight {
 				// calc total base price in path
 				$sumBasePricesInPath = 0;
 
-				foreach ($arrayOfPathFlightObjects as $i => $elementB) {
-					$sumBasePricesInPath = $sumBasePricesInPath + $arrayOfPathFlightObjects[$i]->getPrice();
+				foreach ($arrayOfPathFlightObjects as $b => $elementB) {
+					$sumBasePricesInPath = $sumBasePricesInPath + $arrayOfPathFlightObjects[$b]->getPrice();
 
 //					echo "<p>line 1055 dump of sumBasePricesInPath and price for this flight</p>";
 //					var_dump($sumBasePricesInPath);
@@ -1078,9 +1073,9 @@ class Flight {
 				//push the duration and the price into the $arrayOfPathFlightObjects array
 				$arrayOfPathFlightObjects[] = $totalDurationForPath;
 				$arrayOfPathFlightObjects[] = $totalPriceForPath;
-
-				echo "<p>line 1078 dump of arrayOfPathFlightObjects before adding to allFlightPathsArray</p>";
-				var_dump($arrayOfPathFlightObjects);
+//
+//				echo "<p>line 1078 dump of arrayOfPathFlightObjects before adding to allFlightPathsArray</p>";
+//				var_dump($arrayOfPathFlightObjects);
 
 				// put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
@@ -1092,14 +1087,8 @@ class Flight {
 				unset ($totalPriceForPath);
 				unset ($sumBasePricesInPath);
 
-
-
-
-				echo "<p>line 1085 dump of allFlightPathsArray before relooping</p>";
-				var_dump($allFlightPathsArray);
-
-				// increment the counter for the while loop
-				$a++;
+//				echo "<p>line 1085 dump of allFlightPathsArray before relooping</p>";
+//				var_dump($allFlightPathsArray);
 
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -1108,8 +1097,8 @@ class Flight {
 
 		} // end while loop
 
-		echo "<p>line 1096 dump of allFlightPathsArray before RETURNING</p>";
-		var_dump($allFlightPathsArray);
+//		echo "<p>line 1096 dump of allFlightPathsArray before RETURNING</p>";
+//		var_dump($allFlightPathsArray);
 
 		if(empty($allFlightPathsArray)) {
 			// 404 path not found - return null

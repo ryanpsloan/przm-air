@@ -397,21 +397,17 @@ class FlightTest extends UnitTestCase {
 //		var_dump($allDestinationsArray);
 //		var_dump($sizeAllDestinations);
 
-		// declare date variables for search (put these in a loop if want to test multiple days.
-		$userFlyDateStart = "2014-12-09 00:00:00";
-		$userFlyDateEnd = "2014-12-10 00:00:00";
+		// fixme look at how we deal with time zones etc.
+		// declare date variables for search, add 7 hours to account for uniform time.
+		$userFlyDateStart = "2014-12-09 07:00:00";
+		$userFlyDateEnd = "2014-12-10 07:00:00";
 
 
 		// declare min layover variable (put in loop to test multiple)
 		$minLayover = 15;
 
-
-		// declare starting number of passengers variable
-		//$numberOfPassengersRequested = 5; //fixme if need different number or if don't declare here but in loop3 instead
-
-
-		// declare range variable between fly start time and end time in fractions of days.
-		$maxDurationRange = 1;
+		// declare range variable between fly start time and end time in minutes.
+		$maxDurationRange = 60*24;
 
 
 		// NESTED LOOPS:
@@ -431,10 +427,17 @@ class FlightTest extends UnitTestCase {
 
 				// Loop 3: check different numbers of passengers
 				for($numberOfPassengersRequested = 5; $numberOfPassengersRequested < 30; $numberOfPassengersRequested = $numberOfPassengersRequested + 10) {
+//					echo "<p>line 445 dump of search inputs in loop before calling method</p>";
+//					var_dump($userOrigin);
+//					var_dump($userDestination);
+//					var_dump($userFlyDateStart);
+//					var_dump($userFlyDateEnd);
+//					var_dump($numberOfPassengersRequested);
+//					var_dump($minLayover);
 
 					//		call static user search method to get result in form of 2D array of objects
 					try {
-						$thisArrayOfPaths = Flight::getRoutesByUserInput($mysqli, $userOrigin, $userDestination,
+						$thisArrayOfPaths = Flight::getRoutesByUserInput($this->mysqli, $userOrigin, $userDestination,
 																						$userFlyDateStart, $userFlyDateEnd,
 																						$numberOfPassengersRequested, $minLayover);
 					} catch(Exception $exception) {
@@ -445,43 +448,53 @@ class FlightTest extends UnitTestCase {
 					// if there should be results of some sort returned for the given amount of passengers, then assert that it was so.
 					if($numberOfPassengersRequested < 20) {
 						$this->assertNotNull($thisArrayOfPaths);
+					} else if ($numberOfPassengersRequested >= 20) {
+						$this->assertNull($thisArrayOfPaths);
 					}
 
-
 					// Loop 4: for loop to iterate through dimension 1 result array $thisArrayOfPaths[]
-					for($d = 0; $thisArrayOfPaths[$d] !== null; $d++) {
+					for ($d = 0; empty($thisArrayOfPaths[$d]) === false; $d++) {
 
-						//count size of 2nd dimension array $sizeOfEachPath
-						$sizeOfEachPath = count($thisArrayOfPaths[$d]);
+						//count number of flights in 2nd dimension array $sizeOfEachPath by subtracting out the duration and
+						//price elements of the array
+						$sizeOfEachPath = count($thisArrayOfPaths[$d])-3;
+//
+//						echo "<p>line 458 dump of thisArrayOfPaths and [d] within foreach loop before test</p>";
+//						var_dump($thisArrayOfPaths);
+//						var_dump($thisArrayOfPaths[$d]);
+//						var_dump($sizeOfEachPath);
+//						var_dump($thisArrayOfPaths[$d][0]->getOrigin());
+//						var_dump($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination());
+
+						$this->assertIdentical($thisArrayOfPaths[$d][0]->getOrigin(), 								$userOrigin);
+						$this->assertIdentical($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination(), 	$userDestination);
 
 
-						$this->assertIdentical($thisArrayOfPaths[$d][0]->getOrigin(), $userOrigin);
-						$this->assertIdentical($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination(), $userDestination);
-
-
-						// To assert that duration of flights is within specified range, first convert to DateTime Object.
-						$arrival = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][$sizeOfEachPath]->getArrivalDateTime());
-						$departure = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][0]->getDepartureDateTime());
-						$totalDuration = $departure->diff($arrival);
-
+						// assert that duration of flights is within specified range.
+						$totalDurationInterval = $thisArrayOfPaths[$d][0]->getDepartureDateTime()->
+												diff($thisArrayOfPaths[$d][$sizeOfEachPath]->getArrivalDateTime());
+						$totalDuration = intval($totalDurationInterval->format("%i"));
 						$this->assertTrue($totalDuration <= $maxDurationRange);
 
-
 						// Loop 5A: for loop to compare arrival/departure times in results and verify no overlaps
-						for($e = 0; $thisArrayOfPaths[$d][$e + 1] !== null; $e++) {
-							$checkEachFlightDeparture = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][$e + 1]->getDepartureDateTime());
-							$checkEachFlightArrival = DateTime::createFromFormat("Y:m:d H:i:s", $thisArrayOfPaths[$d][$e]->getArrivalDateTime());
-							$layover = $checkEachFlightDeparture->diff($checkEachFlightArrival);
+						for($e = 0; empty($thisArrayOfPaths[$d][$e + 3]) === false; $e++) {
 
+							$layoverInterval = $thisArrayOfPaths[$d][$e]->getArrivalDateTime()->
+														diff($thisArrayOfPaths[$d][$e+1]->getDepartureDateTime());
+							$minutes = $layoverInterval->days * 24 * 60;
+							$minutes += $layoverInterval->h * 60;
+							$minutes += $layoverInterval->i;
 
-							$this->assertTrue($layover >= ($minLayover / (60 * 24)));
+							$layover = intval($minutes);
+
+							$this->assertTrue($layover >= $minLayover);
 						}
 
 
 						// Loop 5B: (sibling not child of 5A) Assert identical each flightId's info with a select from the database
-						for($f = 0; $thisArrayOfPaths[$d][$f] !== null; $f++) {
+						for($f = 0; empty($thisArrayOfPaths[$d][$f+3]) === false; $f++) {
 
-							$flightObject = Flight::getFlightByFlightId($mysqli, $thisArrayOfPaths[$d][$f]->getFlightId());
+							$flightObject = Flight::getFlightByFlightId($this->mysqli, $thisArrayOfPaths[$d][$f]->getFlightId());
 
 							// run through each field of each flight and assert Identical to results
 							$this->assertNotNull($thisArrayOfPaths[$d][$f]->getFlightId());
