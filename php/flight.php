@@ -12,7 +12,7 @@
  */
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("results.php");
-session_start();
+
 
 class Flight {
 	/**

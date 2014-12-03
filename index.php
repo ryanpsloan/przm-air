@@ -3,7 +3,8 @@
 	include("php/profile.php");
 	require("php/flight.php");
 try {
-   session_start();
+	session_start();
+	var_dump($_SESSION);
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
 			<a href="userLogin/signOut.php">Sign Out</a>
