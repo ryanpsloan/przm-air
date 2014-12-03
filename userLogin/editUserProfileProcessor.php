@@ -16,7 +16,7 @@ try {
 	$profile->setFirstName($newFirstName = filter_input(INPUT_POST, "first", FILTER_SANITIZE_STRING));
 	$profile->setLastName($newLastName = filter_input(INPUT_POST, "last", FILTER_SANITIZE_STRING));
 	$newDOB = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
-	$newDOB = DateTime::createFromFormat("Y-m-d", $newDOB);
+	$newDOB = DateTime::createFromFormat("Y/m/d", $newDOB);
 	$profile->setDateOfBirth($newDOB->format("Y-m-d H:i:s"));
 	$profile->userObj->setEmail($newEmail = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL));
 	$newMiddleName = filter_input(INPUT_POST, "middle", FILTER_SANITIZE_STRING);

@@ -72,7 +72,7 @@ EOF;
 
 				// build message
 				$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
-				$url = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
+				$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
 				$url = str_replace($pageName, "activate.php", $url);
 				$url = "$url?authToken=$authToken";
 				$message = <<< EOF
