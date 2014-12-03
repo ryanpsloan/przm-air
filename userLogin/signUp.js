@@ -22,12 +22,12 @@ $(document).ready(function()
 				},
 				password: {
 					required: true,
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
 				},
 				confPassword: {
 					required: true,
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
 
 				}
 			},

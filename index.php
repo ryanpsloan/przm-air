@@ -1,8 +1,10 @@
 <?php
 	include("php/user.php");
 	include("php/profile.php");
+
 try {
 	session_start();
+	var_dump($_SESSION);
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
 			<a href="userLogin/signOut.php">Sign Out</a>
@@ -112,12 +114,8 @@ EOF;
 			<!-- datepickers go here -->
 			<p><label>Departure Date</label><input type="text" class="datepicker"></p>
 			<p><label>Arrival Date</label><input type="text" class="datepicker"></p>
-			<form class="navbar-form navbar-right" role="search">
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
-				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form>
+
+
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="reservation"
 			  aria-labelledby="reservation-tab"><p>Links to change functions go here
