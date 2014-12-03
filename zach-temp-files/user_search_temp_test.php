@@ -13,7 +13,8 @@ require_once("results.php");
 require_once("flight.php");
 
 $mysqli = MysqliConfiguration::getMysqli();
-$testSearch = Flight::getRoutesByUserInput($mysqli,'ABQ','DFW','2014-12-02 00:00:00','2014-12-03 00:00:00',1,15);
+$testSearch = array();
+$testSearch = Flight::getRoutesByUserInput($mysqli,'ABQ','DFW','2014-12-09 00:00:00','2014-12-10 00:00:00',1,15);
 
 echo "<p>line 12 of user search temp test var dump of results from calling function</p>";
 var_dump($testSearch);

@@ -12,6 +12,7 @@
  */
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("results.php");
+session_start();
 
 class Flight {
 	/**
@@ -649,6 +650,7 @@ class Flight {
 		// create query template
 		$query = "SELECT flightId, origin, destination, duration, departureDateTime, arrivalDateTime, flightNumber,
 					price, totalSeatsOnPlane FROM flight WHERE flightId = ?";
+
 		$statement = $mysqli->prepare($query);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -820,24 +822,27 @@ class Flight {
 
 
 	/**
-	 * searches all flights based on user input to return route options
+	 * searches all flights based on user input to return route options with calculated total price and duration
 	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
 	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
 	 * $userOrigin, and the return date inputted as $userFlyDate
-	 * @param resource $mysqli pointer to temp mySQL connection, by reference
-	 * @param string $userOrigin with 3 letter origin city
-	 * @param string $userDestination with 3 letter destination city
-	 * @param string $userFlyDateStart of midnight on user's chosen fly date
-	 * @param string $userFlyDateEnd defined by range of time all paths must be complete by.  (Default should be 24 hours).
-	 * @param string $numberOfPassengers of number of passengers flying together on the same flight path as part of same search and eventual purchase
-	 * @throws RangeException if origin or destination codes are not 3 letters.
-	 * @throws mysqli_sql_exception when mySQL related errors occur
-	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
+	 * @param 	resource $mysqli pointer to temp mySQL connection, by reference
+	 * @param 	string $userOrigin with 3 letter origin city
+	 * @param 	string $userDestination with 3 letter destination city
+	 * @param 	string $userFlyDateStart of midnight on user's chosen fly date
+	 * @param 	string $userFlyDateEnd defined by range of time all paths must be complete by.  (Default should be
+*            	24 hours).
+	 * @param 	mixed $numberOfPassengers of number of passengers flying together on the same flight path as part of same
+	 * 			search and eventual purchase
+	 * @param 	mixed $minLayover the number of minutes a user requires between flights in a given path
+	 * @throws 	RangeException if origin or destination codes are not 3 letters.
+	 * @throws 	mysqli_sql_exception when mySQL related errors occur
+	 * @return 	mixed $allFlightsArray array of all flight paths, each of which is an array of flight object(s) plus
+	 * 			DateInterval object for total path duration and integer of total price for path.
 	 **/
-	// fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
+// fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
 	public static function getRoutesByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDateStart,
-															  $userFlyDateEnd, $numberOfPassengers, $minLayover)
-	{
+															  $userFlyDateEnd, $numberOfPassengers, $minLayover) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -873,7 +878,7 @@ class Flight {
 		}
 
 
-		// 3.:
+		// 3.: fixme add restriction that date has to be a future one.
 		$userFlyDateStart = trim ($userFlyDateStart);
 
 		if(filter_var($userFlyDateStart, FILTER_SANITIZE_STRING) === false) {
@@ -951,68 +956,96 @@ class Flight {
 			throw(new RangeException("Number of layover minutes of $minLayover is not positive"));
 		}
 
-
+		$sessionId = session_id();
 
 		// fixme, create query template if possible to call the stored procedure and execute search in MySQL.  IF not possible COMMENT LIKE CRAZY so people aware of this bug.
 		// run stored procedure in MySQL and then get results from the results.php file.
 		$query = "CALL spFlightSearchR('$userOrigin', '$userDestination', '$userFlyDateStart', '$userFlyDateEnd',
-			$numberOfPassengers, $minLayover)";
+			$numberOfPassengers, $minLayover, '$sessionId')";
 
+
+		// get 2D array of results from the stored procedure:
 		$getStoredProcResults = Results::db_all($query);
+//
+//		echo "<p>line 967 dump of getStoredProcResults in user search in flight</p>";
+//		var_dump($getStoredProcResults);
 
-		// set up array to hold all results
+
+		// set up array to hold all actual User Search results after processing the Stored Procedure Results
 		$allFlightPathsArray = array();
 
 		// convert the path within associative array to individual Flight objects for all origin + departure + date equal to $userOrigin,
 		// $userDestination, and $userFlyDate range.  Do math with these objects, then add these objects and the math results to the array for all paths.
-		// fixme does the $arrayOfPathFlightObjects reset to empty at top before running through rest of loop again?
-		while(($row = $getStoredProcResults->fetch_assoc()) !== null) {
+		foreach($getStoredProcResults as $a => $elementA) {
 
 			try {
 
-				$explodedPath = explode(",", $row["path"]);
+				// explode the path result from delimited string to array of strings
+				// set up array to hold flight objects for each path
+				// set up counter for loop
+				$explodedPath = explode(",", $getStoredProcResults[$a]["path"]);
 				$arrayOfPathFlightObjects[] = array();
+//
+//				echo "<p>line 992 dump of arrayOfPathFlightObjects at start of while loop</p>";
+//				var_dump($arrayOfPathFlightObjects);
+
 				$counterWithinPath = 0;
 
+//				echo "<p>line 997 dump of explodedPath in user search in flight</p>";
+//				var_dump($explodedPath);
+
 				do {
-					$flightObject = Flight::getFlightByFlightId($mysqli, $explodedPath[$counterWithinPath]);
-					$arrayOfPathFlightObjects = $flightObject;
+
+					$singleFlight = intval($explodedPath[$counterWithinPath]);
+
+//					echo "<p>line 998 dump of singleFlight, should be int in user search in flight</p>";
+//					var_dump($singleFlight);
+
+					$flightObject = Flight::getFlightByFlightId($mysqli, $singleFlight);
+					$arrayOfPathFlightObjects[$counterWithinPath] = $flightObject;
 					$counterWithinPath++;
-				} while ($g < count($explodedPath));
+
+				} while ($counterWithinPath < count($explodedPath));
+//
+//				echo "<p>line 1013 dump of arrayOfPathFlightObjects after do loop</p>";
+//				var_dump($arrayOfPathFlightObjects);
+
 
 				// before adding this 2D array to 3D array containing all paths, calc price and duration per path
 				// get size of array for calc of price and duration
-				$sizeEachFlightPath = $row["Stops"] + 1;
+				$sizeEachFlightPath = $getStoredProcResults[$a]["Stops"] + 1;
 
 				// calc discount for paths with multiple flights
 				if($sizeEachFlightPath < 2) {
 					$multipleFlightDiscount = 1;
 				}
 				else if($sizeEachFlightPath >= 2 &&  $sizeEachFlightPath <= 3) {
-					$multipleFlightDiscount = 1 - (.1 * $sizeEachFlightPath);
+					$multipleFlightDiscount = 1 - (.25 * $sizeEachFlightPath);
 				}
-				else $multipleFlightDiscount = 0.65;
+				else $multipleFlightDiscount = 0.40;
 
 				// calc additional charge for nearby time windows.
 				// first set today's date as of 12 noon to use as marker for calc.
 				$today = DateTime::createFromFormat("H:i:s", "12:00:00");
 
-				// assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
-				$departureDay = DateTime::createFromFormat("Y-m-d H:i:s", $arrayOfPathFlightObjects[0]->getDepartureDateTime());
-
-
 				// then get difference with first flight Id's departure
-				$daysTillFlight = $today->diff($departureDay);
+				$firstFlightIdDeparture = $arrayOfPathFlightObjects[0]->getDepartureDateTime();
+				$daysTillFlightInterval = $today->diff($firstFlightIdDeparture);
+				$daysTillFlight = intval($daysTillFlightInterval->format("%d"));
+
+//				echo "<p>line 1030 dump of daysTillFlight, should be int in user search in flight</p>";
+//				var_dump($daysTillFlight);
+
 
 				// set value of factor for each window
 				if($daysTillFlight <= 7) {
 					$timeWindowFactor = 1.75;
 				}
 				else if($daysTillFlight <= 14 && $daysTillFlight > 7) {
-					$timeWindowFactor = 1.5;
+					$timeWindowFactor = 1.4;
 				}
 				else if($daysTillFlight <= 28 && $daysTillFlight > 14) {
-					$timeWindowFactor = 1.25;
+					$timeWindowFactor = 1.15;
 				}
 				else $timeWindowFactor = 1;
 
@@ -1020,8 +1053,14 @@ class Flight {
 
 				// calc total base price in path
 				$sumBasePricesInPath = 0;
-				for ($i=0; $arrayOfPathFlightObjects[$i] !== null; $i++) {
-					$sumBasePricesInPath = $sumBasePricesInPath + $arrayOfPathFlightObjects[$i]->getPrice();
+
+				foreach ($arrayOfPathFlightObjects as $b => $elementB) {
+					$sumBasePricesInPath = $sumBasePricesInPath + $arrayOfPathFlightObjects[$b]->getPrice();
+
+//					echo "<p>line 1055 dump of sumBasePricesInPath and price for this flight</p>";
+//					var_dump($sumBasePricesInPath);
+//					var_dump($arrayOfPathFlightObjects[$i]->getPrice());
+//					var_dump($arrayOfPathFlightObjects[$i]);
 				}
 
 				// calc total price for the path using the discount and time factor and base price
@@ -1029,19 +1068,28 @@ class Flight {
 
 
 				//Calc the duration
-				//assuming departure time is returned from result array(s) as string: (If not take out DateTime creation).
-				$flightIdFirstDeparture = DateTime::createFromFormat("Y-m-d H:i:s", $arrayOfPathFlightObjects[0]->getDepartureDateTime());
-				$flightIdLastArrival = DateTime::createFromFormat("Y-m-d H:i:s", $arrayOfPathFlightObjects[$sizeEachFlightPath-1]->getArrivalDateTime());
-				$totalDurationForPath = $flightIdFirstDeparture->diff($flightIdLastArrival);
+				$lastFlightIdArrival = 		$arrayOfPathFlightObjects[$sizeEachFlightPath-1]->getArrivalDateTime();
+				$totalDurationForPath = 	$firstFlightIdDeparture->diff($lastFlightIdArrival);
 
 				//push the duration and the price into the $arrayOfPathFlightObjects array
 				$arrayOfPathFlightObjects[] = $totalDurationForPath;
 				$arrayOfPathFlightObjects[] = $totalPriceForPath;
-
+//
+//				echo "<p>line 1078 dump of arrayOfPathFlightObjects before adding to allFlightPathsArray</p>";
+//				var_dump($arrayOfPathFlightObjects);
 
 				// put the two dimensional array into another array of all the possible flight paths each with all
 				//relative data for each flight
 				$allFlightPathsArray[] = $arrayOfPathFlightObjects;
+
+				// clear out the array of flight objects, price, and duration of paths, to be used again on next loop.
+				unset ($arrayOfPathFlightObjects);
+				unset ($totalDurationForPath);
+				unset ($totalPriceForPath);
+				unset ($sumBasePricesInPath);
+
+//				echo "<p>line 1085 dump of allFlightPathsArray before relooping</p>";
+//				var_dump($allFlightPathsArray);
 
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -1050,12 +1098,14 @@ class Flight {
 
 		} // end while loop
 
+//		echo "<p>line 1096 dump of allFlightPathsArray before RETURNING</p>";
+//		var_dump($allFlightPathsArray);
 
-		if(empty($allFlightsArray)) {
+		if(empty($allFlightPathsArray)) {
 			// 404 path not found - return null
 			return (null);
 		} else {
-			return ($allFlightsArray);
+			return ($allFlightPathsArray);
 		}
 
 
