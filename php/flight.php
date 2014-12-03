@@ -830,8 +830,7 @@ class Flight {
 	 * @param 	string $userOrigin with 3 letter origin city
 	 * @param 	string $userDestination with 3 letter destination city
 	 * @param 	string $userFlyDateStart of midnight on user's chosen fly date
-	 * @param 	string $userFlyDateEnd defined by range of time all paths must be complete by.  (Default should be
-*            	24 hours).
+	 * @param 	int $userFlyDateRange defined by range of time in hours that all paths must be complete by.
 	 * @param 	mixed $numberOfPassengers of number of passengers flying together on the same flight path as part of same
 	 * 			search and eventual purchase
 	 * @param 	mixed $minLayover the number of minutes a user requires between flights in a given path
@@ -842,7 +841,7 @@ class Flight {
 	 **/
 // fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
 	public static function getRoutesByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDateStart,
-															  $userFlyDateEnd, $numberOfPassengers, $minLayover) {
+															  $userFlyDateRange, $numberOfPassengers, $minLayover) {
 		// handle degenerate cases
 		if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 			throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -901,8 +900,30 @@ class Flight {
 
 
 		// 4.:
-		$userFlyDateEnd = trim($userFlyDateEnd);
+		$userFlyDateRange = trim($userFlyDateRange);
 
+		if (filter_var($userFlyDateRange, FILTER_SANITIZE_NUMBER_INT) === false) {
+			throw (new UnexpectedValueException ("Number of hours of $userFlyDateRange to complete trip does not appear to
+														be an integer"));
+		}
+
+		$userFlyDateRange = filter_var($userFlyDateRange, FILTER_SANITIZE_NUMBER_INT);
+
+
+		// convert the $userFlyDateRange to an integer and enforce it's positive
+		$userFlyDateRange = intval($userFlyDateRange);
+		if($userFlyDateRange <= 0) {
+			throw(new RangeException("Number of hours to complete the trip $userFlyDateRange is not positive"));
+		}
+
+		// convert to string for input into the stored procedure call
+		$userEndFlyDateInterval = DateInterval::createFromDateString(" . $userFlyDateRange . hours");
+		$userStartFlyDateTime = DateTime::createFromFormat("Y-m-d H:i:s", $userFlyDateStart);
+		$userFlyDateEndObj = $userStartFlyDateTime->add($userEndFlyDateInterval);
+
+		$userFlyDateEnd = $userFlyDateEndObj->format("Y-m-d H:i:s");
+
+/* fixme old code delete
 		if(filter_var($userFlyDateEnd, FILTER_SANITIZE_STRING) === false) {
 			throw(new UnexpectedValueException("End date $userFlyDateEnd does not appear to be a string"));
 		}
@@ -920,7 +941,7 @@ class Flight {
 		if(checkdate($month, $day, $year) === false) {
 			throw(new RangeException("$userFlyDateEnd is not a Gregorian date"));
 		}
-
+*/
 
 		// 5.:
 		$numberOfPassengers = trim($numberOfPassengers);

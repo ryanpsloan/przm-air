@@ -1,8 +1,8 @@
 <?php
 	include("php/user.php");
 	include("php/profile.php");
-try {
 	require("php/flight.php");
+try {
 	session_start();
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF

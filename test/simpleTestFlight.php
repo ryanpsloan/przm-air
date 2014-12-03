@@ -400,7 +400,7 @@ class FlightTest extends UnitTestCase {
 		// fixme look at how we deal with time zones etc.
 		// declare date variables for search, add 7 hours to account for uniform time.
 		$userFlyDateStart = "2014-12-09 07:00:00";
-		$userFlyDateEnd = "2014-12-10 07:00:00";
+		$userFlyDateRange = 24;
 
 
 		// declare min layover variable (put in loop to test multiple)
@@ -431,14 +431,14 @@ class FlightTest extends UnitTestCase {
 //					var_dump($userOrigin);
 //					var_dump($userDestination);
 //					var_dump($userFlyDateStart);
-//					var_dump($userFlyDateEnd);
+//					var_dump($userFlyDateRange);
 //					var_dump($numberOfPassengersRequested);
 //					var_dump($minLayover);
 
 					//		call static user search method to get result in form of 2D array of objects
 					try {
 						$thisArrayOfPaths = Flight::getRoutesByUserInput($this->mysqli, $userOrigin, $userDestination,
-																						$userFlyDateStart, $userFlyDateEnd,
+																						$userFlyDateStart, $userFlyDateRange,
 																						$numberOfPassengersRequested, $minLayover);
 					} catch(Exception $exception) {
 						throw (new mysqli_sql_exception("Unable to create flight."));
