@@ -1101,6 +1101,8 @@ class Flight {
 //		echo "<p>line 1096 dump of allFlightPathsArray before RETURNING</p>";
 //		var_dump($allFlightPathsArray);
 
+
+		//fixme sort by lowest total path price before returning?
 		if(empty($allFlightPathsArray)) {
 			// 404 path not found - return null
 			return (null);

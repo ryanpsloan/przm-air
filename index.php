@@ -2,6 +2,7 @@
 	include("php/user.php");
 	include("php/profile.php");
 try {
+	require("php/flight.php");
 	session_start();
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
@@ -28,18 +29,34 @@ EOF;
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>PRZM AIR</title>
+
+	<!--fixme Zach added: delete or keep??-->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+	<!--fixme Zach added: delete or keep??-->
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
+
+
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+
 
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<!--fixme Zach added: types below-->
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<style>
 		h1{
 			text-align: center;
@@ -110,14 +127,69 @@ EOF;
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab"><p>Search
 			Components	and Content Go Here</p>
 			<!-- datepickers go here -->
-			<p><label>Departure Date</label><input type="text" class="datepicker"></p>
-			<p><label>Arrival Date</label><input type="text" class="datepicker"></p>
-			<form class="navbar-form navbar-right" role="search">
+			<form class="navbar-form navbar-left" role="search" action="flight_search_processor.php" method="POST">
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Search">
+
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-primary active">
+							<input type="radio" name="roundTrip" id="roundTrip" autocomplete="off" checked>
+							Round Trip
+						</label>
+						<label class="btn btn-primary">
+							<input type="radio" name="oneWay" id="oneWay" autocomplete="off">
+							One Way
+						</label>
+					</div>
+					<p></p>
+					<p></p>
+
+					<p><label>From:</label><br/>
+						<input type="text" class="form-control" id="origin" name="origin"><br/>
+						<em>enter city or airport code</em></p>
+						<p></p>
+						<p></p>
+
+					<p><label>To:</label><br/>
+						<input type="text" class="form-control" id="destination" name="destination"><br/>
+						<em>enter city or airport code</em></p>
+						<p></p>
+						<p></p>
+						<p></p>
+
+					<p><label>Departure Date:</label><br/>
+						<input type="text" class="datepicker" id="departDate" name="departDate"></p>
+						<p></p>
+						<p></p>
+
+					<p><label>Return Date:</label><br/>
+						<input type="text" class="datepicker" id="returnDate" name="returnDate"></p>
+						<p></p>
+						<p></p>
+
+					<label class="btn btn-primary active">
+						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
+						Flexible Dates?
+					</label><p><em>  select to see grid of cheapest fares in month</em></p>
+					<p></p>
+					<p></p>
+
+					<p><label>Number of Passengers:</label><br/>
+						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers"></p>
+						<p></p>
+						<p></p>
+
+					<p><label>Minimum Layover: </label><br/>
+						<input type="text" class="form-control" id="minLayover" name="minLayover"><br/>
+						<em>enter number of minutes</em></p>
+					<p></p>
+					<p></p>
+
+
+					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
+
+
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="reservation"
 			  aria-labelledby="reservation-tab"><p>Links to change functions go here
