@@ -5,6 +5,7 @@ include("../php/profile.php");
 try {
 	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();
+	echo "<p>Authenticating your account</p>";
 	$authToken = $_GET['authToken'];
 
 	$newUser = User::getUserByAuthToken($mysqli, $authToken);
@@ -23,9 +24,7 @@ try {
 	</div>";
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head><!-- Latest compiled and minified CSS -->
+<!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
 <!-- Optional theme -->
@@ -33,5 +32,3 @@ try {
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-</head>
-</html>

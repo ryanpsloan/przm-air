@@ -5,10 +5,12 @@ include("../lib/csrf.php");
 require("/etc/apache2/capstone-mysql/przm.php");
 try {
 	session_start();
+	$mysqli = MysqliConfiguration::getMysqli();
+
+
 	$profileObj = $_SESSION['profileObj'];
 
 	try {
-		$mysqli = MysqliConfiguration::getMysqli();
 		$query = "SELECT email FROM user WHERE userId = ?";
 		$statement = $mysqli->prepare($query);
 		$statement->bind_param("i", $profileObj->__get('userId'));
@@ -89,7 +91,7 @@ try {
 	<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
 	<p><label>Email</label>
 		<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
-	<?php echo generateInputTags(); ?>
+	<?php generateInputTags(); ?>
 	<button type="submit">Submit Changes</button>
 </form>
 <div id="outputArea"></div>

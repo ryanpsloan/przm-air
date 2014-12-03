@@ -55,14 +55,14 @@ session_start();
 	<input type="password" id="password" name="password"></p>
 	<p><label>Confirm Password</label>
 	<input type="password" id="confPassword" name="confPassword"></p>
-	<?php echo generateInputTags(); ?>
 	<button id="button" type="submit">Register</button>
-
+	<?php generateInputTags(); ?>
 	</fieldset>
-</form>
-<div id="outputArea">
+	<div id="outputArea">
 
-</div>
+	</div>
+</form>
+
 </body>
 </html>
 

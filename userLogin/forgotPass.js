@@ -25,12 +25,10 @@ $(document).ready(function()
 					required: "Please enter your email"
 				},
 				password: {
-					required: "Please enter your password",
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+					required: "Please enter your password"
 				},
 				confPassword: {
-					required: "Please re-enter your password for confirmation",
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+					required: "Please re-enter your password for confirmation"
 				}
 			},
 
