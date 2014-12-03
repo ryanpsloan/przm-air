@@ -446,9 +446,9 @@ class FlightTest extends UnitTestCase {
 					}
 
 					// if there should be results of some sort returned for the given amount of passengers, then assert that it was so.
-					if($numberOfPassengersRequested < 20) {
+					if($numberOfPassengersRequested <= 20) {
 						$this->assertNotNull($thisArrayOfPaths);
-					} else if ($numberOfPassengersRequested >= 20) {
+					} else if ($numberOfPassengersRequested > 20) {
 						$this->assertNull($thisArrayOfPaths);
 					}
 

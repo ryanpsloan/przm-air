@@ -822,22 +822,25 @@ class Flight {
 
 
 	/**
-	 * searches all flights based on user input to return route options
+	 * searches all flights based on user input to return route options with calculated total price and duration
 	 * NOTE that when user loads the return route page after selecting an outbound route, this function will need to be
 	 * called again but with the user's origin inputted to function as $userDestination, and the destination as the
 	 * $userOrigin, and the return date inputted as $userFlyDate
-	 * @param resource $mysqli pointer to temp mySQL connection, by reference
-	 * @param string $userOrigin with 3 letter origin city
-	 * @param string $userDestination with 3 letter destination city
-	 * @param string $userFlyDateStart of midnight on user's chosen fly date
-	 * @param string $userFlyDateEnd defined by range of time all paths must be complete by.  (Default should be 24 hours).
-	 * @param mixed $numberOfPassengers of number of passengers flying together on the same flight path as part of same search and eventual purchase
-	 * @param mixed $minLayover the number of minutes a user requires between flights in a given path
-	 * @throws RangeException if origin or destination codes are not 3 letters.
-	 * @throws mysqli_sql_exception when mySQL related errors occur
-	 * @return mixed $allFlightsArray of flight and flight combos/paths found or null if not found
+	 * @param 	resource $mysqli pointer to temp mySQL connection, by reference
+	 * @param 	string $userOrigin with 3 letter origin city
+	 * @param 	string $userDestination with 3 letter destination city
+	 * @param 	string $userFlyDateStart of midnight on user's chosen fly date
+	 * @param 	string $userFlyDateEnd defined by range of time all paths must be complete by.  (Default should be
+*            	24 hours).
+	 * @param 	mixed $numberOfPassengers of number of passengers flying together on the same flight path as part of same
+	 * 			search and eventual purchase
+	 * @param 	mixed $minLayover the number of minutes a user requires between flights in a given path
+	 * @throws 	RangeException if origin or destination codes are not 3 letters.
+	 * @throws 	mysqli_sql_exception when mySQL related errors occur
+	 * @return 	mixed $allFlightsArray array of all flight paths, each of which is an array of flight object(s) plus
+	 * 			DateInterval object for total path duration and integer of total price for path.
 	 **/
-	// fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
+// fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
 	public static function getRoutesByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateEnd, $numberOfPassengers, $minLayover) {
 		// handle degenerate cases
@@ -875,7 +878,7 @@ class Flight {
 		}
 
 
-		// 3.:
+		// 3.: fixme add restriction that date has to be a future one.
 		$userFlyDateStart = trim ($userFlyDateStart);
 
 		if(filter_var($userFlyDateStart, FILTER_SANITIZE_STRING) === false) {
@@ -973,7 +976,6 @@ class Flight {
 
 		// convert the path within associative array to individual Flight objects for all origin + departure + date equal to $userOrigin,
 		// $userDestination, and $userFlyDate range.  Do math with these objects, then add these objects and the math results to the array for all paths.
-		// fixme does the $arrayOfPathFlightObjects reset to empty at top before running through rest of loop again?
 		foreach($getStoredProcResults as $a => $elementA) {
 
 			try {
@@ -1018,9 +1020,9 @@ class Flight {
 					$multipleFlightDiscount = 1;
 				}
 				else if($sizeEachFlightPath >= 2 &&  $sizeEachFlightPath <= 3) {
-					$multipleFlightDiscount = 1 - (.1 * $sizeEachFlightPath);
+					$multipleFlightDiscount = 1 - (.25 * $sizeEachFlightPath);
 				}
-				else $multipleFlightDiscount = 0.65;
+				else $multipleFlightDiscount = 0.40;
 
 				// calc additional charge for nearby time windows.
 				// first set today's date as of 12 noon to use as marker for calc.
@@ -1040,10 +1042,10 @@ class Flight {
 					$timeWindowFactor = 1.75;
 				}
 				else if($daysTillFlight <= 14 && $daysTillFlight > 7) {
-					$timeWindowFactor = 1.5;
+					$timeWindowFactor = 1.4;
 				}
 				else if($daysTillFlight <= 28 && $daysTillFlight > 14) {
-					$timeWindowFactor = 1.25;
+					$timeWindowFactor = 1.15;
 				}
 				else $timeWindowFactor = 1;
 
@@ -1068,7 +1070,6 @@ class Flight {
 				//Calc the duration
 				$lastFlightIdArrival = 		$arrayOfPathFlightObjects[$sizeEachFlightPath-1]->getArrivalDateTime();
 				$totalDurationForPath = 	$firstFlightIdDeparture->diff($lastFlightIdArrival);
-				//fixme turn interval to hours integer before returning
 
 				//push the duration and the price into the $arrayOfPathFlightObjects array
 				$arrayOfPathFlightObjects[] = $totalDurationForPath;
