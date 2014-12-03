@@ -37,7 +37,7 @@ class Results {
 			throw(new mysqli_sql_exception("Derp (".$link->errno.")".$link->error));
 		}
 
-		mysqli_close($link);
+		//mysqli_close($link);
 
 		return($array);
 	}
