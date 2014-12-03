@@ -1,9 +1,11 @@
 <?php
 	include("php/user.php");
 	include("php/profile.php");
+
 try {
 	require("php/flight.php");
 	session_start();
+	var_dump($_SESSION);
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
 			<a href="userLogin/signOut.php">Sign Out</a>
@@ -127,69 +129,14 @@ EOF;
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab"><p>Search
 			Components	and Content Go Here</p>
 			<!-- datepickers go here -->
-			<form class="navbar-form navbar-left" role="search" action="flight_search_processor.php" method="POST">
+			<p><label>Departure Date</label><input type="text" class="datepicker"></p>
+			<p><label>Arrival Date</label><input type="text" class="datepicker"></p>
+			<form class="navbar-form navbar-right" role="search">
 				<div class="form-group">
-
-					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-primary active">
-							<input type="radio" name="roundTrip" id="roundTrip" autocomplete="off" checked>
-							Round Trip
-						</label>
-						<label class="btn btn-primary">
-							<input type="radio" name="oneWay" id="oneWay" autocomplete="off">
-							One Way
-						</label>
-					</div>
-					<p></p>
-					<p></p>
-
-					<p><label>From:</label><br/>
-						<input type="text" class="form-control" id="origin" name="origin"><br/>
-						<em>enter city or airport code</em></p>
-						<p></p>
-						<p></p>
-
-					<p><label>To:</label><br/>
-						<input type="text" class="form-control" id="destination" name="destination"><br/>
-						<em>enter city or airport code</em></p>
-						<p></p>
-						<p></p>
-						<p></p>
-
-					<p><label>Departure Date:</label><br/>
-						<input type="text" class="datepicker" id="departDate" name="departDate"></p>
-						<p></p>
-						<p></p>
-
-					<p><label>Return Date:</label><br/>
-						<input type="text" class="datepicker" id="returnDate" name="returnDate"></p>
-						<p></p>
-						<p></p>
-
-					<label class="btn btn-primary active">
-						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
-						Flexible Dates?
-					</label><p><em>  select to see grid of cheapest fares in month</em></p>
-					<p></p>
-					<p></p>
-
-					<p><label>Number of Passengers:</label><br/>
-						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers"></p>
-						<p></p>
-						<p></p>
-
-					<p><label>Minimum Layover: </label><br/>
-						<input type="text" class="form-control" id="minLayover" name="minLayover"><br/>
-						<em>enter number of minutes</em></p>
-					<p></p>
-					<p></p>
-
-
-					<button type="submit" class="btn btn-default">Submit</button>
+					<input type="text" class="form-control" placeholder="Search">
 				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
-
-
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="reservation"
 			  aria-labelledby="reservation-tab"><p>Links to change functions go here

@@ -31,9 +31,9 @@ session_start();
 			<input type="password" id="password" name="password"></p>
 		<p><label>Confirm New Password</label>
 			<input type="password" id="confPassword" name="confPassword"></p>
-
+		<?php echo generateInputTags(); ?>
 		<button type="submit">Change Password</button>
-		<?php generateInputTags(); ?>
+
 	</fieldset>
 	<div id="outputArea"></div>
 </form>

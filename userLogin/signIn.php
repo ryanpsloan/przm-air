@@ -31,7 +31,7 @@ session_start();
 	<label for="password">Password:</label>
 	<input type="password" id="password" name="password" autocomplete="off"><br>
 	<p><a id="forgotPass" href='forgotPass.php'>Forgot Your Password?</a></p>
-	<?php generateInputTags(); ?>
+	<?php echo generateInputTags(); ?>
 	<button type="submit">Sign In</button>
 
 </form>
