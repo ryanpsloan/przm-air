@@ -1,10 +1,9 @@
 <?php
 	include("php/user.php");
 	include("php/profile.php");
-	require("php/flight.php");
 try {
+	require("php/flight.php");
 	session_start();
-	var_dump($_SESSION);
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
 			<a href="userLogin/signOut.php">Sign Out</a>
@@ -30,15 +29,12 @@ EOF;
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>PRZM AIR</title>
-
-	<!--fixme keep excellent zach-->
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script type="text/javascript" src="flight_search.js"></script>
 
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-
-	<!--fixme Zach added: keep excellent-->
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
@@ -126,9 +122,9 @@ EOF;
 	<div id="myTabContent" class="tab-content">
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
 
-			<form class="navbar-form navbar-left" role="search" action="flight_search_processor.php" method="POST">
+			<form class="navbar-form navbar-left" role="search" id="flightSearch" action="flight_search_processor.php" method="POST">
 				<div class="form-group">
-	<!-- This looks good zach! -->
+
 					<div class="btn-group" data-toggle="buttons">
 						<label class="btn btn-primary active">
 							<input type="radio" name="roundTrip" id="roundTrip" autocomplete="off" checked>
@@ -187,7 +183,21 @@ EOF;
 					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
 			</form>
+			<div id="searchOutputArea">
+				<ul>
+					<li>
 
+
+						<button type="selectRoute" class="btn btn-default">Select Route</button>
+
+					</li>
+
+
+				</ul>
+
+
+
+			</div>
 
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="reservation"

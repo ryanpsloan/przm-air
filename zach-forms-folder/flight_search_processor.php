@@ -10,17 +10,34 @@
 
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/flight.php");
-$mysqli = MysqliConfiguration::getMysqli();
-
-session_start();
-	$flightPath = $_SESSION['flightPaths'];
+require("../lib/csrf.php");
 
 try {
-	$thisArrayOfPaths = Flight::getRoutesByUserInput($this->mysqli, $userOrigin, $userDestination,
-		$userFlyDateStart, $userFlyDateEnd,
-		$numberOfPassengersRequested, $minLayover);
-} catch(Exception $exception) {
-	throw (new mysqli_sql_exception("Unable to create flight."));
-	return;
+	session_start();
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+		echo "<div class='alert alert-warning' role=
+		'alert'><a href='#' class='alert-link'>Make sure cookies are enabled</a></div>";
+	}
 
+	$mysqli = MysqliConfiguration::getMysqli();
+
+	$flightPaths = $_SESSION['flightPathsObj'];
+
+
+		$thisArrayOfPaths = Flight::getRoutesByUserInput($this->mysqli, $userOrigin, $userDestination,
+			$userFlyDateStart, $userFlyDateEnd,
+			$numberOfPassengersRequested, $minLayover);
+
+
+
+
+
+
+
+
+
+}catch (Exception $e){
+	echo "<div class='alert alert-danger' role='alert'>
+  <a href='#' class='alert-link'>".$e->getMessage."</a></div>";
+}
 ?>
