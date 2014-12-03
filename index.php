@@ -1,10 +1,9 @@
 <?php
 	include("php/user.php");
 	include("php/profile.php");
+try {
 	session_start();
-	var_dump($_SESSION);
-
-	if(isset($_SESSION['userId'])){
+	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
 			<a href="userLogin/signOut.php">Sign Out</a>
 
@@ -12,13 +11,16 @@ EOF;
 		$account = <<< EOF
 		<li><a href="userLogin/editUserProfile.php">Edit Profile</a></li>
 EOF;
-	}else{
+	}
+	else {
 		$status = <<< EOF
 			<a href="userLogin/signIn.php">Sign In</a>
 EOF;
 		$account = "";
 	}
+} catch(Exception $e){
 
+}
 ?>
 
 <!DOCTYPE html>

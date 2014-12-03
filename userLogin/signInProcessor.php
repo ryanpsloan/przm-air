@@ -1,29 +1,23 @@
 <?php
 require_once("/etc/apache2/capstone-mysql/przm.php");
-$mysqli = MysqliConfiguration::getMysqli();
 include("../php/user.php");
 include("../php/profile.php");
 include('../lib/csrf.php');
-
+try {
 	session_start();
+	$mysqli = MysqliConfiguration::getMysqli();
 
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		echo "<p>CSRF tokens incorrect or missing. Make sure cookies are enabled</p>";
 	}
-
-
-	//filter inputs
+//filter inputs
 	$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 	$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 
-	//grab user by email
-	if(User::getUserByEmail($mysqli, $email) === null || User::getUserByEmail($mysqli, $email) === false) {
-		echo "<p>We couldn't access your account. Check that email and password are correct</p>";
-	}
-	else {
-		$user = User::getUserByEmail($mysqli, $email);
-		if(isset($_SESSION['userId'])) {
-			echo "<p>You are already signed in</p>
+	if(isset($_SESSION['userId'])) {
+
+		echo "<div class='alert alert-danger' role='alert'><a href='#' class='alert-link'>You are already signed in</a>
+				</div>
 					<p><a href='../index.php'>Home</a></p>
 					 <script>
 									$(document).ready(function() {
@@ -35,15 +29,18 @@ include('../lib/csrf.php');
 										$('#forgotPass').hide();
 									});
 							  </script>";
-
-		}
-		else {
+	} else {
+		//grab user by email
+		$user = User::getUserByEmail($mysqli, $email);
+		if($user === null) {
+			echo "<div class='alert alert-warning' role='alert'><a href='#' class='alert-link'>
+			We couldn't access your account. Check that email and password are correct and that you are signed up</a></div>";
+		} else {
 			$userPass = hash_pbkdf2("sha512", $password, $user->getSalt(), 2048, 128);
 
 			if(!($userPass === $user->getPassword())) {
-				echo "<p>Passwords do not match</p>";
-
-
+				echo "<div class='alert alert-warning' role='alert'><a href='#' class='alert-link'>
+							Passwords do not match</a></div>";
 			}
 			else {
 
@@ -70,7 +67,9 @@ include('../lib/csrf.php');
 			}
 		}
 	}
-
+}catch(Exception $e){
+	echo "<div class='alert alert-danger' role='alert'><a href='#' class='alert-link'>".$e->getMessage()."</a></div>";
+}
 ?>
 
 

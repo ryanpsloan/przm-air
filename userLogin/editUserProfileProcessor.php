@@ -3,13 +3,14 @@ require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/user.php");
 require("../php/profile.php");
 include("../lib/csrf.php");
-$mysqli = MysqliConfiguration::getMysqli();
 
+try {
 	session_start();
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
-		echo "<p>Make sure cookies are enabled</p>";
+		echo "<div class='alert alert-warning' role=
+		'alert'><a href='#' class='alert-link'>Make sure cookies are enabled</a></div>";
 	}
-
+	$mysqli = MysqliConfiguration::getMysqli();
 	$profile = $_SESSION['profileObj'];
 
 	$profile->setFirstName($newFirstName = filter_input(INPUT_POST, "first", FILTER_SANITIZE_STRING));
@@ -26,13 +27,16 @@ $mysqli = MysqliConfiguration::getMysqli();
 	$profile->update($mysqli);
 	$profile->userObj->update($mysqli);
 
-	echo "<p>Your profile has been updated with your changes</p>
+	echo "<div class='alert alert-success' role='alert'>
+  			<a href='#' class='alert-link'>Your profile has been updated with your changes</a></div>
 			<script>
 						$(document).ready(function() {
 							$(':input').attr('disabled', true);
 						});
 			</script>";
 	echo "<p><a href='..\index.php'>Home</a></p>";
-
-
+}catch (Exception $e){
+	echo "<div class='alert alert-danger' role='alert'>
+  <a href='#' class='alert-link'>".$e->getMessage."</a></div>";
+}
 ?>
