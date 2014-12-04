@@ -127,8 +127,10 @@ EOF;
 		</li>
 	</ul>
 	<div id="myTabContent" class="tab-content">
-		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
 
+		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab"><p>Search
+			Components	and Content Go Here</p>
+			<!-- datepickers go here -->
 			<form class="navbar-form navbar-left" role="search" id="flightSearch" action="flight_search_processor.php" method="POST">
 				<div class="form-group">
 
@@ -181,7 +183,11 @@ EOF;
 						<p></p>
 
 					<p><label>Minimum Layover: </label><br/>
+<<<<<<< Updated upstream
 						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "20"><br/>
+=======
+						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30"><br/>
+>>>>>>> Stashed changes
 						<em>enter number of minutes</em></p>
 					<p></p>
 					<p></p>
@@ -191,6 +197,7 @@ EOF;
 				</div>
 			</form>
 			<div id="searchOutputArea">
+<<<<<<< Updated upstream
 				<table>
 					<tr>
 						<button type="selectRoute" class="btn btn-default">Select Route</button>
@@ -198,6 +205,49 @@ EOF;
 
 
 				</table>
+=======
+				<ul>
+					<li>
+
+
+						<button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+
+
+
+
+
+
+
+
+
+
+
+
+				</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
+>>>>>>> Stashed changes
 
 
 
