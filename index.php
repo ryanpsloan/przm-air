@@ -61,6 +61,7 @@ EOF;
 
 	</style>
 	<script>
+		//Here's the function
 	$(function(){
 		function enableEnd() {
 			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', "this.value + 1d").datepicker('option',
