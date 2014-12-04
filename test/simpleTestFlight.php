@@ -490,9 +490,9 @@ class FlightTest extends UnitTestCase {
 							$this->assertTrue($layover >= $minLayover);
 						}
 
-
+							// fixme think the counter needs adjusting:
 						// Loop 5B: (sibling not child of 5A) Assert identical each flightId's info with a select from the database
-						for($f = 0; empty($thisArrayOfPaths[$d][$f+3]) === false; $f++) {
+						for($f = 0; empty($thisArrayOfPaths[$d][$f+2]) === false; $f++) {
 
 							$flightObject = Flight::getFlightByFlightId($this->mysqli, $thisArrayOfPaths[$d][$f]->getFlightId());
 
