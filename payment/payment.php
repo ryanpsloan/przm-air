@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once("../lib/csrf.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,9 +18,9 @@ session_start();
 	<script type="text/javascript" src="payment.js"></script>
 </head>
 	<body>
-	<form id="paymentForm" method="post" action="payment.php" class="col-xs-3">
+	<form id="paymentForm" method="post" action="paymentProcessor.php">
 		<label for="firstName">First Name</label>
-		<input type="text" id="firstName" name="firstName" class="form-control" /><br />
+		<input type="text" id="firstName" name="firstName" /><br />
 		<label for="middleName">Middle Name</label>
 		<input type="text" id="middleName" name="middleName" /><br />
 		<label for="lastName">Last Name</label>
