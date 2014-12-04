@@ -39,7 +39,7 @@ try {
 	$middleName = $row['userMiddleName'];
 	$lastName = $row['userLastName'];
 	$newDateObj = DateTime::createFromFormat("Y-m-d H:i:s", $row['dateOfBirth']);
-	$dateOfBirth = $newDateObj->format("Y-m-d");
+	$dateOfBirth = $newDateObj->format("m/d/Y");
 }catch(Exception $e){
 	echo "<div class='alert alert-danger' role='alert'><a href='#' class='alert-link'>".$e->getMessage().
 		"</a></div>";
@@ -53,20 +53,18 @@ try {
 	<title>Edit Profile</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-	<script type="text/javascript" src="editUserProfile.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<script type="text/javascript" src="editUserProfile.js"></script>
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({

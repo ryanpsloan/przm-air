@@ -61,14 +61,21 @@ EOF;
 
 	</style>
 	<script>
-		$(function() {
-			$( ".datepicker" ).datepicker({
-				changeMonth: true,
-				changeYear: true,
-				maxDate: "+1y",
-				minDate: "0d"
-			});
-		});
+	$(function(){
+		function enableEnd() {
+			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', this.value).datepicker('option',
+				'maxDate', "+1y");
+		}
+
+		var end = $('#returnDate').datepicker();
+
+		$('#departDate').datepicker({
+			minDate: '0d',
+			maxDate: '+1y',
+			onSelect: enableEnd
+		}).bind('input', enableEnd);
+
+	});
 	</script>
 </head>
 <body>
@@ -157,7 +164,7 @@ EOF;
 						<p></p>
 
 					<p><label>Return Date:</label><br/>
-						<input type="text" class="datepicker" id="returnDate" name="returnDate"></p>
+						<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled"></p>
 						<p></p>
 						<p></p>
 

@@ -26,7 +26,8 @@ CREATE TABLE user (
 	salt CHAR(64) NOT NULL,
 	authToken CHAR(32),
 	PRIMARY KEY(userId),
-	UNIQUE(email)
+	UNIQUE(email),
+	INDEX(authToken)
 );
 
 CREATE TABLE profile (
