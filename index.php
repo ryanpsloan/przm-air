@@ -63,7 +63,7 @@ EOF;
 	<script>
 	$(function(){
 		function enableEnd() {
-			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', this.value).datepicker('option',
+			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', "this.value + 1d").datepicker('option',
 				'maxDate', "+1y");
 		}
 

@@ -8,9 +8,9 @@ try {
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
-		echo "<p>CSRF tokens incorrect or missing. Make sure cookies are enabled</p>";
+		throw(new RuntimeException("Make sure cookies are enabled"));
 	}
-//filter inputs
+	//filter inputs
 	$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
 	$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 
@@ -39,26 +39,18 @@ try {
 			$userPass = hash_pbkdf2("sha512", $password, $user->getSalt(), 2048, 128);
 
 			if(!($userPass === $user->getPassword())) {
-				echo "<div class='alert alert-warning' role='alert'><a href='#' class='alert-link'>
-							Passwords do not match</a></div>";
+				throw(new UnexpectedValueException("Email or Password is not correct"));
 			}
 			else {
 
 				$_SESSION['userId'] = $user->getUserId();
-				$_SESSION["authToken"] = $user->getAuthenticationToken();
-				$profile = Profile::getProfileByUserId($mysqli, $user->getUserId());
 
-				$profile->setUserObject($user);
-				$_SESSION["profileObj"] = $profile;
-				$output = "<p>Successful Sign In</p>
+				$output = "<div class='alert alert-success' role='alert'>Successful Sign In</div>
 						     <p><a href='../index.php'>Home</a></p>
 						     <script>
 									$(document).ready(function() {
-										/*$(':input').attr('disabled', true);
-										$('#signUpLink').removeAttr('href');
-										$('#forgotPass').removeAttr('href');*/
-										$('#signInForm').hide();
-										$('#signUpLink').hide();
+										$(':input').attr('disabled', true);
+									 	$('#signUpLink').hide();
 										$('#forgotPass').hide();
 									});
 							  </script>";

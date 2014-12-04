@@ -25,10 +25,12 @@ $(document).ready(function()
 					required: "Please enter your email"
 				},
 				password: {
-					required: "Please enter your password"
+					required: "Please enter your password",
+					equalTo: '#confPassword'
 				},
 				confPassword: {
-					required: "Please re-enter your password for confirmation"
+					required: "Please re-enter your password for confirmation",
+					equalTo: '#password'
 				}
 			},
 

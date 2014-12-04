@@ -5,13 +5,16 @@ $(document).ready(function()
 
 			rules: {
 				first : {
-					required: true
+					required: true,
+					pattern: /^[a-zA-Z]+$/
 				},
 				middle: {
-					required: false
+					required: false,
+					pattern: /^[a-zA-Z]+$/
 				},
 				last  : {
-					required: true
+					required: true,
+					pattern: /^[a-zA-Z]+$/
 				},
 				dob   : {
 					required: true
@@ -22,13 +25,13 @@ $(document).ready(function()
 				},
 				password: {
 					required: true,
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
-
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/,
+					equalTo: "#confPassword"
 				},
 				confPassword: {
 					required: true,
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
-
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/,
+					equalTo: "#password"
 				}
 			},
 
@@ -50,6 +53,7 @@ $(document).ready(function()
 				},
 				password: {
 					required: "Please enter a password of a minimum of 5 characters using at least one capital, one letter, and one digit, no special characters, maximum 12"
+
 				},
 				confPassword: {
 					required: "Please enter a password of a minimum of 5 characters using at least one capital, one letter, and one digit, no special characters, maximum 12"

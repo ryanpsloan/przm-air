@@ -25,15 +25,14 @@ try {
 
 	$profile->update($mysqli);
 	$profile->userObj->update($mysqli);
-
 	echo "<div class='alert alert-success' role='alert'>
   			Your profile has been updated with your changes</div>
 			<script>
 						$(document).ready(function() {
 							$(':input').attr('disabled', true);
 						});
-			</script>";
-	echo "<p><a href='..\index.php'>Home</a></p>";
+			</script>
+	<p><a href='..\index.php'>Home</a></p>";
 }catch (Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>"
   .$e->getMessage."</div>";
