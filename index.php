@@ -63,7 +63,7 @@ EOF;
 	<script>
 	$(function(){
 		function enableEnd() {
-			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', "this.value + 1d").datepicker('option',
+			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', this.value).datepicker('option',
 				'maxDate', "+1y");
 		}
 
@@ -176,12 +176,12 @@ EOF;
 					<p></p>
 
 					<p><label>Number of Passengers:</label><br/>
-						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers"></p>
+						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"></p>
 						<p></p>
 						<p></p>
 
 					<p><label>Minimum Layover: </label><br/>
-						<input type="text" class="form-control" id="minLayover" name="minLayover"><br/>
+						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "20"><br/>
 						<em>enter number of minutes</em></p>
 					<p></p>
 					<p></p>
@@ -191,16 +191,13 @@ EOF;
 				</div>
 			</form>
 			<div id="searchOutputArea">
-				<ul>
-					<li>
-
-
+				<table>
+					<tr>
 						<button type="selectRoute" class="btn btn-default">Select Route</button>
+					</tr>
 
-					</li>
 
-
-				</ul>
+				</table>
 
 
 

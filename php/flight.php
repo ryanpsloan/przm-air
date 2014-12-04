@@ -13,6 +13,7 @@
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("results.php");
 
+//fixme add in conversions of incoming date formats from datepicker in jQuery to to needed formats, then change back to end back to front end
 
 class Flight {
 	/**
@@ -840,6 +841,7 @@ class Flight {
 	 * 			DateInterval object for total path duration and integer of total price for path.
 	 **/
 // fixme: add configuration file or actually hardwire as public static variables at top of class for businss logic numbers
+// fixme: add ability to do return flight search so that it only searches dates after the depart date's last arrival, even if on same day
 	public static function getRoutesByUserInput(&$mysqli, $userOrigin, $userDestination, $userFlyDateStart,
 															  $userFlyDateRange, $numberOfPassengers, $minLayover) {
 		// handle degenerate cases

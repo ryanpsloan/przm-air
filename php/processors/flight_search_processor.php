@@ -36,13 +36,44 @@ try {
 
 
 
-	$thisArrayOfPaths = Flight::getRoutesByUserInput($this->mysqli, $userOrigin, $userDestination,
-			$userFlyDateStart, $userFlyDateEnd,
+	$thisArrayOfPaths = Flight::getRoutesByUserInput($mysqli, $userOrigin, $userDestination,
+			$userFlyDateStart, $userFlyDateRange,
 			$numberOfPassengersRequested, $minLayover);
 
+	$outputTable = "<table>";
+	foreach($thisArrayOfPaths as $path) {
+		// build on to outputTable
+		$tableRow[$path] = $thisArrayOfPaths[$path];
+	}
 
 
 
+	$outputTable = "<table>";
+	for($i=0; empty($thisArrayOfPaths[$i]) === true; $i++) {
+
+		$sizeOfThisPath = count($thisArrayOfPaths[$i]) - 3;
+		$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime();
+		$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime();
+		$flightNumber = array();
+
+		for($j = 0; empty($thisArrayOfPaths[$i][$j + 3]) === true; $j++) {
+			$flightNumber = $thisArrayOfPaths[$i][$j]->getFlightNumber();
+		}
+
+		$numberOfStops = $sizeOfThisPath;
+
+		$totalDurationInterval = $thisArrayOfPaths[$i][$sizeOfThisPath+1];
+		$travelTime = $totalDurationInterval->format("H:i");
+
+		$totalPrice = $thisArrayOfPaths[$i][$sizeOfThisPath+2];
+
+		$outputTable = $outputTable . "<tr>" . $departureFlight1 . $arrivalFlightLast . $flightNumber . $numberOfStops . $travelTime . $totalPrice . "</tr>";
+	}
+
+
+
+	$outputTable = $outputTable . "</table>";
+	echo $outputTable;
 
 
 
