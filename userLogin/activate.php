@@ -16,12 +16,11 @@ try {
 	$_SESSION['profileObj'] = $newProfile;
 
 
-	echo "<div class='alert alert-success' role='alert'> <a href='#' class='alert-link'>Your account has been authenticated. You are now signed in</a>
+	echo "<div class='alert alert-success' role='alert'> Your account has been authenticated. You are now signed in
 			</div><p><a href='../index.php'>Home</a></p>";
 
 }catch(Exception $e){
-	echo "<div class='alert alert-danger' role='alert'><a href='#' class='alert-link'>".$e->getMessage()."</a>
-	</div>";
+	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
 ?>
 <!-- Latest compiled and minified CSS -->
