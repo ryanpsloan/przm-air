@@ -183,11 +183,7 @@ EOF;
 						<p></p>
 
 					<p><label>Minimum Layover: </label><br/>
-<<<<<<< Updated upstream
 						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "20"><br/>
-=======
-						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30"><br/>
->>>>>>> Stashed changes
 						<em>enter number of minutes</em></p>
 					<p></p>
 					<p></p>
@@ -197,7 +193,6 @@ EOF;
 				</div>
 			</form>
 			<div id="searchOutputArea">
-<<<<<<< Updated upstream
 				<table>
 					<tr>
 						<button type="selectRoute" class="btn btn-default">Select Route</button>
@@ -205,7 +200,6 @@ EOF;
 
 
 				</table>
-=======
 				<ul>
 					<li>
 
@@ -219,6 +213,7 @@ EOF;
 					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
 					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
 					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+
 
 
 
@@ -247,7 +242,6 @@ EOF;
 
 
 			</div>
->>>>>>> Stashed changes
 
 
 
