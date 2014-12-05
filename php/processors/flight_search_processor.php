@@ -9,7 +9,7 @@
 
 
 require("/etc/apache2/capstone-mysql/przm.php");
-require("../php/flight.php");
+require("./class/flight.php");
 require("../lib/csrf.php");
 
 /**
