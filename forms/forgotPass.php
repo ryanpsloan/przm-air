@@ -19,7 +19,7 @@ session_start();
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-	<script type="text/javascript" src="forgotPass.js"></script>
+	<script type="text/javascript" src="../js/forgotPass.js"></script>
 	<style>
 		#formDiv{
 			padding: 2em;

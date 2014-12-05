@@ -22,21 +22,37 @@ try {
 	}
 
 	$mysqli = MysqliConfiguration::getMysqli();
-
 	$flightPaths = $_SESSION['flightPathsObj'];
 
-	// clean inputs, adjust dates to needed format
-	$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
-	$userDestination = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
 
 
-	$userFlyDateStart = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
-//	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-//	$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2);
-//	$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
-	echo $userFlyDateStart;
 
-	//if statement for round-trip
+	if ($_POST ["radioButton"] === 1) {
+		$tripCounter = 1;
+	} else {
+		$tripCounter = 0;
+	}
+
+	for ($m=0; $m < $tripCounter; $m++)
+		// clean inputs, adjust dates to needed format
+		$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
+		$userDestination = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
+
+
+		$userFlyDateStart = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
+	//	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+	//	$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2);
+	//	$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
+		echo $userFlyDateStart;
+
+		//if statement for round-trip
+
+
+
+
+
+
+
 
 	/**
 	 * sets up all other needed variables that are same for outbound and return searches, then calls the method with all inputs
@@ -46,7 +62,7 @@ try {
 	 * @param 	string $userFlyDateStart of midnight on user's chosen fly date
 	 * @return 	mixed html table of search results (1 table if one-way, 2 tables if round trip)
 	 **/
-	private function completeSearch (&$mysqli, $userOrigin, $userDestination,
+	function completeSearch (&$mysqli, $userOrigin, $userDestination,
 												$userFlyDateStart) {
 
 		// can make this a user input in future to pre-filter results to a user-given duration amount in hours.

@@ -8,7 +8,7 @@ try {
 
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
-			<a href="userLogin/signOut.php"><span class="glyphicon glyphicon-user"></span></a>
+			<a href="forms/signOut.php"><span class="glyphicon glyphicon-user"></span></a>
 
 EOF;
 		$account = <<< EOF
@@ -23,7 +23,7 @@ EOF;
 	}
 	else {
 		$status = <<< EOF
-			<a href="userLogin/signIn.php">Sign In</a>
+			<a href="forms/signIn.php">Sign In</a>
 EOF;
 		$account = "";
 	}
@@ -171,11 +171,11 @@ EOF;
 
 					<div class="btn-group" data-toggle="buttons">
 						<label class="btn btn-primary active">
-							<input type="radio" name="roundTrip" id="roundTrip" autocomplete="off" checked>
+							<input type="radio" name="radioButton" id="roundTrip" autocomplete="off" checked value="1">
 							Round Trip
 						</label>
 						<label class="btn btn-primary">
-							<input type="radio" name="oneWay" id="oneWay" autocomplete="off">
+							<input type="radio" name="radioButton" id="oneWay" autocomplete="off" value="0">
 							One Way
 						</label>
 					</div>
@@ -250,9 +250,9 @@ EOF;
 			  aria-labelledby="account-tab">
 			<div id="accountLinksDiv">
 				<ul id="accountLinksList">
-					<li class="sl"><p class="pi c"><a href="userLogin/editUserProfile.php">
+					<li class="sl"><p class="pi c"><a href="forms/editUserProfile.php">
 						<span class="glyphicon glyphicon-flash"></span>Edit Profile</a></p></li>
-					<li class ="sl"><p class="pi c"><a href="userLogin/editUserProfile.php">
+					<li class ="sl"><p class="pi c"><a href="forms/editUserProfile.php">
 						<span class="glyphicon glyphicon-plus"></span>Add Traveler</a></p></li>
 				</ul>
 			</div>

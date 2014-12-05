@@ -19,7 +19,7 @@ session_start();
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-	<script type="text/javascript" src="signIn.js"></script>
+	<script type="text/javascript" src="../js/signIn.js"></script>
 	<style>
 		#container{
 			position:absolute;
@@ -88,7 +88,7 @@ session_start();
 		<p style="text-align: center"><strong>Sign In</strong></p>
 		<hr>
 		<div id="formDiv">
-		<form id="signInForm" action="signInProcessor.php" method="POST">
+		<form id="signInForm" action="../php/processors/signInProcessor.php" method="POST">
 			<p><label for="email">Email:</label></br>
 				<input type="email" id="email" name="email" autocomplete="off"></p>
 			<p><label for="password">Password:</label></br>

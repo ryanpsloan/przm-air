@@ -1,91 +1,57 @@
 <?php
-require("../php/user.php");
-require("../php/profile.php");
-include("../lib/csrf.php");
-require("/etc/apache2/capstone-mysql/przm.php");
-try {
-	session_start();
-	$mysqli = MysqliConfiguration::getMysqli();
-
-	$profileObj = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
-
-	$query = "SELECT email FROM user WHERE userId = ?";
-	$statement = $mysqli->prepare($query);
-	$statement->bind_param("i", $profileObj->__get('userId'));
-	$statement->execute();
-	$results = $statement->get_result();
-	$row = $results->fetch_assoc();
-
-	$email = $row['email'];
-
-	$query = "SELECT userFirstName, userMiddleName, userLastName, dateOfBirth FROM profile WHERE profileId = ?";
-	$statement = $mysqli->prepare($query);
-	$statement->bind_param("i", $profileObj->__get("profileId"));
-	$statement->execute();
-	$results = $statement->get_result();
-	$row = $results->fetch_assoc();
-
-	$firstName = ucwords($row['userFirstName']);
-	$middleName = ucwords($row['userMiddleName']);
-	$lastName = ucwords($row['userLastName']);
-	$newDateObj = DateTime::createFromFormat("Y-m-d H:i:s", $row['dateOfBirth']);
-	$dateOfBirth = $newDateObj->format("m/d/Y");
-
-}catch(Exception $e){
-	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
-}
+include('../lib/csrf.php');
+session_start();
 ?>
-
 <!DOCTYPE html>
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
-	<title>Edit Profile</title>
+	<title>Sign Up</title>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/signUp.js"></script>
+	<script type="text/javascript" src="../js/signIn.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	<script type="text/javascript" src="editUserProfile.js"></script>
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({
 				changeMonth: true,
 				changeYear: true,
-				maxDate: "0d",
+				maxDate: "0dy",
 				minDate: "-100y"
 			});
 		});
 	</script>
 	<style>
-		#formDiv{
-			position: absolute;
-			height: 43em;
-			width: 50em;
-			top: 10%;
-			left: 20%;
-			border: 2px solid lightgrey;
-			padding: 2em 2em;
-		}
-		legend{
-			text-align: center;
-		}
 		#container{
-			margin-left: 18em;
+			padding: 1em;
+			border: 1px solid lightgrey;
+			position: absolute;
+			top: 10%;
+			left: 5%;
+			height: 46em;
+			width: 60em;
 		}
-		#pass{
-			margin-left: 18em;
+		#outputArea{
+			margin-top: 1em;
 		}
+
+
 	</style>
 </head>
+
 <body>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
@@ -104,8 +70,8 @@ try {
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li>
-					<a href="#"></a>
+				<li id="signInLink" class="hidden">
+					<a href="signIn.php">Sign In</a>
 				</li>
 
 			</ul>
@@ -115,34 +81,39 @@ try {
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
+</nav><!-- /.container-fluid -->
 </nav>
-<div id="formDiv">
-	<form id="editProfile" action="editUserProfileProcessor.php" method="POST">
+<div id="container">
+	<div id="formDiv">
 		<fieldset>
-			<legend>Profile</legend>
-			<div id="container">
+		<form id="signUpForm" action="../php/processors/signUpProcessor.php" method="POST">
+
+				<legend style="text-align: center">Create a Profile</legend>
 				<p><label>First Name</label></br>
-					<input type="text" id="first" name="first" value="<?php echo $firstName ?>"></p>
-				<p><label>Middle Name</label></br>
-					<input type="text" id="middle" name="middle" value="<?php echo $middleName ?>"></p>
+					<input type="text" id="first" name="first" autocomplete="off"></p>
+				<p></p><label>Middle Name</label></br>
+				<input type="text" id="middle" name="middle" autocomplete="off"><br>
 				<p><label>Last Name</label></br>
-					<input type="text" id="last" name="last" value="<?php echo $lastName ?>"></p>
+					<input type="text" id="last" name="last" autocomplete="off"></p>
 				<p><label>Date Of Birth</label></br>
-					<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
+					<input type="text" id="dob" name="dob" class="datepicker" autocomplete="off"></p>
 				<p><label>Email</label></br>
-					<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
+					<input type="email" id="email" name="email" autocomplete="off"></p>
+				<hr>
+				<p>Minimum of 8 characters: letters, numbers, one capital and no special characters</p>
+				<p><label>Password</label></br>
+					<input type="password" id="password" name="password"></p>
+				<p><label>Confirm Password</label></br>
+					<input type="password" id="confPassword" name="confPassword"></p>
+				<button id="button" type="submit">Register</button>
 				<?php echo generateInputTags(); ?>
-				<button type="submit">Submit Changes</button>
-			</div>
+		</form>
 		</fieldset>
-		<br>
-		<fieldset>
-			<legend>Account</legend>
-			<p id="pass"><a href="changePass.php">Change Your Password</a></p>
-		</fieldset>
-	</form>
-	<div id="outputArea"></div>
+		<div id="outputArea"></div>
 </div>
+</div>
+
 
 </body>
 </html>
+

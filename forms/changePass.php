@@ -19,7 +19,7 @@ session_start();
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-	<script type="text/javascript" src="changePass.js"></script>
+	<script type="text/javascript" src="../js/changePass.js"></script>
 	<style>
 		#formDiv{
 			position: absolute;
@@ -67,7 +67,7 @@ session_start();
 </nav>
 <div id="formDiv">
 <fieldset>
-	<form id="changePass" action="changePassProcessor.php" method="POST">
+	<form id="changePass" action="../php/processors/changePassProcessor.php" method="POST">
 		<legend>Change Password</legend>
 		<p>Minimum of 8 characters: letters, numbers, one capital and no special characters</p>
 		<p><label>Old Password</label><br>
