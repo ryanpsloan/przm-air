@@ -5,7 +5,7 @@
  * Date: 12/3/14
  * Time: 10:12 AM
  */
-// FIXME ADD MORE TRY CATCH THROWS?
+// FIXME ADD MORE TRY CATCH THROWS? etc
 
 
 require("/etc/apache2/capstone-mysql/przm.php");
