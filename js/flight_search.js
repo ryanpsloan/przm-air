@@ -8,9 +8,7 @@ $(document).ready(function()
 
 			rules: {
 
-				/**fixme do i need to require and either/or for roundtrip/one way
-				 * fixme what other rules needed for data*/
-				radioButton            : {
+				roundTripOrOneWay : {
 					required: true
 				},
 				origin            : {
@@ -74,5 +72,8 @@ $(document).ready(function()
 						}
 					});
 			}
-		})
+		});
+
+	//toggle or hide unhide
+
 });

@@ -166,16 +166,16 @@ EOF;
 	<div id="myTabContent" class="tab-content">
 
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
-			<form class="navbar-form navbar-left" role="search" id="flightSearch" action="flight_search_processor.php" method="POST">
+			<form class="navbar-form navbar-left" role="search" id="flightSearch" action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
 
 					<div class="btn-group" data-toggle="buttons">
 						<label class="btn btn-primary active">
-							<input type="radio" name="radioButton" id="roundTrip" autocomplete="off" checked value="1">
+							<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
 							Round Trip
 						</label>
 						<label class="btn btn-primary">
-							<input type="radio" name="radioButton" id="oneWay" autocomplete="off" value="0">
+							<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="0">
 							One Way
 						</label>
 					</div>
