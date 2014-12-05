@@ -218,35 +218,9 @@ EOF;
 					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
 
 
-
-
-
-
-
-
-
-
-
-
-
 				</ul>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 			</div>
-
-
 
 			</div>
 

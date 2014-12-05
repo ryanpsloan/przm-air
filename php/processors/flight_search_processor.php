@@ -5,7 +5,7 @@
  * Date: 12/3/14
  * Time: 10:12 AM
  */
-
+// FIXME ADD MORE TRY CATCH THROWS?
 
 
 require("/etc/apache2/capstone-mysql/przm.php");
@@ -23,7 +23,7 @@ try {
 
 	$flightPaths = $_SESSION['flightPathsObj'];
 
-
+	// clean inputs
 	$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
 	$userDestination = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
 	$userFlyDateStart = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
@@ -36,19 +36,12 @@ try {
 	$minLayover = filter_input(INPUT_POST,"minLayover", FILTER_SANITIZE_NUMBER_INT);
 
 
-
+	// call method
 	$thisArrayOfPaths = Flight::getRoutesByUserInput($mysqli, $userOrigin, $userDestination,
 			$userFlyDateStart, $userFlyDateRange,
 			$numberOfPassengersRequested, $minLayover);
 
-	$outputTable = "<table>";
-	foreach($thisArrayOfPaths as $path) {
-		// build on to outputTable
-		$tableRow[$path] = $thisArrayOfPaths[$path];
-	}
-
-
-
+	// set up head of table of search results
 	$outputTableHead = "<thead><tr>
 										<th>Depart</th>
 										<th>Arrive</th>
@@ -59,46 +52,94 @@ try {
 										<th>Price</th>
 								</tr></thead>\n";
 
+	// set up variable for rows then fill in with results by looping through array of paths
 	$outputTableRows = "";
-
 	for($i=0; empty($thisArrayOfPaths[$i]) === true; $i++) {
 
+		//get index for last flight
 		$sizeOfThisPath = count($thisArrayOfPaths[$i]) - 3;
-		$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->format("%H:%i");
-		$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->format("%H:%i");
+
+
+		// origin timezone conversions here
+		if($userOrigin = "SEA" || $userOrigin = "LAX") {
+			$originTimeZoneString = "PT";
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/Los_Angeles"))->format("H:i");
+		}
+		if($userOrigin = "ABQ" || $userOrigin = "DEN") {
+			$originTimeZoneString = "MT";
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/Denver"))->format("H:i");
+		}
+		if($userOrigin = "DFW" || $userOrigin = "ORD" || $userOrigin = "MDW") {
+			$originTimeZoneString = "CT";
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/Chicago"))->format("H:i");
+		}
+		if($userOrigin = "JFK" || $userOrigin = "LGA" || $userOrigin = "MIA" || $userOrigin = "DET" || $userOrigin = "ATL") {
+			$originTimeZoneString = "ET";
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/New_York"))->format("H:i");
+		}
+
+
+		// destination timezone conversions here
+		if($userDestination = "SEA" || $userDestination = "LAX") {
+			$destinationTimeZoneString = "PT";
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/Los_Angeles"))->format("H:i");
+		}
+		if($userDestination = "ABQ" || $userDestination = "DEN") {
+			$destinationTimeZoneString = "MT";
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/Denver"))->format("H:i");
+		}
+		if($userDestination = "DFW" || $userDestination = "ORD"  || $userDestination = "MDW") {
+			$destinationTimeZoneString = "CT";
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/Chicago"))->format("H:i");
+		}
+		if($userDestination = "JFK" || $userDestination = "LGA" || $userDestination = "MIA" || $userDestination = "DET" || $userDestination = "ATL") {
+			$destinationTimeZoneString = "ET";
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/New_York"))->format("H:i");
+		}
+
+
+
+		// set up array for flight number then loop through flights
 		$flightNumberArray = array();
 
 		for($j = 0; empty($thisArrayOfPaths[$i][$j + 3]) === true; $j++) {
 			$flightNumberArray = $thisArrayOfPaths[$i][$j]->getFlightNumber();
 		}
+
+		// turn array to string
 		$flightNumber = implode(", ",$flightNumberArray);
 
-		$numberOfStops = $sizeOfThisPath;
+		// index of last flight also = number of stops to show user
+		if ($sizeOfThisPath = 0) {
+			$numberOfStops = "Nonstop";
+		} $numberOfStops = $sizeOfThisPath;
 
+		// get total duration from results array and change it to a string
 		$totalDurationInterval = $thisArrayOfPaths[$i][$sizeOfThisPath+1];
-		$travelTime = $totalDurationInterval->format("%H:%i");
+		$travelTime = $totalDurationInterval->format("%H:%I");
 
-		//fixme time zone.  3 Options: 1. seed data 2. if statements or loop through all our origins/destinations and assign time zone, then do DateTime math.  3.  Google Places -- get Time Zone then do Date Time Math
+		// set up array for layover then loop through results to calc
 		$layoverArray = array();
 		for($k = 0; empty($thisArrayOfPaths[$i][$k + 3]) === false; $k++) {
-
 			$layoverInterval = $thisArrayOfPaths[$i][$k]->getArrivalDateTime()->
 			diff($thisArrayOfPaths[$i][$k + 1]->getDepartureDateTime());
 			$minutes = $layoverInterval->days * 24 * 60;
 			$minutes += $layoverInterval->h * 60;
 			$minutes += $layoverInterval->i;
-
 			$layoverArray = intval($minutes);
 		}
 
+		// turn layover to string of all layovers in route
 		if (empty($layoverArray) === true) {
 			$layoverString = "None";
 		} else {
 			$layoverString = implode(", ",$layoverArray);
 		}
 
+		// get total price from results
 		$totalPrice = $thisArrayOfPaths[$i][$sizeOfThisPath+2];
 
+		// build outputs into table rows
 		$outputTableRows = $outputTableRows . "<tr>" .
 									"<td>" . $departureFlight1 . "</td>" .
 									"<td>" . $arrivalFlightLast . "</td>" .
@@ -113,6 +154,8 @@ try {
 	$outputTable = "<table>\n" . $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n</table>\n";
 	echo $outputTable;
 
+
+	// DateTime Math
 }catch (Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>
   <a href='#' class='alert-link'>".$e->getMessage."</a></div>";

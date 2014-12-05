@@ -65,7 +65,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "flight_search_processor.php",
+						url    : "./php/processors/flight_search_processor.php",
 						success: function(ajaxOutput) {
 							$("#searchOutputArea").html(ajaxOutput);
 						}
