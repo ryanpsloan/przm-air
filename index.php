@@ -62,10 +62,6 @@ EOF;
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<style>
-		h1{
-			text-align: center;
-
-		}
 		#search{
 			margin-left: 5em;
 			margin-top: .4em;
@@ -80,7 +76,7 @@ EOF;
 		.pi{
 			margin-top: .2em;
 		}
-		#accountLinks{
+		#accountLinksDiv{
 			margin-left: 5em;
 			margin-top: 2em;
 			border: 1px solid lightblue;
@@ -89,6 +85,12 @@ EOF;
 		}
 		.c{
 			font-size: 1.5em;
+		}
+		.sl{
+			margin: .3em;
+		}
+		#accountLinksList{
+			list-style: none;
 		}
 
 	</style>
@@ -221,18 +223,15 @@ EOF;
 				//Zach are you planning on posting the results of the search on index? We don't have to use ajaxOutput
 				</table>
 				<ul id="searchResults">
-					<li>
-
-
-						<button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
 
 
 				</ul>
@@ -248,9 +247,13 @@ EOF;
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="account"
 			  aria-labelledby="account-tab">
-			<div id="accountLinks">
-				<p class="pi c"><a href="userLogin/editUserProfile.php">
-						<span class="glyphicon glyphicon-flash"></span>Edit Profile</a></p>
+			<div id="accountLinksDiv">
+				<ul id="accountLinksList">
+					<li class="sl"><p class="pi c"><a href="userLogin/editUserProfile.php">
+						<span class="glyphicon glyphicon-flash"></span>Edit Profile</a></p></li>
+					<li class ="sl"><p class="pi c"><a href="userLogin/editUserProfile.php">
+						<span class="glyphicon glyphicon-plus"></span>Add Traveler</a></p></li>
+				</ul>
 			</div>
 		</div>
 	</div>
