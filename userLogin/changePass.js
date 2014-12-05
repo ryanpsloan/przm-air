@@ -4,6 +4,10 @@ $(document).ready(function()
 		{
 
 			rules: {
+				oldPassword: {
+					required: true,
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
+				},
 				password: {
 					required: true,
 					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
@@ -18,13 +22,16 @@ $(document).ready(function()
 			},
 
 			messages: {
+				oldPassword: {
+					required: "Please enter your old password"
+				},
 				password: {
-					required: "Please enter your password"
+					required: "Please enter your new password"
 
 				},
 				confPassword: {
 					required: "Please re-enter your password for confirmation",
-					equalTo: "Please confirm your password"
+					equalTo: "New Passwords do not match"
 				}
 			},
 

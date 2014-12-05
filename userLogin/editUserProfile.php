@@ -7,42 +7,32 @@ try {
 	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();
 
-	$user = $_SESSION['userId'];
-	$profileObj = Profile::getProfileByUserId($mysqli, $user->getUserId());
+	$profileObj = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
 
-	try {
-		$query = "SELECT email FROM user WHERE userId = ?";
-		$statement = $mysqli->prepare($query);
-		$statement->bind_param("i", $profileObj->__get('userId'));
-		$statement->execute();
-		$results = $statement->get_result();
-		$row = $results->fetch_assoc();
-	} catch(mysqli_sql_exception $exception) {
-		$exception->getMessage();
-	}
+	$query = "SELECT email FROM user WHERE userId = ?";
+	$statement = $mysqli->prepare($query);
+	$statement->bind_param("i", $profileObj->__get('userId'));
+	$statement->execute();
+	$results = $statement->get_result();
+	$row = $results->fetch_assoc();
 
 	$email = $row['email'];
 
+	$query = "SELECT userFirstName, userMiddleName, userLastName, dateOfBirth FROM profile WHERE profileId = ?";
+	$statement = $mysqli->prepare($query);
+	$statement->bind_param("i", $profileObj->__get("profileId"));
+	$statement->execute();
+	$results = $statement->get_result();
+	$row = $results->fetch_assoc();
 
-	try {
-		$query = "SELECT userFirstName, userMiddleName, userLastName, dateOfBirth FROM profile WHERE profileId = ?";
-		$statement = $mysqli->prepare($query);
-		$statement->bind_param("i", $profileObj->__get("profileId"));
-		$statement->execute();
-		$results = $statement->get_result();
-		$row = $results->fetch_assoc();
-	} catch(mysqli_sql_exception $exception) {
-		$exception->getMessage();
-	}
-
-	$firstName = $row['userFirstName'];
-	$middleName = $row['userMiddleName'];
-	$lastName = $row['userLastName'];
+	$firstName = ucwords($row['userFirstName']);
+	$middleName = ucwords($row['userMiddleName']);
+	$lastName = ucwords($row['userLastName']);
 	$newDateObj = DateTime::createFromFormat("Y-m-d H:i:s", $row['dateOfBirth']);
 	$dateOfBirth = $newDateObj->format("m/d/Y");
+
 }catch(Exception $e){
-	echo "<div class='alert alert-danger' role='alert'><a href='#' class='alert-link'>".$e->getMessage().
-		"</a></div>";
+	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
 ?>
 
@@ -75,6 +65,26 @@ try {
 			});
 		});
 	</script>
+	<style>
+		#formDiv{
+			position: absolute;
+			height: 43em;
+			width: 50em;
+			top: 10%;
+			left: 20%;
+			border: 2px solid lightgrey;
+			padding: 2em 2em;
+		}
+		legend{
+			text-align: center;
+		}
+		#container{
+			margin-left: 18em;
+		}
+		#pass{
+			margin-left: 18em;
+		}
+	</style>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -106,28 +116,33 @@ try {
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-<form id="editProfile" action="editUserProfileProcessor.php" method="POST">
-	<fieldset>
-	<legend>Profile</legend>
-	<p><label>First Name</label></br>
-		<input type="text" id="first" name="first" value="<?php echo $firstName ?>"></p>
-	<p></p><label>Middle Name</label></br>
-		<input type="text" id="middle" name="middle" value="<?php echo $middleName ?>"><br>
-	<p><label>Last Name</label></br>
-		<input type="text" id="last" name="last" value="<?php echo $lastName ?>"></p>
-	<p><label>Date Of Birth</label></br>
-	<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
-	<p><label>Email</label></br>
-		<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
-	<?php echo generateInputTags(); ?>
-	<button type="submit">Submit Changes</button>
-	</fieldset>
-	<br>
-	<fieldset>
-	<legend>Account</legend>
-	<p><a href="changePass.php">Change Your Password</a></p>
-	</fieldset>
-</form>
-<div id="outputArea"></div>
+<div id="formDiv">
+	<form id="editProfile" action="editUserProfileProcessor.php" method="POST">
+		<fieldset>
+			<legend>Profile</legend>
+			<div id="container">
+				<p><label>First Name</label></br>
+					<input type="text" id="first" name="first" value="<?php echo $firstName ?>"></p>
+				<p><label>Middle Name</label></br>
+					<input type="text" id="middle" name="middle" value="<?php echo $middleName ?>"></p>
+				<p><label>Last Name</label></br>
+					<input type="text" id="last" name="last" value="<?php echo $lastName ?>"></p>
+				<p><label>Date Of Birth</label></br>
+					<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
+				<p><label>Email</label></br>
+					<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
+				<?php echo generateInputTags(); ?>
+				<button type="submit">Submit Changes</button>
+			</div>
+		</fieldset>
+		<br>
+		<fieldset>
+			<legend>Account</legend>
+			<p id="pass"><a href="changePass.php">Change Your Password</a></p>
+		</fieldset>
+	</form>
+	<div id="outputArea"></div>
+</div>
+
 </body>
 </html>

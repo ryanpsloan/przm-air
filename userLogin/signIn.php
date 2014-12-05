@@ -25,14 +25,16 @@ session_start();
 			position:absolute;
 			top: 12%;
 			left: 20%;
-			height: 200em;
+			height: 100em;
 			width: 55em;
 			padding: 2em;
 		}
 		#signIn{
 			margin-top: 1em;
-			border: 2px solid grey;
+			border: 1px solid lightgrey;
 			padding: 2em;
+			height: 26em;
+			width: 51em;
 		}
 		#formDiv{
 			margin-left: 16em;

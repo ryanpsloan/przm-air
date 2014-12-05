@@ -37,11 +37,11 @@ session_start();
 	<style>
 		#container{
 			padding: 1em;
-			border: 1px solid grey;
+			border: 1px solid lightgrey;
 			position: absolute;
 			top: 10%;
 			left: 5%;
-			height: 50em;
+			height: 46em;
 			width: 60em;
 		}
 		#outputArea{
@@ -85,8 +85,9 @@ session_start();
 </nav>
 <div id="container">
 	<div id="formDiv">
+		<fieldset>
 		<form id="signUpForm" action="signUpProcessor.php" method="POST">
-			<fieldset>
+
 				<legend style="text-align: center">Create a Profile</legend>
 				<p><label>First Name</label></br>
 					<input type="text" id="first" name="first" autocomplete="off"></p>

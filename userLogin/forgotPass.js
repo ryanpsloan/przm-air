@@ -31,7 +31,7 @@ $(document).ready(function()
 				},
 				confPassword: {
 					required: "Please re-enter your password for confirmation",
-					equalTo: "Please confirm your password"
+					equalTo: "Passwords do not match"
 				}
 			},
 

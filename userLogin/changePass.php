@@ -20,6 +20,20 @@ session_start();
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="changePass.js"></script>
+	<style>
+		#formDiv{
+			position: absolute;
+			height: 30em;
+			width: 30em;
+			top: 20%;
+			left: 35%;
+			padding: 2em;
+			border: 1px solid lightgrey;
+		}
+		#outputArea{
+			margin-top: 1.5em;
+		}
+	</style>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -51,19 +65,24 @@ session_start();
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-<form id="changePass" action="changePassProcessor.php" method="POST">
-	<fieldset>
+<div id="formDiv">
+<fieldset>
+	<form id="changePass" action="changePassProcessor.php" method="POST">
 		<legend>Change Password</legend>
-		<p><label>New Password</label>
+		<p>Minimum of 8 characters: letters, numbers, one capital and no special characters</p>
+		<p><label>Old Password</label><br>
+			<input type="password" id="oldPassword" name="oldPassword"></p>
+		<p><label>New Password</label><br>
 			<input type="password" id="password" name="password"></p>
-		<p><label>Confirm New Password</label>
+		<p><label>Confirm New Password</label><br>
 			<input type="password" id="confPassword" name="confPassword"></p>
 
 		<button type="submit">Change Password</button>
-		<?php generateInputTags(); ?>
+		<?php echo generateInputTags(); ?>
+	</form>
 	</fieldset>
 	<div id="outputArea"></div>
+</div>
 </form>
 </body>
 </html>
-?>

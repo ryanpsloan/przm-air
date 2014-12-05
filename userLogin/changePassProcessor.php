@@ -13,30 +13,39 @@ try {
 		throw(new RuntimeException("Make sure cookies are enabled."));
 	}
 
-	$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
-	$user = User::getUserByEmail($mysqli, $email);
+	$user = User::getUserByUserId($mysqli, $_SESSION['userId']);
 	if($user === null) {
 		throw(new UnexpectedValueException("That email is not registered"));
 	}
-
+	$oldPass = trim(filter_input(INPUT_POST, "oldPassword", FILTER_SANITIZE_STRING));
 	$newPass = trim(filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING));
 	$newConf = trim(filter_input(INPUT_POST, "confPassword", FILTER_SANITIZE_STRING));
 
-	if($newPass === $newConf) {
-		$hash = hash_pbkdf2("sha512", $newConf, $user->getSalt(), 2048, 128);
-		if($hash !== $user->getPassword()) {
-			$user->setPassword($hash);
-			$user->setSalt($user->getSalt());
-			$user->update($mysqli);
-			echo "<div class='alert alert-success' role='alert'>Password Updated</div>
+	$oldPass = hash_pbkdf2("sha512", $oldPass, $user->getSalt(), 2048, 128);
+
+	if($oldPass !== $user->getPassword()){
+		throw(new UnexpectedValueException("Your old password is incorrect"));
+	}
+
+	$newPass = hash_pbkdf2("sha512", $newPass, $user->getSalt(), 2048, 128);
+
+	if($newPass === $oldPass) {
+		throw(new UnexpectedValueException("That is not a new password"));
+	}
+	$newConf = hash_pbkdf2("sha512", $newConf, $user->getSalt(), 2048, 128);
+
+	if($newPass === $newConf){
+
+		$user->setPassword($newPass);
+		$user->setSalt($user->getSalt());
+		$user->update($mysqli);
+		echo "<div class='alert alert-success' role='alert'>Password Updated</div>
 					 <script>
 			      	 $(document).ready(function() {
 					   	    $(':input').attr('disabled', true);
 						 });
 				 	</script>";
-		} else {
-			throw(new ErrorException("Enter a new password"));
-		}
+
 	} else {
 		throw(new UnexpectedValueException("Passwords entered do not match"));
 	}

@@ -30,23 +30,22 @@ try {
 	} else {
 		//grab user by email
 		$user = User::getUserByEmail($mysqli, $email);
-		if($user->getAuthenticationToken() === null){
-			throw(new ErrorException("This account is not verified"));
+		if($user === null){
+			throw(new ErrorException("User not found, please sign up or check email and password"));
 		}
-		if($user === null) {
-			throw(new ErrorException("We couldn't access your account. Check that email and password are correct and
-												that you are signed up"));
-		} else {
-			$userPass = hash_pbkdf2("sha512", $password, $user->getSalt(), 2048, 128);
 
-			if(!($userPass === $user->getPassword())) {
-				throw(new UnexpectedValueException("Email or Password is not correct"));
-			}
-			else {
+		if($user->getAuthenticationToken() === null){
+			throw(new ErrorException("This account is not authenticated, check your email"));
+		}
+		$userPass = hash_pbkdf2("sha512", $password, $user->getSalt(), 2048, 128);
+		if(!($userPass === $user->getPassword())) {
+			throw(new UnexpectedValueException("Email or Password is not correct"));
+		}
+		else {
 
-				$_SESSION['userId'] = $user->getUserId();
+			$_SESSION['userId'] = $user->getUserId();
 
-				echo "<div class='alert alert-success' role='alert'>Successful Sign In</div>
+			echo "<div class='alert alert-success' role='alert'>Successful Sign In</div>
 						      <script>
 									$(document).ready(function() {
 										$(':input').attr('disabled', true);
@@ -54,9 +53,9 @@ try {
 										$('#forgotPass').hide();
 									});
 							  </script>";
-			}
 		}
 	}
+
 }catch(Exception $e){
 	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";

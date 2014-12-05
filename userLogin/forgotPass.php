@@ -20,6 +20,20 @@ session_start();
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="forgotPass.js"></script>
+	<style>
+		#formDiv{
+			padding: 2em;
+			position: absolute;
+			top: 10%;
+			left: 20%;
+			border: 1px solid lightgrey;
+			height: 36em;
+			width: 30em;
+		}
+		#outputArea{
+			margin-top: 2em;
+		}
+	</style>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -51,22 +65,24 @@ session_start();
 	</div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>
-<form id="forgotPass" action="forgotPass.php" method="POST">
-	<fieldset>
-		<legend>Reset Password</legend>
-		<p><label>Email</label><br>
-			<input type="email" id="email" name="email" autocomplete="off"></p>
-		<hr>
-		<p><label>New Password</label><br>
-		<p>Minimum of 8 characters: letters, numbers and only one capital, no special characters</p>
+<div id="formDiv">
+	<form id="forgotPass" action="forgotPass.php" method="POST">
+		<fieldset>
+			<legend>Reset Password</legend>
+			<p><label>Email</label><br>
+				<input type="email" id="email" name="email" autocomplete="off"></p>
+			<hr>
+			<p>Minimum of 8 characters: letters, numbers, one capital, no special characters</p>
+			<p><label>New Password</label><br>
 			<input type="password" id="password" name="password"></p>
-		<p><label>Confirm New Password</label><br>
-			<input type="password" id="confPassword" name="confPassword"></p>
+			<p><label>Confirm New Password</label><br>
+				<input type="password" id="confPassword" name="confPassword"></p>
 
-		<button type="submit">Change Password</button>
-		<?php generateInputTags(); ?>
-	</fieldset>
+			<button type="submit">Change Password</button>
+			<?php echo generateInputTags(); ?>
+		</fieldset>
+	</form>
 	<div id="outputArea"></div>
-</form>
+</div>
 </body>
 </html>
