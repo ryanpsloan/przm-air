@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-	$("#signUp").validate(
+	$("#signUpForm").validate(
 		{
 
 			rules: {
@@ -25,12 +25,12 @@ $(document).ready(function()
 				},
 				password: {
 					required: true,
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/,
-					equalTo: "#confPassword"
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+
 				},
 				confPassword: {
 					required: true,
-					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/,
+					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
 					equalTo: "#password"
 				}
 			},
@@ -52,11 +52,12 @@ $(document).ready(function()
 					required: "Please enter a valid email"
 				},
 				password: {
-					required: "Please enter a password of a minimum of 5 characters using at least one capital, one letter, and one digit, no special characters, maximum 12"
+					pattern: "The format of the password entered is not valid"
 
 				},
 				confPassword: {
-					required: "Please enter a password of a minimum of 5 characters using at least one capital, one letter, and one digit, no special characters, maximum 12"
+					pattern: "The format of the password entered is not valid",
+					equalTo: "Please enter a matching password"
 				}
 
 			},

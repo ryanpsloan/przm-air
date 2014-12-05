@@ -63,7 +63,6 @@ try {
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script type="text/javascript" src="editUserProfile.js"></script>
 	<script>
@@ -78,20 +77,56 @@ try {
 	</script>
 </head>
 <body>
-<form id="editProfile" action="editUserProfileProcessor.php" method="POST">
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
+																			  aria-hidden="true"></span></a>
+		</div>
 
-	<p><label>First Name</label>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li>
+					<a href="#"></a>
+				</li>
+
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#"></a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+<form id="editProfile" action="editUserProfileProcessor.php" method="POST">
+	<fieldset>
+	<legend>Profile</legend>
+	<p><label>First Name</label></br>
 		<input type="text" id="first" name="first" value="<?php echo $firstName ?>"></p>
-	<p><label>Middle Name</label>
+	<p></p><label>Middle Name</label></br>
 		<input type="text" id="middle" name="middle" value="<?php echo $middleName ?>"><br>
-	<p><label>Last Name</label>
+	<p><label>Last Name</label></br>
 		<input type="text" id="last" name="last" value="<?php echo $lastName ?>"></p>
-	<p><label>Date Of Birth</label>
+	<p><label>Date Of Birth</label></br>
 	<input type="text" id="dob" name="dob" class="datepicker" value="<?php echo $dateOfBirth ?>"></p>
-	<p><label>Email</label>
+	<p><label>Email</label></br>
 		<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
 	<?php echo generateInputTags(); ?>
 	<button type="submit">Submit Changes</button>
+	</fieldset>
+	<br>
+	<fieldset>
+	<legend>Account</legend>
+	<p><a href="changePass.php">Change Your Password</a></p>
+	</fieldset>
 </form>
 <div id="outputArea"></div>
 </body>

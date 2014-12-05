@@ -6,7 +6,7 @@ session_start();
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
-	<title>Sign In</title>
+	<title>Change Password</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
@@ -19,32 +19,7 @@ session_start();
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-	<script type="text/javascript" src="signIn.js"></script>
-	<style>
-		#container{
-			position:absolute;
-			top: 12%;
-			left: 20%;
-			height: 200em;
-			width: 55em;
-			padding: 2em;
-		}
-		#signIn{
-			margin-top: 1em;
-			border: 2px solid grey;
-			padding: 2em;
-		}
-		#formDiv{
-			margin-left: 16em;
-		}
-		#signUpLink p {
-			text-align: center;
-		}
-		#outputArea{
-			padding: 1em 0;
-
-		}
-	</style>
+	<script type="text/javascript" src="changePass.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -76,29 +51,19 @@ session_start();
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
-<div id="container">
-	<div id="signUpLink">
-		<p>New to PRZM Air?</p>
-		<p><a href="signUp.php"><strong>Sign Up</strong></a></p>
-	</div>
+<form id="changePass" action="changePassProcessor.php" method="POST">
+	<fieldset>
+		<legend>Change Password</legend>
+		<p><label>New Password</label>
+			<input type="password" id="password" name="password"></p>
+		<p><label>Confirm New Password</label>
+			<input type="password" id="confPassword" name="confPassword"></p>
 
-	<div id="signIn">
-		<p style="text-align: center"><strong>Sign In</strong></p>
-		<hr>
-		<div id="formDiv">
-		<form id="signInForm" action="signInProcessor.php" method="POST">
-			<p><label for="email">Email:</label></br>
-				<input type="email" id="email" name="email" autocomplete="off"></p>
-			<p><label for="password">Password:</label></br>
-				<input type="password" id="password" name="password" autocomplete="off"></p>
-			<p><a id="forgotPass" href='forgotPass.php'>Forgot Your Password?</a></p>
-			<?php echo generateInputTags(); ?>
-			<button type="submit">Sign In</button>
-
-		</div>
-		<div id="outputArea"></div>
-	</div>
-</div>
+		<button type="submit">Change Password</button>
+		<?php generateInputTags(); ?>
+	</fieldset>
+	<div id="outputArea"></div>
 </form>
 </body>
 </html>
+?>

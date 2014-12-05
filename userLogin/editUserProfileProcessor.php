@@ -6,11 +6,14 @@ include("../lib/csrf.php");
 
 try {
 	session_start();
+	$savedName = $_POST["csrfName"];
+	$savedToken =$_POST["csrfToken"];
+
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
 	}
 	$mysqli = MysqliConfiguration::getMysqli();
-	$profile = $_SESSION['profileObj'];
+	$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
 
 	$profile->setFirstName($newFirstName = filter_input(INPUT_POST, "first", FILTER_SANITIZE_STRING));
 	$profile->setLastName($newLastName = filter_input(INPUT_POST, "last", FILTER_SANITIZE_STRING));
@@ -31,10 +34,10 @@ try {
 						$(document).ready(function() {
 							$(':input').attr('disabled', true);
 						});
-			</script>
-	<p><a href='..\index.php'>Home</a></p>";
+			</script>";
 }catch (Exception $e){
+	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>"
-  .$e->getMessage."</div>";
+  			.$e->getMessage."</div>";
 }
 ?>

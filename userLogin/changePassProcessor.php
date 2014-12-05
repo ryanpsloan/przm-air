@@ -4,12 +4,13 @@ include('../lib/csrf.php');
 require_once("/etc/apache2/capstone-mysql/przm.php");
 try {
 	session_start();
-	$savedName = $_POST["csrfName"];
-	$savedToken =$_POST["csrfToken"];
 	$mysqli = MysqliConfiguration::getMysqli();
 
+	$savedName  = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
+
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
-		throw(new RuntimeException("CSRF tokens incorrect or missing. Make sure cookies are enabled."));
+		throw(new RuntimeException("Make sure cookies are enabled."));
 	}
 
 	$email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
@@ -37,10 +38,11 @@ try {
 			throw(new ErrorException("Enter a new password"));
 		}
 	} else {
-		throw(new ErrorException("Passwords entered do not match"));
+		throw(new UnexpectedValueException("Passwords entered do not match"));
 	}
 }catch(Exception $e){
 	$_SESSION[$savedName] = $savedToken;
-	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
+	echo "<div class='alert alert-danger' role='alert'>
+  		  ".$e->getMessage()."</div>";
 }
 ?>

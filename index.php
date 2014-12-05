@@ -4,9 +4,10 @@
 	require("php/flight.php");
 try {
 	session_start();
+	var_dump($_SESSION);
 	if(isset($_SESSION['userId'])) {
 		$status = <<< EOF
-			<a href="userLogin/signOut.php">Sign Out</a>
+			<a href="userLogin/signOut.php"><span class="glyphicon glyphicon-user"></span></a>
 
 EOF;
 		$account = <<< EOF
@@ -92,14 +93,16 @@ EOF;
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				<a class="navbar-brand" href="#"><span class="glyphicon glyphicon-cloud"
+																				  aria-hidden="true"></span></a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Link </a></li>
-					<li><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
+					<li><a href="#"></a></li>
+					<li><a href="#"></a></li>
+					<li><a href="#"></a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">

@@ -22,14 +22,45 @@ session_start();
 	<script type="text/javascript" src="forgotPass.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-default" role="navigation">
+<div class="container-fluid">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
+																		  aria-hidden="true"></span></a>
+	</div>
+
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav">
+			<li>
+				<a href="#"></a>
+			</li>
+
+		</ul>
+
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#"></a></li>
+		</ul>
+	</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
 <form id="forgotPass" action="forgotPass.php" method="POST">
 	<fieldset>
 		<legend>Reset Password</legend>
-		<p><label>Email</label>
+		<p><label>Email</label><br>
 			<input type="email" id="email" name="email" autocomplete="off"></p>
-		<p><label>New Password</label>
+		<hr>
+		<p><label>New Password</label><br>
+		<p>Minimum of 8 characters: letters, numbers and only one capital, no special characters</p>
 			<input type="password" id="password" name="password"></p>
-		<p><label>Confirm New Password</label>
+		<p><label>Confirm New Password</label><br>
 			<input type="password" id="confPassword" name="confPassword"></p>
 
 		<button type="submit">Change Password</button>

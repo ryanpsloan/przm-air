@@ -1,13 +1,9 @@
 $(document).ready(function()
 {
-	$("#forgotPass").validate(
+	$("#changePass").validate(
 		{
 
 			rules: {
-				email : {
-					required: true,
-					email   : true
-				},
 				password: {
 					required: true,
 					pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,12}$/
@@ -22,9 +18,6 @@ $(document).ready(function()
 			},
 
 			messages: {
-				email : {
-					required: "Please enter your email"
-				},
 				password: {
 					required: "Please enter your password"
 
@@ -39,7 +32,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "forgotPassProcessor.php",
+						url    : "changePassProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
 						}
