@@ -10,6 +10,9 @@ $(document).ready(function()
 
 				/**fixme do i need to require and either/or for roundtrip/one way
 				 * fixme what other rules needed for data*/
+				roundTrip            : {
+					required: true
+				},
 				origin            : {
 					required: true,
 					pattern: /[A-Za-z]{3}/

@@ -5,7 +5,9 @@
  * Date: 12/3/14
  * Time: 10:12 AM
  */
-// FIXME ADD MORE TRY CATCH THROWS? etc
+// FIXME ADD MORE TRY CATCH THROWS? etcj
+// fixme get correct format from datepicker
+// fixme copy paste for return trip
 
 
 require("/etc/apache2/capstone-mysql/przm.php");
@@ -23,10 +25,15 @@ try {
 
 	$flightPaths = $_SESSION['flightPathsObj'];
 
-	// clean inputs
+	// clean inputs, adjust dates to needed format
 	$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
 	$userDestination = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
-	$userFlyDateStart = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
+
+
+	$userFlyDateStartIncoming1 = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
+	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+	$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2);
+	$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
 	echo $userFlyDateStart;
 
 	// can make this a user input in future to pre-filter results to a user-given duration amount in hours.
@@ -153,6 +160,20 @@ try {
 
 	$outputTable = "<table>\n" . $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n</table>\n";
 	echo $outputTable;
+
+
+
+	// copy code from above, switch origin and destination and depart flight to return -- if user select round-trip.
+
+	if ( )
+
+
+
+
+
+
+
+
 
 
 	// DateTime Math
