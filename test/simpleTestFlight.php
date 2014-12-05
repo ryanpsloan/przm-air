@@ -13,8 +13,8 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // then require the class under scrutiny
-require_once("../php/results.php");
-require_once("../php/flight.php");
+require_once("../php/class/results.php");
+require_once("../php/class/flight.php");
 
 // the FlightTest is a container for all our tests
 class FlightTest extends UnitTestCase {
@@ -442,7 +442,6 @@ class FlightTest extends UnitTestCase {
 																						$numberOfPassengersRequested, $minLayover);
 					} catch(Exception $exception) {
 						throw (new mysqli_sql_exception("Unable to create flight."));
-						return;
 					}
 
 					// if there should be results of some sort returned for the given amount of passengers, then assert that it was so.
@@ -460,12 +459,20 @@ class FlightTest extends UnitTestCase {
 						$sizeOfEachPath = count($thisArrayOfPaths[$d])-3;
 //
 //						echo "<p>line 458 dump of thisArrayOfPaths and [d] within foreach loop before test</p>";
-//						var_dump($thisArrayOfPaths);
 //						var_dump($thisArrayOfPaths[$d]);
 //						var_dump($sizeOfEachPath);
 //						var_dump($thisArrayOfPaths[$d][0]->getOrigin());
 //						var_dump($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination());
 
+						if ($thisArrayOfPaths[$d][0]->getOrigin() !== $userOrigin){
+							echo "<p>line 458 dump of thisArrayOfPaths and [d] within foreach loop before test</p>";
+							var_dump($thisArrayOfPaths[$d]);
+							var_dump($userOrigin);
+							var_dump($userDestination);
+							var_dump($sizeOfEachPath);
+							var_dump($thisArrayOfPaths[$d][0]->getOrigin());
+							var_dump($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination());
+						}
 						$this->assertIdentical($thisArrayOfPaths[$d][0]->getOrigin(), 								$userOrigin);
 						$this->assertIdentical($thisArrayOfPaths[$d][$sizeOfEachPath]->getDestination(), 	$userDestination);
 

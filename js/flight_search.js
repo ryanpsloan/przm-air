@@ -37,6 +37,9 @@ $(document).ready(function()
 			},
 
 			messages: {
+				roundTripOrOneWay : {
+					onSlect: "Please enter a departure city."
+				},
 				origin : {
 					required: "Please enter a departure city."
 				},
@@ -50,7 +53,7 @@ $(document).ready(function()
 
 				/**fixme this needs to disappear if one-way was selected */
 				returnDate   : {
-					required: "Please enter a return trip date."
+					reqired : "Please enter a return trip date."
 				},
 
 
@@ -75,5 +78,6 @@ $(document).ready(function()
 		});
 
 	//toggle or hide unhide
+	$("#oneWay").onclick(
 
 });

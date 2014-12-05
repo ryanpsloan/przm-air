@@ -9,8 +9,8 @@
 
 
 require("/etc/apache2/capstone-mysql/przm.php");
-require("./class/flight.php");
-require("../lib/csrf.php");
+require("../class/flight.php");
+require("../../lib/csrf.php");
 
 /**
  * sets up all other needed variables that are same for outbound and return searches, then calls the method with all inputs
@@ -154,15 +154,18 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 
 try {
-	session_start();
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
-		echo "<div class='alert alert-warning' role=
-		'alert'><a href='#' class='alert-link'>Make sure cookies are enabled</a></div>";
-	}
+//	session_start();
+//	$savedName  = $_POST["csrfName"];
+//	$savedToken = $_POST["csrfToken"];
+//
+//
+//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+//		throw(new RuntimeException("Make sure cookies are enabled."));
+//	}
 
 	$mysqli = MysqliConfiguration::getMysqli();
-	$flightPaths = $_SESSION['flightPathsObj'];
-
+//	$flightPaths = $_SESSION['flightPathsObj'];
+	$flightPaths =
 
 	// clean inputs, adjust dates to needed format for outbound flight
 	$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
@@ -204,7 +207,8 @@ try {
 
 	// DateTime Math
 }catch (Exception $e){
+//	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>
-  <a href='#' class='alert-link'>".$e->getMessage."</a></div>";
+  ".$e->getMessage."</div>";
 }
 ?>

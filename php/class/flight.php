@@ -919,13 +919,13 @@ class Flight {
 		}
 
 		// convert to string for input into the stored procedure call
-		$userEndFlyDateInterval = DateInterval::createFromDateString(" . $userFlyDateRange . hours");
+		$userEndFlyDateInterval = DateInterval::createFromDateString($userFlyDateRange . "hours");
+
 		$userStartFlyDateTime = DateTime::createFromFormat("Y-m-d H:i:s", $userFlyDateStart);
 		$userFlyDateEndObj = $userStartFlyDateTime->add($userEndFlyDateInterval);
 
 		$userFlyDateEnd = $userFlyDateEndObj->format("Y-m-d H:i:s");
 
-/* fixme old code delete
 		if(filter_var($userFlyDateEnd, FILTER_SANITIZE_STRING) === false) {
 			throw(new UnexpectedValueException("End date $userFlyDateEnd does not appear to be a string"));
 		}
@@ -943,7 +943,6 @@ class Flight {
 		if(checkdate($month, $day, $year) === false) {
 			throw(new RangeException("$userFlyDateEnd is not a Gregorian date"));
 		}
-*/
 
 		// 5.:
 		$numberOfPassengers = trim($numberOfPassengers);
