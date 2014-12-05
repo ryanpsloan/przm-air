@@ -44,7 +44,7 @@ try {
 		else {
 
 			$_SESSION['userId'] = $user->getUserId();
-
+			$_SESSION['profileObj'] = Profile::getProfileByUserId($mysqli, $user->getUserId());
 			echo "<div class='alert alert-success' role='alert'>Successful Sign In</div>
 						      <script>
 									$(document).ready(function() {

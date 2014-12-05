@@ -35,7 +35,7 @@ session_start();
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
 			<li>
-				<a href="#"></a>
+				PRZM AIR
 			</li>
 
 		</ul>
@@ -58,8 +58,9 @@ $userId = $_GET['uId'];
 $newUser = User::getUserByUserId($mysqli, $userId);
 $newUser->setAuthenticationToken($authToken);
 $newUser->update($mysqli);
+$profile = Profile::getProfileByUserId($mysqli,$newUser->getUserId());
 $_SESSION['userId'] = $newUser->getUserId();
-
+$_SESSION['profileObj'] = $profile;
 echo "<div class='alert alert-success' role='alert'> Your account has been authenticated. You are now signed in
 </div>";
 
