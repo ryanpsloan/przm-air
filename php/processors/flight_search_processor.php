@@ -48,7 +48,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 	// set up variable for rows then fill in with results by looping through array of paths
 	$outputTableRows = "";
-	for($i=0; empty($thisArrayOfPaths[$i]) === true; $i++) {
+	for($i=0; empty($thisArrayOfPaths[$i]) === false; $i++) {
 
 		//get index for last flight
 		$sizeOfThisPath = count($thisArrayOfPaths[$i]) - 3;
@@ -98,7 +98,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		// set up array for flight number then loop through flights
 		$flightNumberArray = array();
 
-		for($j = 0; empty($thisArrayOfPaths[$i][$j + 3]) === true; $j++) {
+		for($j = 0; empty($thisArrayOfPaths[$i][$j + 3]) === false; $j++) {
 			$flightNumberArray = $thisArrayOfPaths[$i][$j]->getFlightNumber();
 		}
 
@@ -126,7 +126,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		}
 
 		// turn layover to string of all layovers in route
-		if (empty($layoverArray) === true) {
+		if (empty($layoverArray) === false) {
 			$layoverString = "None";
 		} else {
 			$layoverString = implode(", ",$layoverArray);
@@ -172,10 +172,10 @@ try {
 	$userDestination = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
 
 
-	$userFlyDateStart = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
-	//	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-	//	$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2);
-	//	$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
+	$userFlyDateStartIncoming1 = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
+		$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+		$userFlyDateStartObj = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2);
+		$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d H:i:s");
 	echo $userFlyDateStart;
 
 	$outputTableOutbound = completeSearch($mysqli, $userOrigin, $userDestination,
@@ -209,6 +209,6 @@ try {
 }catch (Exception $e){
 //	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>
-  ".$e->getMessage."</div>";
+  ".$e->getMessage()."</div>";
 }
 ?>

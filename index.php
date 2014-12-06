@@ -111,12 +111,11 @@ EOF;
 				'maxDate', "+1y");
 		}
 
-		var end = $('#returnDate').datepicker({dateFormat: 'yyyy-mm-dd'});
+		var end = $('#returnDate').datepicker();
 
 		$('#departDate').datepicker({
 			minDate: '0d',
 			maxDate: '+1y',
-			dateFormat: 'yyyy-mm-dd',
 			onSelect: enableEnd
 		}).bind('input', enableEnd);
 

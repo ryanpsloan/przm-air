@@ -2,11 +2,12 @@
 /**
  * mySQL Enabled Flight
  *
+ * fixme: rewrite this heading
  * This is a mySQL enabled container for all flights (and their related data) that are created and stored in
  * the database when a passenger selects a flight option from the search.
  *
  * @author Zach Grant <zgrant28@gmail.com>
- * @see Profile
+ * @see Profile // fixme
  * @Date: 11/6/14
  * @Time: 10:13 AM
  */
