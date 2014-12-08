@@ -1,14 +1,23 @@
 <?php
-	include("php/user.php");
-	include("php/profile.php");
-	require("php/flight.php");
+	include("php/class/user.php");
+	include("php/class/profile.php");
+	include("php/class/flight.php");
 	include("lib/csrf.php");
+
 try {
 	session_start();
+	$mysqli = MysqliConfiguration::getMysqli();
 
 	if(isset($_SESSION['userId'])) {
+		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+		$userName = <<<EOF
+		<a>Welcome, $fullName  </a>
+
+EOF;
 		$status = <<< EOF
-			<a href="forms/signOut.php"><span class="glyphicon glyphicon-user"></span></a>
+			<a href="forms/signOut.php"><span
+			class="glyphicon glyphicon-user"></span></a>
 
 EOF;
 		$account = <<< EOF
@@ -22,6 +31,7 @@ EOF;
 EOF;
 	}
 	else {
+		$userName = "";
 		$status = <<< EOF
 			<a href="forms/signIn.php">Sign In</a>
 EOF;
@@ -142,6 +152,7 @@ EOF;
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
+					<li class="disabled"><?php echo $userName?> </li>
 					<li class="active"><?php echo $status?></li>
 					<li></li>
 				</ul>
@@ -149,6 +160,7 @@ EOF;
 		</div><!-- /.container-fluid -->
 	</nav>
 </header>
+<!--isPun($humor) === true ? $source = "dylan" : $source = "somebody funny";-->
 <div class="bs-example bs-example-tabs" role="tabpanel">
 	<ul id="myTabs" class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active">
@@ -252,7 +264,7 @@ EOF;
 				<ul id="accountLinksList">
 					<li class="sl"><p class="pi c"><a href="forms/editUserProfile.php">
 						<span class="glyphicon glyphicon-flash"></span>Edit Profile</a></p></li>
-					<li class ="sl"><p class="pi c"><a href="forms/editUserProfile.php">
+					<li class ="sl"><p class="pi c"><a href="">
 						<span class="glyphicon glyphicon-plus"></span>Add Traveler</a></p></li>
 				</ul>
 			</div>

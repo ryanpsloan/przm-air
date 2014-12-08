@@ -39,7 +39,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "changePassProcessor.php",
+						url    : "../php/processors/changePassProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
 						}

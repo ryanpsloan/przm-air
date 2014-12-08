@@ -66,7 +66,7 @@ session_start();
 </div><!-- /.container-fluid -->
 </nav>
 <div id="formDiv">
-	<form id="forgotPass" action="forgotPass.php" method="POST">
+	<form id="forgotPass" action="../php/processors/forgotPassProcessor.php" method="POST">
 		<fieldset>
 			<legend>Reset Password</legend>
 			<p><label>Email</label><br>

@@ -1,8 +1,9 @@
 <?php
 require_once("/etc/apache2/capstone-mysql/przm.php");
-include("../php/user.php");
-include("../php/profile.php");
-include('../lib/csrf.php');
+include("../../php/class/user.php");
+include("../../php/class/profile.php");
+include('../../lib/csrf.php');
+
 try {
 	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();

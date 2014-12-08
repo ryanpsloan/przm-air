@@ -30,7 +30,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "signInProcessor.php",
+						url    : "../php/processors/signInProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
 						}

@@ -1,6 +1,6 @@
 <?php
-require("../php/user.php");
-require("../php/profile.php");
+require("../php/class/user.php");
+require("../php/class/profile.php");
 include("../lib/csrf.php");
 require("/etc/apache2/capstone-mysql/przm.php");
 try {

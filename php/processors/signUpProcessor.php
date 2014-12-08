@@ -1,8 +1,8 @@
 <?php
 require("/etc/apache2/capstone-mysql/przm.php");
-require("../php/user.php");
-require("../php/profile.php");
-require("../lib/csrf.php");
+require("../../php/class/user.php");
+require("../../php/class/profile.php");
+require("../../lib/csrf.php");
 require("Mail.php");
 session_start();
 
@@ -60,16 +60,14 @@ try {
 	$headers["To"] = $to;
 	$headers["From"] = $from;
 	$headers["Reply-To"] = $from;
-	$headers["Subject"] = $newProfile->__get('userFirstName') . " " . $newProfile->__get('userLastName') . ",
-		Activate your PRAM Air Login";
+	$headers["Subject"] = ucfirst($newProfile->__get('userFirstName')) . " " . ucfirst($newProfile->__get
+	('userLastName')). ", Activate your PRZM Air Login";
 	$headers["MIME-Version"] = "1.0";
 	$headers["Content-Type"] = "text/html; charset=UTF-8";
 
 	// build message
-	$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
-	$url = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
-	$url = str_replace($pageName, "activate.php", $url);
-	$url = "$url?authToken=$authToken&uId=".$newUser->getUserId();
+	$url = "https://bootcamp-coders.cnm.edu/~rsloan/przmair/forms/activate.php";
+   $url = "$url?authToken=$authToken&uId=".$newUser->getUserId();
 	$message = <<< EOF
 <html>
     <body>

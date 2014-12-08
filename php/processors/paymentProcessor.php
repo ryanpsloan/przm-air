@@ -2,9 +2,9 @@
 session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../lib/csrf.php");
-require_once("../payment/payment.php");
-require_once("../php/user.php");
-require_once("../php/transaction.php");
+require_once("../forms/payment.php");
+require_once("../php/class/user.php");
+require_once("../php/class/transaction.php");
 
 try {
 	// verify the user has signed in

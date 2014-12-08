@@ -2,7 +2,7 @@
 require_once("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
-$numOfWeeks = 7;
+$numOfWeeks = 100;
 
 $dateTimeObjWeekday = DateTime::createFromFormat("Y-m-d", "2014-12-01");
 $dateTimeObjWeekend = DateTime::createFromFormat("Y-m-d", "2014-12-06");

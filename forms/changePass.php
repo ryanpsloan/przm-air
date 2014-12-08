@@ -76,8 +76,7 @@ session_start();
 			<input type="password" id="password" name="password"></p>
 		<p><label>Confirm New Password</label><br>
 			<input type="password" id="confPassword" name="confPassword"></p>
-
-		<button type="submit">Change Password</button>
+		<p><input type="submit" value="Change Password"></p>
 		<?php echo generateInputTags(); ?>
 	</form>
 	</fieldset>

@@ -44,7 +44,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "editUserProfileProcessor.php",
+						url    : "../php/processors/editUserProfileProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
 						}

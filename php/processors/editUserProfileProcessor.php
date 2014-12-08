@@ -1,8 +1,8 @@
 <?php
 require("/etc/apache2/capstone-mysql/przm.php");
-require("../php/user.php");
-require("../php/profile.php");
-include("../lib/csrf.php");
+require("../class/user.php");
+require("../class/profile.php");
+include("../../lib/csrf.php");
 
 try {
 	session_start();

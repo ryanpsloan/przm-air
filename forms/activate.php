@@ -1,7 +1,7 @@
 <?php
 require("/etc/apache2/capstone-mysql/przm.php");
-include("../php/user.php");
-include("../php/profile.php");
+include("../php/class/user.php");
+include("../php/class/profile.php");
 session_start();
 ?>
 <!DOCTYPE html>
@@ -35,13 +35,9 @@ session_start();
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
 			<li>
-				PRZM AIR
+				<a href="../index.php/">PRZM AIR</a>
 			</li>
 
-		</ul>
-
-		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#"></a></li>
 		</ul>
 	</div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
