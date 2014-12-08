@@ -1,7 +1,6 @@
 <?php
 require("/etc/apache2/capstone-mysql/przm.php");
-include("../php/class/user.php");
-include("../php/class/profile.php");
+include("../class/user.php");
 session_start();
 ?>
 <!DOCTYPE html>
@@ -27,7 +26,7 @@ session_start();
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
+		<a class="navbar-brand" href="../../index.php"><span class="glyphicon glyphicon-cloud"
 																		  aria-hidden="true"></span> PRZM AIR</a>
 	</div>
 
@@ -52,9 +51,8 @@ $userId = $_GET['uId'];
 $newUser = User::getUserByUserId($mysqli, $userId);
 $newUser->setAuthenticationToken($authToken);
 $newUser->update($mysqli);
-$profile = Profile::getProfileByUserId($mysqli,$newUser->getUserId());
 $_SESSION['userId'] = $newUser->getUserId();
-$_SESSION['profileObj'] = $profile;
+
 echo "<div class='alert alert-success' role='alert'> Your account has been authenticated. You are now signed in
 </div>";
 sleep(3000);

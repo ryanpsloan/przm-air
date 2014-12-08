@@ -18,7 +18,7 @@ $profile = $_SESSION["profileObj"];
 
 <!--Display Return flights-->
 
-
+<!-- number of tickets-->
 
 <!-- user selects two flights and then clicks confirm -->
 </form>

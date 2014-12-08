@@ -51,6 +51,10 @@ try {
 		$DOB, $custToken, $newUser);
 	$newProfile->insert($mysqli);
 
+	$newTraveler = new Traveler(null, $newProfile->__get("profileId"), $newProfile->__get("userFirstName"),
+		$newProfile->__get("userMiddleName"), $newProfile->__get("userLastName"), $newProfile->__get("dateOfBirth"));
+	$newTraveler->insert($mysqli);
+
 	// email the user with an activation message
 	$to = $newUser->getEmail();
 	$from = "noreply@przm-air.com";
