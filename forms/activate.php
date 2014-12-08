@@ -28,15 +28,13 @@ session_start();
 			<span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
-																		  aria-hidden="true"></span></a>
+																		  aria-hidden="true"></span> PRZM AIR</a>
 	</div>
 
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li>
-				<a href="../index.php/">PRZM AIR</a>
-			</li>
+			<li></li>
 
 		</ul>
 	</div><!-- /.navbar-collapse -->
@@ -59,7 +57,8 @@ $_SESSION['userId'] = $newUser->getUserId();
 $_SESSION['profileObj'] = $profile;
 echo "<div class='alert alert-success' role='alert'> Your account has been authenticated. You are now signed in
 </div>";
-
+sleep(5000);
+header("Location: ../index.php");
 }catch(Exception $e){
 echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }

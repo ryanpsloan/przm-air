@@ -1,6 +1,35 @@
 <?php
 include('../lib/csrf.php');
 session_start();
+if(isset($_SESSION['userId'])) {
+	$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+	$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+	$userName = <<<EOF
+		<a><span
+			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
+
+EOF;
+	$status = <<< EOF
+			<a href="forms/signOut.php">Sign Out</a>
+
+EOF;
+	$account = <<< EOF
+		<li role="presentation">
+			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
+				aria-expanded="true">
+				Account</a>
+		</li>
+
+
+EOF;
+}
+else {
+	$userName = "";
+	$status = <<< EOF
+			<a href="forms/signIn.php">Sign In</a>
+EOF;
+	$account = "";
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,12 +93,13 @@ session_start();
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
-																			  aria-hidden="true"></span></a>
+																			  aria-hidden="true"></span> PRZM AIR </a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
+				<li></li>
 				<li id="signInLink" class="hidden">
 					<a href="signIn.php">Sign In</a>
 				</li>
@@ -77,6 +107,8 @@ session_start();
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
+				<li class="disabled"><?php echo $userName?> </li>
+				<li class="active"><?php echo $status?></li>
 				<li><a href="#"></a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->

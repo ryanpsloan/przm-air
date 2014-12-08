@@ -12,12 +12,12 @@ try {
 		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
 		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
 		$userName = <<<EOF
-		<a>Welcome, $fullName  </a>
+		<a><span
+			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 
 EOF;
 		$status = <<< EOF
-			<a href="forms/signOut.php"><span
-			class="glyphicon glyphicon-user"></span></a>
+			<a href="forms/signOut.php">Sign Out</a>
 
 EOF;
 		$account = <<< EOF
@@ -136,13 +136,13 @@ EOF;
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="# "><span class="glyphicon glyphicon-cloud"
-																				  aria-hidden="true"></span</a>
+																				  aria-hidden="true"></span> PRZM AIR</a>
 				</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li>PRZM AIR</li>
+					<li></li>
 					<li><a href="#"></a></li>
 					<li><a href="#"></a></li>
 					<li></li>
@@ -256,16 +256,23 @@ EOF;
 
 
 		<div role="tabpanel" class="tab-pane fade" id="checkIn"
-			  aria-labelledby="checkIn-tab"><p>Links to check in go here</p>
+			  aria-labelledby="checkIn-tab">
+			<li class ="sl"><p class="pi c"><a href="">
+						<span class="glyphicon glyphicon-plus"></span>Check Flight Status</a></p></li>
+			<li class ="sl"><p class="pi c"><a href="">
+						<span class="glyphicon glyphicon-plus"></span>Check In</a></p></li>
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="account"
 			  aria-labelledby="account-tab">
 			<div id="accountLinksDiv">
 				<ul id="accountLinksList">
 					<li class="sl"><p class="pi c"><a href="forms/editUserProfile.php">
-						<span class="glyphicon glyphicon-flash"></span>Edit Profile</a></p></li>
+						<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
 					<li class ="sl"><p class="pi c"><a href="">
-						<span class="glyphicon glyphicon-plus"></span>Add Traveler</a></p></li>
+								<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
+					<li class="sl"><p class="pi c"><a href="">
+								<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>
+
 				</ul>
 			</div>
 		</div>
