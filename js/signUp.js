@@ -69,6 +69,7 @@ $(document).ready(function()
 						url    : "../php/processors/signUpProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
+							setInterval(function () {location.href = '../index.php'}, 3000);
 						}
 					});
 			}

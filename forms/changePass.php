@@ -1,6 +1,35 @@
 <?php
 include("../lib/csrf.php");
+include("../php/class/profile.php");
+include("/etc/apache2/capstone-mysql/przm.php");
 session_start();
+try {
+	if(isset($_SESSION['userId'])) {
+		$mysqli = MysqliConfiguration::getMysqli();
+		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+		$fullName = ucfirst($profile->__get('userFirstName')) . ' ' . ucfirst($profile->__get('userLastName'));
+		$userName = <<<EOF
+		<a><span
+			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
+
+EOF;
+		$status = <<< EOF
+			<a href="signOut.php">Sign Out</a>
+
+EOF;
+		$account = <<< EOF
+		<li role="presentation">
+			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
+				aria-expanded="true">
+				Account</a>
+		</li>
+
+
+EOF;
+	}
+}catch(Exception $e){
+	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -58,6 +87,8 @@ session_start();
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
+				<li class="disabled"><?php echo $userName?> </li>
+				<li class="active"><?php echo $status?></li>
 				<li><a href="#"></a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->

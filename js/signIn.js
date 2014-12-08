@@ -34,7 +34,7 @@ $(document).ready(function()
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
 							// wait for a time and then redirect
-							setInterval(function () {location.href = '../index.php'}, 5000);
+							setInterval(function () {location.href = '../index.php'}, 3000);
 							//redirect here
 						}
 					});

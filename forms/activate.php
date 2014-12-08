@@ -57,7 +57,7 @@ $_SESSION['userId'] = $newUser->getUserId();
 $_SESSION['profileObj'] = $profile;
 echo "<div class='alert alert-success' role='alert'> Your account has been authenticated. You are now signed in
 </div>";
-sleep(5000);
+sleep(3000);
 header("Location: ../index.php");
 }catch(Exception $e){
 echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
