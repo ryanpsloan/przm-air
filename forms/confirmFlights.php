@@ -11,6 +11,7 @@ $profile = $_SESSION["profileObj"];
 //$_SESSION['flightObjArray'] = $flightData;
 
 ?>
+<form>
 <!-- Display Departure flights-->
 
 
@@ -20,3 +21,4 @@ $profile = $_SESSION["profileObj"];
 
 
 <!-- user selects two flights and then clicks confirm -->
+</form>

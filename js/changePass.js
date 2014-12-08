@@ -42,6 +42,7 @@ $(document).ready(function()
 						url    : "../php/processors/changePassProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
+							setInterval(function () {location.href = '../index.php'}, 3000);
 						}
 					});
 			}

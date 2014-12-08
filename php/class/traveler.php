@@ -493,23 +493,26 @@ class Traveler{
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
-		$row = $result->fetch_assoc(); //fetch_assoc() returns a row as an associative array
+		$travelerArray = array ();
 
-		//convert the associate array to user
-		if($row !== null) {
+		while($row = $result->fetch_assoc() !== null) { //fetch_assoc() returns a row as an associative array
+
 			try {
-				$traveler = new Traveler ($row['travelerId'], $row['profileId'],$row['travelerFirstName'],
-					$row['travelerMiddleName'],$row['travelerLastName'], $row['travelerDateOfBirth']);
+				$travelerArray[] = new Traveler ($row['travelerId'], $row['profileId'], $row['travelerFirstName'],
+					$row['travelerMiddleName'], $row['travelerLastName'], $row['travelerDateOfBirth']);
+
 			} catch(Exception $exception) {
 				//if row can't be converted rethrow
 				throw(new mysqli_sql_exception("Unable to convert row to Traveler Object", 0, $exception));
 			}
+		}
 
-			//if we got here, the Traveler Object is good - return it
-			return ($traveler);
+		if($result->num_rows === 0){		//if we got here, the Traveler Object is good - return it
+			return (null);
+
 		} else {
 			//404 traveler not found
-			return (null);
+			return ($travelerArray);
 		}
 	}
 
