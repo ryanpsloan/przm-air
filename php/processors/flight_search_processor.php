@@ -21,19 +21,34 @@ require("../../lib/csrf.php");
  * @return 	mixed $outputTable html table of search results
  **/
 function completeSearch (&$mysqli, $userOrigin, $userDestination,
-								 $userFlyDateStart) {
+								 $userFlyDateStart)
+{
 
 	// can make this a user input in future to pre-filter results to a user-given duration amount in hours.
 	$userFlyDateRange = 24;
 
-	$numberOfPassengersRequested = filter_input(INPUT_POST,"numberOfPassengers", FILTER_SANITIZE_NUMBER_INT);
-	$minLayover = filter_input(INPUT_POST,"minLayover", FILTER_SANITIZE_NUMBER_INT);
+	// can make this a user input in future to pre-filter results to a user-given number of records.  If all records are needed, can use empty($thisArrayOfPaths[$i]) === false; in the for loop below instead.
+	$numberToShow = 15;
+
+	$numberOfPassengersRequested = filter_input(INPUT_POST, "numberOfPassengers", FILTER_SANITIZE_NUMBER_INT);
+	$minLayover = filter_input(INPUT_POST, "minLayover", FILTER_SANITIZE_NUMBER_INT);
+
+//	echo "<p>121 inputs to method call </p>";
+//	var_dump($userOrigin);
+//	var_dump($userDestination);
+//	var_dump($userFlyDateStart);
+//	var_dump($userFlyDateRange);
+//	var_dump($numberOfPassengersRequested);
+//	var_dump($minLayover);
 
 
 	// call method
 	$thisArrayOfPaths = Flight::getRoutesByUserInput($mysqli, $userOrigin, $userDestination,
 		$userFlyDateStart, $userFlyDateRange,
 		$numberOfPassengersRequested, $minLayover);
+
+//	echo "<p>47 results COUNT PATHS </p>";
+//	var_dump(count($thisArrayOfPaths));
 
 	// set up head of table of search results
 	$outputTableHead = "<thead><tr>
@@ -48,106 +63,162 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 	// set up variable for rows then fill in with results by looping through array of paths
 	$outputTableRows = "";
-	for($i=0; empty($thisArrayOfPaths[$i]) === false; $i++) {
+	for($i = 0; $i<$numberToShow; $i++) {
+
+//		echo "<p>65 PATH #: ". $i ." </p>";
+//		var_dump($thisArrayOfPaths[$i]);
+
 
 		//get index for last flight
-		$sizeOfThisPath = count($thisArrayOfPaths[$i]) - 3;
+		$indexOfLastFlightInPath = count($thisArrayOfPaths[$i]) - 3;
 
+//		echo "<p>65 PATH indexOfLastFlightInPath: ". $i ." </p>";
+//		var_dump($indexOfLastFlightInPath);
+
+//		echo "<p>ORIGIN TIME FOR PATH before timezone: ". $i ." </p>";
+//		var_dump($thisArrayOfPaths[$i][0]->getDepartureDateTime());
 
 		// origin timezone conversions here
-		if($userOrigin = "SEA" || $userOrigin = "LAX") {
-			$originTimeZoneString = "PT";
-			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/Los_Angeles"))->format("H:i");
-		}
 		if($userOrigin = "ABQ" || $userOrigin = "DEN") {
+			$originTimeZoneString = "PT";
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/Denver"))->format("H:i");
+		} else if($userOrigin = "SEA" || $userOrigin = "LAX") {
 			$originTimeZoneString = "MT";
-			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/Denver"))->format("H:i");
-		}
-		if($userOrigin = "DFW" || $userOrigin = "ORD" || $userOrigin = "MDW") {
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/Los_Angeles"))->format("H:i");
+		} else if($userOrigin = "DFW" || $userOrigin = "ORD" || $userOrigin = "MDW") {
 			$originTimeZoneString = "CT";
-			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/Chicago"))->format("H:i");
-		}
-
-		// else origin is ET
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/Chicago"))->format("H:i");
+		} // else origin is ET
 		else {
 			$originTimeZoneString = "ET";
-			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone (new DateTimeZone("America/New_York"))->format("H:i");
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/New_York"))->format("H:i");
 		}
+
+//		echo "<p>ORIGIN TIME FOR PATH after timezone: ". $i ." </p>";
+//		var_dump($thisArrayOfPaths[$i][0]->getDepartureDateTime());
+
+//		echo "<p>Destination TIME FOR PATH before timezone: ". $i ." </p>";
+//		var_dump($thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime());
 
 
 		// destination timezone conversions here
 		if($userDestination = "SEA" || $userDestination = "LAX") {
 			$destinationTimeZoneString = "PT";
-			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/Los_Angeles"))->format("H:i");
-		}
-		if($userDestination = "ABQ" || $userDestination = "DEN") {
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/Los_Angeles"))->format("H:i");
+		} else if($userDestination = "ABQ" || $userDestination = "DEN") {
 			$destinationTimeZoneString = "MT";
-			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/Denver"))->format("H:i");
-		}
-		if($userDestination = "DFW" || $userDestination = "ORD"  || $userDestination = "MDW") {
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/Denver"))->format("H:i");
+		} else if($userDestination = "DFW" || $userDestination = "ORD" || $userDestination = "MDW") {
 			$destinationTimeZoneString = "CT";
-			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/Chicago"))->format("H:i");
-		}
-
-		// else destination is ET
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/Chicago"))->format("H:i");
+		} // else destination is ET
 		else {
 			$arrivalFlightLast = "ET";
-			$arrivalFlightLast = $thisArrayOfPaths[$i][$sizeOfThisPath]->getArrivalDateTime()->setTimezone (new DateTimeZone("America/New_York"))->format("H:i");
+			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/New_York"))->format("H:i");
 		}
+
+//		echo "<p>Destination TIME FOR PATH after timezone: ". $i ." </p>";
+//		var_dump($thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime());
+
 
 		// set up array for flight number then loop through flights
 		$flightNumberArray = array();
+		$j = 0;
 
-		for($j = 0; empty($thisArrayOfPaths[$i][$j + 3]) === false; $j++) {
-			$flightNumberArray = $thisArrayOfPaths[$i][$j]->getFlightNumber();
-		}
+		do {
+			$flightNumberArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightNumber();
 
-		// turn array to string
-		$flightNumber = implode(", ",$flightNumberArray);
+//			echo "110 path " . $i . " and flight " . $j . " flight object and flight number and Array of flight numbers";
+////				var_dump($thisArrayOfPaths[$i][$j]);
+//			var_dump($thisArrayOfPaths[$i][$j]->getFlightNumber());
+//			var_dump($flightNumberArray);
+			$j++;
+		} while(empty($thisArrayOfPaths[$i][$j + 2]) === false);
+
+		$flightNumber = implode(", ", $flightNumberArray);
+//		echo "120 final flightNumber string";
+//		var_dump($flightNumber);
+
+
+//		fixme old code delete:
+//		} else {
+//			$flightNumber = $thisArrayOfPaths[$i][0]->getFlightNumber();
+//		}
+//		echo "120 flight#Array";
+//		var_dump(count($flightNumberArray));
+
+//		if(count($flightNumberArray) === 1) {
+//			$flightNumber = $flightNumberArray[0];
+//		} else if(count($flightNumberArray) > 1) {
+			// turn array to string
+//		} else throw (new UnexpectedValueException ("Could not find a flight number"));
+
 
 		// index of last flight also = number of stops to show user
-		if ($sizeOfThisPath = 0) {
+		if($indexOfLastFlightInPath === 0) {
 			$numberOfStops = "Nonstop";
-		} else {$numberOfStops = $sizeOfThisPath;}
+		} else {
+			$numberOfStops = $indexOfLastFlightInPath;
+		}
 
 		// get total duration from results array and change it to a string
-		$totalDurationInterval = $thisArrayOfPaths[$i][$sizeOfThisPath+1];
+		$totalDurationInterval = $thisArrayOfPaths[$i][$indexOfLastFlightInPath + 1];
+//		echo "<p>121 PATH index then DURATION </p>";
+//		var_dump($indexOfLastFlightInPath + 1);
+//		var_dump($totalDurationInterval);
+
 		$travelTime = $totalDurationInterval->format("%H:%I");
 
 		// set up array for layover then loop through results to calc
 		$layoverArray = array();
 		for($k = 0; empty($thisArrayOfPaths[$i][$k + 3]) === false; $k++) {
 			$layoverInterval = $thisArrayOfPaths[$i][$k]->getArrivalDateTime()->
-			diff($thisArrayOfPaths[$i][$k + 1]->getDepartureDateTime());
-			$minutes = $layoverInterval->days * 24 * 60;
-			$minutes += $layoverInterval->h * 60;
-			$minutes += $layoverInterval->i;
-			$layoverArray = intval($minutes);
+										diff($thisArrayOfPaths[$i][$k + 1]->getDepartureDateTime());
+//
+//			echo "<p>161 PATH LAYOVER </p>";
+//			var_dump($layoverInterval);
+
+//			$minutes = $layoverInterval->days * 24 * 60;
+//			$minutes += $layoverInterval->h * 60;
+//			$minutes += $layoverInterval->i;
+
+			$layoverArray[$k] = $layoverInterval->format("%H:%I");
+
+//				intval($minutes);
 		}
 
 		// turn layover to string of all layovers in route
-		if (empty($layoverArray) === false) {
-			$layoverString = "None";
+		if($indexOfLastFlightInPath === 0) {
+			$layoverString = "-";
 		} else {
-			$layoverString = implode(", ",$layoverArray);
+			$layoverString = implode(", ", $layoverArray);
 		}
 
 		// get total price from results
-		$totalPrice = $thisArrayOfPaths[$i][$sizeOfThisPath+2];
+		$totalPrice = "$" . money_format("%n",$thisArrayOfPaths[$i][$indexOfLastFlightInPath+2]);
+
 
 		// build outputs into table rows
 		$outputTableRows = $outputTableRows . "<tr>" .
 			"<td>" . $departureFlight1 . "</td>" .
 			"<td>" . $arrivalFlightLast . "</td>" .
 			"<td>" . $flightNumber . "</td>" .
-			"<td>" . $numberOfStops . "</td>" .
-			"<td>" . $travelTime .  "</td>" .
-			"<td>" . $layoverString .  "</td>" .
+			"<td text-align: center>" . $numberOfStops . "</td>" .
+			"<td>" . $travelTime . "</td>" .
+			"<td>" . $layoverString . "</td>" .
 			"<td>" . $totalPrice . "</td>" .
+			"<td>
+					<div class='btn-group' data-toggle='buttons'>
+						<label class='btn btn-primary active'>
+							<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+							SELECT FLIGHT
+						</label>
+					</div>
+			</td>" .
 			"</tr>\n";
-	}
 
-	$outputTable = "<table>\n" . $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n</table>\n";
+	}
+	$outputTable = "<table class='table'>\n" . $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n</table>\n";
 	return $outputTable;
 }
 
@@ -174,9 +245,9 @@ try {
 
 	$userFlyDateStartIncoming1 = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
 		$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-		$userFlyDateStartObj = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2);
+		$userFlyDateStartObj = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
 		$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d H:i:s");
-	echo $userFlyDateStart;
+	// echo $userFlyDateStart;
 
 	$outputTableOutbound = completeSearch($mysqli, $userOrigin, $userDestination,
 														$userFlyDateStart);
@@ -190,11 +261,11 @@ try {
 		$userDestination = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
 
-		$userFlyDateStart = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-		//	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-		//	$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2);
-		//	$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
-		echo $userFlyDateStart;
+		$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
+			$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+			$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
+			$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
+		// echo $userFlyDateStart;
 
 		$outputTableInbound = completeSearch($mysqli, $userOrigin, $userDestination,
 			$userFlyDateStart);

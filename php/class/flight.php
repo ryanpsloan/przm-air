@@ -1,5 +1,23 @@
 <?php
 /**
+ * TODO: write bloody doc block
+ *
+ * @param $firstPath
+ * @param $secondPath
+ * @return int
+ */
+function sortByPrice($firstPath, $secondPath) {
+	if($firstPath[count($firstPath) - 1] > $secondPath[count($secondPath) - 1]){
+		$compareVal = ceil ($firstPath[count($firstPath) - 1] - $secondPath[count($secondPath) - 1]);
+	} else if ($firstPath[count($firstPath) - 1] = $secondPath[count($secondPath) - 1]) {
+		$compareVal = ($firstPath[count($firstPath) - 1] - $secondPath[count($secondPath) - 1]);
+	} else {
+		$compareVal = floor ($firstPath[count($firstPath) - 1] - $secondPath[count($secondPath) - 1]);
+	}
+	return $compareVal;
+}
+
+/**
  * mySQL Enabled Flight
  *
  * fixme: rewrite this heading
@@ -1101,9 +1119,42 @@ class Flight {
 //				echo "<p>line 1078 dump of arrayOfPathFlightObjects before adding to allFlightPathsArray</p>";
 //				var_dump($arrayOfPathFlightObjects);
 
-				// put the two dimensional array into another array of all the possible flight paths each with all
-				//relative data for each flight
+				// put the array of objects into another array of all the possible flight paths each with all
+				// relative data for each flight, with index equal to price of each path
+				// $totalPriceForPathIndex = strval($totalPriceForPath);
+
 				$allFlightPathsArray[] = $arrayOfPathFlightObjects;
+
+//
+//				echo "<p>line 1078 dump of departure date time in flight</p>";
+//				var_dump($allFlightPathsArray[0][0]->getDepartureDateTime());
+
+
+// fixme old code from other project for advanced pre-sorting.  delete if not needed.
+
+//				// loop through the Lavu results, create a new Inventory object, calc par and pad it to create associative
+//
+//				// loop through the Lavu results, create a new Inventory object, calc par and prepend and postpend, i.e. pad, it to create associative
+//				// index, then add object to associative array.
+//				foreach($dataArray as $index => $element) {
+//					$inventoryObject = new Inventory(	$element->title, $element->qty, $element->unit,
+//						$element->low, $element->high, $element->id, $element->category, $element->cost,
+//						$element->loc_id, $element->chain_reporting_group);
+//					$zeros = "0000000000";
+//					$par = round($inventoryObject->getPar(),4) * pow(10, 4);
+//					$zerosLength = strlen($zeros);
+//					$prePad = $zeros.$par;
+//					$prePadLength = strlen($prePad);
+//					$paddedPar = substr($prePad,$prePadLength-$zerosLength, $zerosLength);
+//					$parIndex = $paddedPar.$inventoryObject->title;
+//					$resultsArray[$parIndex] = $inventoryObject;
+//
+
+
+
+
+
+
 
 				// clear out the array of flight objects, price, and duration of paths, to be used again on next loop.
 				unset ($arrayOfPathFlightObjects);
@@ -1125,11 +1176,18 @@ class Flight {
 //		var_dump($allFlightPathsArray);
 
 
-		//fixme sort by lowest total path price before returning?
+
+
 		if(empty($allFlightPathsArray)) {
 			// 404 path not found - return null
 			return (null);
 		} else {
+			// sort final array by price using a usort, compare function and closure
+			usort($allFlightPathsArray, "sortByPrice");
+
+//			echo "IN FLIGHT ALL PATHS ARRAY AFTER SORT";
+//			var_dump($allFlightPathsArray);
+
 			return ($allFlightPathsArray);
 		}
 

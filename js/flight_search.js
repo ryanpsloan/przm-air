@@ -78,6 +78,6 @@ $(document).ready(function()
 		});
 
 	//toggle or hide unhide
-	$("#oneWay").onclick(
+	$("#oneWay").onclick();
 
 });

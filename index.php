@@ -224,33 +224,154 @@ EOF;
 					      to implement-->
 					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
-				</form>
+			</form>
 
 				<div id="searchOutputArea">
-				<table>
-					<tr>
-						<button type="selectRoute" class="btn btn-default">Select Route</button>
-					</tr>
-
-				//Zach are you planning on posting the results of the search on index? We don't have to use ajaxOutput
-				</table>
-				<ul id="searchResults">
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
 
 
-				</ul>
 
-			</div>
+					<table class='table'>
+						<thead><tr>
+								<th>Depart</th>
+								<th>Arrive</th>
+								<th>Flight #</th>
+								<th>Stops</th>
+								<th>Travel Time</th>
+								<th>Layover</th>
+								<th>Price</th>
+							</tr></thead>
+						<tbody><tr><td>15:45</td><td>23:53</td><td>258, 126, 242</td><td>2</td><td>09:08</td><td>00:28, 03:23</td><td>$277.69</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>15:45</td><td>23:53</td><td>14, 55, 242</td><td>2</td><td>09:08</td><td>00:28, 03:22</td><td>$278.60</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>15:45</td><td>23:53</td><td>14, 55, 242</td><td>2</td><td>09:08</td><td>00:28, 03:22</td><td>$278.60</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>15:45</td><td>23:53</td><td>14, 55, 242</td><td>2</td><td>09:08</td><td>00:28, 03:22</td><td>$278.60</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>15:45</td><td>23:53</td><td>14, 55, 242</td><td>2</td><td>09:08</td><td>00:28, 03:22</td><td>$278.60</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:34</td><td>18, 272, 257</td><td>2</td><td>10:54</td><td>02:53, 02:03</td><td>$333.44</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:34</td><td>18, 272, 257</td><td>2</td><td>10:54</td><td>02:53, 02:03</td><td>$333.44</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:36</td><td>1, 208, 249</td><td>2</td><td>10:56</td><td>02:38, 02:06</td><td>$344.23</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:36</td><td>1, 208, 249</td><td>2</td><td>10:56</td><td>02:38, 02:06</td><td>$344.23</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:34</td><td>1, 269, 257</td><td>2</td><td>10:54</td><td>02:38, 01:58</td><td>$349.39</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:34</td><td>1, 269, 257</td><td>2</td><td>10:54</td><td>02:38, 01:58</td><td>$349.39</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:41</td><td>18, 22, 244</td><td>2</td><td>11:01</td><td>02:53, 01:13</td><td>$365.04</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:41</td><td>18, 22, 244</td><td>2</td><td>11:01</td><td>02:53, 01:13</td><td>$365.04</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:41</td><td>18, 22, 244</td><td>2</td><td>11:01</td><td>02:53, 01:13</td><td>$365.04</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+							<tr><td>14:40</td><td>00:41</td><td>18, 22, 244</td><td>2</td><td>11:01</td><td>02:53, 01:13</td><td>$365.04</td><td>
+									<div class='btn-group' data-toggle='buttons'>
+										<label class='btn btn-primary active'>
+											<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
+											SELECT FLIGHT
+										</label>
+									</div>
+								</td></tr>
+						</tbody>
+					</table>
 
-			</div>
+
+
+
+
+
+
+				</div>
+
+		</div>
 
 
 
