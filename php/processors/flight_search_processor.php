@@ -12,6 +12,24 @@ require("/etc/apache2/capstone-mysql/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
 
+
+echo <<< EOF
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>PRZM AIR</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
+EOF;
+
+
 /**
  * sets up all other needed variables that are same for outbound and return searches, then calls the method with all inputs
  * @param 	resource $mysqli pointer to temp mySQL connection, by reference
@@ -51,7 +69,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 //	var_dump(count($thisArrayOfPaths));
 
 	// set up head of table of search results
-	$outputTableHead = "<thead><tr>
+	$outputTableHead = "<thead2><tr>
 											<th>Depart</th>
 											<th>Arrive</th>
 											<th>Flight #</th>
@@ -59,7 +77,8 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 											<th>Travel Time</th>
 											<th>Layover</th>
 											<th>Price</th>
-									</tr></thead>\n";
+											<th>SELECT</th>
+									</tr></thead2>\n";
 
 	// set up variable for rows then fill in with results by looping through array of paths
 	$outputTableRows = "";
@@ -210,15 +229,14 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			"<td>
 					<div class='btn-group' data-toggle='buttons'>
 						<label class='btn btn-primary active'>
-							<input type='radio' name='selectFlight' id='roundTrip' autocomplete='off' value='1'>
-							SELECT FLIGHT
+							<input type='radio' name='selectFlight' id='selectFlight' autocomplete='off' value='1'>
 						</label>
 					</div>
 			</td>" .
 			"</tr>\n";
 
 	}
-	$outputTable = "<table class='table'>\n" . $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n</table>\n";
+	$outputTable = $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n";
 	return $outputTable;
 }
 
@@ -252,7 +270,8 @@ try {
 	$outputTableOutbound = completeSearch($mysqli, $userOrigin, $userDestination,
 														$userFlyDateStart);
 
-	echo $outputTableOutbound . "\n";
+	echo "<table class='table table-striped table-hover'>\n
+			<thead>SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . "</table>\n";
 
 	//check to see if return trip search needed and execute if so
 	if ($_POST ["roundTripOrOneWay"] === 1) {
@@ -270,7 +289,8 @@ try {
 		$outputTableInbound = completeSearch($mysqli, $userOrigin, $userDestination,
 			$userFlyDateStart);
 
-		echo $outputTableInbound;
+		echo "<table class='table table-striped table-responsive table-hover'>\n
+			<thead>SELECT RETURN FLIGHT</thead>" . $outputTableInbound . "</table>\n";
 	}
 
 

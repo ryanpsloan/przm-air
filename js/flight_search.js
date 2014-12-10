@@ -38,10 +38,10 @@ $(document).ready(function()
 
 			messages: {
 				roundTripOrOneWay : {
-					onSlect: "Please enter a departure city."
+					onSelect: "Please enter one-way or round trip."
 				},
 				origin : {
-					required: "Please enter a departure city."
+					required: "Please enter a origin city."
 				},
 				destination: {
 					required: "Please enter a destination city."
