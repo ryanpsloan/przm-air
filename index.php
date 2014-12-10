@@ -227,8 +227,26 @@ EOF;
 			</form>
 
 				<div id="searchOutputArea">
+				<!-- <table>
+					<tr>
+						<button type="selectRoute" class="btn btn-default">Select Route</button>
+					</tr>
+				</table>
+				//Zach are you planning on posting the results of the search on index? We don't have to use ajaxOutput
+
+				<ul id="searchResults">
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
+					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
 
 
+				</ul>-->
 
 					
 
