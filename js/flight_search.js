@@ -69,7 +69,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "./php/processors/flight_search_processor.php",
+						url    : "../php/processors/flight_search_processor.php",
 						success: function(ajaxOutput) {
 							$("#searchOutputArea").html(ajaxOutput);
 						}
@@ -78,6 +78,6 @@ $(document).ready(function()
 		});
 
 	//toggle or hide unhide
-	$("#oneWay").onclick();
+	//$("#oneWay").onclick();
 
 });

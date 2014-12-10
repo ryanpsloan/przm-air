@@ -227,7 +227,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			"<td>" . $layoverString . "</td>" .
 			"<td>" . $totalPrice . "</td>" .
 			"<td>
-					<div class='btn-group' data-toggle='buttons'>
+					<div class='btn-group'>
 						<label class='btn btn-primary active'>
 							<input type='radio' name='selectFlight' id='selectFlight' autocomplete='off' value='1'>
 						</label>
