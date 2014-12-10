@@ -48,8 +48,6 @@ EOF;
 	<meta charset="UTF-8">
 	<title>PRZM AIR</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<script type="text/javascript" src="flight_search.js"></script>
-
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
@@ -71,7 +69,7 @@ EOF;
 	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	<script type="text/javascript" src="js/editUserProfile.js"></script>
+	<script type="text/javascript" src="js/flight_search.js"></script>
 	<style>
 		#search{
 			margin-left: 5em;

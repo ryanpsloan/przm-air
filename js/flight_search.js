@@ -1,6 +1,3 @@
-/**
- * Created by zwg2 on 12/3/14.
- */
 $(document).ready(function()
 {
 	$("#flightSearch").validate(
