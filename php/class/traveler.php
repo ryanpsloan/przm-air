@@ -170,7 +170,8 @@ class Traveler{
 		//validate the string using REGEX
 		$filterOptions = array('options' => array("regexp" => "/^[a-z]{1,50}$/"));
 		if(filter_var($newFirstName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
-			throw(new InvalidArgumentException("Argument $newFirstName must be [a-zA-Z] no special characters or spaces"));
+			throw(new InvalidArgumentException("1. Argument $newFirstName must be [a-zA-Z] no special characters or
+			spaces"));
 		}
 		//set into class variable
 		$this->travelerFirstName = $newFirstName;
@@ -187,9 +188,10 @@ class Traveler{
 		//force all characters to lower case
 		$newMiddleName = strtolower($newMiddleName);
 		//validate the string using REGEX
-		$filterOptions = array('options' => array("regexp" => "/^[a-z]{1,50}$/"));
+		$filterOptions = array('options' => array("regexp" => "/^[a-z]{0,50}$/"));
 		if(filter_var($newMiddleName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
-			throw(new InvalidArgumentException("Argument $newMiddleName must be [a-zA-Z] no special characters or spaces"));
+			throw(new InvalidArgumentException("2. Argument $newMiddleName must be [a-zA-Z] no special characters or
+			spaces"));
 		}
 		//set into class variable
 		$this->travelerMiddleName = $newMiddleName;
@@ -208,7 +210,8 @@ class Traveler{
 		//validate the string using REGEX
 		$filterOptions = array('options' => array("regexp" => "/^[a-z]{1,50}$/"));
 		if(filter_var($newLastName,FILTER_VALIDATE_REGEXP, $filterOptions) === false){
-			throw(new InvalidArgumentException("Argument $newLastName must be [a-zA-Z] no special characters or spaces"));
+			throw(new InvalidArgumentException("3. Argument $newLastName must be [a-zA-Z] no special characters or
+			spaces"));
 		}
 		//set into class variable
 		$this->travelerLastName = $newLastName;
@@ -489,13 +492,13 @@ class Traveler{
 
 		//get result from the SELECT query
 		$result = $statement->get_result();
+
 		if($result === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
 
 		$travelerArray = array ();
-
-		while($row = $result->fetch_assoc() !== null) { //fetch_assoc() returns a row as an associative array
+		while(($row = $result->fetch_assoc()) !== null) { //fetch_assoc() returns a row as an associative array
 
 			try {
 				$travelerArray[] = new Traveler ($row['travelerId'], $row['profileId'], $row['travelerFirstName'],
@@ -503,8 +506,10 @@ class Traveler{
 
 			} catch(Exception $exception) {
 				//if row can't be converted rethrow
+				echo "<p>".$exception->getMessage()."</p>";
 				throw(new mysqli_sql_exception("Unable to convert row to Traveler Object", 0, $exception));
 			}
+
 		}
 
 		if($result->num_rows === 0){		//if we got here, the Traveler Object is good - return it

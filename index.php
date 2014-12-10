@@ -257,7 +257,9 @@ EOF;
 				<ul id="accountLinksList">
 					<li class="sl"><p class="pi c"><a href="forms/editUserProfile.php">
 						<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
-					<li class ="sl"><p class="pi c"><a href="">
+					<li class="sl"><p class="pi c"><a href="">
+								<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
+					<li class ="sl"><p class="pi c"><a href="forms/selectTravelers.php">
 								<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
 					<li class="sl"><p class="pi c"><a href="">
 								<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>

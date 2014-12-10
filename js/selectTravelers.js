@@ -20,16 +20,16 @@ $(document).ready(function()
 			},
 
 			messages: {
-				first : {
+				tFirst : {
 					required: "Please enter traveler's first name"
 				},
-				middle:{
+				tMiddle:{
 					required: "A middle name is not required"
 				},
-				last  : {
+				tLast  : {
 					required: "Please enter traveler's last name"
 				},
-				dob   : {
+				tDOB   : {
 					required: "Enter traveler's date of birth."
 				}
 			},
@@ -40,7 +40,7 @@ $(document).ready(function()
 						type   : "POST",
 						url    : "../php/processors/createTraveler.php",
 						success: function(ajaxOutput) {
-							$("#outputArea").html(ajaxOutput);
+							$("#travelerContainer").html(ajaxOutput);
 						}
 					});
 			}

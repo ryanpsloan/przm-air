@@ -1,7 +1,18 @@
 <?php
+session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
+/*require_once("flight.php");
+$flights = array();
+for($i = 13; $i < 17; ++$i) {
+	$flights[] = Flight::getFlightByFlightId($mysqli, $i);
+}
+$_SESSION['flightObjArray'] = $paths;*/
+//profile id =341
+$userId = 414;
+$_SESSION['userId'] = $userId;
+header("Location: ../../forms/selectTravelers.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";
 $fileName = "weekDay01.csv";
@@ -14,7 +25,7 @@ echo"<p> weekDay seed data set to flight </p><br>";*/
 //readCSV($mysqli, $fileName,$baseDate,25,2);
 //echo"<p> weekEnd seed data set to flight </p><br>";
 
-$i = rand(1,100);
+/*$i = rand(1,100);
 require_once("user.php");
 $salt = bin2hex(openssl_random_pseudo_bytes(32));
 $hash = hash_pbkdf2("sha512", "newPassword", $salt, 2048, 128);

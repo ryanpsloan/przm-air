@@ -12,13 +12,10 @@ try{
 		$profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);
 		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
 		$userName = <<<EOF
-		<a><span
-			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
-
+		<a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
 		$status = <<< EOF
 			<a href="signOut.php">Sign Out</a>
-
 EOF;
 		$account = <<< EOF
 		<li role="presentation">
@@ -26,20 +23,10 @@ EOF;
 				aria-expanded="true">
 				Account</a>
 		</li>
-
-
 EOF;
 	}
-	$mysqli = MysqliConfiguration::getMysqli();
-	$paths = $_SESSION['flightObjArray'];
-	$profile = $_SESSION['profileObj'];
-	$travelers[] = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
-	$numTravelers = count($travelers);
-	$tNames = array();
-	foreach($travelers as $traveler){
-		$tNames[] = $traveler->getFirstName(). " " . $traveler->getLastName();
-	}
-
+	//$paths = $_SESSION['flightObjArray'];
+	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, 341); /*$profile->__get("profileId"));*/
 
 }catch(Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
@@ -50,11 +37,13 @@ EOF;
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
-	<title>Add Passengers</title>
+	<title>Travelers</title>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
+
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<!-- Optional theme -->
@@ -62,9 +51,12 @@ EOF;
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	<script type="text/javascript" src="../js/editUserProfile.js"></script>
+
+	<script type="text/javascript" src="../js/selectTravelers.js"></script>
+
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({
@@ -74,13 +66,99 @@ EOF;
 				minDate: "-100y"
 			});
 		});
-		function createTraveler{
-			var input;
-			getElementByTagName('input');
-		}
+
+
+
 	</script>
+	<style>
+		#formDiv{
+			position: absolute;
+			top: 30%;
+			left: 33%;
+			display: inline;
+		}
+		#travelerContainer{
+			border: 2px solid lightgrey;
+			border-radius: 5%;
+			height: 35em;
+			width: 27em;
+			margin-left: 4.7em;
+			margin-top: 2em;
+			margin-bottom: 2em;
+
+		}
+		#bookFltDiv{
+			border: 2px solid lightgrey;
+			height: 4em;
+			width: 36em;
+			border-radius: 15%;
+			margin-bottom: 1em;
+
+		}
+		#bookFltDiv button{
+			padding: .5em;
+			margin-left: 14em;
+			margin-top: .5em;
+			background-color: lightblue;
+
+		}
+		.buttonDiv{
+			margin-bottom: 2em;
+			height: 4em;
+			width: 36em;
+			border-radius: 15%;
+			border: 2px solid lightgrey;
+		}
+		.innerBtnDiv{
+			margin-left: 3.7em;
+		}
+		#addTravelerDiv{
+			height: 30em;
+			width: 30em;
+			border: 2px solid lightgrey;
+			border-radius: 5%;
+		}
+		#addTInnerDiv input{
+			margin-left: 3.5em;
+		}
+		#addTInnerDiv label{
+			margin-left: 3.5em;
+		}
+		.travelerSelect{
+			font-size: 1.2em;
+			padding: .5em;
+			background-color: white;
+			border-radius: 4%;
+
+		}
+		.nameSpan{
+			margin-left: .4em;
+			padding: .5em;
+			font-weight: bold;
+		}
+		#travelerList{
+			background-color: white;
+			height: 20em;
+
+		}
+		#ckBoxes input{
+			margin-left: 4.2em;
+		}
+		table{
+			margin-left: 3.3em;
+		}
+		table td{
+			padding: .5em;
+			margin: .5em;
+		}
+		#confirmBtn{
+			padding: .5em;
+			margin-left: 7.7em;
+		}
+	</style>
 </head>
 <body>
+<header>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -109,97 +187,114 @@ EOF;
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
 </nav>
+</header>
 <!-- Display Flights -->
 <section>
 	<div class="jumbotron">
-		<div class="container">
-			<?php foreach ($paths as $key => $flight){
+		<div class="flightContainer">
+			<!-- Zach will handle this -->
+			<!--/* ?php foreach ($paths as $key => $flight){
 				echo "<p>" . "Flight Id: " . $flight->flightId . " " . "Origin: " . $flight->origin . " " . "Destination: "
 				. $flight->destination . " " . "Duration: " . $flight->duration . " " . "Departure: "
 				. $flight->departureDateTime . " " . "Arrival: " .	$flight->arrivalDateTime . " " . "Flight Number: "
 				. $flight->flightNumber . " " . "Price: " . $flight->price . " " . "Remaining Seats Available: "
 				. $flight->totalSeatsOnPlane . " " . "</p>";
-			}
-			?>
+			} ?
+			-->
+		</div>
+	</div>
+</section>
+
+<div id="formDiv">
+<form id="selectTravelersForm" action="../php/processors/createTraveler.php" method="post">
+
+	<div class="buttonDiv">
+		<div class="innerBtnDiv">
+			<table>
+				<tr><td><button type="submit" name="action" class="btn" value="Remove">Remove Travelers</button></td>
+					<td><button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+							Add Travelers</button></td></tr>
+			</table>
 		</div>
 	</div>
 
-</section>
-<section>
-	<p>Please select travelers:</p><br>
-	<?php
-		foreach($names as $name){
-			echo <<<EOF
-				<div class="travelerSelect"><input type="checkbox" name="selectTraveler"><p>$name</p></div>
+	<div id="travelerContainer">
+	<h3 style="text-align: center">Select travelers:</h3><br>
+	<hr>
+		<div id="travelerList">
+			<div id="ckBoxes">
+			<?php
+			$travelerArray = array();
+			if(count($staticTravelers) > 0) {
+				foreach($staticTravelers as $traveler) {
+					$name = $traveler->__get("travelerFirstName") . " " . $traveler->__get("travelerLastName");
+					$name = ucwords($name);
+					$uID = $traveler->__get("travelerId");
+					echo <<<EOF
+					<div class="travelerSelect"><input type="checkbox" name="travelerArray[]"
+					value="$uID"><span class="nameSpan">$name</span></div>
 EOF;
-}
-?>	//show register travelers with checkbox
+				}
+			}
+			else{
+				echo "<p style='text-align: center'>You have not added any travelers</p>";
+			}
+			?>
+			<div id="selectOutput"></div>
+			</div>
+		</div>
+		<hr>
 
-	<div class="modal fade">
+	</div>
+
+	<div id="addTDiv"">
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title">Add Traveler</h4>
+					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 				</div>
-				<form name="createTravelerForm" action="createTraveler.php" method="POST">
 				<div class="modal-body">
-					<!-- inputs -->
+					<div id="addTravelerDiv">
+						<div id="addTInnerDiv">
 
-					<p>Enter Traveler Details:</p><br>
-					<p><label for=""></label><input type="text" id="tFirst"></p><br>
-					<p><label for=""></label><input type="text" id="tMiddle"></p><br>
-					<p><label for=""></label><input type="text" id="tLast"></p><br>
-					<p><label for=""></label><input type="text" id="tDOB" class="datepicker"></p>
-					<?php echo generateInputTags();?>
+
+							<h4 style="text-align: center">You can have up to 6 travelers per itinerary</h4>
+							<label for="tFirst">First Name:</label><br><input type="text" id="first" name="tFirst" size="30"
+																							  autocomplete="off"><br>
+							<label for="tMiddle">Middle Name:</label><br><input type="text" id="middle" name="tMiddle" size="30"
+																								 autocomplete="off"><br>
+							<label for="tLast">Last Name:</label><br><input type="text" id="last" name="tLast" size="30"
+																							autocomplete="off"><br>
+							<label for="tDOB">Date of Birth:</label><br><input type="text" class="datepicker" id="dob" name="tDOB"
+																								size="10">
+
+						</div>
+						<div id="modalOutput"></div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" onclick="">Save Traveler</button>
+					<button type="submit" class="btn btn-primary" name="action" value="Add">Add</button>
 				</div>
-				</form>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	//add traveler use modal
-
-
-
-
-
-</section>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="buttonDiv">
+		<div class="innerBtnDiv">
+			<div id="confirmBtn"><button type="submit" name="action" class="btn" value="Confirm">Confirm
+					Travelers</button></div>
+		</div>
+	</div>
+	<div id="bookFltDiv" style="visibility: hidden">
+		<button type="submit" name="action" class="btn" value="Book" href="">Book Flight</button>
+	</div>
+</form>
+</div>
 </body>
 </html>
 
-<<<EOF
-<div class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title">Traveler $i </h4>
-			</div>
-			<div class="modal-body">
-				<p><label for=""></label><br><input type="text" id="tFirst" name="" autocomplete="off"></p>
-				<p><label for=""></label><br><input type="text" id="tMiddle" name="" autocomplete="off"></p>
-				<p><label for=""></label><br><input type="text" id="tLast" name="" autocomplete="off"></p>
-				<p><label for=""></label><br><input type="text" id="tDob" name="" class="datepicker"></p>
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div id="travelerInfo">
-	<form id="travelerInfoForm" action="selectTravelersProcessor.php" method="POST">
-
-
-		<p><button type="submit"></p>
-	</form>
-</div>
-EOF;
 

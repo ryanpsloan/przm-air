@@ -4,15 +4,18 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // then require the class under scrutiny
-require_once("../php/traveler.php");
-require_once("../php/profile.php");
-require_once("../php/user.php");
+require_once("../php/class/traveler.php");
+require_once("../php/class/profile.php");
+require_once("../php/class/user.php");
 // the UserTest is a container for all our tests
 class TravelerTest extends UnitTestCase {
 	// variable to hold the mySQL connection
 	private $mysqli = null;
 	// variable to hold the test TRAVELER object
 	private $traveler  = null;
+	private $traveler2  = null;
+	private $traveler3  = null;
+	private $traveler4  = null;
 	// variable to hold the test Profile object
 	private $profile = null;
 	// variable to hold the test TRAVELER object
@@ -64,6 +67,7 @@ class TravelerTest extends UnitTestCase {
 	// here, we use it to delete the test record and disconnect from mySQL
 	public function tearDown()
 	{
+
 		// delete the traveler/profile/user if we can
 		if($this->traveler != null) {
 
@@ -117,7 +121,7 @@ class TravelerTest extends UnitTestCase {
 		// compare the traveler object data against the data in the database
 		//pull the data from the update to compare against it
 		$row = $this->selectRow();
-		echo $dateString = $row['travelerDateOfBirth'];
+		$dateString = $row['travelerDateOfBirth'];
 		$date = DateTime::createFromFormat("Y-m-d H:i:s", $dateString);
 
 		// finally, compare the fields against the row data pulled from the database
@@ -223,18 +227,61 @@ class TravelerTest extends UnitTestCase {
 		// third, insert the user to mySQL
 		$this->traveler->insert($this->mysqli);
 
+		$this->traveler2 = new Traveler(null, $this->profile->__get("profileId"), "Ryan",
+			"Pace","Sloan", "2014-08-10 10:10:10");
+		$this->traveler2->insert($this->mysqli);
+
+		$this->traveler3 = new Traveler(null, $this->profile->__get("profileId"), "Joseph",
+			"J","Bottone", "2009-10-11 12:11:10");
+		$this->traveler3->insert($this->mysqli);
+
+		$this->traveler4 = new Traveler(null, $this->profile->__get("profileId"), "Christian",
+			"","Slater", "1997-10-11 12:11:10");
+		$this->traveler4->insert($this->mysqli);
+
 		// fourth, get the user using the static method
 		$staticTraveler = Traveler::getTravelerByProfileId($this->mysqli, $this->profile->__get("profileId"));
-
+		echo "<p>staticTraveler line 228 simpletestTraveler.php</p>";
+		var_dump($staticTraveler);
 		// finally, compare the fields
-		$this->assertNotNull($staticTraveler->__get('travelerId'));
-		$this->assertTrue($staticTraveler->__get('travelerId') > 0);
-		$this->assertNotNull($staticTraveler->__get('profileId'));
-		$this->assertTrue($staticTraveler->__get('profileId') > 0);
-		$this->assertIdentical($staticTraveler->__get('travelerFirstName'),   $this->TRAVELERFIRSTNAME);
-		$this->assertIdentical($staticTraveler->__get('travelerMiddleName'),  $this->TRAVELERMIDDLENAME);
-		$this->assertIdentical($staticTraveler->__get('travelerLastName'),    $this->TRAVELERLASTNAME);
-		$this->assertIdentical($staticTraveler->__get('travelerDateOfBirth'), $this->TRAVELERDATEOFBIRTH);
+		$this->assertNotNull($staticTraveler[0]->__get('travelerId'));
+		$this->assertTrue($staticTraveler[0]->__get('travelerId') > 0);
+		$this->assertNotNull($staticTraveler[0]->__get('profileId'));
+		$this->assertTrue($staticTraveler[0]->__get('profileId') > 0);
+		$this->assertIdentical($staticTraveler[0]->__get('travelerFirstName'),   $this->TRAVELERFIRSTNAME);
+		$this->assertIdentical($staticTraveler[0]->__get('travelerMiddleName'),  $this->TRAVELERMIDDLENAME);
+		$this->assertIdentical($staticTraveler[0]->__get('travelerLastName'),    $this->TRAVELERLASTNAME);
+		$this->assertIdentical($staticTraveler[0]->__get('travelerDateOfBirth'), $this->TRAVELERDATEOFBIRTH);
+
+		$this->assertNotNull($staticTraveler[1]->__get('travelerId'));
+		$this->assertTrue($staticTraveler[1]->__get('travelerId') > 0);
+		$this->assertNotNull($staticTraveler[1]->__get('profileId'));
+		$this->assertTrue($staticTraveler[1]->__get('profileId') > 0);
+		$this->assertIdentical($staticTraveler[1]->__get('travelerFirstName'),   "ryan");
+		$this->assertIdentical($staticTraveler[1]->__get('travelerMiddleName'),  "pace");
+		$this->assertIdentical($staticTraveler[1]->__get('travelerLastName'),    "sloan");
+		$this->assertIdentical($staticTraveler[1]->__get('travelerDateOfBirth'),
+			DateTime::createFromFormat("Y-m-d H:i:s","2014-08-10 10:10:10"));
+
+		$this->assertNotNull($staticTraveler[2]->__get('travelerId'));
+		$this->assertTrue($staticTraveler[2]->__get('travelerId') > 0);
+		$this->assertNotNull($staticTraveler[2]->__get('profileId'));
+		$this->assertTrue($staticTraveler[2]->__get('profileId') > 0);
+		$this->assertIdentical($staticTraveler[2]->__get('travelerFirstName'),   "joseph");
+		$this->assertIdentical($staticTraveler[2]->__get('travelerMiddleName'),  "j");
+		$this->assertIdentical($staticTraveler[2]->__get('travelerLastName'),    "bottone");
+		$this->assertIdentical($staticTraveler[2]->__get('travelerDateOfBirth'),
+			DateTime::createFromFormat("Y-m-d H:i:s", "2009-10-11 12:11:10"));
+
+		$this->assertNotNull($staticTraveler[3]->__get('travelerId'));
+		$this->assertTrue($staticTraveler[3]->__get('travelerId') > 0);
+		$this->assertNotNull($staticTraveler[3]->__get('profileId'));
+		$this->assertTrue($staticTraveler[3]->__get('profileId') > 0);
+		$this->assertIdentical($staticTraveler[3]->__get('travelerFirstName'),   "christian");
+		$this->assertIdentical($staticTraveler[3]->__get('travelerMiddleName'),  "");
+		$this->assertIdentical($staticTraveler[3]->__get('travelerLastName'),    "slater");
+		$this->assertIdentical($staticTraveler[3]->__get('travelerDateOfBirth'),
+			DateTime::createFromFormat("Y-m-d H:i:s", "1997-10-11 12:11:10"));
 
 		//-----------------------------------------------------------------------------------------
 		$row = $this->selectRow();
@@ -249,6 +296,9 @@ class TravelerTest extends UnitTestCase {
 		$this->assertIdentical($this->traveler->__get("travelerLastName"),    $row['travelerLastName']);
 		$this->assertIdentical($this->traveler->__get("travelerDateOfBirth"), $date);
 
+		$this->traveler4->delete($this->mysqli);
+		$this->traveler3->delete($this->mysqli);
+		$this->traveler2->delete($this->mysqli);
 	}
 
 	private function selectRow(){

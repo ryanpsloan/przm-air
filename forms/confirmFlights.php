@@ -1,5 +1,5 @@
 <?php
-include("../php/classes/flight");
+include("../php/classes/flight.php");
 //here flight search data is displayed
 session_start();
 $profile = $_SESSION["profileObj"];
