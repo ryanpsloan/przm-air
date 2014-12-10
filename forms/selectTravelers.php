@@ -26,7 +26,7 @@ EOF;
 EOF;
 	}
 	//$paths = $_SESSION['flightObjArray'];
-	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, 341); /*$profile->__get("profileId"));*/
+	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 
 }catch(Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";

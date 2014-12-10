@@ -267,6 +267,10 @@
 
 		public function setCustomerToken($newCustomerToken)
 		{
+			if($newCustomerToken === null){
+				$this->customerToken = $newCustomerToken;
+				return;
+			}
 			$newCustomerToken = trim($newCustomerToken);
 			if(filter_var($newCustomerToken, FILTER_SANITIZE_STRING) === false){
 				throw(new Exception("$newCustomerToken customer token is not valid."));

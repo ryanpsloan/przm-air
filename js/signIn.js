@@ -33,9 +33,7 @@ $(document).ready(function()
 						url    : "../php/processors/signInProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
-							// wait for a time and then redirect
-							setInterval(function () {location.href = '../index.php'}, 3000);
-							//redirect here
+
 						}
 					});
 			}

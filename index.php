@@ -6,6 +6,7 @@
 
 try {
 	session_start();
+
 	$mysqli = MysqliConfiguration::getMysqli();
 
 	if(isset($_SESSION['userId'])) {
@@ -280,6 +281,8 @@ EOF;
 								<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
 					<li class="sl"><p class="pi c"><a href="">
 								<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>
+					<li class="sl"><p class="pi c"><a href="">
+								<span class="glyphicon glyphicon-minus"></span>Delete Profile</a></p></li>
 
 				</ul>
 			</div>

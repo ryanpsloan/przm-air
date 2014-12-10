@@ -2,6 +2,7 @@
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../../php/class/user.php");
 require("../../php/class/profile.php");
+require("../../php/class/traveler.php");
 require("../../lib/csrf.php");
 require("Mail.php");
 session_start();
@@ -25,6 +26,7 @@ try {
 					$(function() {
 							$('#signInLink').removeClass('hidden');
 							$(':input').attr('disabled', true);
+
 						});
 				</script>";
 		throw(new RuntimeException("That email is already in use. Sign-in or use a different email"));
@@ -86,6 +88,7 @@ EOF;
 						$(function() {
 							$(':input').attr('disabled', true);
 						});
+						setInterval(function () {location.href = '../index.php'}, 3000);
 					</script>";
 	// send the email
 	error_reporting(E_ALL & ~E_STRICT);
