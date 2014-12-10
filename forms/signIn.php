@@ -85,9 +85,10 @@ session_start();
 	</div>
 
 	<div id="signIn">
-		<p style="text-align: center"><strong>Sign In</strong></p>
+		<p style="text-align: ce"><strong>Sign In</strong></p>
 		<hr>
 		<div id="formDiv">
+
 		<form id="signInForm" action="../php/processors/signInProcessor.php" method="POST">
 			<p><label for="email">Email:</label></br>
 				<input type="email" id="email" name="email" autocomplete="off"></p>
@@ -96,9 +97,9 @@ session_start();
 			<p><a id="forgotPass" href='forgotPass.php'>Forgot Your Password?</a></p>
 			<?php echo generateInputTags(); ?>
 			<button type="submit">Sign In</button>
-
+			<div id="outputArea"></div>
 		</div>
-		<div id="outputArea"></div>
+
 	</div>
 </div>
 </form>

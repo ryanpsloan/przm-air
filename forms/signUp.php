@@ -41,7 +41,7 @@ session_start();
 			border: 1px solid lightgrey;
 			position: absolute;
 			top: 10%;
-			left: 5%;
+			left: 20%;
 			height: 46em;
 			width: 60em;
 		}
@@ -92,6 +92,7 @@ session_start();
 		<form id="signUpForm" action="../php/processors/signUpProcessor.php" method="POST">
 
 				<legend style="text-align: center">Create a Profile</legend>
+				<div id="outputArea"></div>
 				<p><label>First Name</label></br>
 					<input type="text" id="first" name="first" autocomplete="off"></p>
 				<p></p><label>Middle Name</label></br>
@@ -112,7 +113,7 @@ session_start();
 				<?php echo generateInputTags(); ?>
 		</form>
 		</fieldset>
-		<div id="outputArea"></div>
+
 </div>
 </div>
 

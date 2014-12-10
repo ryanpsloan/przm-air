@@ -207,7 +207,7 @@ EOF;
 
 <div id="formDiv">
 <form id="selectTravelersForm" action="../php/processors/createTraveler.php" method="post">
-
+	<?php echo generateInputTags(); ?>
 	<div class="buttonDiv">
 		<div class="innerBtnDiv">
 			<table>

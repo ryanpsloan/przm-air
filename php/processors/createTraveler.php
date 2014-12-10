@@ -2,10 +2,18 @@
 require_once("/etc/apache2/capstone-mysql/przm.php");
 include("../../php/class/traveler.php");
 include("../../php/class/profile.php");
+include("../../lib/csrf.php");
 
 try {
 	session_start();
 	$_SESSION['flightObj'] = 123;
+
+	$savedName  = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
+
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+		throw(new RuntimeException("Make sure cookies are enabled"));
+	}
 
 	if($_POST['action'] === "Add") {
 			$totalTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
@@ -90,6 +98,7 @@ EOF;
 	}
 
 }catch(Exception $e){
+	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
 ?>

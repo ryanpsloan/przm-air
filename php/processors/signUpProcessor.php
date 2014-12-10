@@ -39,8 +39,6 @@ try {
 	$DOB = DateTime::createFromFormat("m/d/Y", $DOB);
 	$DOB = $DOB->format("Y-m-d H:i:s");
 	$fullName = $firstNm . " " . $middleNm . " " . $lastNm;
-	$customer = Stripe_Customer::create(array('description' => $fullName . " | " . $email));
-	$custToken = $customer->id;
 
 	$salt = bin2hex(openssl_random_pseudo_bytes(32));
 	$authToken = bin2hex(openssl_random_pseudo_bytes(16));
@@ -50,7 +48,7 @@ try {
 	$newUser->insert($mysqli);
 
 	$newProfile = new Profile(null, $newUser->getUserId(), $firstNm, $middleNm, $lastNm,
-		$DOB, $custToken, $newUser);
+		$DOB, null, $newUser);
 	$newProfile->insert($mysqli);
 
 	$newTraveler = new Traveler(null, $newProfile->__get("profileId"), $newProfile->__get("userFirstName"),
@@ -72,7 +70,7 @@ try {
 	$headers["Content-Type"] = "text/html; charset=UTF-8";
 
 	// build message
-	$url = "https://bootcamp-coders.cnm.edu/~rsloan/przmair/forms/activate.php";
+	$url = "https://bootcamp-coders.cnm.edu/~rsloan/przmair/php/processors/activate.php";
    $url = "$url?authToken=$authToken&uId=".$newUser->getUserId();
 	$message = <<< EOF
 <html>
@@ -88,7 +86,7 @@ EOF;
 						$(function() {
 							$(':input').attr('disabled', true);
 						});
-						setInterval(function () {location.href = '../index.php'}, 3000);
+						setInterval(function () {location.href = '../index.php'}, 6000);
 					</script>";
 	// send the email
 	error_reporting(E_ALL & ~E_STRICT);
