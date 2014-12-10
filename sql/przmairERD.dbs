@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="przm-airERD" id="Project8117358" template="Default" database="MySql" >
+	<comment><![CDATA[An ERD diagraming the Relational Database Schema of the PRZMAIR.com]]></comment>
+	<schema name="przm-airerd" schemaname="przm-airerd" defo="y" >
+		<table name="flight" >
+			<comment><![CDATA[CREATE TABLE flight (
+	flightId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	flightNumber VARCHAR(15),
+	originAirport VARCHAR(10) NOT NULL,
+	destinationAirport VARCHAR(10) NOT NULL,
+	departureTime DATETIME NOT NULL,
+	arrivalTime DATETIME NOT NULL,
+	duration TIME NOT NULL,
+	INDEX(originAirport),
+	INDEX(destinationAirport),
+                     INDEX(departureTime),
+	INDEX(arrivalTime),
+	INDEX(duration),
+	PRIMARY KEY (flightId),
+	UNIQUE(flightNumber)
+);]]></comment>
+			<column name="flight_id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" />
+			<column name="flight_number" type="varchar" length="15" jt="12" />
+			<column name="departure_time" type="datetime" jt="93" mandatory="y" />
+			<column name="arrival_time" type="datetime" jt="93" mandatory="y" />
+			<column name="duration" type="time" jt="92" mandatory="y" />
+			<column name="total_seats_on_plane" type="int" jt="4" mandatory="y" unsigned="y" />
+			<index name="pk_flight" unique="PRIMARY_KEY" >
+				<column name="flight_id" />
+			</index>
+			<index name="idx_flight_1" unique="NORMAL" >
+				<column name="departure_time" />
+			</index>
+			<index name="idx_flight_2" unique="NORMAL" >
+				<column name="arrival_time" />
+			</index>
+			<index name="idx_flight_3" unique="NORMAL" >
+				<column name="duration" />
+			</index>
+			<index name="unique_flight_4" unique="UNIQUE" >
+				<column name="flight_number" />
+			</index>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="profile" >
+			<comment><![CDATA[CREATE TABLE profile (
+	profileId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	userId INT UNSIGNED NOT NULL,
+	userFirstName VARCHAR(75) NOT NULL,
+	userMiddleName VARCHAR(75),
+	userLastName VARCHAR(75) NOT NULL,
+	dateOfBirth DATE NOT NULL,
+	customerToken VARCHAR(130),
+	PRIMARY KEY (profileId),
+	UNIQUE (userId),
+	FOREIGN KEY (userId) REFERENCES user (userId)
+);]]></comment>
+			<column name="profile_id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" />
+			<column name="user_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<column name="user_first_name" type="varchar" length="75" jt="12" mandatory="y" />
+			<column name="user_middle_name" type="varchar" length="75" jt="12" />
+			<column name="user_last_name" type="varchar" length="75" jt="12" mandatory="y" />
+			<column name="date_of_birth" type="date" jt="91" mandatory="y" />
+			<column name="customer_token" type="varchar" length="130" jt="12" />
+			<index name="pk_profile" unique="PRIMARY_KEY" >
+				<column name="profile_id" />
+			</index>
+			<index name="unique_profile" unique="UNIQUE" >
+				<column name="user_id" />
+			</index>
+			<fk name="fk_profile_user" to_schema="przm-airerd" to_table="user" delete_action="restrict" >
+				<fk_column name="user_id" pk="user_id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="ticket" >
+			<comment><![CDATA[CREATE TABLE ticket (
+ticketId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	confirmationNumber VARCHAR(10),
+	price DECIMAL(5,2) UNSIGNED,
+	flightId INT UNSIGNED NOT NULL,
+	profileId INT UNSIGNED NOT NULL,
+	travelerId INT UNSIGNED NOT NULL,
+	UNIQUE (confirmationNumber),
+
+	INDEX(flightId),
+	INDEX(profileId),
+	INDEX(travelerId),
+	
+	PRIMARY KEY (profileId, travelerId, flightId),
+	FOREIGN KEY (flightId) REFERENCES flight (flightId),
+	FOREIGN KEY (profileId) REFERENCES profile (profileId),
+	FOREIGN KEY (travelerId) REFERENCES traveler (travelerId),
+	
+);]]></comment>
+			<column name="confirmation_number" type="varchar" length="10" jt="12" />
+			<column name="price" type="decimal" length="5" decimal="2" jt="3" unsigned="y" />
+			<column name="status" type="varchar" length="30" jt="12" />
+			<column name="ticket_id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" />
+			<column name="profile_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<column name="traveler_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<column name="transaction_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<index name="unique_ticket" unique="UNIQUE" >
+				<column name="confirmation_number" />
+			</index>
+			<index name="pk_ticket" unique="PRIMARY_KEY" >
+				<column name="ticket_id" />
+			</index>
+			<index name="idx_ticket_0" unique="NORMAL" >
+				<column name="profile_id" />
+			</index>
+			<index name="idx_ticket_1" unique="NORMAL" >
+				<column name="traveler_id" />
+			</index>
+			<index name="idx_ticket" unique="NORMAL" >
+				<column name="transaction_id" />
+			</index>
+			<fk name="fk_ticket_profile" to_schema="przm-airerd" to_table="profile" delete_action="restrict" >
+				<fk_column name="profile_id" pk="profile_id" />
+			</fk>
+			<fk name="fk_ticket_traveler" to_schema="przm-airerd" to_table="traveler" delete_action="restrict" >
+				<fk_column name="traveler_id" pk="traveler_id" />
+			</fk>
+			<fk name="fk_ticket_transaction" to_schema="przm-airerd" to_table="transaction" delete_action="restrict" >
+				<fk_column name="transaction_id" pk="transaction_id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="ticket_flight" >
+			<column name="flight_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<column name="ticket_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<index name="idx_ticket_flight" unique="PRIMARY_KEY" >
+				<column name="flight_id" />
+				<column name="ticket_id" />
+			</index>
+			<index name="idx_ticket_flight_0" unique="NORMAL" >
+				<column name="flight_id" />
+			</index>
+			<index name="idx_ticket_flight_1" unique="NORMAL" >
+				<column name="ticket_id" />
+			</index>
+			<fk name="fk_ticket_flight_flight" to_schema="przm-airerd" to_table="flight" delete_action="restrict" >
+				<fk_column name="flight_id" pk="flight_id" />
+			</fk>
+			<fk name="fk_ticket_flight_ticket" to_schema="przm-airerd" to_table="ticket" delete_action="restrict" >
+				<fk_column name="ticket_id" pk="ticket_id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="transaction" >
+			<comment><![CDATA[CREATE TABLE transaction (
+	transactionId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	profileId INT UNSIGNED NOT NULL,
+	amount DECIMAL(5,2) UNSIGNED,
+	dateApproved DATETIME,
+	cardToken VARCHAR(124),
+	stripeToken VARCHAR(124),
+	PRIMARY KEY (transactionId),
+	INDEX(profileId),
+	FOREIGN KEY (profileId) REFERENCES profile (profileId)
+
+);]]></comment>
+			<column name="transaction_id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" />
+			<column name="profile_id" type="int" jt="4" />
+			<column name="amount" type="decimal" length="5" decimal="2" jt="3" unsigned="y" />
+			<column name="date_approved" type="datetime" jt="93" />
+			<column name="card_token" type="varchar" length="124" jt="12" />
+			<column name="stripe_token" type="varchar" length="124" jt="12" />
+			<index name="pk_transaction" unique="PRIMARY_KEY" >
+				<column name="transaction_id" />
+			</index>
+			<index name="idx_transaction" unique="NORMAL" >
+				<column name="profile_id" />
+			</index>
+			<fk name="fk_transaction_profile" to_schema="przm-airerd" to_table="profile" delete_action="restrict" >
+				<fk_column name="profile_id" pk="profile_id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="traveler" >
+			<comment><![CDATA[CREATE TABLE traveler (
+	travelerId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	travelerFirstName VARCHAR(75) NOT NULL,
+	travelerMiddleName VARCHAR(75),
+	travelerLastName VARCHAR(75) NOT NULL,
+	travelerDateOfBirth DATE NOT NULL,
+	profileId INT UNSIGNED NOT NULL,
+                     INDEX(profileId),
+	PRIMARY KEY (travelerId),
+	FOREIGN KEY (profileId) REFERENCES profile(profileId)
+	
+);]]></comment>
+			<column name="traveler_id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" />
+			<column name="profile_id" type="int" jt="4" mandatory="y" unsigned="y" />
+			<column name="traveler_first_name" type="varchar" length="75" jt="12" mandatory="y" />
+			<column name="traveler_middle_name" type="varchar" length="75" jt="12" />
+			<column name="traveler_last_name" type="varchar" length="75" jt="12" mandatory="y" />
+			<column name="traveler_date_of_birth" type="date" jt="91" mandatory="y" />
+			<index name="pk_traveler" unique="PRIMARY_KEY" >
+				<column name="traveler_id" />
+			</index>
+			<index name="idx_traveler" unique="NORMAL" >
+				<column name="profile_id" />
+			</index>
+			<fk name="fk_traveler_profile" to_schema="przm-airerd" to_table="profile" delete_action="restrict" >
+				<fk_column name="profile_id" pk="profile_id" />
+			</fk>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+		<table name="user" >
+			<comment><![CDATA[CREATE TABLE user (
+	userId INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	email VARCHAR(64) NOT NULL,
+	password CHAR(128) NOT NULL,
+	salt CHAR(64) NOT NULL,
+	authToken CHAR(32),
+	PRIMARY KEY(userId),
+	UNIQUE(email)
+);]]></comment>
+			<column name="user_id" type="int" jt="4" mandatory="y" unsigned="y" autoincrement="y" />
+			<column name="email" type="varchar" length="64" jt="12" mandatory="y" />
+			<column name="password" type="char" length="128" jt="1" mandatory="y" />
+			<column name="salt" type="char" length="64" jt="1" mandatory="y" />
+			<column name="auth_token" type="char" length="32" jt="1" />
+			<index name="pk_user" unique="PRIMARY_KEY" >
+				<column name="user_id" />
+			</index>
+			<index name="unique_user" unique="UNIQUE" >
+				<column name="email" />
+			</index>
+			<storage><![CDATA[engine=InnoDB]]></storage>
+		</table>
+	</schema>
+	<layout id="Layout8117358" name="przm-airERD" show_relation_columns="y" >
+		<entity schema="przm-airerd" name="transaction" color="b2cdf7" x="180" y="285" />
+		<entity schema="przm-airerd" name="ticket" color="b2cdf7" x="450" y="45" />
+		<entity schema="przm-airerd" name="ticket_flight" color="b2cdf7" x="570" y="255" />
+		<entity schema="przm-airerd" name="user" color="b2cdf7" x="45" y="120" />
+		<entity schema="przm-airerd" name="traveler" color="b2cdf7" x="390" y="225" />
+		<entity schema="przm-airerd" name="profile" color="b2cdf7" x="240" y="45" />
+		<entity schema="przm-airerd" name="flight" color="b2cdf7" x="675" y="45" />
+	</layout>
+</project>
