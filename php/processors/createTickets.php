@@ -38,9 +38,9 @@ $status = "PAID";
 
 //create individual tickets
 for($i = 0; $i < count($travelers); $i++){
-	$tickets[] = new Ticket(null, $confirmationNumber, $price, $status,
+	$tickets[$i] = new Ticket(null, $confirmationNumber, $price, $status,
 										$profile->__get("profileId"), $travelers[$i], $transactionId);
-	$tickets->insert($mysqli);
+	$tickets[$i]->insert($mysqli);
 }
 foreach($flights as $flight) {
 
@@ -48,5 +48,7 @@ foreach($flights as $flight) {
 			$ticketFlight = new TicketFlight($flight, $tickets[$i]->getTicketId());
 		}
 }
+$_SESSION['tickets'] = $tickets;
+header("Location: ../../forms/confirmationPage.php");
 ?>
 

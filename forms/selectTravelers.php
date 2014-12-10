@@ -290,7 +290,9 @@ EOF;
 		</div>
 	</div>
 	<div id="bookFltDiv" style="visibility: hidden">
-		<button type="submit" name="action" class="btn" value="Book" href="">Book Flight</button>
+		<form action="payment.php">
+			<button type="submit" name="action" class="btn" value="Book" href="payment.php">Book Flight</button>
+		</form>
 	</div>
 </form>
 </div>

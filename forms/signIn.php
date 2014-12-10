@@ -97,11 +97,11 @@ session_start();
 			<p><a id="forgotPass" href='forgotPass.php'>Forgot Your Password?</a></p>
 			<?php echo generateInputTags(); ?>
 			<button type="submit">Sign In</button>
-			<div id="outputArea"></div>
+		</form>
 		</div>
-
+		<div id="outputArea"></div>
 	</div>
 </div>
-</form>
+
 </body>
 </html>
