@@ -3,7 +3,7 @@ require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/class/profile.php");
 require("../php/class/traveler.php");
 require("../php/class/flight.php");
-include('../lib/csrf.php');
+require('../lib/csrf.php');
 
 try{
 	session_start();
@@ -327,8 +327,10 @@ EOF;
 		</div>
 	</div>
 	<div id="bookFltDiv" style="visibility: hidden">
-		<form action="confirmationPage.php">
+		<form id="bookFlt" action="confirmationPage.php" method="post">
+			<?php echo generateInputTags()?>
 			<button type="submit" name="action" class="btn" value="Book">Book Flight</button>
+			<!--<a href="confirmationPage.php">Book Flight</a>-->
 		</form>
 	</div>
 </form>

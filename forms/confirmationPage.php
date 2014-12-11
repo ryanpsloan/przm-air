@@ -1,28 +1,40 @@
 <?php
-
-require("/etc/apache2/capstone-mysql/przm.php");
-
 session_start();
+require("/etc/apache2/capstone-mysql/przm.php");
+require_once("../lib/csrf.php");
 
-if(isset($_SESSION['userId'])) {
-	$mysqli = MysqliConfiguration::getMysqli();
-	$profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);
-	$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
-	$userName = <<<EOF
+
+
+try {
+	$savedName = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
+
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+		throw(new RuntimeException("Make sure cookies are enabled"));
+	}
+
+	if(isset($_SESSION['userId'])) {
+		$mysqli = MysqliConfiguration::getMysqli();
+		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+		$fullName = ucfirst($profile->__get('userFirstName')) . ' ' . ucfirst($profile->__get('userLastName'));
+		$userName = <<<EOF
 <a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
-	$status = <<< EOF
+		$status = <<< EOF
 <a href="signOut.php">Sign Out</a>
 EOF;
-	$account = <<< EOF
+		$account = <<< EOF
 <li role="presentation">
 	<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
 		aria-expanded="true">
 		Account</a>
 </li>
 EOF;
-}
+	}
+}catch(Exception $e){
+	$_SESSION[$savedName] = $savedToken;
 
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +92,7 @@ EOF;
 	$flightSchedule = $_SESSION['flightObj'];
 
 	foreach($flightSchedule as $flight){
-	echo <<<EOF
+	echo <<<HTML
 				<div class="displayFlt">
 				<table class="flightData table">
 				<tr>
@@ -103,9 +115,17 @@ EOF;
 				<tr>
 			</table>
 			</div>
-EOF;
+HTML;
 
 }
+	foreach($travelerArray as $traveler){
+		echo "<ul>"
+		echo <<<HTML
+
+HTML;
+
+	}
+
 ?>
 
 ?>

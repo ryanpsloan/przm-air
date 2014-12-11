@@ -1,15 +1,15 @@
 <?php
 require_once("/etc/apache2/capstone-mysql/przm.php");
-include("../../php/class/traveler.php");
-include("../../php/class/profile.php");
-include("../../lib/csrf.php");
+require_once("../../php/class/traveler.php");
+require_once("../../php/class/profile.php");
+require_once("../../lib/csrf.php");
 
 try {
 	session_start();
 	$flights = $_SESSION['flightObjArray'];
 
-	$savedName  = $_POST["csrfName"];
-	$savedToken = $_POST["csrfToken"];
+	echo $savedName  = $_POST["csrfName"];
+	echo $savedToken = $_POST["csrfToken"];
 
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
@@ -77,7 +77,7 @@ HTML;
 			throw(new ErrorException("Please check the travelers for whom you are purchasing this flight"));
 		}
 
-		if(isset($_SESSION['flightObj'])) {
+		if(isset($_SESSION['flightObjArray'])) {
 			$_SESSION['travelerArray'] = $_POST['travelerArray'];
 			echo <<<HTML
 				<div class='alert alert-success si' role='alert' style="text-align: center">
@@ -98,7 +98,7 @@ HTML;
 		}
 	}
 	elseif($_POST['action'] === "Book"){
-	header("Location: ../../forms/confirmationPage.php");
+		header("Location: ../../forms/confirmationPage.php");
 
 	}
 
@@ -108,7 +108,7 @@ HTML;
 	echo <<<HTML
 	<div class='alert alert-danger si' role='alert'>$msg</div>
 	<script>
-	setTimeout(function(){location.reload()}, 8000)
+	setTimeout(function(){location.reload()}, 5000)
 	</script>
 HTML;
 
