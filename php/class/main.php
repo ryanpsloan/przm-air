@@ -19,11 +19,14 @@ $_SESSION['flightObjArray'] = $paths;
 $testEmail       = "przmair@gmail.com";
 $testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
 $testPassword    = "1Qazxcvbn";
-$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
+//$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
 $testHash        = hash_pbkdf2("sha512", $testPassword, $testSalt, 2048, 128);
-$user = new User(null,$testEmail, $testHash, $testSalt, $testAuthToken);
+$user = new User(null, $testEmail, $testHash, $testSalt, null);
 $user->insert($mysqli);
 $userId = $user->getUserId();
+//echo "userId after insert->";
+//var_dump($userId);
+//var_dump($user);
 $_SESSION['userId'] = $userId;
 
 $testFirstName = "PRZM";
@@ -31,13 +34,34 @@ $testMiddleName = "";
 $testLastName = "AIR";
 $testDateOfBirth = DateTime::createFromFormat("Y-m-d H:i:s" ,"2010-11-12 12:11:10");
 $profile = new Profile(null, $userId, $testFirstName, $testMiddleName, $testLastName, $testDateOfBirth, null);
-$profileId = $profile->__get("profileId");
 $profile->insert($mysqli);
+$profileId = $profile->__get("profileId");
+echo "profile Id after insert->";
+//var_dump($profileId);
+//var_dump($profile);
 
-$traveler = new Traveler(null, $profileId, $testFirstName, $testMiddleName, $testLastName, $testDateOfBirth);
-$traveler->insert($mysqli);
+$traveler1 = new Traveler(null, $profileId, $testFirstName, $testMiddleName, $testLastName, $testDateOfBirth);
+$traveler1->insert($mysqli);
+//echo "traveler1 after insert->";
+//var_dump($traveler1);
 
+$traveler2 = new Traveler(null, $profileId, "Traveler", "a", "Two", $testDateOfBirth);
+$traveler2->insert($mysqli);
+//echo "traveler2 after insert->";
+//var_dump($traveler2);
 
+$traveler3 = new Traveler(null, $profileId, "Traveler", "b" , "Three", $testDateOfBirth);
+$traveler3->insert($mysqli);
+//echo "traveler3 after insert->";
+//var_dump($traveler3);
+
+$traveler4 = new Traveler(null, $profileId, "Traveler", "c", "Four", $testDateOfBirth);
+$traveler4->insert($mysqli);
+//echo "traveler4 after insert->";
+//var_dump($traveler4);
+
+$travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4);
+$_SESSION['travelerArray'] = $travelerArray;
 header("Location: ../../forms/selectTravelers.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";

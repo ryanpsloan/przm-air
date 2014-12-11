@@ -4,7 +4,7 @@ require("../class/profile.php");
 require("../class/traveler.php");
 require("../class/transaction.php");
 require("../class/ticket.php");
-require("../class/ticketflight.php");
+require("../class/ticketFlight.php");
 require("/etc/apache2/capstone-mysql/przm.php");
 
 session_start();

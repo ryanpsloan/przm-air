@@ -26,8 +26,11 @@ EOF;
 EOF;
 	}
 	$paths = $_SESSION['flightObjArray'];
+	echo "paths 29 selectTravelers.php";
+	var_dump($paths);
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
-
+	echo "staticTravelers 32 selectTravelers.php";
+	var_dump($staticTravelers);
 }catch(Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
@@ -202,7 +205,18 @@ EOF;
 	<section>
 		<div class="jumbotron">
 			<div class="flightContainer">
-				<?php foreach ($paths as $flight){
+				<?php echo "paths in flightContainer 208 selectTravelers.php";
+						var_dump($paths);
+						foreach ($paths as $flight){
+
+					$fltNum = $flight->getFlightNumber();
+					$origin = $flight->getOrigin();
+					$destination = $flight->getDestination();
+					$duration = $flight->getDuration();
+					$depTime = $flight->departureDateTime();
+					$arrTime = $flight->arrivalDateTime();
+					$price = $flight->getPrice();
+
 					echo <<<EOF
 				<div class="displayFlt">
 				<table class="flightData table">
@@ -216,13 +230,13 @@ EOF;
 					<th>Price</th>
 				</tr>
 				<tr>
-					<td>$flight->flightNumber</td>
-					<td>$flight->origin</td>
-					<td>$flight->destination</td>
-					<td>$flight->duration</td>
-					<td>$flight->departureDateTime</td>
-					<td>$flight->arrivalDateTime</td>
-					<td>$flight->price</td>
+					<td>$fltNum</td>
+					<td>$origin</td>
+					<td>$destination</td>
+					<td>$duration</td>
+					<td>$depTime</td>
+					<td>$arrTime</td>
+					<td>$price</td>
 				<tr>
 			</table>
 			</div>

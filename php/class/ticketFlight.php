@@ -8,8 +8,8 @@
  * @author Paul Morbitzer <pmorbitz@gmail.com>
  */
 
-require_once("../php/flight.php");
-require_once("../php/ticket.php");
+require_once("flight.php");
+require_once("ticket.php");
 
 class TicketFlight {
 	/*
