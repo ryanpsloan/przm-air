@@ -2,6 +2,7 @@
 session_start();
 require_once("../lib/csrf.php");
 ?>
+<!-- This looks good @Paul -->
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -17,8 +18,8 @@ require_once("../lib/csrf.php");
 	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script type="text/javascript" src="../js/payment.js"></script>
 </head>
-	<body>
-	<form id="paymentForm" method="post" action="paymentProcessor.php">
+<body>
+	<form id="paymentForm" method="post" action="../php/processors/paymentProcessor.php">
 		<label for="firstName">First Name</label>
 		<input type="text" id="firstName" name="firstName" /><br />
 		<label for="middleName">Middle Name</label>

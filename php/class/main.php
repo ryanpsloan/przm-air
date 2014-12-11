@@ -1,17 +1,43 @@
 <?php
 session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("user.php");
+require_once("profile.php");
+require_once("traveler.php");
+require_once("flight.php");
+require_once("transaction.php");
+require_once("ticket.php");
+require_once("ticketFlight.php");
+
 $mysqli = MysqliConfiguration::getMysqli();
 
-require_once("flight.php");
 $paths = array();
-$paths[] = Flight::getFlightByFlightId($mysqli, );
-$paths[] = Flight::getFlightByFlightId($mysqli, );
+$paths[] = Flight::getFlightByFlightId($mysqli, 91 );
+$paths[] = Flight::getFlightByFlightId($mysqli, 864 );
 
 $_SESSION['flightObjArray'] = $paths;
-//profile id =341
-$userId = 414;
+$testEmail       = "przmair@gmail.com";
+$testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
+$testPassword    = "1Qazxcvbn";
+$testAuthToken   = bin2hex(openssl_random_pseudo_bytes(16));
+$testHash        = hash_pbkdf2("sha512", $testPassword, $testSalt, 2048, 128);
+$user = new User(null,$testEmail, $testHash, $testSalt, $testAuthToken);
+$user->insert($mysqli);
+$userId = $user->getUserId();
 $_SESSION['userId'] = $userId;
+
+$testFirstName = "PRZM";
+$testMiddleName = "";
+$testLastName = "AIR";
+$testDateOfBirth = DateTime::createFromFormat("Y-m-d H:i:s" ,"2010-11-12 12:11:10");
+$profile = new Profile(null, $userId, $testFirstName, $testMiddleName, $testLastName, $testDateOfBirth, null);
+$profileId = $profile->__get("profileId");
+$profile->insert($mysqli);
+
+$traveler = new Traveler(null, $profileId, $testFirstName, $testMiddleName, $testLastName, $testDateOfBirth);
+$traveler->insert($mysqli);
+
+
 header("Location: ../../forms/selectTravelers.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";

@@ -565,9 +565,9 @@
 			" " . $this->__get("userLastName").", dateOfBirth = ".$dateString . ", userObj->".$this->userObj."</p>";
 		}
 
-		public function createStripeCustomer(){
-			$customer = Stripe_Customer::create(array("description" => $this->userFirstName." ".$this->userMiddleName
-				." ".$this->userLastName." | ".$this->userObj->getEmail()));
+		public function createStripeCustomer($email, $token){
+			$customer = Stripe_Customer::create(array("card" => $token, "description" => $this->userFirstName." "
+			.$this->userMiddleName ." ".$this->userLastName." | ".$email));
 			return $customer;
 		}
 

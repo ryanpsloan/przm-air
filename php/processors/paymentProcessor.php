@@ -7,7 +7,24 @@ require_once("../php/class/user.php");
 require_once("../php/class/transaction.php");
 
 try {
-	// verify the user has signed in
+
+	//@Paul, Ryan Here, I just realized that payment will need to check the profile(use $_SESSION['userId']) to see if
+	//Profile:getProfileByUserId();
+	//if profile->$__get("customerToken") == null
+	//and if True then
+	//create a customer token, this can be done by calling the public function createStripeCustomer($email, $token)
+	//in the profile class, if you are getting us a live API key please update the API at the top of
+	//profile when you have	one
+	//Also some guidance, I see you have tested $_POST to see if its values are set the next
+	//move is to filter them and set them into local variables. The CSRF can be tricky ask if you have questions.
+	//be sure you are calling echo generateInputTags in the form so that they are created and give $_POST values to be
+	//tested by payment processor
+	//$var = filter_input(INPUT_POST,"postName", FILTER);
+	//After that is up to you...
+
+	//Ryan out
+
+	//verify the user has signed in
 	if(@isset($_SESSION['userId'])) {
 
 	}

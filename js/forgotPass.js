@@ -42,7 +42,7 @@ $(document).ready(function()
 						url    : "../php/processors/forgotPassProcessor.php",
 						success: function(ajaxOutput) {
 							$("#outputArea").html(ajaxOutput);
-							setInterval(function () {location.href = '../signIn.php'}, 3000);
+							setInterval(function () {location.href = '../forms/signIn.php'}, 3000);
 						}
 					});
 			}
