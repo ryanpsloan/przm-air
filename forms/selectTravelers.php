@@ -26,7 +26,10 @@ EOF;
 		</li>
 EOF;
 	}
-	$paths = $_SESSION['flightObjArray'];
+	$flightIds = $_SESSION['flightIds'];
+	for($i =0; $i < count($flightIds); $i++){
+		$paths[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
+	}
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 
 }catch(Exception $e){
@@ -38,6 +41,7 @@ EOF;
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Travelers</title>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
@@ -325,13 +329,6 @@ EOF;
 			<div id="confirmBtn"><button type="submit" name="action" class="btn" value="Confirm">Confirm
 					Travelers</button></div>
 		</div>
-	</div>
-	<div id="bookFltDiv" style="visibility: hidden">
-		<form id="bookFlt" action="confirmationPage.php" method="post">
-			<?php echo generateInputTags()?>
-			<button type="submit" name="action" class="btn" value="Book">Book Flight</button>
-			<!--<a href="confirmationPage.php">Book Flight</a>-->
-		</form>
 	</div>
 </form>
 </div>

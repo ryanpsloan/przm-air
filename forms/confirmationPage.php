@@ -1,18 +1,20 @@
 <?php
 session_start();
 require("/etc/apache2/capstone-mysql/przm.php");
+require("../php/class/profile.php");
+require("../php/class/flight.php");
+require("../php/class/traveler.php");
 require_once("../lib/csrf.php");
 
 
 
 try {
-	$savedName = $_POST["csrfName"];
-	$savedToken = $_POST["csrfToken"];
+	//$savedName = $_POST["csrfName"];
+	//$savedToken = $_POST["csrfToken"];
 
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+/*	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
-	}
-
+	}*/
 	if(isset($_SESSION['userId'])) {
 		$mysqli = MysqliConfiguration::getMysqli();
 		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
@@ -32,7 +34,7 @@ EOF;
 EOF;
 	}
 }catch(Exception $e){
-	$_SESSION[$savedName] = $savedToken;
+	//$_SESSION[$savedName] = $savedToken;
 
 }
 ?>
@@ -41,9 +43,31 @@ EOF;
 <html>
 <head>
 	<title>Ticketing</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Travelers</title>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<style>
 		.displayFlt{
-
+			width: 90%;
+			border: 2px solid lightgrey;
+			margin-top: 1em;
+			margin-left: 4.2em;
+			font-size: 1.2em;
+			border-radius: 5%;
 		}
 		.flightData{
 
@@ -51,6 +75,21 @@ EOF;
 		.flightData td{
 			padding: .5em;
 
+		}
+		#travelerDiv {
+			padding: 1em;
+			margin-top: 2em;
+			margin-left: 4.9em;
+			width: 20%;
+			height: 20%;
+			border-radius: 5%;
+			border: 2px solid lightgray;
+		}
+		#ul{
+			list-style: none;
+			font-size: 1.4em;
+			margin-left: 3em;
+			padding: 0 .5em;
 		}
 	</style>
 </head>
@@ -85,19 +124,29 @@ EOF;
 		</div><!-- /.container-fluid -->
 	</nav>
 </header>
-</body>
-</html>
 
+<h3 style="text-align: center">Finalize Your Flight Details</h3>
 <?php
-	$flightSchedule = $_SESSION['flightObj'];
+	$flightIds = $_SESSION['flightIds'];
 
-	foreach($flightSchedule as $flight){
+	for($i =0; $i < count($flightIds); $i++){
+		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
+	}
+	$travelerArray = $_SESSION['travelerArray'];
+	foreach($flights as $flight){
+		$fltNum = $flight->getFlightNumber();
+		$origin = $flight->getOrigin();
+		$destination = $flight->getDestination();
+		$duration =  $flight->getDuration()->format("%H:%i");
+		$depTime = $flight->getDepartureDateTime()->format("m/d/Y H:i:s");
+		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y H:i:s");
+		$price = $flight->getPrice();
 	echo <<<HTML
 				<div class="displayFlt">
 				<table class="flightData table">
 				<tr>
 					<th>Flight Number</th>
-					<th>"Origin</th>
+					<th>Origin</th>
 					<th>Destination</th>
 					<th>Duration</th>
 					<th>Departure</th>
@@ -105,27 +154,35 @@ EOF;
 					<th>Price</th>
 				</tr>
 				<tr>
-					<td>$flight->flightNumber</td>
-					<td>$flight->origin</td>
-					<td>$flight->destination</td>
-					<td>$flight->duration</td>
-					<td>$flight->departureDateTime</td>
-					<td>$flight->arrivalDateTime</td>
-					<td>$flight->price</td>
+					<td>$fltNum</td>
+					<td>$origin</td>
+					<td>$destination</td>
+					<td>$duration</td>
+					<td>$depTime</td>
+					<td>$arrTime</td>
+					<td>$price</td>
+
+
 				<tr>
 			</table>
 			</div>
 HTML;
 
 }
-	foreach($travelerArray as $traveler){
-		echo "<ul>"
+echo "<div id='travelerDiv'><h4 style='text-align: center'>Travelers</h4><hr><ul id='ul'>";
+	$travelerIds = $_SESSION['travelerIds'];
+	foreach($travelerIds as $tId) {
+		$traveler = Traveler::getTravelerByTravelerId($mysqli, $tId);
+		$name = $traveler->__get("travelerFirstName"). " " . $traveler->__get("travelerLastName");
+		$name = ucwords($name);
 		echo <<<HTML
-
+		<li>$name</li>
 HTML;
 
-	}
+}
+echo "</ul></div>";
 
 ?>
 
-?>
+</body>
+</html>

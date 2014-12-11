@@ -1,15 +1,14 @@
 <?php
+session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../../php/class/traveler.php");
 require_once("../../php/class/profile.php");
 require_once("../../lib/csrf.php");
 
 try {
-	session_start();
-	$flights = $_SESSION['flightObjArray'];
 
-	echo $savedName  = $_POST["csrfName"];
-	echo $savedToken = $_POST["csrfToken"];
+	$savedName  = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
 
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
@@ -77,16 +76,14 @@ HTML;
 			throw(new ErrorException("Please check the travelers for whom you are purchasing this flight"));
 		}
 
-		if(isset($_SESSION['flightObjArray'])) {
-			$_SESSION['travelerArray'] = $_POST['travelerArray'];
+		if(isset($_SESSION['flightIds'])) {
+			$_SESSION['travelerIds'] = $_POST['travelerArray'];
 			echo <<<HTML
 				<div class='alert alert-success si' role='alert' style="text-align: center">
 				Your travelers have been confirmed</div>
 				<script>
-					$(function () {
-						$('#bookFltDiv').css('visibility', 'visible');
-					});
-
+					setTimeout(function(){window.location.href =
+					"https://bootcamp-coders.cnm.edu/~rsloan/przmair/forms/confirmationPage.php";}, 4000)
 				</script>
 
 HTML;
@@ -94,7 +91,7 @@ HTML;
 
 		} else {
 			echo "<div class='alert alert-success si' role='alert' style=\"text-align: center\">
-				Your travelers have been confirmed</div>";
+				Your travelers have been successfully edited</div>";
 		}
 	}
 	elseif($_POST['action'] === "Book"){

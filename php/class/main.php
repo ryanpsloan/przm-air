@@ -12,10 +12,10 @@ require_once("ticketFlight.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 $paths = array();
-$paths[] = Flight::getFlightByFlightId($mysqli, 91 );
-$paths[] = Flight::getFlightByFlightId($mysqli, 864 );
+$paths[] = 91;
+$paths[] = 864;
 
-$_SESSION['flightObjArray'] = $paths;
+$_SESSION['flightIds'] = $paths;
 $testEmail       = "przmair@gmail.com";
 $testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
 $testPassword    = "1Qazxcvbn";
