@@ -6,7 +6,7 @@
  * @param int    $totalSeats
  * @param int    $numOfDays
  */
-function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25, $numOfDays = 5)
+function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 20, $numOfDays = 5)
 {
 	if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 		throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -146,38 +146,6 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 25,
 
 }
 
-function getTimeZone($cityCode){
 
-	switch($cityCode){//or an enum couldve worked here
-		case 'ABQ':
-
-			break;
-		case 'ATL':
-			break;
-		case 'DEN':
-			break;
-		case 'DFW':
-			break;
-		case 'DTW':
-			break;
-		case 'JFK':
-			break;
-		case 'LAX':
-			break;
-		case 'LGA':
-			break;
-		case 'MDW':
-			break;
-		case 'MIA':
-			break;
-		case 'ORD':
-			break;
-		case 'SEA':
-			break;
-		default:
-
-	}
-
-}
 ?>
 

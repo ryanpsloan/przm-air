@@ -13,14 +13,12 @@ for($i = 0; $i < $numOfWeeks; ++$i) {
 	$baseDate = $dateTimeObjWeekday->format("Y-m-d");
 	$fileName = "weekDayCsv.csv";
 	$totalSeats = 20;
-	$numDays = 5;
-	readCSV($mysqli, $fileName, $baseDate, $totalSeats, $numDays);
+	readCSV($mysqli, $fileName, $baseDate, $totalSeats);
 	echo "<p> weekDay seed data set to flight </p>";
 	echo "***********************************************************************************************";
 
 	$baseDate = $dateTimeObjWeekend->format("Y-m-d");
 	$fileName = "weekEndCsv.csv";
-	$totalSeats = 20;
 	$numDays = 2;
 	readCSV($mysqli, $fileName, $baseDate, $totalSeats, $numDays);
 	echo "<p> weekEnd seed data set to flight </p>";
