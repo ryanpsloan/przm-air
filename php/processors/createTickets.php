@@ -12,7 +12,7 @@ session_start();
 $flights = $_SESSION['flightObjArray'];
 $travelers = $_SESSION['travelerArray'];
 $transactionId = 1; // $_SESSION['transactionId'];
-$price = 300.00; //$flights->getPrice();
+$price = 300.00; //$flights[0]->getPrice();
 $status = "PAID";
 
 //create individual tickets

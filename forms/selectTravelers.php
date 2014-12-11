@@ -191,19 +191,19 @@ EOF;
 
 			<ul class="nav navbar-nav navbar-right">
 				<li class="disabled"><?php echo $userName?> </li>
-				<li class="active"><?php echo $status?></li>
-				<li><a href="#"></a></li>
+			<li class="active"><?php echo $status?></li>
+			<li><a href="#"></a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
-</nav>
-</header>
-<!-- Display Flights -->
-<section>
-	<div class="jumbotron">
-		<div class="flightContainer">
-			<?php foreach ($paths as $key => $flight){
-				echo <<<EOF
+	</nav>
+	</header>
+	<!-- Display Flights -->
+	<section>
+		<div class="jumbotron">
+			<div class="flightContainer">
+				<?php foreach ($paths as $flight){
+					echo <<<EOF
 				<div class="displayFlt">
 				<table class="flightData table">
 				<tr>
@@ -228,7 +228,7 @@ EOF;
 			</div>
 EOF;
 
-			}
+				}
 ?>
 		</div>
 	</div>

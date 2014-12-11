@@ -4,8 +4,8 @@ $mysqli = MysqliConfiguration::getMysqli();
 
 $numOfWeeks = 104;
 
-$dateTimeObjWeekday = DateTime::createFromFormat("Y-m-d", "2014-12-10");
-$dateTimeObjWeekend = DateTime::createFromFormat("Y-m-d", "2014-12-16");
+$dateTimeObjWeekday = DateTime::createFromFormat("Y-m-d", "2014-12-08");
+$dateTimeObjWeekend = DateTime::createFromFormat("Y-m-d", "2014-12-13");
 
 for($i = 0; $i < $numOfWeeks; ++$i) {
 
