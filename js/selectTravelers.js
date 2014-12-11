@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-	$("#createTravelerForm").validate(
+	$("#selectTravelersForm").validate(
 		{
 
 			rules: {

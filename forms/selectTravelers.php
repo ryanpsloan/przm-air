@@ -155,7 +155,7 @@ EOF;
 		}
 		#confirmBtn{
 			padding: .5em;
-			margin-left: 7.7em;
+			margin-left: 8.2em;
 		}
 		.displayFlt{
 
