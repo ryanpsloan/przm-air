@@ -2,6 +2,7 @@
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/class/profile.php");
 require("../php/class/traveler.php");
+require("../php/class/flight.php");
 include('../lib/csrf.php');
 
 try{
@@ -26,11 +27,8 @@ EOF;
 EOF;
 	}
 	$paths = $_SESSION['flightObjArray'];
-	echo "paths 29 selectTravelers.php";
-	var_dump($paths);
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
-	echo "staticTravelers 32 selectTravelers.php";
-	var_dump($staticTravelers);
+
 }catch(Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
@@ -75,8 +73,8 @@ EOF;
 	</script>
 	<style>
 		#formDiv{
-			position: absolute;
-			top: 30%;
+			position: relative;
+			top: 52%;
 			left: 33%;
 			display: inline;
 		}
@@ -148,11 +146,12 @@ EOF;
 			margin-left: 4.2em;
 		}
 		#btnTable{
-			margin-left: 3.3em;
+
+
 		}
 		#btnTable td{
-			padding: .5em;
-			margin: .5em;
+
+
 		}
 		#confirmBtn{
 			padding: .5em;
@@ -205,58 +204,63 @@ EOF;
 	<section>
 		<div class="jumbotron">
 			<div class="flightContainer">
-				<?php echo "paths in flightContainer 208 selectTravelers.php";
-						var_dump($paths);
-						foreach ($paths as $flight){
+				<?php
+					foreach ($paths as $flight){
 
 					$fltNum = $flight->getFlightNumber();
 					$origin = $flight->getOrigin();
 					$destination = $flight->getDestination();
-					$duration = $flight->getDuration();
-					$depTime = $flight->departureDateTime();
-					$arrTime = $flight->arrivalDateTime();
+					$duration = $flight->getDuration()->format("%H:%i");
+					$depTime = $flight->getDepartureDateTime()->format('Y-m-d H:i:s');
+					$arrTime = $flight->getArrivalDateTime()->format("Y-m-d H:i:s");
 					$price = $flight->getPrice();
 
-					echo <<<EOF
-				<div class="displayFlt">
-				<table class="flightData table">
-				<tr>
-					<th>Flight Number</th>
-					<th>"Origin</th>
-					<th>Destination</th>
-					<th>Duration</th>
-					<th>Departure</th>
-					<th>Arrival</th>
-					<th>Price</th>
-				</tr>
-				<tr>
-					<td>$fltNum</td>
-					<td>$origin</td>
-					<td>$destination</td>
-					<td>$duration</td>
-					<td>$depTime</td>
-					<td>$arrTime</td>
-					<td>$price</td>
-				<tr>
+					echo <<<HTML
+			<div class="displayFlt">
+			<table class="flightData table">
+				<thead>
+					<tr>
+						<th>Flight Number</th>
+						<th>Origin</th>
+						<th>Destination</th>
+						<th>Duration</th>
+						<th>Departure</th>
+						<th>Arrival</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>$fltNum</td>
+						<td>$origin</td>
+						<td>$destination</td>
+						<td>$duration</td>
+						<td>$depTime</td>
+						<td>$arrTime</td>
+						<td>$price</td>
+					</tr>
+				</tbody>
 			</table>
 			</div>
-EOF;
+HTML;
 
 				}
 ?>
 		</div>
 	</div>
 </section>
-
+<section>
 <div id="formDiv">
 <form id="selectTravelersForm" action="../php/processors/createTraveler.php" method="post">
 	<?php echo generateInputTags(); ?>
 	<div class="buttonDiv">
 		<div class="innerBtnDiv">
 			<table id="#btnTable">
-				<tr><td><button type="submit" name="action" class="btn" value="Remove">Remove Travelers</button></td>
+				<tr>
+					<td><button type="submit" name="action" class="btn" value="Remove">Remove Travelers</button></td>
 					<td><button type="button" class="btn" data-toggle="modal" data-target="#myModal">
-							Add Travelers</button></td></tr>
+							Add Travelers</button></td>
+				</tr>
 			</table>
 		</div>
 	</div>
@@ -339,6 +343,7 @@ EOF;
 	</div>
 </form>
 </div>
+</section>
 </body>
 </html>
 

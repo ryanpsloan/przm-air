@@ -6,7 +6,7 @@ include("../../lib/csrf.php");
 
 try {
 	session_start();
-	$_SESSION['flightObj'] = 123;
+	$flights = $_SESSION['flightObjArray'];
 
 	$savedName  = $_POST["csrfName"];
 	$savedToken = $_POST["csrfToken"];
@@ -14,7 +14,8 @@ try {
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
 	}
-
+	$mysqli = MysqliConfiguration::getMysqli();
+	$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
 	if($_POST['action'] === "Add") {
 			$totalTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 			if($i = count($totalTravelers) > 5) {
@@ -35,15 +36,17 @@ try {
 			$name = $newTraveler->__get("travelerFirstName") . " " . $newTraveler->__get("travelerLastName");
 			$name = ucwords($name);
 			$tID = $newTraveler->__get("travelerId");
-			echo <<<EOF
-<div class="travelerSelect"><input type="checkbox" name="travelerArray[]" value="$tID"><span
-class="nameSpan">$name</span></div>
+			echo <<<HTML
+				<div class="travelerSelect">
+					<input type="checkbox" name="travelerArray[]" value="$tID">
+					<span class="nameSpan">$name</span>
+				</div>
 <script>
 	$(function(){
 		location.reload();
 	});
 </script>
-EOF;
+HTML;
 
 	}
 	elseif($_POST['action'] === "Remove"){
