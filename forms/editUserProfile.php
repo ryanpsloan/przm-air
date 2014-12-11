@@ -10,16 +10,16 @@ if(isset($_SESSION['userId'])) {
 	$mysqli = MysqliConfiguration::getMysqli();
 	$profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);
 	$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
-	$userName = <<<EOF
+	$userName = <<<HTML
 		<a><span
 			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 
-EOF;
-	$status = <<< EOF
+HTML;
+	$status = <<< HTML
 			<a href="signOut.php">Sign Out</a>
 
-EOF;
-	$account = <<< EOF
+HTML;
+	$account = <<< HTML
 		<li role="presentation">
 			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
 				aria-expanded="true">
@@ -27,10 +27,8 @@ EOF;
 		</li>
 
 
-EOF;
+HTML;
 }
-
-	$profileObj = $_SESSION['profileObj'];
 
 	$query = "SELECT email FROM user WHERE userId = ?";
 	$statement = $mysqli->prepare($query);

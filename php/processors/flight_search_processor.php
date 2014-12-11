@@ -81,7 +81,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 											<th>SELECT</th>
 									</tr></thead2>\n";
 
-	// set up variable for rows then fill in with results by looping through array of paths
+	// set up variable for rows then fill in with results by looping through each path in the array of paths
 	$outputTableRows = "";
 	for($i = 0; $i<$numberToShow; $i++) {
 
@@ -230,7 +230,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			"<td>
 					<div class='btn-group'>
 						<label class='btn btn-primary active'>
-							<input type='radio' name='selectFlight' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $returnOrNo . $i . "'>
+							<input type='radio' name='selectFlight" . $returnOrNo . "' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $i . "'>
 						</label>
 					</div>
 			</td>" .

@@ -60,17 +60,6 @@ $(document).ready(function()
 				minLayover : {
 					required: "Please enter the minimum time you want for any layover between connecting flights."
 				}
-			},
-
-			submitHandler: function(form) {
-				$(form).ajaxSubmit(
-					{
-						type   : "POST",
-						url    : "php/processors/flight_search_processor.php",
-						success: function(ajaxOutput) {
-							$("#searchOutputArea").html(ajaxOutput);
-						}
-					});
 			}
 		});
 
