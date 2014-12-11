@@ -9,16 +9,16 @@
 require_once("/usr/lib/php5/simpletest/autorun.php");
 
 //then require the class under scrutiny
-require_once("../php/ticket.php");
+require_once("../php/class/ticket.php");
 
 // require the mysqli
 require_once("/etc/apache2/capstone-mysql/przm.php");
 
 // require the classes for foreign keys
-require_once("../php/user.php");
-require_once("../php/profile.php");
-require_once("../php/traveler.php");
-require_once("../php/transaction.php");
+require_once("../php/class/user.php");
+require_once("../php/class/profile.php");
+require_once("../php/class/traveler.php");
+require_once("../php/class/transaction.php");
 
 // the TicketTest is a container for all our tests
 class TicketTest extends UnitTestCase {
@@ -26,7 +26,7 @@ class TicketTest extends UnitTestCase {
 	private $mysqli  = null;
 	// variable to hold the test database row
 	private $ticket = null;
-
+	private $ticket2 = null;
 	// a few "global" variables for creating test data
 	private $CONFIRMATION_NUMBER  = null;
 	private $PRICE					   = 100.00;
@@ -34,6 +34,7 @@ class TicketTest extends UnitTestCase {
 	private $USER						= null;
 	private $PROFILE				   = null;
 	private $TRAVELER		 		   = null;
+	private $TRAVELER2					= null;
 	private $TRANSACTION 	   	= null;
 
 	// setUp () is a method that is run before each test
@@ -57,18 +58,29 @@ class TicketTest extends UnitTestCase {
 		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
 		$this->TRAVELER->insert($this->mysqli);
 
+		$this->TRAVELER2 = new Traveler(null, $this->PROFILE->__get("profileId"), "Homer", "J", "Simpson",
+			"1948-01-02 10:11:12", $this->PROFILE);//see comment below
+		/*profile and traveler are designed to hold objects: profile holds user traveler holds profile*/
+		$this->TRAVELER2->insert($this->mysqli);
+
+
 		$this->TRANSACTION = new Transaction(null, $this->PROFILE->__get("profileId"), 100.00, "2014-11-12 12:11:10", "Token", "Token");
 		$this->TRANSACTION->insert($this->mysqli);
 
-		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(5));
+		$testConfirmationNumber = bin2hex(openssl_random_pseudo_bytes(3));
 		$this->CONFIRMATION_NUMBER = $testConfirmationNumber;
+
 	}
 
 	// tearDown () is a method that is run after each test
 	// here, we use it to delete the test record and disconnect from mySQL
-	public function tearDown() {
+	public function tearDown()
+	{
 		// delete the profile if we can
-
+		if($this->ticket2 !== null){
+			$this->ticket2->delete($this->mysqli);
+			$this->ticket2 = null;
+		}
 		if($this->ticket !== null) {
 			$this->ticket->delete($this->mysqli);
 			$this->ticket = null;
@@ -79,6 +91,10 @@ class TicketTest extends UnitTestCase {
 			$this->TRANSACTION = null;
 		}
 
+		if($this->TRAVELER2 !== null) {
+			$this->TRAVELER2->delete($this->mysqli);
+			$this->TRAVELER2 = null;
+		}
 		if($this->TRAVELER !== null) {
 			$this->TRAVELER->delete($this->mysqli);
 			$this->TRAVELER = null;
@@ -235,22 +251,36 @@ class TicketTest extends UnitTestCase {
 
 		// second create a new ticket to post to mySQL
 		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
+		$this->ticket2 = new Ticket(null, "a1bc56", 100.00, "PAID",
+			$this->PROFILE->__get("profileId"), $this->TRAVELER2->__get("travelerId"),
+			$this->TRANSACTION->getTransactionId());
 
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
+		$this->ticket2->insert($this->mysqli);
 
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByProfileId($this->mysqli, $this->ticket->getProfileId());
-
+		echo "<p> vardump staticTicket getTicketByProfileId line 257 ticket-test.php</p>";
+		var_dump($staticTicket);
 		// finally, compare the fields
-		$this->assertNotNull($staticTicket->getTicketId());
-		$this->assertTrue($staticTicket->getTicketId() > 0);
-		$this->assertIdentical($staticTicket->getConfirmationNumber(), $this->CONFIRMATION_NUMBER);
-		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
-		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
-		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
-		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
+		$this->assertNotNull($staticTicket[0]->getTicketId());
+		$this->assertTrue($staticTicket[0]->getTicketId() > 0);
+		$this->assertIdentical($staticTicket[0]->getConfirmationNumber(), $this->CONFIRMATION_NUMBER);
+		$this->assertIdentical($staticTicket[0]->getPrice(), 					$this->PRICE);
+		$this->assertIdentical($staticTicket[0]->getStatus(),				   $this->STATUS);
+		$this->assertIdentical($staticTicket[0]->getProfileId(), 			$this->PROFILE->__get("profileId"));
+		$this->assertIdentical($staticTicket[0]->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
+		$this->assertIdentical($staticTicket[0]->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
+
+		$this->assertNotNull($staticTicket[1]->getTicketId());
+		$this->assertTrue($staticTicket[1]->getTicketId() > 0);
+		$this->assertIdentical($staticTicket[1]->getConfirmationNumber(), "a1bc56");
+		$this->assertIdentical($staticTicket[1]->getPrice(), 					100.00);
+		$this->assertIdentical($staticTicket[1]->getStatus(),				   "PAID");
+		$this->assertIdentical($staticTicket[1]->getProfileId(), 			$this->PROFILE->__get("profileId"));
+		$this->assertIdentical($staticTicket[1]->getTravelerId(), 			$this->TRAVELER2->__get("travelerId"));
+		$this->assertIdentical($staticTicket[1]->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 
 
@@ -289,21 +319,33 @@ class TicketTest extends UnitTestCase {
 
 		// second create a new ticket to post to mySQL
 		$this->ticket = new Ticket(null, $this->CONFIRMATION_NUMBER, $this->PRICE, $this->STATUS, $this->PROFILE->__get("profileId"), $this->TRAVELER->__get("travelerId"), $this->TRANSACTION->getTransactionId());
-
+		$this->ticket2 = new Ticket(null, "a1bc56", 100.00, "PAID",
+			$this->PROFILE->__get("profileId"), $this->TRAVELER2->__get("travelerId"),
+			$this->TRANSACTION->getTransactionId());
 		// third, insert the ticket to mySQL
 		$this->ticket->insert($this->mysqli);
-
+		$this->ticket2->insert($this->mysqli);
 		// fourth, get the ticket using the static method
 		$staticTicket = Ticket::getTicketByTransactionId($this->mysqli, $this->ticket->getTransactionId());
-
+		echo "<p> vardump staticTicket getTicketByTransactionId line 321 ticket-test.php</p>";
+		var_dump($staticTicket);
 		// finally, compare the fields
-		$this->assertNotNull($staticTicket->getTicketId());
-		$this->assertTrue($staticTicket->getTicketId() > 0);
-		$this->assertIdentical($staticTicket->getConfirmationNumber(), $this->CONFIRMATION_NUMBER);
-		$this->assertIdentical($staticTicket->getPrice(), 					$this->PRICE);
-		$this->assertIdentical($staticTicket->getStatus(),				   $this->STATUS);
-		$this->assertIdentical($staticTicket->getProfileId(), 			$this->PROFILE->__get("profileId"));
-		$this->assertIdentical($staticTicket->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
-		$this->assertIdentical($staticTicket->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
+		$this->assertNotNull($staticTicket[0]->getTicketId());
+		$this->assertTrue($staticTicket[0]->getTicketId() > 0);
+		$this->assertIdentical($staticTicket[0]->getConfirmationNumber(), $this->CONFIRMATION_NUMBER);
+		$this->assertIdentical($staticTicket[0]->getPrice(), 					$this->PRICE);
+		$this->assertIdentical($staticTicket[0]->getStatus(),				   $this->STATUS);
+		$this->assertIdentical($staticTicket[0]->getProfileId(), 			$this->PROFILE->__get("profileId"));
+		$this->assertIdentical($staticTicket[0]->getTravelerId(), 			$this->TRAVELER->__get("travelerId"));
+		$this->assertIdentical($staticTicket[0]->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
+
+		$this->assertNotNull($staticTicket[1]->getTicketId());
+		$this->assertTrue($staticTicket[1]->getTicketId() > 0);
+		$this->assertIdentical($staticTicket[1]->getConfirmationNumber(), "a1bc56");
+		$this->assertIdentical($staticTicket[1]->getPrice(), 					100.00);
+		$this->assertIdentical($staticTicket[1]->getStatus(),				   "PAID");
+		$this->assertIdentical($staticTicket[1]->getProfileId(), 			$this->PROFILE->__get("profileId"));
+		$this->assertIdentical($staticTicket[1]->getTravelerId(), 			$this->TRAVELER2->__get("travelerId"));
+		$this->assertIdentical($staticTicket[1]->getTransactionId(), 		$this->TRANSACTION->getTransactionId());
 	}
 }

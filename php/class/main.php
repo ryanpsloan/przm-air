@@ -3,12 +3,12 @@ session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
-/*require_once("flight.php");
-$flights = array();
-for($i = 13; $i < 17; ++$i) {
-	$flights[] = Flight::getFlightByFlightId($mysqli, $i);
-}
-$_SESSION['flightObjArray'] = $paths;*/
+require_once("flight.php");
+$paths = array();
+$paths[] = Flight::getFlightByFlightId($mysqli, );
+$paths[] = Flight::getFlightByFlightId($mysqli, );
+
+$_SESSION['flightObjArray'] = $paths;
 //profile id =341
 $userId = 414;
 $_SESSION['userId'] = $userId;

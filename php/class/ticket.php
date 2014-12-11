@@ -140,9 +140,9 @@ class Ticket {
 		// verify the confirmation number is 10 hex characters
 		$newConfirmationNumber = trim($newConfirmationNumber);
 		$newConfirmationNumber = strtolower($newConfirmationNumber);
-		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{10}$/"));
+		$filterOptions = array("options" => array("regexp" => "/^[\da-f]{6}$/"));
 		if(filter_var($newConfirmationNumber, FILTER_VALIDATE_REGEXP, $filterOptions) === false) {
-			throw(new RangeException("confirmation number is not 10 hexadecimal bytes"));
+			throw(new RangeException("confirmation number is not 6 hexadecimal bytes"));
 		}
 
 		// finally, take the confirmation number out of quarantine
@@ -557,6 +557,7 @@ class Ticket {
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a User object normally
 		// 2) if there's no result, we can just return null
+		// fetch_assoc() returns rows as an associative array
 		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
 
 		// convert the associative array to a Ticket
@@ -566,7 +567,7 @@ class Ticket {
 			}
 			catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
-				throw(new mysqli_sql_exception("Unable to convert row to User", 0, $exception));
+				throw(new mysqli_sql_exception("Unable to convert row to Ticket", 0, $exception));
 			}
 
 			// if we got here, the User is good - return it
@@ -575,6 +576,7 @@ class Ticket {
 			// 404 Ticket not found - return null instead
 			return(null);
 		}
+
 	}
 
 
@@ -630,23 +632,26 @@ class Ticket {
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a Ticket object normally
 		// 2) if there's no result, we can just return null
-		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
-
+		$ticketArray = array();
+		// fetch_assoc() returns a row as an associative array
 		// convert the associative array to a Ticket
-		if($row !== null) {
+		while(($row = $result->fetch_assoc()) !== null) {
 			try {
-				$ticket = new Ticket($row["ticketId"],$row["confirmationNumber"], $row["price"], $row["status"], $row["profileId"], $row["travelerId"], $row["transactionId"]);
+				$ticketArray[] = new Ticket($row["ticketId"],$row["confirmationNumber"], $row["price"], $row["status"],
+					$row["profileId"], $row["travelerId"], $row["transactionId"]);
 			}
 			catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to Ticket", 0, $exception));
 			}
 
-			// if we got here, the Ticket is good - return it
-			return($ticket);
+		}
+		if($result->num_rows === 0){		//if we got here, the Ticket Object is good - return it
+			return (null); //Ticket not found - return null instead
+
 		} else {
-			// 404 Ticket not found - return null instead
-			return(null);
+			// if we got here, the Ticket is good - return it
+			return ($ticketArray);
 		}
 	}
 
@@ -774,23 +779,26 @@ class Ticket {
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a Ticket object normally
 		// 2) if there's no result, we can just return null
-		$row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative array
-
+		$ticketArray = array();
+		// fetch_assoc() returns a row as an associative array
 		// convert the associative array to a Ticket
-		if($row !== null) {
+		while(($row = $result->fetch_assoc()) !== null) {
 			try {
-				$ticket = new Ticket($row["ticketId"],$row["confirmationNumber"], $row["price"], $row["status"], $row["profileId"], $row["travelerId"], $row["transactionId"]);
+				$ticketArray[] = new Ticket($row["ticketId"],$row["confirmationNumber"], $row["price"], $row["status"],
+					$row["profileId"], $row["travelerId"], $row["transactionId"]);
 			}
 			catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to Ticket", 0, $exception));
 			}
 
-			// if we got here, the User is good - return it
-			return($ticket);
+		}
+		if($result->num_rows === 0){		//if we got here, the Ticket Object is good - return it
+			return (null); //Ticket not found - return null instead
+
 		} else {
-			// 404 Ticket not found - return null instead
-			return(null);
+			// if we got here, the Ticket is good - return it
+			return ($ticketArray);
 		}
 	}
 }

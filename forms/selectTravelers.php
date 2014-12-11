@@ -25,7 +25,7 @@ EOF;
 		</li>
 EOF;
 	}
-	//$paths = $_SESSION['flightObjArray'];
+	$paths = $_SESSION['flightObjArray'];
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 
 }catch(Exception $e){
@@ -144,16 +144,26 @@ EOF;
 		#ckBoxes input{
 			margin-left: 4.2em;
 		}
-		table{
+		#btnTable{
 			margin-left: 3.3em;
 		}
-		table td{
+		#btnTable td{
 			padding: .5em;
 			margin: .5em;
 		}
 		#confirmBtn{
 			padding: .5em;
 			margin-left: 7.7em;
+		}
+		.displayFlt{
+
+		}
+		.flightData{
+
+		 }
+		.flightData td{
+			padding: .5em;
+
 		}
 	</style>
 </head>
@@ -192,15 +202,34 @@ EOF;
 <section>
 	<div class="jumbotron">
 		<div class="flightContainer">
-			<!-- Zach will handle this -->
-			<!--/* ?php foreach ($paths as $key => $flight){
-				echo "<p>" . "Flight Id: " . $flight->flightId . " " . "Origin: " . $flight->origin . " " . "Destination: "
-				. $flight->destination . " " . "Duration: " . $flight->duration . " " . "Departure: "
-				. $flight->departureDateTime . " " . "Arrival: " .	$flight->arrivalDateTime . " " . "Flight Number: "
-				. $flight->flightNumber . " " . "Price: " . $flight->price . " " . "Remaining Seats Available: "
-				. $flight->totalSeatsOnPlane . " " . "</p>";
-			} ?
-			-->
+			<?php foreach ($paths as $key => $flight){
+				echo <<<EOF
+				<div class="displayFlt">
+				<table class="flightData table">
+				<tr>
+					<th>Flight Number</th>
+					<th>"Origin</th>
+					<th>Destination</th>
+					<th>Duration</th>
+					<th>Departure</th>
+					<th>Arrival</th>
+					<th>Price</th>
+				</tr>
+				<tr>
+					<td>$flight->flightNumber</td>
+					<td>$flight->origin</td>
+					<td>$flight->destination</td>
+					<td>$flight->duration</td>
+					<td>$flight->departureDateTime</td>
+					<td>$flight->arrivalDateTime</td>
+					<td>$flight->price</td>
+				<tr>
+			</table>
+			</div>
+EOF;
+
+			}
+?>
 		</div>
 	</div>
 </section>
@@ -210,7 +239,7 @@ EOF;
 	<?php echo generateInputTags(); ?>
 	<div class="buttonDiv">
 		<div class="innerBtnDiv">
-			<table>
+			<table id="#btnTable">
 				<tr><td><button type="submit" name="action" class="btn" value="Remove">Remove Travelers</button></td>
 					<td><button type="button" class="btn" data-toggle="modal" data-target="#myModal">
 							Add Travelers</button></td></tr>
