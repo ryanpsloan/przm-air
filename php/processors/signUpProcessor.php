@@ -5,9 +5,9 @@ require("../../php/class/profile.php");
 require("../../php/class/traveler.php");
 require("../../lib/csrf.php");
 require("Mail.php");
-session_start();
 
 try {
+	session_start();
 	$savedName  = $_POST["csrfName"];
 	$savedToken = $_POST["csrfToken"];
 

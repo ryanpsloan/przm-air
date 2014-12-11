@@ -37,10 +37,10 @@ $(document).ready(function()
 				roundTripOrOneWay : {
 					onSelect: "Please enter one-way or round trip."
 				},
-				origin : {
+				origin 		: {
 					required: "Please enter a origin city."
 				},
-				destination: {
+				destination	: {
 					required: "Please enter a destination city."
 				},
 				departDate  : {
@@ -48,7 +48,7 @@ $(document).ready(function()
 				},
 
 
-				/**fixme this needs to disappear if one-way was selected */
+				///**fixme this needs to disappear if one-way was selected **/
 				returnDate   : {
 					reqired : "Please enter a return trip date."
 				},
@@ -66,13 +66,14 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "../php/processors/flight_search_processor.php",
+						url    : "php/processors/flight_search_processor.php",
 						success: function(ajaxOutput) {
 							$("#searchOutputArea").html(ajaxOutput);
 						}
 					});
 			}
-		})
+		});
+
 
 	//toggle or hide unhide
 	//$("#oneWay").onclick();

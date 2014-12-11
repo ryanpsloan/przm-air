@@ -42,7 +42,7 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 20,
 			//echo "baseDeptObj";
 			//var_dump($baseDateDep);
 
-			$newDateDepStr = $baseDateDep->format("Y--d H:i:s");
+			$newDateDepStr = $baseDateDep->format("Y-m-d H:i:s");
 			////echo "newDeptStr";
 			//var_dump($newDateDepStr);
 

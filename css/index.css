@@ -1,0 +1,30 @@
+#search{
+	margin-left: 5em;
+	margin-top: .4em;
+}
+#flightSearch{
+	/*style flightSearch Here*/
+
+}
+#searchResults{
+	list-style: none;
+}
+.pi{
+	margin-top: .2em;
+}
+#accountLinksDiv{
+	margin-left: 5em;
+	margin-top: 2em;
+	border: 1px solid lightblue;
+	height: 20em;
+	width: 30em;
+}
+.c{
+	font-size: 1.5em;
+}
+.sl{
+	margin: .3em;
+}
+#accountLinksList{
+	list-style: none;
+}

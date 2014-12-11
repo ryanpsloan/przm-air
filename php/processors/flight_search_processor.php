@@ -36,10 +36,11 @@ EOF;
  * @param 	string $userOrigin with 3 letter origin city
  * @param 	string $userDestination with 3 letter destination city
  * @param 	string $userFlyDateStart of 7AM on user's chosen fly date
+ * @param 	string $returnOrNo boolean of 0 or 1 for return trip or one-way.
  * @return 	mixed $outputTable html table of search results
  **/
 function completeSearch (&$mysqli, $userOrigin, $userDestination,
-								 $userFlyDateStart)
+								 $userFlyDateStart, $returnOrNo)
 {
 
 	// can make this a user input in future to pre-filter results to a user-given duration amount in hours.
@@ -217,7 +218,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		$totalPrice = "$" . money_format("%n",$thisArrayOfPaths[$i][$indexOfLastFlightInPath+2]);
 
 
-		// build outputs into table rows
+		// build outputs into table rows.  Give each select a different value depending on a) outbound or inbound and b) within either, number for path in loop.
 		$outputTableRows = $outputTableRows . "<tr>" .
 			"<td>" . $departureFlight1 . "</td>" .
 			"<td>" . $arrivalFlightLast . "</td>" .
@@ -229,12 +230,11 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			"<td>
 					<div class='btn-group'>
 						<label class='btn btn-primary active'>
-							<input type='radio' name='selectFlight' id='selectFlight' autocomplete='off' value='1'>
+							<input type='radio' name='selectFlight' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $returnOrNo . $i . "'>
 						</label>
 					</div>
 			</td>" .
 			"</tr>\n";
-
 	}
 	$outputTable = $outputTableHead . "<tbody>" . $outputTableRows . "</tbody>\n";
 	return $outputTable;
@@ -243,18 +243,16 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 
 try {
-//	session_start();
-//	$savedName  = $_POST["csrfName"];
-//	$savedToken = $_POST["csrfToken"];
-//
-//
-//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
-//		throw(new RuntimeException("Make sure cookies are enabled."));
-//	}
-
+	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();
-//	$flightPaths = $_SESSION['flightPathsObj'];
-	$flightPaths =
+	$savedName  = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
+
+
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+		throw(new RuntimeException("Make sure cookies are enabled."));
+	}
+
 
 	// clean inputs, adjust dates to needed format for outbound flight
 	$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
@@ -265,40 +263,43 @@ try {
 		$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
 		$userFlyDateStartObj = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
 		$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d H:i:s");
-	// echo $userFlyDateStart;
 
+	// get outbound results
 	$outputTableOutbound = completeSearch($mysqli, $userOrigin, $userDestination,
-														$userFlyDateStart);
+														$userFlyDateStart, "A");
 
-	echo "<table class='table table-striped table-hover'>\n
-			<thead>SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . "</table>\n";
+	// set up modular string pieces for building output echo
+	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='php/processors/flight_search_processor.php' method='POST'>
+									<table class='table table-striped table-responsive table-hover'>\n
+										<thead>";
+	$tableStringMid = "</table><table class='table table-striped table-responsive table-hover'>\n
+								<thead>";
+	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>Submit</button></form>";
 
-	//check to see if return trip search needed and execute if so
-	if ($_POST ["roundTripOrOneWay"] === 1) {
-		// clean inputs, adjust dates to needed format
+	// if not return trip, build and echo output string with outbound only
+	if ($_POST ["roundTripOrOneWay"] === 0) {
+		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringEnd;;
+	} else {
+		// otherwise, execute return search flight with same process: clean inputs, adjust dates to needed format for return trip
 		$userOrigin = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
 		$userDestination = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
-
 
 		$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
 			$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
 			$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
 			$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
-		// echo $userFlyDateStart;
 
+		// execute inbound flight search
 		$outputTableInbound = completeSearch($mysqli, $userOrigin, $userDestination,
-			$userFlyDateStart);
+			$userFlyDateStart, "B");
 
-		echo "<table class='table table-striped table-responsive table-hover'>\n
-			<thead>SELECT RETURN FLIGHT</thead>" . $outputTableInbound . "</table>\n";
+		// build and echo output string with return flight
+		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringMid .
+				"SELECT RETURN FLIGHT</thead>" . $outputTableInbound . $tableStringEnd;
 	}
 
-
-
-
-	// DateTime Math
 }catch (Exception $e){
-//	$_SESSION[$savedName] = $savedToken;
+	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>
   ".$e->getMessage()."</div>";
 }

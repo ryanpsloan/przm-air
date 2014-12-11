@@ -58,68 +58,20 @@ EOF;
 
 	<!-- Latest compiled and minified CSS -->
 	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-
-
+	<link type="text/css" rel="stylesheet" href="css/index.css">
 
 	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-<!--	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+	<!--	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>-->
 	<script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="js/utility.js"></script>
 	<script type="text/javascript" src="js/flight_search.js"></script>
-	<style>
-		#search{
-			margin-left: 5em;
-			margin-top: .4em;
-		}
-		#flightSearch{
-			/*style flightSearch Here*/
 
-		}
-		#searchResults{
-			list-style: none;
-		}
-		.pi{
-			margin-top: .2em;
-		}
-		#accountLinksDiv{
-			margin-left: 5em;
-			margin-top: 2em;
-			border: 1px solid lightblue;
-			height: 20em;
-			width: 30em;
-		}
-		.c{
-			font-size: 1.5em;
-		}
-		.sl{
-			margin: .3em;
-		}
-		#accountLinksList{
-			list-style: none;
-		}
-
-	</style>
-	<script>
-	$(function(){
-		function enableEnd() {
-			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', this.value).datepicker('option',
-				'maxDate', "+1y");
-		}
-
-		var end = $('#returnDate').datepicker();
-
-		$('#departDate').datepicker({
-			minDate: '0d',
-			maxDate: '+1y',
-			onSelect: enableEnd
-		}).bind('input', enableEnd);
-
-	});
-	</script>
 </head>
 <body>
 <header>
@@ -176,7 +128,7 @@ EOF;
 	<div id="myTabContent" class="tab-content">
 
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
-			<form class="navbar-form navbar-left" role="search" id="flightSearch" action="php/processors/flight_search_processor.php" method="POST">
+			<form class="navbar-form navbar-left" id="flightSearch" action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
 
 					<div class="btn-group" data-toggle="buttons">
@@ -216,45 +168,15 @@ EOF;
 						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"></p>
 
 					<p class="pi"><label>Minimum Layover: </label><br/>
-						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "20"><br/>
+						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30"><br/>
 						<em>enter number of minutes</em></p>
-					<?php //echo generateInputTags()?>
-					<!--//csrf stuff, needs to be validated in your form processor uncomment when ready
+					<?php echo generateInputTags()?>
+					<!--//fixme csrf stuff, needs to be validated in your form processor uncomment when ready
 					      to implement-->
 					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
 			</form>
-
 				<div id="searchOutputArea">
-				<!-- <table>
-					<tr>
-						<button type="selectRoute" class="btn btn-default">Select Route</button>
-					</tr>
-				</table>
-				//Zach are you planning on posting the results of the search on index? We don't have to use ajaxOutput
-
-				<ul id="searchResults">
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-					<li class="sl"><button type="selectRoute" class="btn btn-default">Select Route</button></li>
-
-
-				</ul>-->
-
-
-
-
-
-
-
-
-
 				</div>
 
 		</div>
