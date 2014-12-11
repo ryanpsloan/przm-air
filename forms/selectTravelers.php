@@ -112,6 +112,13 @@ EOF;
 		}
 		.innerBtnDiv{
 			margin-left: 3.7em;
+			margin-top: .4em;
+		}
+		#A{
+			margin-left: 3em;
+		}
+		#B{
+			margin-left: 2em;
 		}
 		#addTravelerDiv{
 			height: 30em;
@@ -130,7 +137,6 @@ EOF;
 			padding: .5em;
 			background-color: white;
 			border-radius: 4%;
-
 		}
 		.nameSpan{
 			margin-left: .4em;
@@ -140,29 +146,14 @@ EOF;
 		#travelerList{
 			background-color: white;
 			height: 20em;
-
 		}
 		#ckBoxes input{
 			margin-left: 4.2em;
-		}
-		#btnTable{
-
-
-		}
-		#btnTable td{
-
-
 		}
 		#confirmBtn{
 			padding: .5em;
 			margin-left: 8.2em;
 		}
-		.displayFlt{
-
-		}
-		.flightData{
-
-		 }
 		.flightData td{
 			padding: .5em;
 
@@ -255,13 +246,9 @@ HTML;
 	<?php echo generateInputTags(); ?>
 	<div class="buttonDiv">
 		<div class="innerBtnDiv">
-			<table id="#btnTable">
-				<tr>
-					<td><button type="submit" name="action" class="btn" value="Remove">Remove Travelers</button></td>
-					<td><button type="button" class="btn" data-toggle="modal" data-target="#myModal">
-							Add Travelers</button></td>
-				</tr>
-			</table>
+				<button id="A" type="submit" name="action" class="btn" value="Remove">Remove Travelers</button>
+				<button id="B" type="button" class="btn" data-toggle="modal" data-target="#myModal">
+							Add Travelers</button>
 		</div>
 	</div>
 
@@ -337,8 +324,8 @@ EOF;
 		</div>
 	</div>
 	<div id="bookFltDiv" style="visibility: hidden">
-		<form action="payment.php">
-			<button type="submit" name="action" class="btn" value="Book" href="payment.php">Book Flight</button>
+		<form action="confirmationPage.php">
+			<button type="submit" name="action" class="btn" value="Book">Book Flight</button>
 		</form>
 	</div>
 </form>
