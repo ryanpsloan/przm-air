@@ -156,7 +156,9 @@ EOF;
 		}
 		.flightData td{
 			padding: .5em;
-
+		}
+		.si{
+			margin-top: 7em;
 		}
 	</style>
 </head>
@@ -194,6 +196,7 @@ EOF;
 	<!-- Display Flights -->
 	<section>
 		<div class="jumbotron">
+			<h3 style="text-align: center">Your Flight Details</h3>
 			<div class="flightContainer">
 				<?php
 					foreach ($paths as $flight){

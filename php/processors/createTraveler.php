@@ -80,7 +80,7 @@ HTML;
 		if(isset($_SESSION['flightObj'])) {
 			$_SESSION['travelerArray'] = $_POST['travelerArray'];
 			echo <<<EOF
-				<p style="text-align: center">Your travelers have been confirmed</p>
+				<p class='si' style="text-align: center">Your travelers have been confirmed</p>
 				<script>
 					$(function () {
 						$('#bookFltDiv').css('visibility', 'visible');
@@ -92,7 +92,7 @@ EOF;
 
 
 		} else {
-			echo "<p style='text-align: center'>Your travelers have been confirmed</p>";
+			echo "<p class='si' style='text-align: center'>Your travelers have been confirmed</p>";
 		}
 	}
 	elseif($_POST['action'] === "Book"){
@@ -102,6 +102,6 @@ EOF;
 
 }catch(Exception $e){
 	$_SESSION[$savedName] = $savedToken;
-	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
+	echo "<div class='alert alert-danger si' role='alert'>".$e->getMessage()."</div>";
 }
 ?>
