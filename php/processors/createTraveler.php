@@ -74,13 +74,14 @@ HTML;
 	}
 	elseif($_POST['action'] === "Confirm") {
 		if(!isset($_POST['travelerArray'])){
-			throw(new ErrorException("Please check the travelers for who you are purchasing this flight"));
+			throw(new ErrorException("Please check the travelers for whom you are purchasing this flight"));
 		}
 
 		if(isset($_SESSION['flightObj'])) {
 			$_SESSION['travelerArray'] = $_POST['travelerArray'];
-			echo <<<EOF
-				<p class='si' style="text-align: center">Your travelers have been confirmed</p>
+			echo <<<HTML
+				<div class='alert alert-success si' role='alert' style="text-align: center">
+				Your travelers have been confirmed</div>
 				<script>
 					$(function () {
 						$('#bookFltDiv').css('visibility', 'visible');
@@ -88,20 +89,29 @@ HTML;
 
 				</script>
 
-EOF;
+HTML;
 
 
 		} else {
-			echo "<p class='si' style='text-align: center'>Your travelers have been confirmed</p>";
+			echo "<div class='alert alert-success si' role='alert' style=\"text-align: center\">
+				Your travelers have been confirmed</div>";
 		}
 	}
 	elseif($_POST['action'] === "Book"){
-
+	header("Location: ../../forms/confirmationPage.php");
 
 	}
 
 }catch(Exception $e){
 	$_SESSION[$savedName] = $savedToken;
-	echo "<div class='alert alert-danger si' role='alert'>".$e->getMessage()."</div>";
+	$msg = $e->getMessage();
+	echo <<<HTML
+	<div class='alert alert-danger si' role='alert'>$msg</div>
+	<script>
+	setTimeout(function(){location.reload()}, 8000)
+	</script>
+HTML;
+
+
 }
 ?>
