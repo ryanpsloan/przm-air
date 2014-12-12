@@ -45,7 +45,6 @@ EOF;
 	<title>Confirmation and Purchase</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Travelers</title>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
@@ -87,6 +86,9 @@ EOF;
 		#paymentDiv{
 			border-radius: 5%;
 			border: 2px solid lightgray;
+		}
+		.ciDiv{
+			font-size: 1.4em;
 		}
 
 	</style>
@@ -138,7 +140,7 @@ EOF;
 		$duration =  $flight->getDuration()->format("%H:%i");
 		$depTime = $flight->getDepartureDateTime()->format("m/d/Y H:i:s");
 		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y H:i:s");
-		$price = $flight->getPrice();
+
 	echo <<<HTML
 				<div class="displayFlt">
 				<table class="flightData table">
@@ -149,7 +151,7 @@ EOF;
 					<th>Duration</th>
 					<th>Departure</th>
 					<th>Arrival</th>
-					<th>Price</th>
+
 				</tr>
 				<tr>
 					<td>$fltNum</td>
@@ -158,7 +160,7 @@ EOF;
 					<td>$duration</td>
 					<td>$depTime</td>
 					<td>$arrTime</td>
-					<td>$price</td>
+
 
 
 				<tr>
@@ -183,33 +185,72 @@ HTML;
 
 			$travelerIds = $_SESSION['travelerIds'];
 			foreach($travelerIds as $tId) {
-				$traveler = Traveler::getTravelerByTravelerId($mysqli, $tId);
-				$name = $traveler->__get("travelerFirstName"). " " . $traveler->__get("travelerLastName");
+				$travelers = Traveler::getTravelerByTravelerId($mysqli, $tId);
+				$name = $travelers->__get("travelerFirstName"). " " . $travelers->__get("travelerLastName");
 				$name = ucwords($name);
 				echo "<li>$name</li><hr>";
 
 			}
-			echo <<<HTML
+
+			foreach($flights as $flight){
+				$price[]= "";
+			}
+			?>
 				</ul>
 			</div>
 
 			<div id="paymentDiv" class="col-lg-8">
-				<div id="transactionDetails" class="col-md-2">
-				<?php
+				<div id="transactionDetails" class="col-md-6">
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<hr>
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<hr>
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<hr>
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<hr>
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<hr>
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<hr>
+					<div class="row ciDiv">
+						Test Text
+					</div><hr>
+					<div class="row ciDiv">
+						Test Text
+					</div>
+					<div class="row ciDiv">
+						Test Text
+					</div><hr>
 
-				?>
 				</div>
-				<div id="paymentDetails">
-				<?php
+				<div id="paymentDetails" class="col-lg-2">
+					<div class="row">
+					price[0]
+					price[1]
+					price[2]
+					price[3]
+					</div>
 
-				?>
 				</div>
 				<div id
 			</div>
 		</div>
 	</div>
-HTML;
-?>
+
+
 
 </body>
 </html>

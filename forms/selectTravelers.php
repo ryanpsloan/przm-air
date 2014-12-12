@@ -213,7 +213,6 @@ EOF;
 					$duration = $flight->getDuration()->format("%H:%i");
 					$depTime = $flight->getDepartureDateTime()->format('Y-m-d H:i:s');
 					$arrTime = $flight->getArrivalDateTime()->format("Y-m-d H:i:s");
-					$price = $flight->getPrice();
 
 					echo <<<HTML
 			<div class="displayFlt">
@@ -226,7 +225,6 @@ EOF;
 						<th>Duration</th>
 						<th>Departure</th>
 						<th>Arrival</th>
-						<th>Price</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -237,7 +235,7 @@ EOF;
 						<td>$duration</td>
 						<td>$depTime</td>
 						<td>$arrTime</td>
-						<td>$price</td>
+
 					</tr>
 				</tbody>
 			</table>
