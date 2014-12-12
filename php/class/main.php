@@ -61,7 +61,7 @@ $traveler4->insert($mysqli);
 
 $travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4);
 $_SESSION['travelerArray'] = $travelerArray;
-header("Location: ../../forms/selectTravelers.php");
+header("Location: ../../index.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";
 $fileName = "weekDay01.csv";
