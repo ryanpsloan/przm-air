@@ -50,11 +50,11 @@ EOF;
 	<title>PRZM AIR</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-
 
 	<!-- Latest compiled and minified CSS -->
 	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
@@ -65,9 +65,7 @@ EOF;
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
 	<script type="text/javascript" src="js/utility.js"></script>
 	<script type="text/javascript" src="js/flight_search.js"></script>
@@ -133,7 +131,7 @@ EOF;
 
 						<div class="form-group">
 
-						<div class="btn-group btncss" data-toggle="buttons">
+					<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-primary active">
 								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
 								Round Trip
@@ -154,12 +152,17 @@ EOF;
 							<input type="text" class="form-control" id="destination" name="destination"><br/>
 							<em>enter city or airport code</em></p>
 
-						<p><label>Departure Date:</label><br/>
-							<input type="text" class="datepicker" id="departDate" name="departDate"></p>
+						<p>
+							<label>Departure Date:</label><br/>
+							<input type="text" class="datepicker" id="departDate" name="departDate">
+
+						</p>
 
 
-						<p><label>Return Date:</label><br/>
-							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled"></p>
+						<p>
+							<label>Return Date:</label><br/>
+							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled">
+						</p>
 
 						<p><label>Number of Passengers:</label><br/>
 							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"
@@ -181,36 +184,31 @@ EOF;
 					      to implement*/?>
 						</div>
 				</form>
-				<img src="http://imgs.mi9.com/uploads/photography/4480/white-clouds-and-blue-sky_1600x1200_78559.jpg">
-
-
+				<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
 			</div>
 		</div>
 	</div>
 
-
-
-
-		<div role="tabpanel" class="tab-pane fade" id="checkIn"
+	<div role="tabpanel" class="tab-pane fade" id="checkIn"
 			  aria-labelledby="checkIn-tab">
-			<li class ="sl"><p class="pi c"><a href="">
+			<li><p><a href="">
 						<span class="glyphicon glyphicon-plus"></span>Check Flight Status</a></p></li>
-			<li class ="sl"><p class="pi c"><a href="">
+			<li><p class="pi c"><a href="">
 						<span class="glyphicon glyphicon-plus"></span>Check In</a></p></li>
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="account"
 			  aria-labelledby="account-tab">
 			<div id="accountLinksDiv">
 				<ul id="accountLinksList">
-					<li class="sl"><p class="pi c"><a href="forms/editUserProfile.php">
+					<li><p><a href="forms/editUserProfile.php">
 						<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
-					<li class="sl"><p class="pi c"><a href="">
+					<li><p><a href="">
 								<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
-					<li class ="sl"><p class="pi c"><a href="forms/selectTravelers.php">
+					<li><p><a href="forms/selectTravelers.php">
 								<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
-					<li class="sl"><p class="pi c"><a href="">
+					<li><p><a href="">
 								<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>
-					<li class="sl"><p class="pi c"><a href="">
+					<li><p><a href="">
 								<span class="glyphicon glyphicon-minus"></span>Delete Profile</a></p></li>
 
 				</ul>

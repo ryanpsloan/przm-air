@@ -50,7 +50,7 @@ $(document).ready(function()
 
 				///**fixme this needs to disappear if one-way was selected **/
 				returnDate   : {
-					reqired : "Please enter a return trip date."
+					required : "Please enter a return trip date."
 				},
 
 
@@ -78,7 +78,6 @@ $(document).ready(function()
 		});
 
 
-	//toggle or hide unhide
-	//$("#oneWay").onclick();
+
 
 });

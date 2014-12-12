@@ -1,8 +1,9 @@
-/**
- * Created by zwg2 on 12/11/14.
- */
 // function to assign range for datepicker
 $(document).ready(function() {
+
+	//$('#departDate').datepicker();
+	//$('#returnDate').datepicker();
+
 	$(function() {
 		function enableEnd() {
 			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', this.value).datepicker('option',

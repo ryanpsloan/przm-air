@@ -1,13 +1,15 @@
 .form-group{
-	width: 100%;
+	width: 25em;
+	height: 50em;
 	background-color: lightblue;
+	margin-top: .5em;
 }
 .form-group p{
 	margin-left: 2em;
 }
 img {
-	height: 40em;
-	width: 40em;
+	height: 50em;
+	width: 50em;
 	margin-top: 1em;
 	margin-right: 5em;
 }
@@ -36,9 +38,7 @@ img {
 .c{
 	font-size: 1.5em;
 }
-.sl{
-	margin: .3em;
-}
+
 #accountLinksList{
 	list-style: none;
 }
