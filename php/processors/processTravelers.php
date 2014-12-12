@@ -71,14 +71,14 @@ HTML;
 			throw(new ErrorException("Please check the travelers for whom you are purchasing this flight"));
 		}
 
-		if(isset($_SESSION['flightIds'])) {
+		if(isset($_SESSION['priceWithOutboundPath'])) {
 			$_SESSION['travelerIds'] = $_POST['travelerArray'];
 			echo <<<HTML
 				<div class='alert alert-success si' role='alert' style="text-align: center">
 				Your travelers have been confirmed</div>
 				<script>
 					setTimeout(function(){window.location.href =
-					"https://bootcamp-coders.cnm.edu/~rsloan/przmair/forms/confirmationPage.php";}, 4000)
+					"../forms/confirmationPage.php";}, 2000)
 				</script>
 
 HTML;

@@ -282,7 +282,8 @@ try {
 														$userFlyDateStart1, "OutboundPath");
 
 	// set up modular string pieces for building output echo
-	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='php/processors/search_results_processor.php' method='POST'>
+	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='../php/processors/search_results_processor.php'
+ method='POST'>
 									<table class='table table-striped table-responsive table-hover'>\n
 										<thead>";
 	$tableStringMid = "</table><table class='table table-striped table-responsive table-hover'>\n

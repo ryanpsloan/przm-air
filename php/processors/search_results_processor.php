@@ -31,12 +31,12 @@ try {
 		$_SESSION['ReturnPath'] = $_POST ["ReturnPath"];
 	}
 
-	if(isset($_SESSION['userId'])){
+	/*if(isset($_SESSION['userId'])){
 		header("Location: ../../forms/selectTravelers.php");
 	}
 	else{
 		header('Location: ../../forms/signIn.php');
-	}
+	}*/
 
 //	__SESSION alert($('input[name="selectFlightA"]:checked').val());
 //	alert($('input[name="selectFlightB"]:checked').val());

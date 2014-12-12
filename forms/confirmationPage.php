@@ -81,14 +81,17 @@ EOF;
 		}
 		#ul li{
 			margin-top: 1em;
-			border: 1px solid red;
+			padding: .9em 0;
 		}
 		#paymentDiv{
 			border-radius: 5%;
 			border: 2px solid lightgray;
+			margin-left: 1em;
 		}
 		.ciDiv{
-			font-size: 1.4em;
+			font-size: 1em;
+			margin-top: 1em;
+			padding: .86em 0;
 		}
 
 	</style>
@@ -132,7 +135,7 @@ EOF;
 	for($i =0; $i < count($flightIds); $i++){
 		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
 	}
-	$travelerArray = $_SESSION['travelerArray'];
+
 	foreach($flights as $flight){
 		$fltNum = $flight->getFlightNumber();
 		$origin = $flight->getOrigin();
@@ -160,9 +163,6 @@ EOF;
 					<td>$duration</td>
 					<td>$depTime</td>
 					<td>$arrTime</td>
-
-
-
 				<tr>
 			</table>
 			</div>
@@ -173,79 +173,57 @@ HTML;
 	<div id='wrapper' class="container">
 		<div class="row">
 			<div class="col-lg-4"><h2 id="travelersHeader">Travelers</h2></div>
-			<div class="col-lg-4"><h2 id="paymentHeader" class="col-lg-8" style="text-align: center">Transaction
-			 Details</h2></div>
+			<div class="col-lg-4"><h2 id="paymentHeader" class="col-lg-8" style="text-align: center">
+			Transaction Details</h2></div>
 		</div>
 		<div class="row">
 			<div id="travelerDiv" class="col-lg-4">
 				<ul id="ul">
 
-
 HTML;
-
-			$travelerIds = $_SESSION['travelerIds'];
-			foreach($travelerIds as $tId) {
-				$travelers = Traveler::getTravelerByTravelerId($mysqli, $tId);
-				$name = $travelers->__get("travelerFirstName"). " " . $travelers->__get("travelerLastName");
-				$name = ucwords($name);
-				echo "<li>$name</li><hr>";
-
-			}
-
-			foreach($flights as $flight){
-				$price[]= "";
+				$travelerIds = $_SESSION['travelerIds'];
+				foreach($travelerIds as $tId) {
+					$travelers = Traveler::getTravelerByTravelerId($mysqli, $tId);
+					$name = $travelers->__get("travelerFirstName"). " " . $travelers->__get("travelerLastName");
+					$name = ucwords($name);
+					echo "<li>$name</li><hr>";
 			}
 			?>
 				</ul>
 			</div>
 
 			<div id="paymentDiv" class="col-lg-8">
-				<div id="transactionDetails" class="col-md-6">
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<hr>
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<hr>
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<hr>
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<hr>
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<hr>
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<hr>
-					<div class="row ciDiv">
-						Test Text
-					</div><hr>
-					<div class="row ciDiv">
-						Test Text
-					</div>
-					<div class="row ciDiv">
-						Test Text
-					</div><hr>
+				<div id="transactionDetails" class="col-lg-8">
+				<?php
+						for($i = 0; $i < count($travelers); ++$i) {
+							$outbound = $flights[$i]->getOrigin() . "        >        " . $flights[$i]->getDestination() . "
+							 |    ";
+							$inbound = $flights[$i]->getDestination() . "        >        " . $flights[$i]->getOrigin() . "";
+
+
+							echo <<<HTML
+						<div class="row ciDiv">
+						<p>$outbound$inbound</p>
+						</div><hr>
+HTML;
+						}
+				?>
 
 				</div>
 				<div id="paymentDetails" class="col-lg-2">
-					<div class="row">
-					price[0]
-					price[1]
-					price[2]
-					price[3]
-					</div>
+					<?php $prices = $_SESSION['prices'];
+						for($i = 0; $i < count($travelers); $i++){
+							$price = floatval($prices[0]) + floatval($prices[1]);
+							echo	<<<HTML
+						<div class="row ciDiv">
+							$$price
+						</div>
+HTML;
+					}
 
+				?>
 				</div>
-				<div id
+
 			</div>
 		</div>
 	</div>

@@ -10,6 +10,7 @@ require("/etc/apache2/capstone-mysql/przm.php");
 session_start();
 
 $flights = $_SESSION['flightObjArray'];
+//subtract tickets/seats from flight objects
 $travelers = $_SESSION['travelerArray'];
 $transactionId = 1; // $_SESSION['transactionId'];
 $price = 300.00; //$flights[0]->getPrice();

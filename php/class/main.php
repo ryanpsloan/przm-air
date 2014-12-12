@@ -11,11 +11,10 @@ require_once("ticketFlight.php");
 
 $mysqli = MysqliConfiguration::getMysqli();
 
-$paths = array();
-$paths[] = 91;
-$paths[] = 864;
 
-$_SESSION['flightIds'] = $paths;
+$_SESSION['priceWithOutboundPath'] = "300.00,91,67,42";
+$_SESSION['priceWithInboundPath'] = "300.00,864,961,724";
+
 $testEmail       = "przmair@gmail.com";
 $testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
 $testPassword    = "1Qazxcvbn";

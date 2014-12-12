@@ -38,7 +38,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit(
 					{
 						type   : "POST",
-						url    : "../php/processors/createTraveler.php",
+						url    : "../php/processors/processTravelers.php",
 						success: function(ajaxOutput) {
 							$("#travelerContainer").html(ajaxOutput);
 						}

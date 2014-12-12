@@ -131,7 +131,7 @@ EOF;
 			<form class="navbar-form navbar-left" id="flightSearch" action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
 
-					<div class="btn-group" data-toggle="buttons">
+					<div class="btn-group pibtn" data-toggle="buttons">
 						<label class="btn btn-primary active">
 							<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
 							Round Trip
@@ -159,21 +159,24 @@ EOF;
 					<p class="pi"><label>Return Date:</label><br/>
 						<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled"></p>
 
-					<p class="pi"></p><label class="btn btn-primary active">
-						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
-						Flexible Dates?
-					</label><p><em>  select to see grid of cheapest fares in month</em></p></p>
-
 					<p class="pi"><label>Number of Passengers:</label><br/>
-						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"></p>
+						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"
+							size="5"></p>
 
 					<p class="pi"><label>Minimum Layover: </label><br/>
-						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30"><br/>
+						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30" size="5"><br/>
 						<em>enter number of minutes</em></p>
-					<!--<?php echo generateInputTags()?>-->
+
+					<p><button type="submit" class="btn btn-default pi">Submit</button></p>
+					<hr>
+					<p class="pibtn"><label class="btn btn-primary active">
+						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
+						Flexible Dates?
+					</label></p>
+					<div style="text-align: center"><em>select to see grid of cheapest fares in month</em></div>
+					<?php //echo generateInputTags()?>
 					<!--//fixme csrf stuff, needs to be validated in your form processor uncomment when ready
 					      to implement-->
-					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
 			</form>
 				<div id="searchOutputArea">

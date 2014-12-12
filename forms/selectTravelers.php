@@ -26,10 +26,41 @@ EOF;
 		</li>
 EOF;
 	}
-	$flightIds = $_SESSION['flightIds'];
-	for($i =0; $i < count($flightIds); $i++){
-		$paths[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
+
+	if(isset($_SESSION['travelerIds'])){
+		echo<<<HTML
+		<script>
+			$(function(){
+					var array = @Session['travelerIds'];
+				$(':checkbox').each(function() {
+					for(var i =0; i <; ++i){
+						if(this.val = array[i]){
+							this.checked = true;
+						}
+					}
+      		});
+		   });
+		</script>
+HTML;
+
 	}
+	$paths[] = $_SESSION['priceWithOutboundPath'];
+	$paths[] = $_SESSION['priceWithInboundPath'];
+	$flightIds = array();
+	$prices = array();
+	foreach($paths as $path){
+		$dataArray = explode(",",$path);
+		$prices[] = $dataArray[0];
+		for($i = 1; $i < count($dataArray); $i++) {
+			$flightIds[] = $dataArray[$i];
+		}
+	}
+	$_SESSION['flightIds'] = $flightIds;
+	$_SESSION['prices'] = $prices;
+	for($i =0; $i < count($flightIds); $i++){
+		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
+	}
+
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 
 }catch(Exception $e){
@@ -71,9 +102,6 @@ EOF;
 				minDate: "-100y"
 			});
 		});
-
-
-
 	</script>
 	<style>
 		#formDiv{
@@ -205,7 +233,7 @@ EOF;
 			<h3 style="text-align: center">Your Flight Details</h3>
 			<div class="flightContainer">
 				<?php
-					foreach ($paths as $flight){
+					foreach ($flights as $flight){
 
 					$fltNum = $flight->getFlightNumber();
 					$origin = $flight->getOrigin();
@@ -249,7 +277,7 @@ HTML;
 </section>
 <section>
 <div id="formDiv">
-<form id="selectTravelersForm" action="../php/processors/createTraveler.php" method="post">
+<form id="selectTravelersForm" action="../php/processors/processTravelers.php" method="post">
 	<?php echo generateInputTags(); ?>
 	<div class="buttonDiv">
 		<div class="innerBtnDiv">

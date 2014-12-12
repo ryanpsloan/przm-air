@@ -52,8 +52,15 @@ try {
 									 	$('#signUpLink').hide();
 										$('#forgotPass').hide();
 									});
-									setTimeout(function () {location.href = '../index.php'}, 6000);
+
 							  </script>";
+		}
+		if(isset($_SESSION['priceWithOutboundPath'])) {
+			echo <<<HTML
+				<script>
+					setTimeout(function(){window.location = "../../forms/selectTravelers.php";}, 4000);
+				</script>
+HTML;
 		}
 	}
 
