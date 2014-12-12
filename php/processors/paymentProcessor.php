@@ -4,6 +4,7 @@ require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../lib/csrf.php");
 require_once("../forms/payment.php");
 require_once("../php/class/user.php");
+require_once("../php/class/profile.php");
 require_once("../php/class/transaction.php");
 
 try {
@@ -37,10 +38,14 @@ try {
 		throw(new RuntimeException("Form variables incomplete or missing"));
 	}
 
+	$csrfName = isset($_POST["csrfName"]) ? $_POST["csrfName"] : false;
+	$csrfToken = isset($_POST["csrfToken"]) ? $_POST["csrfToken"] : false;
+
 	// verify the CSRF tokens
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("CSRF tokens incorrect or missing. Make sure cookies are enabled."));
 	}
+	// filter inputs
 
 
 
