@@ -45,7 +45,7 @@ HTML;
 
 	}
 	$paths[] = $_SESSION['priceWithOutboundPath'];
-	$paths[] = $_SESSION['priceWithInboundPath'];
+	$paths[] = $_SESSION['priceWithReturnPath'];
 	$flightIds = array();
 	$prices = array();
 	foreach($paths as $path){

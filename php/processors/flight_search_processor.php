@@ -37,7 +37,7 @@ EOF;
  * @param 	string $userOrigin with 3 letter origin city
  * @param 	string $userDestination with 3 letter destination city
  * @param 	string $userFlyDateStart of 7AM on user's chosen fly date
- * @param 	string $returnOrNo boolean of 0 or 1 for return trip or one-way.
+ * @param 	string $returnOrNo of A or B for return trip or one-way.
  * @return 	mixed $outputTable html table of search results
  **/
 function completeSearch (&$mysqli, $userOrigin, $userDestination,
@@ -62,7 +62,8 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		$numberOfPassengersRequested, $minLayover);
 
 	// set up head of table of search results
-	$outputTableHead = "<thead2><tr>
+	$outputTableHead = "<thead><tr>
+											<th>AVAIL TIX</th>
 											<th>Depart</th>
 											<th>Arrive</th>
 											<th>Flight #</th>
@@ -71,7 +72,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 											<th>Layover</th>
 											<th>Price</th>
 											<th>SELECT</th>
-									</tr></thead2>\n";
+									</tr></thead>\n";
 
 	// set up variable for rows then fill in with results by looping through each path in the array of paths
 	$outputTableRows = "";
@@ -81,13 +82,15 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		$indexOfLastFlightInPath = count($thisArrayOfPaths[$i]) - 3;
 
 		// origin timezone conversions here
-		if($userOrigin = "ABQ" || $userOrigin = "DEN") {
+		if($userOrigin === "ABQ" || $userOrigin === "DEN") {
 			$originTimeZoneString = "PT";
-			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/Denver"))->format("H:i");
-		} else if($userOrigin = "SEA" || $userOrigin = "LAX") {
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new
+																			DateTimeZone("America/Denver"))->format("H:i");
+		} else if($userOrigin === "SEA" || $userOrigin === "LAX") {
 			$originTimeZoneString = "MT";
-			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/Los_Angeles"))->format("H:i");
-		} else if($userOrigin = "DFW" || $userOrigin = "ORD" || $userOrigin = "MDW") {
+			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new
+																			DateTimeZone("America/Los_Angeles"))->format("H:i");
+		} else if($userOrigin === "DFW" || $userOrigin === "ORD" || $userOrigin === "MDW") {
 			$originTimeZoneString = "CT";
 			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/Chicago"))->format("H:i");
 		} // else origin is ET
@@ -98,13 +101,13 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 
 		// destination timezone conversions here
-		if($userDestination = "SEA" || $userDestination = "LAX") {
+		if($userDestination === "SEA" || $userDestination === "LAX") {
 			$destinationTimeZoneString = "PT";
 			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/Los_Angeles"))->format("H:i");
-		} else if($userDestination = "ABQ" || $userDestination = "DEN") {
+		} else if($userDestination === "ABQ" || $userDestination === "DEN") {
 			$destinationTimeZoneString = "MT";
 			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/Denver"))->format("H:i");
-		} else if($userDestination = "DFW" || $userDestination = "ORD" || $userDestination = "MDW") {
+		} else if($userDestination === "DFW" || $userDestination === "ORD" || $userDestination === "MDW") {
 			$destinationTimeZoneString = "CT";
 			$arrivalFlightLast = $thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime()->setTimezone(new DateTimeZone("America/Chicago"))->format("H:i");
 		} // else destination is ET
@@ -131,7 +134,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		$j = 0;
 
 		// and third set up placeholder for total tickets on each plane
-		$totalTicketsLeft = 0;
+		$totalTicketsLeft = 10000;
 
 		do {
 			$flightNumberArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightNumber();
@@ -152,7 +155,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 //		var_dump($flightNumber);
 
 
-//		fixme old code delete:
+//		todo old code delete:
 //		} else {
 //			$flightNumber = $thisArrayOfPaths[$i][0]->getFlightNumber();
 //		}
@@ -211,6 +214,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 		// build outputs into table rows.  Give each select a different value depending on a) outbound or inbound and b) within either, number for path in loop.
 		$outputTableRows = $outputTableRows . "<tr>" .
+			"<td>" . $totalTicketsLeft . "</td>" .
 			"<td>" . $departureFlight1 . "</td>" .
 			"<td>" . $arrivalFlightLast . "</td>" .
 			"<td>" . $flightNumber . "</td>" .

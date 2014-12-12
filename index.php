@@ -169,11 +169,11 @@ EOF;
 						</p>
 
 						<p><label>Number of Passengers:</label><br/>
-							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"
-							size="5"></p>
+							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
+							></p>
 
 						<p><label>Minimum Layover: </label><br/>
-							<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30" size="5"><br/>
+							<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" ><br/>
 							<em>enter number of minutes</em></p>
 
 						<p><button type="submit" class="btn btn-default">Search Flights</button></p>
