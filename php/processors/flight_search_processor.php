@@ -4,9 +4,10 @@
  * User: zwg2
  * Date: 12/3/14
  * Time: 10:12 AM
+ *
+ * this processor takes search inputs from user, executes an outbound search and, if specified, a return trip search,
+ * and displays results to the user in table form.
  */
-// fixme get correct format from datepicker
-
 
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../class/flight.php");
@@ -47,7 +48,8 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 	$userFlyDateRange = 24;
 
 	// can make this a user input in future to pre-filter results to a user-given number of records.  If all records are needed, can use empty($thisArrayOfPaths[$i]) === false; in the for loop below instead.
-	$numberToShow = 15;
+$numberToShow = 15;
+//empty($thisArrayOfPaths[$i]) === false
 
 	$numberOfPassengersRequested = filter_input(INPUT_POST, "numberOfPassengers", FILTER_SANITIZE_NUMBER_INT);
 	$minLayover = filter_input(INPUT_POST, "minLayover", FILTER_SANITIZE_NUMBER_INT);
@@ -140,15 +142,22 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 //		echo "<p>Destination TIME FOR PATH after timezone: ". $i ." </p>";
 //		var_dump($thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime());
 
+		// get total price from results
+		$totalPriceFloat = $thisArrayOfPaths[$i][$indexOfLastFlightInPath+2];
+		$totalPrice = "$" . money_format("%n",$totalPriceFloat);
 
 		// set up arrays for flight number and flightIDs then loop through flights to build
 		$flightNumberArray = array();
 		$flightIdArray = array();
+
+		// add price to beginning of array for use later in the process of purchasing a ticket
+		$flightIdArray[0] = $totalPriceFloat;
+
 		$j = 0;
 
 		do {
 			$flightNumberArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightNumber();
-			$flightIdArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightId();
+			$flightIdArray [$j+1]= $thisArrayOfPaths[$i][$j]->getFlightId();
 
 //			echo "110 path " . $i . " and flight " . $j . " flight object and flight number and Array of flight numbers";
 ////				var_dump($thisArrayOfPaths[$i][$j]);
@@ -157,8 +166,10 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			$j++;
 		} while(empty($thisArrayOfPaths[$i][$j + 2]) === false);
 
-		// turn flight number to string with commas
+		// turn arrays to string with commas
 		$flightNumber = implode(", ", $flightNumberArray);
+		$priceWithFlightIds = implode(", ", $flightIdArray);
+
 //		echo "120 final flightNumber string";
 //		var_dump($flightNumber);
 
@@ -217,8 +228,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			$layoverString = implode(", ", $layoverArray);
 		}
 
-		// get total price from results
-		$totalPrice = "$" . money_format("%n",$thisArrayOfPaths[$i][$indexOfLastFlightInPath+2]);
+
 
 
 		// build outputs into table rows.  Give each select a different value depending on a) outbound or inbound and b) within either, number for path in loop.
@@ -233,7 +243,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			"<td>
 					<div class='btn-group'>
 						<label class='btn btn-primary active'>
-							<input type='radio' name='selectFlight" . $returnOrNo . "' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $flightIdArray . "'>
+							<input type='radio' name='" . $returnOrNo . "' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $priceWithFlightIds . "'>
 						</label>
 					</div>
 			</td>" .
@@ -248,13 +258,13 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 try {
 	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();
-	$savedName  = $_POST["csrfName"];
-	$savedToken = $_POST["csrfToken"];
-
-
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
-		throw(new RuntimeException("Make sure cookies are enabled."));
-	}
+//	$savedName  = $_POST["csrfName"//];
+//	$savedToken = $_POST["csrfToken"];//
+//
+//
+//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
+//		throw(new RuntimeException("Make sure cookies are enabled.")//);
+//	}
 
 
 	// clean inputs, adjust dates to needed format for outbound flight
@@ -269,10 +279,10 @@ try {
 
 	// get outbound results
 	$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
-														$userFlyDateStart1, "A");
+														$userFlyDateStart1, "OutboundPath");
 
 	// set up modular string pieces for building output echo
-	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='php/processors/flight_search_processor.php' method='POST'>
+	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='php/processors/search_results_processor.php' method='POST'>
 									<table class='table table-striped table-responsive table-hover'>\n
 										<thead>";
 	$tableStringMid = "</table><table class='table table-striped table-responsive table-hover'>\n
@@ -294,7 +304,7 @@ try {
 
 		// execute inbound flight search
 		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
-															$userFlyDateStart2, "B");
+															$userFlyDateStart2, "ReturnPath");
 
 		// build and echo output string with return flight
 		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringMid .
@@ -302,8 +312,8 @@ try {
 	}
 
 }catch (Exception $e){
-	$_SESSION[$savedName] = $savedToken;
+	// $_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>
-  ".$e->getMessage()."</div>";
+".$e->getMessage()."</div>";
 }
 ?>

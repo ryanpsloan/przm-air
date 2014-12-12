@@ -8,19 +8,19 @@ $(document).ready(function()
 
 			rules: {
 
-				selectFlightA : {
+				OutboundPath 	: {
 					required: true
 				},
-				selectFlightB : {
+				ReturnPath 		: {
 					required: true
 				}
 			},
 
 			messages: {
-				selectFlightA : {
-					onSelect: "Please select outbound trip."
+				OutboundPath 	: {
+					required: "Please select outbound trip."
 				},
-				selectFlightB 		: {
+				ReturnPath 	: {
 					required: "Please select return trip."
 				}
 			},

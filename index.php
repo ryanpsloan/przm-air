@@ -170,7 +170,7 @@ EOF;
 					<p class="pi"><label>Minimum Layover: </label><br/>
 						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30"><br/>
 						<em>enter number of minutes</em></p>
-					<?php echo generateInputTags()?>
+					<!--<?php echo generateInputTags()?>-->
 					<!--//fixme csrf stuff, needs to be validated in your form processor uncomment when ready
 					      to implement-->
 					<button type="submit" class="btn btn-default">Submit</button>

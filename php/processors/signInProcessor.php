@@ -52,7 +52,7 @@ try {
 									 	$('#signUpLink').hide();
 										$('#forgotPass').hide();
 									});
-									setInterval(function () {location.href = '../index.php'}, 6000);
+									setTimeout(function () {location.href = '../index.php'}, 6000);
 							  </script>";
 		}
 	}
