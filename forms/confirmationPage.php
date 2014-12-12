@@ -42,7 +42,7 @@ EOF;
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Ticketing</title>
+	<title>Confirmation and Purchase</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Travelers</title>
@@ -69,28 +69,26 @@ EOF;
 			font-size: 1.2em;
 			border-radius: 5%;
 		}
-		.flightData{
-
-		}
 		.flightData td{
 			padding: .5em;
-
 		}
 		#travelerDiv {
-			padding: 1em;
-			margin-top: 2em;
-			margin-left: 4.9em;
-			width: 20%;
-			height: 20%;
+			width: 30%;
 			border-radius: 5%;
 			border: 2px solid lightgray;
 		}
 		#ul{
 			list-style: none;
-			font-size: 1.4em;
-			margin-left: 3em;
-			padding: 0 .5em;
 		}
+		#ul li{
+			padding: 1.5em;
+			border: 1px solid red;
+		}
+		#paymentDiv{
+			border-radius: 5%;
+			border: 2px solid lightgray;
+		}
+
 	</style>
 </head>
 <body>
@@ -125,7 +123,7 @@ EOF;
 	</nav>
 </header>
 
-<h3 style="text-align: center">Finalize Your Flight Details</h3>
+<h2 style="text-align: center">Confirm Your Flight Details</h2>
 <?php
 	$flightIds = $_SESSION['flightIds'];
 
@@ -168,20 +166,39 @@ EOF;
 			</div>
 HTML;
 
-}
-echo "<div id='travelerDiv'><h4 style='text-align: center'>Travelers</h4><hr><ul id='ul'>";
-	$travelerIds = $_SESSION['travelerIds'];
-	foreach($travelerIds as $tId) {
-		$traveler = Traveler::getTravelerByTravelerId($mysqli, $tId);
-		$name = $traveler->__get("travelerFirstName"). " " . $traveler->__get("travelerLastName");
-		$name = ucwords($name);
-		echo <<<HTML
-		<li>$name</li>
+	}
+	echo <<<HTML
+	<div id='wrapper' class="container">
+		<div class="row">
+			<div class="col-lg-4"><h2 id="travelersHeader">Travelers</h2></div>
+			<div class="col-lg-4"><h2 id="paymentHeader" class="col-lg-8" style="text-align: center">Transaction
+			 Details</h2></div>
+		</div>
+		<div class="row">
+			<div id="travelerDiv" class="col-lg-4">
+				<ul id="ul">
+
+
 HTML;
 
-}
-echo "</ul></div>";
+			$travelerIds = $_SESSION['travelerIds'];
+			foreach($travelerIds as $tId) {
+				$traveler = Traveler::getTravelerByTravelerId($mysqli, $tId);
+				$name = $traveler->__get("travelerFirstName"). " " . $traveler->__get("travelerLastName");
+				$name = ucwords($name);
+				echo "<li>$name</li><hr>";
 
+			}
+			echo <<<HTML
+				</ul>
+			</div>
+
+			<div id="paymentDiv" class="col-lg-8">
+				<div id="paymentInnerDiv" class col-md-6"></div>
+			</div>
+		</div>
+	</div>
+HTML;
 ?>
 
 </body>

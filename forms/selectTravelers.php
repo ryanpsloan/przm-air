@@ -155,7 +155,6 @@ EOF;
 			margin-left: 4.2em;
 		}
 		#confirmBtn{
-			padding: .5em;
 			margin-left: 8.2em;
 		}
 		.flightData td{
@@ -163,6 +162,9 @@ EOF;
 		}
 		.si{
 			margin-top: 7em;
+		}
+		#selectAll{
+			margin-left: 5.7em;
 		}
 	</style>
 </head>
@@ -260,10 +262,31 @@ HTML;
 	</div>
 
 	<div id="travelerContainer">
-	<h3 style="text-align: center">Select travelers:</h3><br>
+	<h3 style="text-align: center"><span style="color: lightgrey">Travelers</span></h3>
+		<?php
+		if(count($staticTravelers) > 5) {
+			echo <<<HTML
+				<script>
+					function toggle(source) {
+						var checkboxes = document.getElementsByClassName('ckbx');
+						for each(checkbox in checkboxes){
+							checkbox.checked = source.checked;
+						}
+					}
+				</script>
+HTML;
+			echo <<<HTML
+				<div id="selectAll"><input type="checkbox" onClick="toggle(this)" /><span class="nameSpan">
+					Select All</span></div>
+
+HTML;
+		}
+
+		?>
 	<hr>
 		<div id="travelerList">
 			<div id="ckBoxes">
+
 			<?php
 			$travelerArray = array();
 			if(count($staticTravelers) > 0) {
@@ -272,7 +295,7 @@ HTML;
 					$name = ucwords($name);
 					$uID = $traveler->__get("travelerId");
 					echo <<<EOF
-					<div class="travelerSelect"><input type="checkbox" name="travelerArray[]"
+					<div class="travelerSelect ckbx"><input type="checkbox" name="travelerArray[]"
 					value="$uID"><span class="nameSpan">$name</span></div>
 EOF;
 				}
@@ -302,7 +325,25 @@ EOF;
 						<div id="addTInnerDiv">
 
 
-							<h4 style="text-align: center">You can have up to 6 travelers per itinerary</h4>
+							<h4 style="text-align: center">You can have up to 8 travelers</h4><br>
+							<h5 style="text-align: center">Traveler Count:
+								<?php echo count($staticTravelers);
+										if(count($staticTravelers) > 7){
+											echo <<<HTML
+													<script>
+														$(function() {
+															$('#first').attr('disabled', true);
+															$('#middle').attr('disabled', true);
+															$('#last').attr('disabled', true);
+															$('#dob').attr('disabled', true);
+															$('#addBtn').attr('disabled', true);
+														});
+													</script>
+HTML;
+
+										}
+
+								?></h5><br>
 							<label for="tFirst">First Name:</label><br><input type="text" id="first" name="tFirst" size="30"
 																							  autocomplete="off"><br>
 							<label for="tMiddle">Middle Name:</label><br><input type="text" id="middle" name="tMiddle" size="30"
@@ -318,7 +359,7 @@ EOF;
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" name="action" value="Add">Add</button>
+					<button id="addBtn" type="submit" class="btn btn-primary" name="action" value="Add">Add</button>
 				</div>
 			</div>
 		</div>

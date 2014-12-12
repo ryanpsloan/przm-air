@@ -86,7 +86,7 @@ EOF;
 						$(function() {
 							$(':input').attr('disabled', true);
 						});
-						setInterval(function () {location.href = '../../index.php'}, 6000);
+						setInterval(function () {location.href = '../index.php'}, 6000);
 					</script>";
 	// send the email
 	error_reporting(E_ALL & ~E_STRICT);

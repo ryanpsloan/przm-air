@@ -17,8 +17,8 @@ try {
 	$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
 	if($_POST['action'] === "Add") {
 			$totalTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
-			if($i = count($totalTravelers) > 5) {
-				throw(new ErrorException("You cannot add more than 6 travelers to an itinerary"));
+			if($i = count($totalTravelers) > 7) {
+				throw(new ErrorException("You cannot add more than 8 travelers to an itinerary"));
 			}
 
 			$tFirst = filter_input(INPUT_POST, "tFirst", FILTER_SANITIZE_STRING);
@@ -55,11 +55,6 @@ HTML;
 				$oldTraveler = Traveler::getTravelerByTravelerId($mysqli, $travelerArray[$i]);
 				$oldTraveler->delete($mysqli);
 
-				echo "<script>
-						$(function(){
-							location.reload();
-						});
-				</script>";
 			}
 		}
 		else{
