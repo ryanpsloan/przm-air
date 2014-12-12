@@ -48,28 +48,18 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 	$userFlyDateRange = 24;
 
 	// can make this a user input in future to pre-filter results to a user-given number of records.  If all records are needed, can use empty($thisArrayOfPaths[$i]) === false; in the for loop below instead.
-$numberToShow = 15;
-//empty($thisArrayOfPaths[$i]) === false
+//$numberToShow = 15;
+//$i<$numberToShow
 
 	$numberOfPassengersRequested = filter_input(INPUT_POST, "numberOfPassengers", FILTER_SANITIZE_NUMBER_INT);
 	$minLayover = filter_input(INPUT_POST, "minLayover", FILTER_SANITIZE_NUMBER_INT);
 
-//	echo "<p>121 inputs to method call </p>";
-//	var_dump($userOrigin);
-//	var_dump($userDestination);
-//	var_dump($userFlyDateStart);
-//	var_dump($userFlyDateRange);
-//	var_dump($numberOfPassengersRequested);
-//	var_dump($minLayover);
 
 
 	// call method
 	$thisArrayOfPaths = Flight::getRoutesByUserInput($mysqli, $userOrigin, $userDestination,
 		$userFlyDateStart, $userFlyDateRange,
 		$numberOfPassengersRequested, $minLayover);
-
-//	echo "<p>47 results COUNT PATHS </p>";
-//	var_dump(count($thisArrayOfPaths));
 
 	// set up head of table of search results
 	$outputTableHead = "<thead2><tr>
@@ -85,20 +75,10 @@ $numberToShow = 15;
 
 	// set up variable for rows then fill in with results by looping through each path in the array of paths
 	$outputTableRows = "";
-	for($i = 0; $i<$numberToShow; $i++) {
-
-//		echo "<p>65 PATH #: ". $i ." </p>";
-//		var_dump($thisArrayOfPaths[$i]);
-
+	for($i = 0; empty($thisArrayOfPaths[$i]) === false; $i++) {
 
 		//get index for last flight
 		$indexOfLastFlightInPath = count($thisArrayOfPaths[$i]) - 3;
-
-//		echo "<p>65 PATH indexOfLastFlightInPath: ". $i ." </p>";
-//		var_dump($indexOfLastFlightInPath);
-
-//		echo "<p>ORIGIN TIME FOR PATH before timezone: ". $i ." </p>";
-//		var_dump($thisArrayOfPaths[$i][0]->getDepartureDateTime());
 
 		// origin timezone conversions here
 		if($userOrigin = "ABQ" || $userOrigin = "DEN") {
@@ -115,12 +95,6 @@ $numberToShow = 15;
 			$originTimeZoneString = "ET";
 			$departureFlight1 = $thisArrayOfPaths[$i][0]->getDepartureDateTime()->setTimezone(new DateTimeZone("America/New_York"))->format("H:i");
 		}
-
-//		echo "<p>ORIGIN TIME FOR PATH after timezone: ". $i ." </p>";
-//		var_dump($thisArrayOfPaths[$i][0]->getDepartureDateTime());
-
-//		echo "<p>Destination TIME FOR PATH before timezone: ". $i ." </p>";
-//		var_dump($thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime());
 
 
 		// destination timezone conversions here
@@ -146,23 +120,27 @@ $numberToShow = 15;
 		$totalPriceFloat = $thisArrayOfPaths[$i][$indexOfLastFlightInPath+2];
 		$totalPrice = "$" . money_format("%n",$totalPriceFloat);
 
-		// set up arrays for flight number and flightIDs then loop through flights to build
+		// set up arrays for flight number and flightIDs then loop through results to build
 		$flightNumberArray = array();
 		$flightIdArray = array();
 
-		// add price to beginning of array for use later in the process of purchasing a ticket
+		// but first add price to beginning of flightID array for use later in the process of purchasing a ticket
 		$flightIdArray[0] = $totalPriceFloat;
 
+		// and second set up counter
 		$j = 0;
+
+		// and third set up placeholder for total tickets on each plane
+		$totalTicketsLeft = 0;
 
 		do {
 			$flightNumberArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightNumber();
 			$flightIdArray [$j+1]= $thisArrayOfPaths[$i][$j]->getFlightId();
 
-//			echo "110 path " . $i . " and flight " . $j . " flight object and flight number and Array of flight numbers";
-////				var_dump($thisArrayOfPaths[$i][$j]);
-//			var_dump($thisArrayOfPaths[$i][$j]->getFlightNumber());
-//			var_dump($flightNumberArray);
+			// use loop to also capture the lowest TotalSeatsOnPlane of all flights in the Path
+			if($totalTicketsLeft > $thisArrayOfPaths[$i][$j]->getTotalSeatsOnPlane()) {
+				$totalTicketsLeft = $thisArrayOfPaths[$i][$j]->getTotalSeatsOnPlane();
+			}
 			$j++;
 		} while(empty($thisArrayOfPaths[$i][$j + 2]) === false);
 
@@ -279,11 +257,10 @@ try {
 
 	// get outbound results
 	$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
-														$userFlyDateStart1, "OutboundPath");
+														$userFlyDateStart1, "priceWithOutboundPath");
 
 	// set up modular string pieces for building output echo
-	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php'
- method='POST'>
+	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php' method='POST'>
 									<table class='table table-striped table-responsive table-hover'>\n
 										<thead>";
 	$tableStringMid = "</table><table class='table table-striped table-responsive table-hover'>\n
@@ -305,7 +282,7 @@ try {
 
 		// execute inbound flight search
 		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
-															$userFlyDateStart2, "ReturnPath");
+															$userFlyDateStart2, "priceWithReturnPath");
 
 		// build and echo output string with return flight
 		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringMid .

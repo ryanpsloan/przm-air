@@ -23,12 +23,10 @@ try {
 		throw(new RuntimeException("Make sure cookies are enabled."));
 	}*/
 
-	//$_SESSION['OutboundPath'] = array();
-	$_SESSION['OutboundPath'] = $_POST["OutboundPath"];
+	$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
 
-	if(!empty($_POST["ReturnPath"])) {
-		//$_SESSION['ReturnPath'] = array();
-		$_SESSION['ReturnPath'] = $_POST["ReturnPath"];
+	if(!empty($_POST ["priceWithReturnPath"])) {
+		$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
 	}
 
 	if(isset($_SESSION['userId'])){
