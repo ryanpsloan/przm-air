@@ -131,7 +131,7 @@ EOF;
 			<form class="navbar-form navbar-left" id="flightSearch" action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
 
-					<div class="btn-group pibtn" data-toggle="buttons">
+					<div class="btn-group btncss" data-toggle="buttons">
 						<label class="btn btn-primary active">
 							<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
 							Round Trip
@@ -143,33 +143,33 @@ EOF;
 					</div>
 
 
-					<p class="pi"><label>From:</label><br/>
+					<p><label>From:</label><br/>
 						<input type="text" class="form-control" id="origin" name="origin"><br/>
 						<em>enter city or airport code</em></p>
 
 
-					<p class="pi"><label>To:</label><br/>
+					<p><label>To:</label><br/>
 						<input type="text" class="form-control" id="destination" name="destination"><br/>
 						<em>enter city or airport code</em></p>
 
-					<p class="pi"><label>Departure Date:</label><br/>
+					<p><label>Departure Date:</label><br/>
 						<input type="text" class="datepicker" id="departDate" name="departDate"></p>
 
 
-					<p class="pi"><label>Return Date:</label><br/>
+					<p><label>Return Date:</label><br/>
 						<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled"></p>
 
-					<p class="pi"><label>Number of Passengers:</label><br/>
+					<p><label>Number of Passengers:</label><br/>
 						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" value = "1"
 							size="5"></p>
 
-					<p class="pi"><label>Minimum Layover: </label><br/>
+					<p><label>Minimum Layover: </label><br/>
 						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30" size="5"><br/>
 						<em>enter number of minutes</em></p>
 
-					<p><button type="submit" class="btn btn-default pi">Search Flights</button></p>
+					<p><button type="submit" class="btn btn-default">Search Flights</button></p>
 					<hr>
-					<p class="pibtn"><label class="btn btn-primary active">
+					<p><label class="btn btn-primary active">
 						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
 						Flexible Dates?
 					</label></p>

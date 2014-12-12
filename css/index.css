@@ -8,10 +8,9 @@
 .form-group p{
 	margin-left: 9em;
 }
-.pibtn{
-	margin-top: 1em;
+.btncss{
+	margin: 1em 0;
 	margin-left: 9.3em;
-	margin-bottom: .8em;
 }
 #search{
 	margin-left: 5em;
@@ -23,10 +22,6 @@
 }
 #searchResults{
 	list-style: none;
-}
-.pi{
-	margin-top: .2em;
-	padding: .5em;
 }
 #accountLinksDiv{
 	margin-left: 5em;
