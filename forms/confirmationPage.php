@@ -81,7 +81,7 @@ EOF;
 			list-style: none;
 		}
 		#ul li{
-			padding: 1.5em;
+			margin-top: 1em;
 			border: 1px solid red;
 		}
 		#paymentDiv{
@@ -194,7 +194,17 @@ HTML;
 			</div>
 
 			<div id="paymentDiv" class="col-lg-8">
-				<div id="paymentInnerDiv" class col-md-6"></div>
+				<div id="transactionDetails" class="col-md-2">
+				<?php
+
+				?>
+				</div>
+				<div id="paymentDetails">
+				<?php
+
+				?>
+				</div>
+				<div id
 			</div>
 		</div>
 	</div>

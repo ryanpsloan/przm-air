@@ -267,16 +267,24 @@ HTML;
 		if(count($staticTravelers) > 5) {
 			echo <<<HTML
 				<script>
-					function toggle(source) {
-						var checkboxes = document.getElementsByClassName('ckbx');
-						for each(checkbox in checkboxes){
-							checkbox.checked = source.checked;
-						}
-					}
+					$(function (){
+						$('#select_all').click(function(event) {
+  								if(this.checked) {
+          							$(':checkbox').each(function() {
+          							this.checked = true;
+      							});
+  								}
+  								else {
+    								$(':checkbox').each(function() {
+          							this.checked = false;
+      							});
+  								}
+						});
+				});
 				</script>
 HTML;
 			echo <<<HTML
-				<div id="selectAll"><input type="checkbox" onClick="toggle(this)" /><span class="nameSpan">
+				<div id="selectAll"><input type="checkbox" id="select_all" /><span class="nameSpan">
 					Select All</span></div>
 
 HTML;
@@ -295,7 +303,7 @@ HTML;
 					$name = ucwords($name);
 					$uID = $traveler->__get("travelerId");
 					echo <<<EOF
-					<div class="travelerSelect ckbx"><input type="checkbox" name="travelerArray[]"
+					<div class="travelerSelect"><input type="checkbox" name="travelerArray[]"
 					value="$uID"><span class="nameSpan">$name</span></div>
 EOF;
 				}
