@@ -61,6 +61,20 @@ $(document).ready(function()
 					required: "Please enter the minimum time you want for any layover between connecting flights."
 				}
 			}
+
+			//submitHandler: function(form) {
+			//	$(form).ajaxSubmit(
+			//		{
+			//			type   : "POST",
+			//			url    : "../php/processors/search_results_processor.php",
+			//			success:
+			//
+			//
+			//				function(ajaxOutput) {
+			//				$("#searchOutputArea").html(ajaxOutput);
+			//			}
+			//		});
+			//}
 		});
 
 

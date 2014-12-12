@@ -141,12 +141,14 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 //		var_dump($thisArrayOfPaths[$i][$indexOfLastFlightInPath]->getArrivalDateTime());
 
 
-		// set up array for flight number then loop through flights
+		// set up arrays for flight number and flightIDs then loop through flights to build
 		$flightNumberArray = array();
+		$flightIdArray = array();
 		$j = 0;
 
 		do {
 			$flightNumberArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightNumber();
+			$flightIdArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightId();
 
 //			echo "110 path " . $i . " and flight " . $j . " flight object and flight number and Array of flight numbers";
 ////				var_dump($thisArrayOfPaths[$i][$j]);
@@ -155,6 +157,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			$j++;
 		} while(empty($thisArrayOfPaths[$i][$j + 2]) === false);
 
+		// turn flight number to string with commas
 		$flightNumber = implode(", ", $flightNumberArray);
 //		echo "120 final flightNumber string";
 //		var_dump($flightNumber);
@@ -230,7 +233,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 			"<td>
 					<div class='btn-group'>
 						<label class='btn btn-primary active'>
-							<input type='radio' name='selectFlight" . $returnOrNo . "' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $i . "'>
+							<input type='radio' name='selectFlight" . $returnOrNo . "' id='selectFlight" . $returnOrNo . $i . "' autocomplete='off' value='" . $flightIdArray . "'>
 						</label>
 					</div>
 			</td>" .
@@ -255,18 +258,18 @@ try {
 
 
 	// clean inputs, adjust dates to needed format for outbound flight
-	$userOrigin = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
-	$userDestination = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
+	$userOrigin1 = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
+	$userDestination1 = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
 
 
 	$userFlyDateStartIncoming1 = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
 		$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-		$userFlyDateStartObj = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
-		$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d H:i:s");
+		$userFlyDateStartObj1 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
+		$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
 
 	// get outbound results
-	$outputTableOutbound = completeSearch($mysqli, $userOrigin, $userDestination,
-														$userFlyDateStart, "A");
+	$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
+														$userFlyDateStart1, "A");
 
 	// set up modular string pieces for building output echo
 	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='php/processors/flight_search_processor.php' method='POST'>
@@ -281,17 +284,17 @@ try {
 		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringEnd;;
 	} else {
 		// otherwise, execute return search flight with same process: clean inputs, adjust dates to needed format for return trip
-		$userOrigin = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-		$userDestination = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
+		$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+		$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
-		$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-			$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-			$userFlyDateStartObj = DateTime::createFromFormat("d-m-Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
-			$userFlyDateStart = $userFlyDateStartObj->format("Y-m-d) H:i:s");
+		$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
+			$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
+			$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+			$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
 
 		// execute inbound flight search
-		$outputTableInbound = completeSearch($mysqli, $userOrigin, $userDestination,
-			$userFlyDateStart, "B");
+		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
+															$userFlyDateStart2, "B");
 
 		// build and echo output string with return flight
 		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringMid .
