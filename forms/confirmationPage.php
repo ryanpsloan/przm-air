@@ -195,12 +195,12 @@ HTML;
 			<div id="paymentDiv" class="col-lg-8">
 				<div id="transactionDetails" class="col-lg-8">
 				<?php
-						for($i = 0; $i < count($travelers); ++$i) {
-							$outbound = $flights[$i]->getOrigin() . "        >        " . $flights[$i]->getDestination() . "
+
+				$outbound = $flights[$i]->getOrigin() . "        >        " . $flights[$i]->getDestination() . "
 							 |    ";
-							$inbound = $flights[$i]->getDestination() . "        >        " . $flights[$i]->getOrigin() . "";
+				$inbound = $flights[$i]->getDestination() . "        >        " . $flights[$i]->getOrigin() . "";
 
-
+						for($i = 0; $i < count($travelers); ++$i) {
 							echo <<<HTML
 						<div class="row ciDiv">
 						<p>$outbound$inbound</p>

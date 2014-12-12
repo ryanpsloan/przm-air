@@ -88,6 +88,7 @@ session_start();
 	<div id="signIn">
 		<p style="text-align: ce"><strong>Sign In</strong></p>
 		<hr>
+		<div id="outputArea"></div>
 		<div id="formDiv">
 
 		<form id="signInForm" action="../php/processors/signInProcessor.php" method="POST">
@@ -100,7 +101,7 @@ session_start();
 			<button type="submit">Sign In</button>
 		</form>
 		</div>
-		<div id="outputArea"></div>
+
 	</div>
 </div>
 

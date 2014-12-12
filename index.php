@@ -66,7 +66,7 @@ EOF;
 	<!-- Latest compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<!--	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
 	<script type="text/javascript" src="js/utility.js"></script>
@@ -167,7 +167,7 @@ EOF;
 						<input type="text" class="form-control" id="minLayover" name="minLayover" value = "30" size="5"><br/>
 						<em>enter number of minutes</em></p>
 
-					<p><button type="submit" class="btn btn-default pi">Submit</button></p>
+					<p><button type="submit" class="btn btn-default pi">Search Flights</button></p>
 					<hr>
 					<p class="pibtn"><label class="btn btn-primary active">
 						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
