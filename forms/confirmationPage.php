@@ -196,17 +196,17 @@ HTML;
 				<div id="transactionDetails" class="col-lg-8">
 				<?php
 
-				$outbound = $flights[$i]->getOrigin() . "        >        " . $flights[$i]->getDestination() . "
+				/*$outbound = $flights[$i]->getOrigin() . "        >        " . $flights[$i]->getDestination() . "
 							 |    ";
 				$inbound = $flights[$i]->getDestination() . "        >        " . $flights[$i]->getOrigin() . "";
 
 						for($i = 0; $i < count($travelers); ++$i) {
-							echo <<<HTML
+							 <<<HTML
 						<div class="row ciDiv">
 						<p>$outbound$inbound</p>
 						</div><hr>
 HTML;
-						}
+						}*/
 				?>
 
 				</div>

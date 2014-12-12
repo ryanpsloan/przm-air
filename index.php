@@ -69,7 +69,11 @@ EOF;
 
 	<script type="text/javascript" src="js/utility.js"></script>
 	<script type="text/javascript" src="js/flight_search.js"></script>
-
+	<script>
+		$(window).load(function(){
+			$(':input','#flightSearch').not(':button, :submit, :reset, :hidden').val('')
+		});
+	</script>
 </head>
 <body>
 <header>
