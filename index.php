@@ -131,7 +131,7 @@ EOF;
 
 						<div class="form-group">
 
-					<div class="btn-group" data-toggle="buttons">
+					<div class="btn-group styleBtn" data-toggle="buttons">
 							<label class="btn btn-primary active">
 								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
 								Round Trip

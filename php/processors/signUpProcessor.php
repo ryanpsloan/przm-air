@@ -69,10 +69,12 @@ try {
 	$headers["MIME-Version"] = "1.0";
 	$headers["Content-Type"] = "text/html; charset=UTF-8";
 
-	// build message
-	$url = "https://bootcamp-coders.cnm.edu/~rsloan/przmair/php/processors/activate.php";
-   $url = "$url?authToken=$authToken&uId=".$newUser->getUserId();
-	$message = <<< EOF
+	$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
+	$url      = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
+	$url      = str_replace($pageName, "activate.php", $url);
+	$url      = "$url?authToken=$authToken&uId=".$newUser->getUserId();
+
+	$message = <<< HTML
 <html>
     <body>
         <h1>Welcome to PRZM Air, Your Access to the Skies</h1>
@@ -81,7 +83,7 @@ try {
          to complete your registration process: <a href="$url">$url</a>.</p>
     </body>
 </html>
-EOF;
+HTML;
 	$output = "<script>
 						$(function() {
 							$(':input').attr('disabled', true);

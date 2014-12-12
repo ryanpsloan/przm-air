@@ -1,6 +1,7 @@
 .form-group{
 	width: 25em;
 	height: 50em;
+	margin-left: 6.5em;
 	background-color: lightblue;
 	margin-top: .5em;
 }
@@ -13,7 +14,7 @@ img {
 	margin-top: 1em;
 	margin-right: 5em;
 }
-.btncss{
+.styleBtn{
 	margin: 1em 0;
 	margin-left: 3.3em;
 }
