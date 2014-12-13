@@ -71,28 +71,44 @@ EOF;
 		.flightData td{
 			padding: .5em;
 		}
+		table.paddedA tr td {
+			padding-left: 10em;
+			padding-top: .6em;
+			padding-bottom: .6em;
+		}
+
+		table.paddedA tr td:first-child {
+			padding-left: 0;
+		}
+		table.paddedB{
+			margin-top: 1em;
+		}
+		table.paddedB tr td {
+			padding-left: 14em;
+			padding-top: .em;
+			padding-bottom: .3em;
+		}
+
+		table.paddedB tr td:first-child {
+			padding-left: 0;
+		}
+
+		#btn{
+			margin: .6em;
+			margin-left: 30em;
+		}
 		#travelerDiv {
+
 			width: 30%;
 			border-radius: 5%;
 			border: 2px solid lightgray;
-		}
-		#ul{
-			list-style: none;
-		}
-		#ul li{
-			margin-top: 1em;
-			padding: .9em 0;
 		}
 		#paymentDiv{
 			border-radius: 5%;
 			border: 2px solid lightgray;
 			margin-left: 1em;
 		}
-		.ciDiv{
-			font-size: 1em;
-			margin-top: 1em;
-			padding: .86em 0;
-		}
+
 
 	</style>
 </head>
@@ -141,8 +157,8 @@ EOF;
 		$origin = $flight->getOrigin();
 		$destination = $flight->getDestination();
 		$duration =  $flight->getDuration()->format("%H:%I");
-		$depTime = $flight->getDepartureDateTime()->format("m/d/Y H:i:s");
-		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y H:i:s");
+		$depTime = $flight->getDepartureDateTime()->format("m/d/Y h:i:s a");
+		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
 
 	echo <<<HTML
 				<div class="displayFlt">
@@ -173,56 +189,52 @@ HTML;
 	<div id='wrapper' class="container">
 		<div class="row">
 			<div class="col-lg-4"><h2 id="travelersHeader">Travelers</h2></div>
-			<div class="col-lg-4"><h2 id="paymentHeader" class="col-lg-8" style="text-align: center">
+			<div class="col-lg-8"><h2 id="paymentHeader" class="col-lg-8">
 			Transaction Details</h2></div>
 		</div>
 		<div class="row">
 			<div id="travelerDiv" class="col-lg-4">
-				<ul id="ul">
+				<table class="paddedA">
 
 HTML;
 				$travelerIds = $_SESSION['travelerIds'];
+				$prices = $_SESSION['prices'];
+				$i = 0;
 				foreach($travelerIds as $tId) {
-					$travelers = Traveler::getTravelerByTravelerId($mysqli, $tId);
-					$name = $travelers->__get("travelerFirstName"). " " . $travelers->__get("travelerLastName");
+					$travelers[] = Traveler::getTravelerByTravelerId($mysqli, $tId);
+					$name = $travelers[$i]->__get("travelerFirstName"). " " . $travelers[$i]->__get("travelerLastName");
 					$name = ucwords($name);
-					echo "<li>$name</li><hr>";
-			}
-			?>
-				</ul>
+					$price = money_format("%n", floatval($prices[0]) + floatval($prices[1]));
+					echo "<tr><td>$name</td><td>$$price</td></tr>";
+					$i++;
+				}
+				?>
+				</table>
 			</div>
 
 			<div id="paymentDiv" class="col-lg-8">
-				<div id="transactionDetails" class="col-lg-8">
 				<?php
+				 $numTravelers = count($travelers);
+				 $newPrice = money_format("%n" ,($numTravelers * $price));
 
-				/*$outbound = $flights[$i]->getOrigin() . "        >        " . $flights[$i]->getDestination() . "
-							 |    ";
-				$inbound = $flights[$i]->getDestination() . "        >        " . $flights[$i]->getOrigin() . "";
-
-						for($i = 0; $i < count($travelers); ++$i) {
-							 <<<HTML
-						<div class="row ciDiv">
-						<p>$outbound$inbound</p>
-						</div><hr>
+				 $salesTax = money_format("%n", (.07 * $newPrice));
+				 $fees = money_format("%n", (.10 * $newPrice));
+				 $totalPrice = money_format("%n", ($newPrice + $salesTax + $fees));
+				 echo <<<HTML
+				 	<form id="confirmForm" action="payment.php" method="post">
+					<table class="paddedB">
+					<tr><td></td><td>Travelers($numTravelers)</td><td>$$newPrice</td></tr>
+					<tr><td></td><td>Sales Tax</td><td>$$salesTax</td></tr>
+					<tr><td></td><td>Fees</td><td>$$fees</td></tr>
+					<tr><td></td><td>Total</td><td>$$totalPrice</td></tr>
+					</table>
+					<hr>
+					<input type="hidden" name="total" value="$totalPrice"/>
+					<button id="btn" class="btn" type="submit">Confirm and Purchase</button>
+					</form>
 HTML;
-						}*/
-				?>
-
-				</div>
-				<div id="paymentDetails" class="col-lg-2">
-					<?php $prices = $_SESSION['prices'];
-						for($i = 0; $i < count($travelers); $i++){
-							$price = floatval($prices[0]) + floatval($prices[1]);
-							echo	<<<HTML
-						<div class="row ciDiv">
-							$$price
-						</div>
-HTML;
-					}
 
 				?>
-				</div>
 
 			</div>
 		</div>

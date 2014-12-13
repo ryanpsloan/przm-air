@@ -9,11 +9,13 @@ require("/etc/apache2/capstone-mysql/przm.php");
 
 session_start();
 
-$flights = $_SESSION['flightObjArray'];
-//subtract tickets/seats from flight objects
-$travelers = $_SESSION['travelerArray'];
-$transactionId = 1; // $_SESSION['transactionId'];
-$price = 300.00; //$flights[0]->getPrice();
+$flights = $_SESSION['flightIds'];
+for($i = 0; $i < count($flights); $i++){
+	$tempFlt = Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($_SESSION['travelerIds'])));
+}
+$travelers = $_SESSION['travelerIds'];
+$transactionId = $_SESSION['transactionId'];
+$totalPrice = $_SESSION['total'];
 $status = "PAID";
 
 //create individual tickets
@@ -28,10 +30,12 @@ for($i = 0; $i < count($travelers); $i++){
 foreach($flights as $flight) {
 
 		for($i = 0; $i < count($tickets); $i++){
-			$ticketFlight = new TicketFlight($flight, $tickets[$i]->getTicketId());
+			$ticketFlight[] = new TicketFlight($flight, $tickets[$i]->getTicketId());
+			$ticketFlight->insert($mysqli);
 		}
 }
 $_SESSION['tickets'] = $tickets;
-header("Location: ../../forms/confirmationPage.php");
+$_SESSION['ticketFlights'] = $ticketFlight;
+header("Location: ../../forms/printTickets.php");
 ?>
 

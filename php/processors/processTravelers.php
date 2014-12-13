@@ -7,6 +7,7 @@ require_once("../../lib/csrf.php");
 
 try {
 
+
 	$savedName  = $_POST["csrfName"];
 	$savedToken = $_POST["csrfToken"];
 

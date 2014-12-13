@@ -12,8 +12,8 @@ require_once("ticketFlight.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 
-$_SESSION['priceWithOutboundPath'] = "300.00,91,67,42";
-$_SESSION['priceWithInboundPath'] = "300.00,864,961,724";
+//$_SESSION['priceWithOutboundPath'] = "300.00,3,91";
+//$_SESSION['priceWithReturnPath'] = "300.00,3,864";
 
 $testEmail       = "przmair@gmail.com";
 $testSalt        = bin2hex(openssl_random_pseudo_bytes(32));

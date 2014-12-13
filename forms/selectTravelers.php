@@ -52,17 +52,18 @@ HTML;
 		$dataArray = explode(",",$path);
 		$prices[] = $dataArray[0];
 		$numTravelers = $dataArray[1];
-		for($i = 1; $i < count($dataArray); $i++) {
+		for($i = 2; $i < count($dataArray); $i++) {
 			$flightIds[] = $dataArray[$i];
 		}
 	}
 	$_SESSION['flightIds'] = $flightIds;
 	$_SESSION['prices'] = $prices;
+	$numTravelers = intval($numTravelers);
 	$_SESSION['numTravelers'] = $numTravelers;
 	for($i =0; $i < count($flightIds); $i++){
 		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
 	}
-
+	var_dump($flights);
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 
 }catch(Exception $e){
@@ -96,12 +97,6 @@ HTML;
 	<script type="text/javascript" src="../js/selectTravelers.js"></script>
 
 	<script>
-		var limit = @Session['numTravelers'];
-		$('input.travelerSelect').on('change', function(evt) {
-			if($(this).siblings(':checked').length >= limit) {
-				this.checked = false;
-			}
-		});
 		$(function() {
 			$( ".datepicker" ).datepicker({
 				changeMonth: true,
@@ -247,8 +242,8 @@ HTML;
 					$origin = $flight->getOrigin();
 					$destination = $flight->getDestination();
 					$duration = $flight->getDuration()->format("%H:%I");
-					$depTime = $flight->getDepartureDateTime()->format('Y-m-d H:i:s');
-					$arrTime = $flight->getArrivalDateTime()->format("Y-m-d H:i:s");
+					$depTime = $flight->getDepartureDateTime()->format('m/d/Y h:i:s a');
+					$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
 
 					echo <<<HTML
 			<div class="displayFlt">
@@ -328,6 +323,8 @@ HTML;
 	<hr>
 		<div id="travelerList">
 			<div id="ckBoxes">
+			<input type="hidden" id="numTravelers" value="<?php echo $numTravelers?>">
+
 
 			<?php
 			$travelerArray = array();
@@ -336,11 +333,28 @@ HTML;
 					$name = $traveler->__get("travelerFirstName") . " " . $traveler->__get("travelerLastName");
 					$name = ucwords($name);
 					$uID = $traveler->__get("travelerId");
-					echo <<<EOF
-					<div class="travelerSelect"><input type="checkbox" name="travelerArray[]"
+					echo <<<HTML
+					<div class="travelerSelect"><input class="chkbox" type="checkbox" name="travelerArray[]"
 					value="$uID"><span class="nameSpan">$name</span></div>
-EOF;
+HTML;
 				}
+				echo <<<HTML
+				<script>
+					jQuery(function(){
+  						var max = $("#numTravelers").val();
+  						var checkboxes = $('input[class="chkbox"]');
+
+						checkboxes.change(function(){
+        					var current = checkboxes.filter(':checked').length;
+        					checkboxes.filter(':not(:checked)').prop('disabled', current >= max);
+    					});
+					});
+
+
+				</script>
+HTML;
+
+
 			}
 			else{
 				echo "<p style='text-align: center'>You have not added any travelers</p>";

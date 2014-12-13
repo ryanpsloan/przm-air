@@ -1,11 +1,12 @@
 <?php
+session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
 include("../../php/class/user.php");
 include("../../php/class/profile.php");
 include('../../lib/csrf.php');
 
 try {
-	session_start();
+
 	$mysqli = MysqliConfiguration::getMysqli();
 	$savedName = $_POST["csrfName"];
 	$savedToken =$_POST["csrfToken"];
@@ -63,7 +64,7 @@ HTML;
 	}else{
 		echo <<<HTML
 			<script>
-			setTimeout(function(){window.location = "../../index.php";}, 2000);
+			setTimeout(function(){window.location = "../index.php";}, 2000);
 			</script>
 HTML;
 

@@ -1,4 +1,7 @@
 <?php
+
+require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("results.php");
 /**
  * TODO: write bloody doc block
  *
@@ -29,8 +32,7 @@ function sortByPrice($firstPath, $secondPath) {
  * @Date: 11/6/14
  * @Time: 10:13 AM
  */
-require_once("/etc/apache2/capstone-mysql/przm.php");
-require_once("results.php");
+
 
 //fixme add in conversions of incoming date formats from datepicker in jQuery to to needed formats, then change back to end back to front end
 
