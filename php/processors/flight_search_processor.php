@@ -13,7 +13,6 @@ require("/etc/apache2/capstone-mysql/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
 
-
 echo <<< EOF
 <!DOCTYPE html>
 <html>
@@ -27,7 +26,34 @@ echo <<< EOF
 <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../js/search_results.js"></script>
 </head>
+	<body>
+
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
+																			  aria-hidden="true"></span> PRZM AIR</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a></a></li> <!-- add links here-->
+
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
 EOF;
 
 
@@ -62,14 +88,14 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		$numberOfPassengersRequested, $minLayover);
 
 	// set up head of table of search results
-	$outputTableHead = "<thead><tr>
-											<th>AVAIL TIX</th>
+	$outputTableHead = "<tr>
+											<th>Remaining<br/>Tickets</th>
+											<th>Flight #</th>
 											<th>Depart</th>
 											<th>Arrive</th>
-											<th>Flight #</th>
 											<th>Stops</th>
-											<th>Travel Time</th>
 											<th>Layover</th>
+											<th>Travel Time</th>
 											<th>Price</th>
 											<th>SELECT</th>
 									</tr></thead>\n";
@@ -129,6 +155,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 		// but first add price to beginning of flightID array for use later in the process of purchasing a ticket
 		$flightIdArray[0] = $totalPriceFloat;
+		$flightIdArray[1] = $numberOfPassengersRequested;
 
 		// and second set up counter
 		$j = 0;
@@ -138,7 +165,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 		do {
 			$flightNumberArray [$j]= $thisArrayOfPaths[$i][$j]->getFlightNumber();
-			$flightIdArray [$j+1]= $thisArrayOfPaths[$i][$j]->getFlightId();
+			$flightIdArray [$j+2]= $thisArrayOfPaths[$i][$j]->getFlightId();
 
 			// use loop to also capture the lowest TotalSeatsOnPlane of all flights in the Path
 			if($totalTicketsLeft > $thisArrayOfPaths[$i][$j]->getTotalSeatsOnPlane()) {
@@ -215,12 +242,12 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 		// build outputs into table rows.  Give each select a different value depending on a) outbound or inbound and b) within either, number for path in loop.
 		$outputTableRows = $outputTableRows . "<tr>" .
 			"<td>" . $totalTicketsLeft . "</td>" .
+			"<td>" . $flightNumber . "</td>" .
 			"<td>" . $departureFlight1 . "</td>" .
 			"<td>" . $arrivalFlightLast . "</td>" .
-			"<td>" . $flightNumber . "</td>" .
 			"<td text-align: center>" . $numberOfStops . "</td>" .
-			"<td>" . $travelTime . "</td>" .
 			"<td>" . $layoverString . "</td>" .
+			"<td>" . $travelTime . "</td>" .
 			"<td>" . $totalPrice . "</td>" .
 			"<td>
 					<div class='btn-group'>
@@ -240,6 +267,45 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 try {
 	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();
+
+
+	// hard code of stub starts here, until we get stub working************
+	require_once("../class/profile.php");
+	if(isset($_SESSION['userId'])) {
+		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+		$userName = <<<EOF
+		<a><span
+			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
+
+EOF;
+		$status = <<< EOF
+			<a href="forms/signOut.php">Sign Out</a>
+
+EOF;
+		$account = <<< EOF
+		<li role="presentation">
+			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
+				aria-expanded="true">
+				Account</a>
+		</li>
+
+
+EOF;
+	}
+	else {
+		$userName = "";
+		$status = <<< EOF
+			<a href="forms/signIn.php">Sign In</a>
+EOF;
+		$account = "";
+	}
+
+	// hard code of stub ends here, until we get stub working************
+
+
+
+
 //	$savedName  = $_POST["csrfName"//];
 //	$savedToken = $_POST["csrfToken"];//
 //
@@ -266,14 +332,14 @@ try {
 	// set up modular string pieces for building output echo
 	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php' method='POST'>
 									<table class='table table-striped table-responsive table-hover'>\n
-										<thead>";
+										<thead><tr><th>";
 	$tableStringMid = "</table><table class='table table-striped table-responsive table-hover'>\n
-								<thead>";
-	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>Submit</button></form>";
+								<thead><tr><th>";
+	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>BOOK NOW!</button></form></body>";
 
 	// if not return trip, build and echo output string with outbound only
 	if ($_POST ["roundTripOrOneWay"] === 0) {
-		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringEnd;;
+		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</tr>" . $outputTableOutbound . $tableStringEnd;;
 	} else {
 		// otherwise, execute return search flight with same process: clean inputs, adjust dates to needed format for return trip
 		$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
@@ -288,9 +354,9 @@ try {
 		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
 															$userFlyDateStart2, "priceWithReturnPath");
 
-		// build and echo output string with return flight
-		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</thead>" . $outputTableOutbound . $tableStringMid .
-				"SELECT RETURN FLIGHT</thead>" . $outputTableInbound . $tableStringEnd;
+		// build and echo output string with outbound and return flight
+		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringMid .
+				"SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
 	}
 
 }catch (Exception $e){

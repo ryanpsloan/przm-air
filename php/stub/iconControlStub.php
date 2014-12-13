@@ -1,4 +1,5 @@
 <?php
+require_once("../class/profile.php");
 if(isset($_SESSION['userId'])) {
 $mysqli = MysqliConfiguration::getMysqli();
 $profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);

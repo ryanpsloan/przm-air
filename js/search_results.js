@@ -24,6 +24,10 @@ $(document).ready(function()
 					required: "Please select return trip."
 				}
 			}
+			
+
+
+
 
 			//submitHandler: function(form) {
 			//	$(form).ajaxSubmit(

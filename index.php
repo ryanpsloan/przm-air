@@ -173,7 +173,7 @@ EOF;
 							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
 						</p>
 
-						<p><label>Number of Passengers:</label><br/>
+						<p><label>Number of Travelers:</label><br/>
 							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
 									 autocomplete="off"></p>
 
@@ -188,7 +188,7 @@ EOF;
 							<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
 								Flexible Dates?
 							</label></p>
-						<div style="text-align: center"><em>select to see grid of cheapest fares in month</em></div>
+						<div style="text-align: left"><em>**still under construction**</em><br/>select to see grid of cheapest fares in month</em></div>
 						<?php /*echo generateInputTags()
 							fixme csrf stuff, needs to be validated in your form processor uncomment when ready
 					      to implement*/?>
