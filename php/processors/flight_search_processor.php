@@ -283,7 +283,7 @@ try {
 			$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
 			$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
 			$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-
+	//fixme check to see why is breaking when a second search is executed
 		// execute inbound flight search
 		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
 															$userFlyDateStart2, "priceWithReturnPath");

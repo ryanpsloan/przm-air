@@ -283,7 +283,7 @@ HTML;
 		<div class="innerBtnDiv">
 				<button id="A" type="submit" name="action" class="btn" value="Remove">Remove Travelers</button>
 				<button id="B" type="button" class="btn" data-toggle="modal" data-target="#myModal">
-							Add Travelers</button>
+							Add New Travelers</button>
 		</div>
 	</div>
 
