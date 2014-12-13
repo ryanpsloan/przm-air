@@ -23,10 +23,7 @@ $(document).ready(function()
 				ReturnPath 	: {
 					required: "Please select return trip."
 				}
-			},
-
-
-
+			}
 
 			//submitHandler: function(form) {
 			//	$(form).ajaxSubmit(

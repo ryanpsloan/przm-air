@@ -51,12 +51,14 @@ HTML;
 	foreach($paths as $path){
 		$dataArray = explode(",",$path);
 		$prices[] = $dataArray[0];
+		$numTravelers = $dataArray[1];
 		for($i = 1; $i < count($dataArray); $i++) {
 			$flightIds[] = $dataArray[$i];
 		}
 	}
 	$_SESSION['flightIds'] = $flightIds;
 	$_SESSION['prices'] = $prices;
+	$_SESSION['numTravelers'] = $numTravelers;
 	for($i =0; $i < count($flightIds); $i++){
 		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
 	}
@@ -94,6 +96,12 @@ HTML;
 	<script type="text/javascript" src="../js/selectTravelers.js"></script>
 
 	<script>
+		var limit = @Session['numTravelers'];
+		$('input.travelerSelect').on('change', function(evt) {
+			if($(this).siblings(':checked').length >= limit) {
+				this.checked = false;
+			}
+		});
 		$(function() {
 			$( ".datepicker" ).datepicker({
 				changeMonth: true,
@@ -238,7 +246,7 @@ HTML;
 					$fltNum = $flight->getFlightNumber();
 					$origin = $flight->getOrigin();
 					$destination = $flight->getDestination();
-					$duration = $flight->getDuration()->format("%H:%i");
+					$duration = $flight->getDuration()->format("%H:%I");
 					$depTime = $flight->getDepartureDateTime()->format('Y-m-d H:i:s');
 					$arrTime = $flight->getArrivalDateTime()->format("Y-m-d H:i:s");
 

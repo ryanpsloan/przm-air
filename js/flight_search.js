@@ -18,9 +18,11 @@ $(document).ready(function()
 				},
 				departDate        : {
 					required: true
+					//date: true
 				},
 				returnDate        : {
-					required: true
+					required: false
+					//date: true
 				},
 				flexDatesBoolean  : {
 					required: false
@@ -38,28 +40,36 @@ $(document).ready(function()
 					required: "Please enter one-way or round trip."
 				},
 				origin 		: {
-					required: "Please enter a origin city."
+					required: "Please enter a three letter airport code."
 				},
 				destination	: {
-					required: "Please enter a destination city."
+					required: "Please enter a three letter airport code."
 				},
 				departDate  : {
 					required: "Please enter a departure date."
 				},
-
-
-				///**fixme this needs to disappear if one-way was selected **/
 				returnDate   : {
-					required : "Please enter a return trip date."
+					required : {
+						depends: function(element){
+							if($('#departDate').val().not('empty')){
+								return "Please enter a return trip date."
+							}
+						}
+					}
 				},
-
-
 				numberOfPassengers : {
 					required: "Please enter the number of passengers flying together on this trip."
 				},
 				minLayover : {
 					required: "Please enter the minimum time you want for any layover between connecting flights."
 				}
+			},
+
+			submitHandler: function(form) {
+				// some other code
+				// maybe disabling submit button
+				// then:
+				$(form).submit();
 			}
 
 			//submitHandler: function(form) {

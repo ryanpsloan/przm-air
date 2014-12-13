@@ -52,6 +52,12 @@ EOF;
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods
+	.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.min
+	.js"></script>
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
@@ -69,11 +75,11 @@ EOF;
 
 	<script type="text/javascript" src="js/utility.js"></script>
 	<script type="text/javascript" src="js/flight_search.js"></script>
-	<!--<script>
+	<script>
 		$(window).load(function(){
-			$(':input','#flightSearch').not(':button, :submit, :reset, :hidden').val('')
+			$(':input','#flightSearch').not('.form-control,:button, :submit, :reset, :hidden').val('')
 		});
-	</script>-->
+	</script>
 </head>
 <body>
 <header>
@@ -148,32 +154,32 @@ EOF;
 
 
 						<p><label>From:</label><br/>
-							<input type="text" class="form-control" id="origin" name="origin"><br/>
+							<input type="text" class="form-control" id="origin" name="origin" autocomplete="off"><br/>
 							<em>enter city or airport code</em></p>
 
 
 						<p><label>To:</label><br/>
-							<input type="text" class="form-control" id="destination" name="destination"><br/>
+							<input type="text" class="form-control" id="destination" name="destination" autocomplete="off"><br/>
 							<em>enter city or airport code</em></p>
 
 						<p>
 							<label>Departure Date:</label><br/>
-							<input type="text" class="datepicker" id="departDate" name="departDate">
+							<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
 
 						</p>
 
-
 						<p>
 							<label>Return Date:</label><br/>
-							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled">
+							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
 						</p>
 
 						<p><label>Number of Passengers:</label><br/>
 							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
-							></p>
+									 autocomplete="off"></p>
 
 						<p><label>Minimum Layover: </label><br/>
-							<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" ><br/>
+							<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" autocomplete="off"
+								><br/>
 							<em>enter number of minutes</em></p>
 
 						<p><button type="submit" class="btn btn-default">Search Flights</button></p>

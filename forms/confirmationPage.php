@@ -140,7 +140,7 @@ EOF;
 		$fltNum = $flight->getFlightNumber();
 		$origin = $flight->getOrigin();
 		$destination = $flight->getDestination();
-		$duration =  $flight->getDuration()->format("%H:%i");
+		$duration =  $flight->getDuration()->format("%H:%I");
 		$depTime = $flight->getDepartureDateTime()->format("m/d/Y H:i:s");
 		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y H:i:s");
 
