@@ -23,16 +23,21 @@ try {
 		throw(new RuntimeException("Make sure cookies are enabled."));
 	}*/
 
-	$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
-
-	if(!empty($_POST ["priceWithReturnPath"])) {
-		$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
-	}
-
 	if(isset($_SESSION['userId'])){
+		$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
+
+		if(!empty($_POST ["priceWithReturnPath"])) {
+			$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
+		}
 		header("Location: ../../forms/selectTravelers.php");
 	}
 	else{
+		echo <<<HTML
+		<script>
+		alert("You need to sign in to book a flight");
+		</script>
+HTML;
+
 		header('Location: ../../forms/signIn.php');
 	}
 
