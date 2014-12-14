@@ -18,7 +18,7 @@ try {
 
 EOF;
 		$status = <<< EOF
-			<a href="forms/signOut.php">Sign Out</a>
+			<a href="php/processors/signOut.php">Sign Out</a>
 
 EOF;
 		$account = <<< EOF
@@ -102,7 +102,7 @@ EOF;
 				<ul class="nav navbar-nav">
 					<li></li>
 					<li><a href="#"></a></li>
-					<li><a href="#"></a></li>
+					<li><a href="#">About</a></li>
 					<li></li>
 					<li></li>
 					<li></li>
