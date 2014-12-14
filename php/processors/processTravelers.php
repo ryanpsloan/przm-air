@@ -90,10 +90,6 @@ HTML;
 				Your travelers have been successfully edited</div>";
 		}
 	}
-	elseif($_POST['action'] === "Book"){
-		header("Location: ../../forms/confirmationPage.php");
-
-	}
 
 }catch(Exception $e){
 	$_SESSION[$savedName] = $savedToken;

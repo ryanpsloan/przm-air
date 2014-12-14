@@ -53,10 +53,17 @@ $newUser->setAuthenticationToken($authToken);
 $newUser->update($mysqli);
 $_SESSION['userId'] = $newUser->getUserId();
 
-echo "<div class='alert alert-success' role='alert'> Your account has been authenticated. You are now signed in
+echo "<div class='alert alert-success' role='alert'>
+Your account has been authenticated. You are now signed in
 </div>";
-sleep(3000);
-header("Location: ../index.php");
+if(isset($_SESSION['priceWithOutboundPath'])) {
+	sleep(1000);
+	header("Location: ../forms/selectTravelers.php");
+}
+else{
+	sleep(1000);
+	header("Location: ../index.php");
+}
 }catch(Exception $e){
 echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
