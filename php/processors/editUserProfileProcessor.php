@@ -8,55 +8,71 @@ include("../../lib/csrf.php");
 try {
 	session_start();
 	$savedName = $_POST["csrfName"];
-	$savedToken =$_POST["csrfToken"];
+	$savedToken = $_POST["csrfToken"];
 
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
 	}
 	$mysqli = MysqliConfiguration::getMysqli();
-	$user = User::getUserByUserId($mysqli, $_SESSION['userId']);
-	$profile = Profile::getProfileByUserId($mysqli, $user->getUserId());
-	$profileId = $profile->__get("profileId");
-	$firstName = $profile->__get("userFirstName");
-	$lastName = $profile->__get("userLastName");
+	if($_POST['action'] === "Change") {
 
-	$query = "SELECT travelerId FROM traveler WHERE profileId = ? AND travelerFirstName = ? AND
+		$user = User::getUserByUserId($mysqli, $_SESSION['userId']);
+		$profile = Profile::getProfileByUserId($mysqli, $user->getUserId());
+		$profileId = $profile->__get("profileId");
+		$firstName = $profile->__get("userFirstName");
+		$lastName = $profile->__get("userLastName");
+
+		$query = "SELECT travelerId FROM traveler WHERE profileId = ? AND travelerFirstName = ? AND
 					travelerLastName = ?";
-	$statement = $mysqli->prepare($query);
-	$statement->bind_param("iss", $profileId, $firstName, $lastName);
-	$statement->execute();
-	$result = $statement->get_result();
-	$row = $result->fetch_assoc();
-	$travelerId = $row['travelerId'];
+		$statement = $mysqli->prepare($query);
+		$statement->bind_param("iss", $profileId, $firstName, $lastName);
+		$statement->execute();
+		$result = $statement->get_result();
+		$row = $result->fetch_assoc();
+		$travelerId = $row['travelerId'];
 
-	$traveler = Traveler::getTravelerByTravelerId($mysqli, $travelerId);
+		$traveler = Traveler::getTravelerByTravelerId($mysqli, $travelerId);
 
-	$profile->setFirstName($newFirstName = filter_input(INPUT_POST, "first", FILTER_SANITIZE_STRING));
-	$traveler->setFirstName($newFirstName);
-	$newMiddleName = filter_input(INPUT_POST, "middle", FILTER_SANITIZE_STRING);
-	if($newMiddleName !== "" || $newMiddleName !== " " || $newMiddleName !== null) {
-		$profile->setMiddleName($newMiddleName);
-		$traveler->setMiddleName($newMiddleName);
-	}
-	$profile->setLastName($newLastName = filter_input(INPUT_POST, "last", FILTER_SANITIZE_STRING));
-	$traveler->setLastName($newLastName);
-	$newDOB = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
-	$newDOB = DateTime::createFromFormat("m/d/Y", $newDOB);
-	$profile->setDateOfBirth($newDOB->format("Y-m-d H:i:s"));
-	$traveler->setDateOfBirth($newDOB->format("Y-m-d H:i:s"));
-	$user->setEmail($newEmail = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL));
+		$profile->setFirstName($newFirstName = filter_input(INPUT_POST, "first", FILTER_SANITIZE_STRING));
+		$traveler->setFirstName($newFirstName);
+		$newMiddleName = filter_input(INPUT_POST, "middle", FILTER_SANITIZE_STRING);
+		if($newMiddleName !== "" || $newMiddleName !== " " || $newMiddleName !== null) {
+			$profile->setMiddleName($newMiddleName);
+			$traveler->setMiddleName($newMiddleName);
+		}
+		$profile->setLastName($newLastName = filter_input(INPUT_POST, "last", FILTER_SANITIZE_STRING));
+		$traveler->setLastName($newLastName);
+		$newDOB = filter_input(INPUT_POST, "dob", FILTER_SANITIZE_STRING);
+		$newDOB = DateTime::createFromFormat("m/d/Y", $newDOB);
+		$profile->setDateOfBirth($newDOB->format("Y-m-d H:i:s"));
+		$traveler->setDateOfBirth($newDOB->format("Y-m-d H:i:s"));
+		$user->setEmail($newEmail = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL));
 
-	$user->update($mysqli);
-	$profile->update($mysqli);
-	$traveler->update($mysqli);
+		$user->update($mysqli);
+		$profile->update($mysqli);
+		$traveler->update($mysqli);
 
-	echo "<div class='alert alert-success' role='alert'>
+		echo "<div class='alert alert-success' role='alert'>
   			Your profile has been updated with your changes</div>
 			<script>
 						$(document).ready(function() {
 							$(':input').attr('disabled', true);
 						});
 			</script>";
+	}
+	elseif ($_POST['action'] === "Delete Your Profile"){
+
+		$user = User::getUserByUserId($mysqli, $_SESSION['userId']);
+		$profile = Profile::getProfileByUserId($mysqli, $user->getUserId());
+		$travelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
+		for($i = 0; $i < count($travelers); $i++){
+			$travelers[$i]->delete($mysqli);
+		}
+		$profile->delete($mysqli);
+		$user->delete($mysqli);
+
+		echo "<div class='alert alert-success' role='alert'>Your profile was successfully deleted</div>";
+	}
 }catch (Exception $e){
 	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>"

@@ -90,7 +90,7 @@ HTML;
 	<style>
 		#formDiv{
 			position: absolute;
-			height: 43em;
+			height: 50em;
 			width: 50em;
 			top: 10%;
 			left: 20%;
@@ -105,6 +105,14 @@ HTML;
 		}
 		#pass{
 			margin-left: 18em;
+		}
+		.red{
+			background-color: red;
+			text-align: center;
+			height: 4.5em;
+		}
+		.red input{
+			margin: .5em 0 0 0;
 		}
 	</style>
 </head>
@@ -142,6 +150,7 @@ HTML;
 		<fieldset>
 			<legend>Profile</legend>
 			<div id="container">
+				<div id="outputArea"></div>
 				<p><label>First Name</label></br>
 					<input type="text" id="first" name="first" value="<?php echo $firstName ?>"></p>
 				<p><label>Middle Name</label></br>
@@ -153,7 +162,7 @@ HTML;
 				<p><label>Email</label></br>
 					<input type="email" id="email" name="email" value="<?php echo $email ?>"></p>
 				<?php echo generateInputTags(); ?>
-				<button type="submit">Submit Changes</button>
+				<button class="btn" type="submit" name="action" value="Change">Submit Changes</button>
 			</div>
 		</fieldset>
 		<br>
@@ -161,8 +170,13 @@ HTML;
 			<legend>Account</legend>
 			<p id="pass"><a href="changePass.php">Change Your Password</a></p>
 		</fieldset>
+		<fieldset>
+			<legend>Danger</legend>
+			<p class="red"><input class="btn" type="submit" name="action" value="Delete Your Profile"></p>
+		</fieldset>
 	</form>
-	<div id="outputArea"></div>
+
+
 </div>
 
 </body>
