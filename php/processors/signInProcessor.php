@@ -57,7 +57,7 @@ try {
 	if(isset($_SESSION['priceWithOutboundPath'])) {
 			echo <<<HTML
 				<script>
-					setTimeout(function(){window.location = "../../forms/selectTravelers.php";}, 2000);
+					setTimeout(function(){window.location = "../forms/selectTravelers.php";}, 2000);
 				</script>
 HTML;
 

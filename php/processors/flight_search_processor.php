@@ -41,7 +41,21 @@ echo <<< EOF
 	<title>PRZM AIR</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 <link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods
+	.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.min
+	.js"></script>
+
+
+
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="../../js/search_results.js"></script>
 <header>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
@@ -311,10 +325,10 @@ try {
 
 	// set up modular string pieces for building output echo
 	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php' method='POST'>
-									<table class='table table-striped table-responsive table-hover'>\n
-										<thead><tr><th>";
-	$tableStringMid = "</table><table class='table table-striped table-responsive table-hover'>\n
-								<thead><tr><th>";
+									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+										<thead><tr><th colspan='9'>";
+	$tableStringMid = "</table><table id='returnSelection' class='table table-striped table-responsive table-hover'>\n
+								<thead><tr><th colspan='9'>";
 	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>BOOK NOW!</button></form></body>";
 
 	// if not return trip, build and echo output string with outbound only

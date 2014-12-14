@@ -8,24 +8,28 @@ $(document).ready(function()
 
 			rules: {
 
-				OutboundPath 	: {
+				OutboundPath: {
 					required: true
 				},
-				ReturnPath 		: {
+				ReturnPath  : {
 					required: true
 				}
 			},
 
 			messages: {
-				OutboundPath 	: {
+				OutboundPath: {
 					required: "Please select outbound trip."
 				},
-				ReturnPath 	: {
+				ReturnPath  : {
 					required: "Please select return trip."
 				}
 			}
-			
+		});
 
+
+
+	$('#outboundSelection').dataTable();
+	$('#returnSelection').dataTable();
 
 
 
@@ -42,7 +46,4 @@ $(document).ready(function()
 			//			}
 			//		});
 			//}
-
-
-		});
 });
