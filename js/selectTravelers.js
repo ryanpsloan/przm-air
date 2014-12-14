@@ -40,7 +40,7 @@ $(document).ready(function()
 						type   : "POST",
 						url    : "../php/processors/processTravelers.php",
 						success: function(ajaxOutput) {
-							$("#travelerContainer").html(ajaxOutput);
+							$("#travelerList").html(ajaxOutput);
 						}
 					});
 			}
