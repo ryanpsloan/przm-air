@@ -1,12 +1,14 @@
 <?php
+try{
+	session_start();
+
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/class/profile.php");
 require("../php/class/traveler.php");
 require("../php/class/flight.php");
 require('../lib/csrf.php');
 
-try{
-	session_start();
+
 
 	if(isset($_SESSION['userId'])) {
 		$mysqli = MysqliConfiguration::getMysqli();

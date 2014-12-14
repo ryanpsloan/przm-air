@@ -771,10 +771,11 @@ class Flight {
 		}
 
 		$changeBy = intval($changeBy);
+var_dump($flightId);
 
 		// first, get the total seats left on this flightId
 		// create query template for SELECT
-		$querySelect = "SELECT totalSeatsOnPlane FROM flight WHERE $flightId = ?";
+		$querySelect = "SELECT totalSeatsOnPlane FROM flight WHERE flightId = ?";
 		$statement = $mysqli->prepare($querySelect);
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
@@ -782,6 +783,8 @@ class Flight {
 
 		// bind the flightId to the place holder in the template
 		$wasClean = $statement->bind_param("i", $flightId);
+		var_dump($wasClean);
+
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));
 		}
@@ -806,21 +809,20 @@ class Flight {
 		if($row1 !== null) {
 			try {
 				$currentSeatsAvailable = $row1["totalSeatsOnPlane"];
-
-				// fixme: moved this bloc inside the try/catch
-				// next, check that there's enough seats left to execute the $changeBy calc
-				if ($currentSeatsAvailable + $changeBy>=0 && $currentSeatsAvailable + $changeBy <= self::$totalSeatsConstant) {
-					$totalSeatsOnPlane = $currentSeatsAvailable + $changeBy;
-				} else {
-					throw (new RangeException("There are not enough seats on this flight to increment or decrement by $changeBy
-												seats."));
-				} // fixme end
-
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to integer", 0, $exception));
 			}
 		}
+		// fixme: move this bloc inside the try/catch???
+		// next, check that there's enough seats left to execute the $changeBy calc
+		if ($currentSeatsAvailable + $changeBy>=0 && $currentSeatsAvailable + $changeBy <= self::$totalSeatsConstant) {
+			$totalSeatsOnPlane = $currentSeatsAvailable + $changeBy;
+		} else {
+			throw (new RangeException("There are $currentSeatsAvailable seats left on this flight.  There are not enough seats on this flight with ID $flightId to increment or decrement by $changeBy
+											seats."));
+		} // fixme end
+
 
 
 

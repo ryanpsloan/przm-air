@@ -8,12 +8,15 @@
  *
  * Stores search selection(s) in session.  If user is signed in, sends user selection on search results page to the traveler page.  Else sends user to sign in page first.
  */
-require_once("/etc/apache2/capstone-mysql/przm.php");
-require("../../lib/csrf.php");
-
-
 try {
 	session_start();
+
+	require_once("/etc/apache2/capstone-mysql/przm.php");
+	require("../../lib/csrf.php");
+	require("../class/flight.php");
+
+
+
 	$mysqli = MysqliConfiguration::getMysqli();
 	//$savedName  = $_POST["csrfName"];
 	//$savedToken = $_POST["csrfToken"];
@@ -29,7 +32,7 @@ try {
 	$outboundArray = explode(",", $_POST["priceWithOutboundPath"]);
 	$outboundChangeBy = -$outboundArray[1];
 
-	for ($i=2; empty($outboundArray) === false; $i++){
+	for ($i=2; empty($outboundArray[$i]) === false; $i++){
 		$flightId = $outboundArray[$i];
 		Flight::changeNumberOfSeats($mysqli, $flightId, $outboundChangeBy);
 	}
@@ -41,8 +44,8 @@ try {
 		$returnArray = explode(",", $_POST["priceWithReturnPath"]);
 		$returnChangeBy = -$returnArray[1];
 
-		for ($i=2; empty($returnArray) === false; $i++){
-			$flightId = $returnArray[$i];
+		for ($j=2; empty($returnArray[$j]) === false; $j++){
+			$flightId = $returnArray[$j];
 			Flight::changeNumberOfSeats($mysqli, $flightId, $returnChangeBy);
 		}
 	}

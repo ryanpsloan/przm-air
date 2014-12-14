@@ -9,11 +9,10 @@
  * this processor takes search inputs from user, executes an outbound search and, if specified, a return trip search,
  * and displays results to the user in table form.
  */
-
+session_start();
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
-session_start();
 $mysqli = MysqliConfiguration::getMysqli();
 
 
@@ -305,11 +304,6 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 
 try {
-
-	// hard code of stub ends here, until we get stub working************
-
-
-
 
 //	$savedName  = $_POST["csrfName"//];
 //	$savedToken = $_POST["csrfToken"];//
