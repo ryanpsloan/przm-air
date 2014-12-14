@@ -32,7 +32,7 @@ HTML;
 
 	$query = "SELECT email FROM user WHERE userId = ?";
 	$statement = $mysqli->prepare($query);
-	$statement->bind_param("i", $profileObj->__get('userId'));
+	$statement->bind_param("i", $profile->__get('userId'));
 	$statement->execute();
 	$results = $statement->get_result();
 	$row = $results->fetch_assoc();
@@ -41,7 +41,7 @@ HTML;
 
 	$query = "SELECT userFirstName, userMiddleName, userLastName, dateOfBirth FROM profile WHERE profileId = ?";
 	$statement = $mysqli->prepare($query);
-	$statement->bind_param("i", $profileObj->__get("profileId"));
+	$statement->bind_param("i", $profile->__get("profileId"));
 	$statement->execute();
 	$results = $statement->get_result();
 	$row = $results->fetch_assoc();

@@ -16,7 +16,20 @@ try {
 	$mysqli = MysqliConfiguration::getMysqli();
 	$user = User::getUserByUserId($mysqli, $_SESSION['userId']);
 	$profile = Profile::getProfileByUserId($mysqli, $user->getUserId());
-	$traveler = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
+	$profileId = $profile->__get("profileId");
+	$firstName = $profile->__get("userFirstName");
+	$lastName = $profile->__get("userLastName");
+
+	$query = "SELECT travelerId FROM traveler WHERE profileId = ? AND travelerFirstName = ? AND
+					travelerLastName = ?";
+	$statement = $mysqli->prepare($query);
+	$statement->bind_param("iss", $profileId, $firstName, $lastName);
+	$statement->execute();
+	$result = $statement->get_result();
+	$row = $result->fetch_assoc();
+	$travelerId = $row['travelerId'];
+
+	$traveler = Traveler::getTravelerByTravelerId($mysqli, $travelerId);
 
 	$profile->setFirstName($newFirstName = filter_input(INPUT_POST, "first", FILTER_SANITIZE_STRING));
 	$traveler->setFirstName($newFirstName);
@@ -47,6 +60,6 @@ try {
 }catch (Exception $e){
 	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>"
-  			.$e->getMessage."</div>";
+  			.$e->getMessage()."</div>";
 }
 ?>

@@ -200,10 +200,14 @@ EOF;
 
 	<div role="tabpanel" class="tab-pane fade" id="checkIn"
 			  aria-labelledby="checkIn-tab">
-			<li><p><a href="">
+			<div id="checkInLinksDiv">
+				<ul id="checkInLinksList">
+					<li><p><a href="#">
 						<span class="glyphicon glyphicon-plus"></span>Check Flight Status</a></p></li>
-			<li><p class="pi c"><a href="">
+					<li><p><a href="#">
 						<span class="glyphicon glyphicon-plus"></span>Check In</a></p></li>
+				</ul>
+			</div>
 		</div>
 		<div role="tabpanel" class="tab-pane fade" id="account"
 			  aria-labelledby="account-tab">
@@ -211,9 +215,9 @@ EOF;
 				<ul id="accountLinksList">
 					<li><p><a href="forms/editUserProfile.php">
 						<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
-					<li><p><a href="">
+					<li><p><a href="forms/editTravelers.php">
 								<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
-					<li><p><a href="forms/selectTravelers.php">
+					<li><p><a href="">
 								<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
 					<li><p><a href="">
 								<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>

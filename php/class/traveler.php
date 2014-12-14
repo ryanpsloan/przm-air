@@ -388,7 +388,7 @@ class Traveler{
 
 		// first, ensure the profileId is an integer
 		if(filter_var($travelerId, FILTER_VALIDATE_INT) === false) {
-			throw(new UnexpectedValueException("profile id $travelerId is not numeric"));
+			throw(new UnexpectedValueException("traveler id $travelerId is not numeric"));
 		}
 
 		// second, convert the user id to an integer and enforce it's positive

@@ -22,25 +22,38 @@ img {
 	margin-left: 5em;
 	margin-top: .4em;
 }
-#flightSearch{
-	/*style flightSearch Here*/
 
-}
 #searchResults{
 	list-style: none;
 }
 #accountLinksDiv{
 	margin-left: 5em;
-	margin-top: 2em;
-	border: 1px solid lightblue;
-	height: 20em;
-	width: 30em;
+	height: 60em;
+	width: 50em;
 	padding: 2em;
-}
-.c{
-	font-size: 1.5em;
 }
 
 #accountLinksList{
 	list-style: none;
+	padding: 2em;
+	font-size: 2em;
+}
+#accountLinksList li{
+	padding: .3em;
+}
+#checkInLinksDiv{
+	margin-left: 5em;
+	height: 30em;
+	width: 50em;
+	padding: 2em;
+}
+
+#checkInLinksList{
+	list-style: none;
+	font-size: 2em;
+	padding: 2em;
+}
+
+#checkInLinksList li{
+	padding: .3em;
 }

@@ -197,6 +197,7 @@ HTML;
 		#selectAll{
 			margin-left: 5.7em;
 		}
+
 	</style>
 </head>
 <body>
@@ -286,12 +287,14 @@ HTML;
 		<div class="innerBtnDiv">
 				<button id="A" type="submit" name="action" class="btn" value="Remove">Remove Travelers</button>
 				<button id="B" type="button" class="btn" data-toggle="modal" data-target="#myModal">
-							Add New Travelers</button>
+				Add New Travelers</button>
+
 		</div>
 	</div>
 
 	<div id="travelerContainer">
 	<h3 style="text-align: center"><span style="color: lightgrey">Travelers</span></h3>
+
 		<?php
 		if(count($staticTravelers) > 5) {
 			echo <<<HTML
@@ -364,7 +367,8 @@ HTML;
 			</div>
 		</div>
 		<hr>
-
+		<p style="background-color: lightgrey; text-align: center"><a class="btn" href="editTravelers.php">Edit
+				Travelers</a></p>
 	</div>
 
 	<div id="addTDiv"">
