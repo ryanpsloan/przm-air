@@ -25,13 +25,7 @@ EOF;
 		$status = <<< EOF
 <a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
-		$account = <<< EOF
-<li role="presentation">
-	<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
-		aria-expanded="true">
-		Account</a>
-</li>
-EOF;
+
 	}
 }catch(Exception $e){
 	//$_SESSION[$savedName] = $savedToken;

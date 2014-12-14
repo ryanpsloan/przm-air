@@ -32,6 +32,10 @@ EOF;
 EOF;
 
 }
+else{
+	$userName = "";
+	$status = "";
+}
 
 echo <<< EOF
 <!DOCTYPE html>

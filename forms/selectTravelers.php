@@ -18,13 +18,7 @@ EOF;
 		$status = <<< EOF
 			<a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
-		$account = <<< EOF
-		<li role="presentation">
-			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
-				aria-expanded="true">
-				Account</a>
-		</li>
-EOF;
+
 	}
 
 	if(isset($_SESSION['travelerIds'])){
@@ -134,13 +128,22 @@ HTML;
 		.buttonDiv{
 			margin-bottom: 2em;
 			height: 4em;
-			width: 36em;
-			border-radius: 15%;
+			width: 35em;
 			border: 1px solid lightgrey;
 		}
 		.innerBtnDiv{
 			margin-left: 3.7em;
-			margin-top: .4em;
+			margin-top: .7em;
+		}
+		.confirmButtonDiv{
+			margin-left: 11em;
+			margin-bottom: 2em;
+			height: 4em;
+			width: 15em;
+			border: 1px solid lightgrey;
+		}
+		.innerCfrmBtnDiv{
+			margin-top: .7em;
 		}
 		#A{
 			margin-left: 3em;
@@ -164,7 +167,7 @@ HTML;
 			font-size: 1.2em;
 			padding: .5em;
 			background-color: white;
-			border-radius: 4%;
+
 		}
 		.nameSpan{
 			margin-left: .4em;
@@ -179,13 +182,12 @@ HTML;
 			margin-left: 4.2em;
 		}
 		#confirmBtn{
-			margin-left: 8.2em;
+			margin-top: .5em;
+			margin-left: 2.5em;
 		}
 		.flightData td{
 			padding: .5em;
-		}
-		.si{
-			margin-top: 7em;
+			background-color: lightblue;
 		}
 		#selectAll{
 			margin-left: 5.7em;
@@ -226,8 +228,8 @@ HTML;
 	</header>
 	<!-- Display Flights -->
 	<section>
-		<div class="jumbotron">
-			<h3 style="text-align: center">Your Flight Details</h3>
+
+			<h3 style="text-align: center">Outbound Flight Details</h3>
 			<div class="flightContainer">
 				<?php
 					foreach ($flights as $flight){
@@ -238,7 +240,12 @@ HTML;
 					$duration = $flight->getDuration()->format("%H:%I");
 					$depTime = $flight->getDepartureDateTime()->format('m/d/Y h:i:s a');
 					$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
+					if($outboundFlightCount-- === 0){
+						echo <<<HTML
+					<hr><h3 style="text-align: center">Inbound Flight Details</h3>
+HTML;
 
+					}
 					echo <<<HTML
 			<div class="displayFlt">
 			<table class="flightData table">
@@ -269,10 +276,12 @@ HTML;
 
 				}
 ?>
+				<hr>
 		</div>
-	</div>
+
 </section>
 <section>
+	<h3 style="text-align: center">Select Travelers</h3>
 <div id="formDiv">
 <form id="selectTravelersForm" action="../php/processors/processTravelers.php" method="post">
 	<?php echo generateInputTags(); ?>
@@ -416,8 +425,8 @@ HTML;
 		</div>
 	</div>
 	</div>
-	<div class="buttonDiv">
-		<div class="innerBtnDiv">
+	<div class="confirmButtonDiv">
+		<div class="innerCfrmBtnDiv">
 			<div id="confirmBtn"><button type="submit" name="action" class="btn" value="Confirm">Confirm
 					Travelers</button></div>
 		</div>
