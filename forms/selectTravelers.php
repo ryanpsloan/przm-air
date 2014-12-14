@@ -16,7 +16,7 @@ try{
 		<a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
 		$status = <<< EOF
-			<a href="signOut.php">Sign Out</a>
+			<a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
 		$account = <<< EOF
 		<li role="presentation">
@@ -114,8 +114,7 @@ HTML;
 			display: inline;
 		}
 		#travelerContainer{
-			border: 2px solid lightgrey;
-			border-radius: 5%;
+			border: 1px solid lightgrey;
 			height: 35em;
 			width: 27em;
 			margin-left: 4.7em;
@@ -123,27 +122,12 @@ HTML;
 			margin-bottom: 2em;
 
 		}
-		#bookFltDiv{
-			border: 2px solid lightgrey;
-			height: 4em;
-			width: 36em;
-			border-radius: 15%;
-			margin-bottom: 1em;
-
-		}
-		#bookFltDiv button{
-			padding: .5em;
-			margin-left: 14em;
-			margin-top: .5em;
-			background-color: lightblue;
-
-		}
 		.buttonDiv{
 			margin-bottom: 2em;
 			height: 4em;
 			width: 36em;
 			border-radius: 15%;
-			border: 2px solid lightgrey;
+			border: 1px solid lightgrey;
 		}
 		.innerBtnDiv{
 			margin-left: 3.7em;
@@ -158,8 +142,8 @@ HTML;
 		#addTravelerDiv{
 			height: 30em;
 			width: 30em;
-			border: 2px solid lightgrey;
-			border-radius: 5%;
+			border: 1px solid lightgrey;
+
 		}
 		#addTInnerDiv input{
 			margin-left: 3.5em;
@@ -367,8 +351,6 @@ HTML;
 			</div>
 		</div>
 		<hr>
-		<p style="background-color: lightgrey; text-align: center"><a class="btn" href="editTravelers.php">Edit
-				Travelers</a></p>
 	</div>
 
 	<div id="addTDiv"">

@@ -14,7 +14,7 @@ try {
 
 EOF;
 		$status = <<< EOF
-			<a href="signOut.php">Sign Out</a>
+			<a href="../php/processors/signOut.php">Sign Out</a>
 
 EOF;
 		$account = <<< EOF

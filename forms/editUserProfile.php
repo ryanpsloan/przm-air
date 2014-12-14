@@ -16,7 +16,7 @@ if(isset($_SESSION['userId'])) {
 
 HTML;
 	$status = <<< HTML
-			<a href="signOut.php">Sign Out</a>
+			<a href="../php/processors/signOut.php">Sign Out</a>
 
 HTML;
 	$account = <<< HTML
@@ -90,11 +90,11 @@ HTML;
 	<style>
 		#formDiv{
 			position: absolute;
-			height: 50em;
+			height: 51em;
 			width: 50em;
 			top: 10%;
 			left: 20%;
-			border: 2px solid lightgrey;
+			border: 1px solid lightgrey;
 			padding: 2em 2em;
 		}
 		legend{
@@ -149,8 +149,9 @@ HTML;
 	<form id="editProfile" action="../php/processors/editUserProfileProcessor.php" method="POST">
 		<fieldset>
 			<legend>Profile</legend>
+			<div id="outputArea"></div>
 			<div id="container">
-				<div id="outputArea"></div>
+
 				<p><label>First Name</label></br>
 					<input type="text" id="first" name="first" value="<?php echo $firstName ?>"></p>
 				<p><label>Middle Name</label></br>

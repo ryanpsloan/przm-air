@@ -1,13 +1,13 @@
 <?php
 session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
-require_once("user.php");
-require_once("profile.php");
-require_once("traveler.php");
-require_once("flight.php");
-require_once("transaction.php");
-require_once("ticket.php");
-require_once("ticketFlight.php");
+require_once("../class/user.php");
+require_once("../class/profile.php");
+require_once("../class/traveler.php");
+require_once("../class/flight.php");
+require_once("../class/transaction.php");
+require_once("../class/ticket.php");
+require_once("../class/ticketFlight.php");
 
 $mysqli = MysqliConfiguration::getMysqli();
 

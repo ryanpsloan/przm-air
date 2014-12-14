@@ -11,7 +11,7 @@ if(isset($_SESSION['userId'])) {
 		<a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
 	$status = <<< EOF
-			<a href="signOut.php">Sign Out</a>
+			<a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
 	$account = <<< EOF
 		<li role="presentation">
@@ -58,13 +58,13 @@ EOF;
 	</script>
 	<style>
 		#travelerDiv{
-			border: 2px solid lightgrey;
+			border: 1px solid lightgrey;
 			height: 50em;
 			width: 30em;
 			position: absolute;
 			top: 10%;
 			left: 30%;
-			border-radius: 5%;
+
 		}
 		#innerDiv{
 			padding: 2em;

@@ -91,7 +91,7 @@ if(isset($_SESSION['userId'])) {
 	</div>
 
 	<div id="signIn">
-		<p style="text-align: ce"><strong>Sign In</strong></p>
+		<p style="text-align: center"><strong>Sign In</strong></p>
 		<hr>
 		<div id="outputArea"></div>
 		<div id="formDiv">

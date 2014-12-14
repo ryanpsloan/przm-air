@@ -13,7 +13,7 @@ if(isset($_SESSION['userId'])) {
 <a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
 	$status = <<< EOF
-<a href="signOut.php">Sign Out</a>
+<a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
 	$account = <<< EOF
 <li role="presentation">

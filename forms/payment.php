@@ -12,7 +12,7 @@ if(isset($_SESSION['userId'])) {
 <a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
 	$status = <<< EOF
-<a href="signOut.php">Sign Out</a>
+<a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
 	$account = <<< EOF
 <li role="presentation">
@@ -47,17 +47,15 @@ $_SESSION['totalPrice'] = $_POST['total'];
 			height: 60em;
 			width: 35em;
 			top: 11%;
-			left: 35%;
+			left: 30%;
 			padding: 2em;
-			border: 2px solid lightgrey;
-			border-radius: 5%;
+			border: 1px solid lightgrey;
 		}
 		#outputArea{
 			margin-top: 1.5em;
 		}
 		#totalDiv{
-			border: 2px solid lightgrey;
-			border-radius: 5%;
+			border: 1px solid lightgrey;
 			height: 15em;
 			width: 15em;
 			position: absolute;

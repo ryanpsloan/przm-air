@@ -71,7 +71,19 @@ try {
 		$profile->delete($mysqli);
 		$user->delete($mysqli);
 
-		echo "<div class='alert alert-success' role='alert'>Your profile was successfully deleted</div>";
+		$_SESSION = array();
+		$params = session_get_cookie_params();
+		setcookie(session_name(), "", 1, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+		session_unset();
+		session_destroy();
+
+		echo <<<HTML
+	<div class='alert alert-success' role='alert'>Your profile was successfully deleted</div>
+	<script>
+		setTimeout(function(){window.location.replace("../../index.php")}, 2000);
+	</script>
+HTML;
+
 	}
 }catch (Exception $e){
 	$_SESSION[$savedName] = $savedToken;

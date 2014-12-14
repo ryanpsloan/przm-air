@@ -23,7 +23,7 @@ try {
 <a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
 		$status = <<< EOF
-<a href="signOut.php">Sign Out</a>
+<a href="../php/processors/signOut.php">Sign Out</a>
 EOF;
 		$account = <<< EOF
 <li role="presentation">
@@ -62,11 +62,11 @@ EOF;
 	<style>
 		.displayFlt{
 			width: 90%;
-			border: 2px solid lightgrey;
+			border: 1px solid lightgrey;
 			margin-top: 1em;
 			margin-left: 4.2em;
 			font-size: 1.2em;
-			border-radius: 5%;
+
 		}
 		.flightData td{
 			padding: .5em;
@@ -98,14 +98,11 @@ EOF;
 			margin-left: 30em;
 		}
 		#travelerDiv {
-
 			width: 30%;
-			border-radius: 5%;
-			border: 2px solid lightgray;
+			border: 1px solid lightgray;
 		}
 		#paymentDiv{
-			border-radius: 5%;
-			border: 2px solid lightgray;
+			border: 1px solid lightgray;
 			margin-left: 1em;
 		}
 

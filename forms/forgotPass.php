@@ -1,6 +1,34 @@
 <?php
-include("../lib/csrf.php");
 session_start();
+require("../php/class/user.php");
+require("../php/class/profile.php");
+include("../lib/csrf.php");
+require("/etc/apache2/capstone-mysql/przm.php");
+
+if(isset($_SESSION['userId'])) {
+	$mysqli = MysqliConfiguration::getMysqli();
+	$profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);
+	$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+	$userName = <<<HTML
+		<a><span
+			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
+
+HTML;
+	$status = <<< HTML
+			<a href="../php/processors/signOut.php">Sign Out</a>
+
+HTML;
+	$account = <<< HTML
+		<li role="presentation">
+			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
+				aria-expanded="true">
+				Account</a>
+		</li>
+
+
+HTML;
+}
+
 ?>
 <!DOCTYPE html>
 <html>
