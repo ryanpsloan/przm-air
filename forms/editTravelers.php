@@ -270,7 +270,10 @@ HTML;
 					</div>
 				</div>
 				<hr>
-
+				<div class="innerBtnDiv">
+						<div id="confirmBtn"><button type="submit" name="action" class="btn" value="Edit">
+								Edit Traveler</button></div>
+				</div>
 			</div>
 
 			<div id="addTDiv"">
@@ -327,12 +330,7 @@ HTML;
 				</div>
 			</div>
 	</div>
-	<div class="buttonDiv">
-		<div class="innerBtnDiv">
-			<div id="confirmBtn"><button type="submit" name="action" class="btn" value="Confirm">Confirm
-					Travelers</button></div>
-		</div>
-	</div>
+
 	</form>
 	</div>
 </section>

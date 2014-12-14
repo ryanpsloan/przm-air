@@ -67,7 +67,7 @@ HTML;
 			}
 		}
 	}
-	elseif($_POST['action'] === "Confirm") {
+	elseif($_POST['action'] === "Edit") {
 		if(!isset($_POST['travelerArray'])){
 			throw(new ErrorException("Please check the travelers for whom you are purchasing this flight"));
 		}
@@ -77,10 +77,6 @@ HTML;
 			echo <<<HTML
 				<div class='alert alert-success si' role='alert' style="text-align: center">
 				Your travelers have been confirmed</div>
-				<script>
-					setTimeout(function(){window.location.href =
-					"../forms/confirmationPage.php";}, 2000)
-				</script>
 
 HTML;
 
