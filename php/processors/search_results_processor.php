@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html>
-<body>
 <?php
 /**
  * Created by PhpStorm.
@@ -26,12 +23,32 @@ try {
 		throw(new RuntimeException("Make sure cookies are enabled."));
 	}*/
 
-	if(isset($_SESSION['userId'])){
-		$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
+	$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
 
-		if(!empty($_POST ["priceWithReturnPath"])) {
-			$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
+	// turn results into array, then grab number of passengers and loop through flight Ids to decrement seats available
+	$outboundArray = explode(",", $_POST["priceWithOutboundPath"]);
+	$outboundChangeBy = -$outboundArray[1];
+
+	for ($i=2; empty($outboundArray) === false; $i++){
+		$flightId = $outboundArray[$i];
+		Flight::changeNumberOfSeats($mysqli, $flightId, $outboundChangeBy);
+	}
+
+	if(!empty($_POST ["priceWithReturnPath"])) {
+		$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
+
+		// turn results into array, then grab number of passengers and loop through flight Ids to decrement seats available
+		$returnArray = explode(",", $_POST["priceWithReturnPath"]);
+		$returnChangeBy = -$returnArray[1];
+
+		for ($i=2; empty($returnArray) === false; $i++){
+			$flightId = $returnArray[$i];
+			Flight::changeNumberOfSeats($mysqli, $flightId, $returnChangeBy);
 		}
+	}
+
+
+	if(isset($_SESSION['userId'])){
 		header("Location: ../../forms/selectTravelers.php");
 	}
 	else{

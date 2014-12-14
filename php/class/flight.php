@@ -807,18 +807,21 @@ class Flight {
 			try {
 				$currentSeatsAvailable = $row1["totalSeatsOnPlane"];
 
+				// fixme: moved this bloc inside the try/catch
+				// next, check that there's enough seats left to execute the $changeBy calc
+				if ($currentSeatsAvailable + $changeBy>=0 && $currentSeatsAvailable + $changeBy <= self::$totalSeatsConstant) {
+					$totalSeatsOnPlane = $currentSeatsAvailable + $changeBy;
+				} else {
+					throw (new RangeException("There are not enough seats on this flight to increment or decrement by $changeBy
+												seats."));
+				} // fixme end
+
 			} catch(Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new mysqli_sql_exception("Unable to convert row to integer", 0, $exception));
 			}
 		}
-		//next, check that there's enough seats left to execute the $changeBy calc
-		if ($currentSeatsAvailable + $changeBy>=0 && $currentSeatsAvailable + $changeBy <= self::$totalSeatsConstant) {
-			$totalSeatsOnPlane = $currentSeatsAvailable + $changeBy;
-		} else {
-			throw (new RangeException("There are not enough seats on this flight to increment or decrement by $changeBy
-												seats."));
-		}
+
 
 
 		// create query template for UPDATE to update flight with new number
