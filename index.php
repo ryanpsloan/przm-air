@@ -196,8 +196,7 @@ EOF;
 				</form>
 				<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
 			</div>
-		</div>
-	</div>
+
 
 	<div role="tabpanel" class="tab-pane fade" id="checkIn"
 			  aria-labelledby="checkIn-tab">

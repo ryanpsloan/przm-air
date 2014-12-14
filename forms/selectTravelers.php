@@ -63,7 +63,7 @@ HTML;
 	for($i =0; $i < count($flightIds); $i++){
 		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
 	}
-	var_dump($flights);
+
 	$staticTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 
 }catch(Exception $e){

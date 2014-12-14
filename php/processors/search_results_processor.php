@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html>
+<body>
 <?php
 /**
  * Created by PhpStorm.
@@ -32,13 +35,8 @@ try {
 		header("Location: ../../forms/selectTravelers.php");
 	}
 	else{
-		echo <<<HTML
-		<script>
-		alert("You need to sign in to book a flight");
-		</script>
-HTML;
-
 		header('Location: ../../forms/signIn.php');
+
 	}
 
 //	__SESSION alert($('input[name="selectFlightA"]:checked').val());

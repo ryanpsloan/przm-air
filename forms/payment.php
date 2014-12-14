@@ -46,7 +46,7 @@ $_SESSION['totalPrice'] = $_POST['total'];
 			position: absolute;
 			height: 60em;
 			width: 35em;
-			top: 20%;
+			top: 11%;
 			left: 35%;
 			padding: 2em;
 			border: 2px solid lightgrey;

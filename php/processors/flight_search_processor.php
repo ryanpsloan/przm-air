@@ -12,6 +12,45 @@
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
+session_start();
+$mysqli = MysqliConfiguration::getMysqli();
+
+
+// hard code of stub starts here, until we get stub working************
+require_once("../class/profile.php");
+if(isset($_SESSION['userId'])) {
+	$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+	$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+	$userName = <<<EOF
+		<a><span
+			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
+
+EOF;
+	$status = <<< EOF
+			<a href="forms/signOut.php">Sign Out</a>
+
+EOF;
+	$account = <<< EOF
+		<li role="presentation">
+			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
+				aria-expanded="true">
+				Account</a>
+		</li>
+
+
+EOF;
+}
+else {
+	$userName = <<<HTML
+<a href="#">Booking a flight requires Sign In</a>
+HTML;
+
+	$status = <<< EOF
+			<a href="../../forms/signIn.php">Sign In</a>
+EOF;
+	$account = "";
+}
+
 
 echo <<< EOF
 <!DOCTYPE html>
@@ -22,14 +61,7 @@ echo <<< EOF
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 <link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../js/search_results.js"></script>
-</head>
-	<body>
-
+<header>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -47,12 +79,19 @@ echo <<< EOF
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a></a></li> <!-- add links here-->
+				<li></li>
+			</ul>
 
+			<ul class="nav navbar-nav navbar-right">
+				<li class="disabled">$userName</li>
+			<li class="active">$status</li>
+			<li><a href="#"></a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->
-</nav>
+	</nav>
+</header>
+
 
 EOF;
 
@@ -265,41 +304,6 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 
 try {
-	session_start();
-	$mysqli = MysqliConfiguration::getMysqli();
-
-
-	// hard code of stub starts here, until we get stub working************
-	require_once("../class/profile.php");
-	if(isset($_SESSION['userId'])) {
-		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
-		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
-		$userName = <<<EOF
-		<a><span
-			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
-
-EOF;
-		$status = <<< EOF
-			<a href="forms/signOut.php">Sign Out</a>
-
-EOF;
-		$account = <<< EOF
-		<li role="presentation">
-			<a href="#account" id="account-tab" role="tab" data-toggle="tab" aria-controls="account"
-				aria-expanded="true">
-				Account</a>
-		</li>
-
-
-EOF;
-	}
-	else {
-		$userName = "";
-		$status = <<< EOF
-			<a href="forms/signIn.php">Sign In</a>
-EOF;
-		$account = "";
-	}
 
 	// hard code of stub ends here, until we get stub working************
 
