@@ -57,6 +57,14 @@ HTML;
 				$oldTraveler->delete($mysqli);
 
 			}
+			echo <<<HTML
+				<script>
+					$(function(){
+						location.reload();
+					});
+				</script>
+HTML;
+
 		}
 		else{
 			if(count(Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"))) > 0) {
@@ -79,7 +87,7 @@ HTML;
 				Your travelers have been confirmed</div>
 				<script>
 					setTimeout(function(){window.location.href =
-					"../forms/confirmationPage.php";}, 2000)
+					"../forms/confirmationPage.php";}, 1000)
 				</script>
 
 HTML;
@@ -97,7 +105,7 @@ HTML;
 	echo <<<HTML
 	<div class='alert alert-danger si' role='alert'>$msg</div>
 	<script>
-	setTimeout(function(){location.reload()}, 5000)
+	setTimeout(function(){location.reload()}, 2000)
 	</script>
 HTML;
 

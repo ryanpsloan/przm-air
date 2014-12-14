@@ -141,14 +141,14 @@ EOF;
 	</nav>
 </header>
 
-<h2 style="text-align: center">Confirm Your Flight Details</h2>
+<h2 style="text-align:center">Outbound Flight Itinerary</h2>
 <?php
 	$flightIds = $_SESSION['flightIds'];
 
 	for($i =0; $i < count($flightIds); $i++){
 		$flights[] = Flight::getFlightByFlightId($mysqli, $flightIds[$i]);
 	}
-
+	$outboundFlightCount = $_SESSION['outboundFlightCount'];
 	foreach($flights as $flight){
 		$fltNum = $flight->getFlightNumber();
 		$origin = $flight->getOrigin();
@@ -156,6 +156,11 @@ EOF;
 		$duration =  $flight->getDuration()->format("%H:%I");
 		$depTime = $flight->getDepartureDateTime()->format("m/d/Y h:i:s a");
 		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
+		if($outboundFlightCount-- === 0) {
+			echo <<<HTML
+		<h2 style="text-align:center">Inbound Flight Itinerary</h2>
+HTML;
+		}
 
 	echo <<<HTML
 				<div class="displayFlt">

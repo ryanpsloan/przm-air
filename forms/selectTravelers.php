@@ -44,16 +44,25 @@ EOF;
 HTML;
 
 	}
+
+	$outboundArray = explode(",",$_SESSION['priceWithOutboundPath']);
+	$outboundFlightCount = 0;
+	for($i = 2; $i < count($outboundArray); $i++){
+		$outboundFlightCount++;
+	}
+	$_SESSION['outboundFlightCount'] = $outboundFlightCount;
 	$paths[] = $_SESSION['priceWithOutboundPath'];
 	$paths[] = $_SESSION['priceWithReturnPath'];
 	$flightIds = array();
 	$prices = array();
+
 	foreach($paths as $path){
 		$dataArray = explode(",",$path);
 		$prices[] = $dataArray[0];
 		$numTravelers = $dataArray[1];
 		for($i = 2; $i < count($dataArray); $i++) {
 			$flightIds[] = $dataArray[$i];
+
 		}
 	}
 	$_SESSION['flightIds'] = $flightIds;
