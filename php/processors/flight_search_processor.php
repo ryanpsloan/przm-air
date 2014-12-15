@@ -325,7 +325,7 @@ try {
 	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php' method='POST'>
 									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
 										<thead><tr><th colspan='9'>";
-	$tableStringMid = "</table><table id='returnSelection' class='table table-striped table-responsive table-hover'>\n
+	$tableStringMid = "</table><table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
 								<thead><tr><th colspan='9'>";
 	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>BOOK NOW!</button></form></body>";
 

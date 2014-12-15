@@ -141,13 +141,11 @@ EOF;
 						<div id="multiple-datasets">
 
 							<p><label>From:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for airport" id="origin" name="origin" autocomplete="off"><br/>
-								<em>enter city or airport code</em></p>
+								<input type="text" class="form-control typeahead" placeholder="search for origin airport" id="origin" name="origin" autocomplete="off"><br/></p>
 
 
 							<p><label>To:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for airport" id="destination" name="destination" autocomplete="off"><br/>
-								<em>enter city or airport code</em></p>
+								<input type="text" class="form-control typeahead" placeholder="search for destination airport" id="destination" name="destination" autocomplete="off"><br/></p>
 
 						</div>
 						<p>
