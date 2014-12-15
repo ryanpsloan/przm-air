@@ -54,6 +54,13 @@ EOF;
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+	<script type="text/javascript">
+		Stripe.setPublishableKey('pk_test_y7K8SRtvByY4GmoKMeQ2qmn2');
+	</script>
+	<script type="text/javascript" src="../js/payment.js"></script>
+
 	<style>
 		.displayFlt{
 			width: 100%;
@@ -220,8 +227,10 @@ HTML;
 				 $salesTax = money_format("%n", (.07 * $newPrice));
 				 $fees = money_format("%n", (.10 * $newPrice));
 				 $totalPrice = money_format("%n", ($newPrice + $salesTax + $fees));
+				 $totalInCents = $totalPrice * 100;
+
 				 echo <<<HTML
-				 	<form id="confirmForm" action="payment.php" method="post">
+				 	<form id="confirmForm"  method="post">
 					<table class="paddedB">
 					<tr><td></td><td>Travelers($numTravelers)</td><td>$$newPrice</td></tr>
 					<tr><td></td><td>Sales Tax</td><td>$$salesTax</td></tr>
@@ -230,7 +239,15 @@ HTML;
 					</table>
 					<hr>
 					<input type="hidden" name="total" value="$totalPrice"/>
-					<button id="btn" class="btn" type="submit">Confirm and Purchase</button>
+					<form action="../php/processors/chargeProcessor.php" method="POST">
+						<script
+							src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+							data-key="pk_test_y7K8SRtvByY4GmoKMeQ2qmn2"
+							data-amount= $totalInCents
+							data-name="PRZM AIR"
+							data-description="Purchase Airfare"
+							data-image="/128x128.png">
+						</script>
 					</form>
 HTML;
 
