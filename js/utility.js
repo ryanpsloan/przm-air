@@ -21,9 +21,15 @@ $(document).ready(function() {
 	});
 
 	$('input:radio[name="roundTripOrOneWay"]').change(function(){
-		if($(this).is(':checked') && $(this).val() == '0'){
-			alert("test");
-		}
+			if($('#oneWay').is(":checked")) {
+				alert("true");
+				$('#returnDateP').hide();
+			}
+			else {
+				alert('false');
+				$('#returnDateP').show();
+			}
+
 	});
 });
 

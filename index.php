@@ -131,11 +131,12 @@ EOF;
 					<div class="form-group">
 						<div class="btn-group styleBtn" data-toggle="buttons">
 							<label class="btn btn-primary active">
-								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
+								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked
+										 value="No">
 								Round Trip
 							</label>
 							<label class="btn btn-primary">
-								<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="0">
+								<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="Yes">
 								One Way
 							</label>
 						</div>
@@ -157,7 +158,7 @@ EOF;
 						</p>
 
 
-						<p>
+						<p id="returnDateP">
 							<label>Return Date:</label><br/>
 							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
 						</p>
