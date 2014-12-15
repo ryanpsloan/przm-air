@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	$(window).load(function(){
-		$(':input','#flightSearch').not('.form-control,:button, :submit, :reset, :hidden').val('')
+		$(':input','#flightSearchForm').not('.form-control,:button, :submit, :reset, :hidden').val('')
 	});
 
 	$(function() {

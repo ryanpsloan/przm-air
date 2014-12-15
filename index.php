@@ -48,24 +48,29 @@ EOF;
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>PRZM AIR</title>
+	<!-- CSS -->
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<link type="text/css" rel="stylesheet" href="css/index.css">
+
+	<!-- JS -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.min.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/typeahead.js"></script>
 	<script type="text/javascript" src="js/utility.js"></script>
 	<script type="text/javascript" src="js/flight_search.js"></script>
-	<!-- Latest compiled and minified CSS -->
-	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<!-- Optional theme -->
-	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-	<link type="text/css" rel="stylesheet" href="css/index.css">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+
+
+
+
 
 </head>
 <body>
@@ -123,7 +128,7 @@ EOF;
 	<div id="myTabContent" class="tab-content">
 
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
-			<form class="navbar-form navbar-left" id="flightSearch"
+			<form class="navbar-form navbar-left" id="flightSearchForm"
 							 action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
 					<div class="btn-group styleBtn" data-toggle="buttons">

@@ -1,7 +1,6 @@
 $(document).ready(function()
 {
-	$("#flightSearch").validate(
-		{
+	$('#flightSearchForm').validate({
 
 			rules: {
 
