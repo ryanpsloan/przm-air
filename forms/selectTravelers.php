@@ -21,23 +21,6 @@ EOF;
 
 	}
 
-	if(isset($_SESSION['travelerIds'])){
-		echo<<<HTML
-		<script>
-			$(function(){
-					var array = @Session['travelerIds'];
-				$(':checkbox').each(function() {
-					for(var i =0; i <; ++i){
-						if(this.val = array[i]){
-							this.checked = true;
-						}
-					}
-      		});
-		   });
-		</script>
-HTML;
-
-	}
 
 	$outboundArray = explode(",",$_SESSION['priceWithOutboundPath']);
 	$outboundFlightCount = 0;
@@ -209,7 +192,7 @@ HTML;
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
+			<a class="navbar-brand" href="../php/processors/clearSession.php"><span class="glyphicon glyphicon-cloud"
 																			  aria-hidden="true"></span> PRZM AIR</a>
 		</div>
 

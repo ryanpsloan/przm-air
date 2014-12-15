@@ -24,7 +24,7 @@ $user = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
 $user->insert($mysqli);
 $userId = $user->getUserId();
 //echo "userId after insert->";
-//var_dump($userId);
+ //var_dump($userId);
 //var_dump($user);
 $_SESSION['userId'] = $userId;
 
@@ -61,6 +61,8 @@ $traveler4->insert($mysqli);
 
 $travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4);
 $_SESSION['travelerArray'] = $travelerArray;
+
+
 header("Location: ../../index.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";

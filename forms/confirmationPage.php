@@ -129,7 +129,7 @@ EOF;
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="../index.php"><span class="glyphicon glyphicon-cloud"
+				<a class="navbar-brand" href="../php/processors/clearSession.php"><span class="glyphicon glyphicon-cloud"
 																				  aria-hidden="true"></span> PRZM AIR</a>
 			</div>
 

@@ -278,7 +278,7 @@ function beginSearch (&$mysqli, $userFlyDateStart1, $userFlyDateStart2)
 
 }
 $hiddenRadio = $_POST['roundTripOrOneWay'];
-var_dump($hiddenRadio);
+
 
 ?>
 
@@ -318,7 +318,7 @@ var_dump($hiddenRadio);
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="../../index.php"><span class="glyphicon glyphicon-cloud"
+			<a class="navbar-brand" href="clearSession.php"><span class="glyphicon glyphicon-cloud"
 																			  aria-hidden="true"></span> PRZM AIR</a>
 		</div>
 
