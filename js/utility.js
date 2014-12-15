@@ -22,11 +22,11 @@ $(document).ready(function() {
 
 	$('input:radio[name="roundTripOrOneWay"]').change(function(){
 			if($('#oneWay').is(":checked")) {
-				alert("true");
+
 				$('#returnDateP').hide();
 			}
 			else {
-				alert('false');
+
 				$('#returnDateP').show();
 			}
 
