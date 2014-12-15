@@ -339,106 +339,42 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 <body>
 <input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio;?>">
 
-<div id="outbound" class="tabContainer" role="tabpanel">
+
+
+	<!--************************************OUTBOUND TABS******************************************-->
+<section class="center">
+	<br/>
+	<h2>SELECT DEPARTURE FLIGHT</h2>
+	<hr>
+
+	<div id="outbound" class="tabContainer" role="tabpanel">
 
 	<!-- Nav tabs -->
-	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">2DB</a></li>
-		<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">1DB</a></li>
-		<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab"
-																data-toggle="tab">D</a></li>
-		<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab"
-											data-toggle="tab">1DA</a></li>
-		<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab"
-											data-toggle="tab">2DA</a></li>
-	</ul>
-
-	<!-- Tab panes -->
-	<div class="tab-content">
-		<div role="tabpanel" class="tab-pane" id="2DB">
-			<p>Test HTML to show if tabs are working 2DB</p>
-			<!--Insert Function Here-->
-
-		</div>
-		<div role="tabpanel" class="tab-pane" id="1DB">
-			<p>Test HTML to show if tabs are working 1DB</p>
-			<!--Insert Function Here-->
-		</div>
-		<div role="tabpanel" class="tab-pane" id="D">
-			<p>Test HTML to show if tabs are working D</p>
-			<!--Insert Function Here-->
-
-
-
-
-
-		</div>
-		<div role="tabpanel" class="tab-pane" id="1DA">
-			<p>Test HTML to show if tabs are working 1DA</p>
-			<!--Insert Function Here-->
-		</div>
-		<div role="tabpanel" class="tab-pane" id="2DA">
-			<p>Test HTML to show if tabs are working 2DA</p>
-			<!--Insert Function Here-->
-		</div>
+	<div class="container-fluid">
+		<ul class="nav nav-tabs nav-justified" role="tablist">
+			<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">2DB</a></li>
+			<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">1DB</a></li>
+			<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab"
+																	data-toggle="tab">D</a></li>
+			<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab"
+												data-toggle="tab">1DA</a></li>
+			<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab"
+												data-toggle="tab">2DA</a></li>
+		</ul>
 	</div>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in center" id="2DB">
+				<p>Test HTML to show if tabs are working 2DB</p>
+				<!--Insert Function Here-->
 
-</div>
-<hr>
-<div id="inbound" class="tabContainer" role="tabpanel">
+			</div>
+			<div role="tabpanel" class="tab-pane fade in center" id="1DB">
+				<!--Insert Function Here-->
+			</div>
+			<div role="tabpanel" class="tab-pane fade in active center" id="D">
+				<br/>
 
-	<!-- Nav tabs -->
-	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">2DB</a></li>
-		<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">1DB</a></li>
-		<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab"
-																data-toggle="tab">D</a></li>
-		<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab"
-											data-toggle="tab">1DA</a></li>
-		<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab"
-											data-toggle="tab">2DA</a></li>
-	</ul>
-
-	<!-- Tab panes -->
-	<div class="tab-content">
-		<div role="tabpanel" class="tab-pane" id="I2DB">
-			<p>Test HTML to show if tabs are working 2DB</p>
-			<!--Insert Function Here-->
-
-		</div>
-		<div role="tabpanel" class="tab-pane" id="I1DB">
-			<p>Test HTML to show if tabs are working 1DB</p>
-			<!--Insert Function Here-->
-		</div>
-		<div role="tabpanel" class="tab-pane" id="ID">
-			<p>Test HTML to show if tabs are working D</p>
-			<!--Insert Function Here-->
-
-
-
-
-
-		</div>
-		<div role="tabpanel" class="tab-pane" id="I1DA">
-			<p>Test HTML to show if tabs are working 1DA</p>
-			<!--Insert Function Here-->
-		</div>
-		<div role="tabpanel" class="tab-pane" id="I2DA">
-			<p>Test HTML to show if tabs are working 2DA</p>
-			<!--Insert Function Here-->
-		</div>
-	</div>
-
-</div>
-
-<button type='submit' form="selectFlights" class='btn btn-default'>BOOK NOW!</button>
-</body>
-</html>
-<!-- Zach The tabs above work, you just need to insert your function to process the results. Please run this and play
- with them to see how they work
-
-
-				<?php/*
+				<?php
 
 				// execute outbound search and build results table within outbound tabs
 				try {
@@ -460,31 +396,79 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 						$userFlyDateStart1, "priceWithOutboundPath");
 
 					// set up modular string pieces for building output echo here and with later return path if exists
-					$tableStringStart = "<form name='selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
-									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered' width=100%>\n
-										<thead><tr><th colspan='9'>";
-					$tableStringMid = "<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
-								<thead><tr><th colspan='9'>";
-					$tableStringEnd = "</table>\n</form>";
+					$tableStringStart = 	"<div class='center-table'><form style='width: 100%;' name='selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+												<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+												<thead>";
+					$tableStringMid = 	"<div><form style='width: 100%;' name='selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+												<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
+												<thead>";
+					$tableStringEnd = "</table>\n</form></div>";
 
 
 
 					//<button type='submit' class='btn btn-default'>BOOK NOW!</button> --  </body> save for later fixme
-					echo $tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringEnd;
+					echo $tableStringStart . $outputTableOutbound . $tableStringEnd;
 
 
 				}catch (Exception $e){
 					// $_SESSION[$savedName] = $savedToken;
 					echo "<div class='alert alert-danger' role='alert'>
-									".$e->getMessage()."
-							</div>";
-				}*/
+										".$e->getMessage()."
+								</div>";
+				}
 				?>
 
 
- ************************************RETURN TABS******************************************
 
-				<?/*php
+
+			</div>
+			<div role="tabpanel" class="tab-pane fade in center" id="1DA">
+				<!--Insert Function Here-->
+			</div>
+			<div role="tabpanel" class="tab-pane fade in center" id="2DA">
+				<!--Insert Function Here-->
+			</div>
+		</div>
+
+	</div>
+</section>
+
+
+	<!--************************************RETURN TABS******************************************-->
+
+	<div class="clearfix" style="background-color: powderblue"></div>
+<section class="center">
+	<br/>
+	<h3>SELECT RETURN FLIGHT</h3>
+	<hr>
+
+	<div id="inbound" class="tabContainer" role="tabpanel">
+
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs nav-justified" role="tablist">
+			<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">2DB</a></li>
+			<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">1DB</a></li>
+			<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab"
+																	data-toggle="tab">D</a></li>
+			<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab"
+												data-toggle="tab">1DA</a></li>
+			<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab"
+												data-toggle="tab">2DA</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade in center" id="I2DB">
+				<!--Insert Function Here-->
+
+			</div>
+			<div role="tabpanel" class="tab-pane fade in center" id="I1DB">
+				<!--Insert Function Here-->
+			</div>
+			<div role="tabpanel" class="tab-pane fade in active center" id="ID">
+				<br/>
+
+				<?php
 
 
 				// execute return search and build results table within return tabs if round trip selected
@@ -504,18 +488,67 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 						$userFlyDateStart2, "priceWithReturnPath");
 
 					// build and echo output string return flight
-					echo $tableStringMid . "SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
+					echo $tableStringMid . $outputTableInbound . $tableStringEnd;
 
 
 
 				}catch (Exception $e){
 					// $_SESSION[$savedName] = $savedToken;
 					echo "<div class='alert alert-danger' role='alert'>
-									".$e->getMessage()."
-							</div>";
+										".$e->getMessage()."
+								</div>";
 				}
-				*/?>
-			-->
+				?>
+
+
+
+
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade in center" id="I1DA">
+				<!--Insert Function Here-->
+			</div>
+			<div role="tabpanel" class="tab-pane fade in center" id="I2DA">
+				<!--Insert Function Here-->
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<div class="clearfix"></div>
+<section class="center">
+	<hr>
+	<div class="btn-group btn-group-lg" role="group" aria-label="...">
+		<button type='submit' form="selectFlights" class='btn btn-primary'>BOOK NOW!</button>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+</section>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
