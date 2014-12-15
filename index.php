@@ -129,15 +129,16 @@ EOF;
 				<form class="navbar-form navbar-left" id="flightSearchForm"
 							 action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
+
 					<div class="btn-group styleBtn" data-toggle="buttons">
 						<label class="btn btn-primary active">
-							<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
+							<input type="radio" name="roundTripOrOneWay" id="roundTrip"  onclick="isOneWay();"
+									 autocomplete="off" checked value="1">
 							Round Trip
 						</label>
 						<label class="btn btn-primary">
-							<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="0">
-							One Way
-						</label>
+							<input type="radio" name="roundTripOrOneWay" id="oneWay"  onclick="isOneWay();"
+									autocomplete="off" value="0">	One Way	</label>
 					</div>
 					<div id="multiple-datasets">
 
@@ -156,8 +157,7 @@ EOF;
 							<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
 						</p>
 
-
-						<p>
+						<p id="returnP" style="display: block;">
 							<label>Return Date:</label><br/>
 							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
 						</p>

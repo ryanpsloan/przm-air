@@ -19,4 +19,19 @@ $(document).ready(function() {
 		}).bind('input', enableEnd);
 
 	});
+
+	$('input:radio[name=""]').change(function(){
+		if($(this).val() == 'Yes'){
+			alert("test");
+		}
+	});
 });
+
+function isOneWay() {
+	if (document.getElementById('oneWay').checked) {
+		document.getElementById('returnP').style.display = 'none';
+	}
+	else{
+		document.getElementById('returnP').style.display = 'block';
+	}
+}
