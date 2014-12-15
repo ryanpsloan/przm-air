@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
 	$('#flightSearchForm').validate({
-
+			debug: true,
 			rules: {
 
 				roundTripOrOneWay : {
