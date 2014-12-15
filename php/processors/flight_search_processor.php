@@ -37,105 +37,6 @@ else{
 	$status = "";
 }
 
-echo <<< EOF
-<!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title>PRZM AIR</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
-
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-<script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-<script type="text/javascript" src="../../js/search_results.js"></script>
-<header>
-<nav class="navbar navbar-default" role="navigation">
-	<div class="container-fluid">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="../../index.php"><span class="glyphicon glyphicon-cloud"
-																			  aria-hidden="true"></span> PRZM AIR</a>
-		</div>
-
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li></li>
-			</ul>
-
-			<ul class="nav navbar-nav navbar-right">
-
-			<li><a href="#"></a></li>
-			</ul>
-		</div><!-- /.navbar-collapse -->
-	</div><!-- /.container-fluid -->
-	</nav>
-</header>
-
-<div class="bs-example bs-example-tabs" role="tabpanel">
-		<ul id="mySearchTabs" class="nav nav-tabs" role="tablist">
-
-
-			<li role="presentation" class="active">
-				<a href="#2daysBeforeOutbound" id="2daysBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#dayBeforeOutbound" id="dayBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of day before entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#originalOutboundDate" id="originalOutboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#dayAfterOutbound" id="dayAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterOutbound" aria-expanded="true">php echo of day after entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#2daysAfterOutbound" id="2daysAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterOutbound" aria-expanded="true">php echo of 2 days after entered date</a>
-			</li>
-
-		</ul>
-
-		<div id="myTabContent" class="tab-content">
-
-
-			<div role="tabpanel" class="tab-pane fade" id="2daysBeforeOutbound" aria-labelledby="2daysBefore-tab">
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade" id="dayBeforeOutbound" aria-labelledby="dayBefore-tab">
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade in active" id="originalOutboundDate" aria-labelledby="dayOf-tab">
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade" id="dayAfterOutbound" aria-labelledby="dayAfter-tab">
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade" id="2daysAfterOutbound" aria-labelledby="2daysAfter-tab">
-			</div>
-		</div>
-
-
-
-
-EOF;
-
-
 /**
  * sets up all other needed variables that are same for outbound and return searches, then calls the method with all inputs
  * @param 	resource $mysqli pointer to temp mySQL connection, by reference
@@ -343,64 +244,270 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 
 
-try {
 
-//	$savedName  = $_POST["csrfName"//];
-//	$savedToken = $_POST["csrfToken"];//
-//
-//
-//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
-//		throw(new RuntimeException("Make sure cookies are enabled.")//);
-//	}
+/**
+ * sets up the strings to populate the full search results allowing user to change dates by going to a different tab
+ * @param 	resource $mysqli pointer to temp mySQL connection, by reference
+ * @param 	string $userOrigin with 3 letter origin city
+ * @param 	string $userDestination with 3 letter destination city
+ * @param 	string $userFlyDateStart of 7AM on user's chosen fly date
+ * @param 	string $returnOrNo of A or B for return trip or one-way.
+ * @return 	mixed $outputTable html table of search results
+ **/
+function beginSearch (&$mysqli, $userFlyDateStart1, $userFlyDateStart2)
+{
 
-
-	// clean inputs, adjust dates to needed format for outbound flight
-	$userOrigin1 = filter_input(INPUT_POST,"origin", FILTER_SANITIZE_STRING);
-	$userDestination1 = filter_input(INPUT_POST,"destination", FILTER_SANITIZE_STRING);
-
-
-	$userFlyDateStartIncoming1 = filter_input(INPUT_POST,"departDate", FILTER_SANITIZE_STRING);
-		$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-		$userFlyDateStartObj1 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
-		$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
-
-	// get outbound results
-	$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
-														$userFlyDateStart1, "priceWithOutboundPath");
 
 	// set up modular string pieces for building output echo
-	$tableStringStart = "<form class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php' method='POST'>
-									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+	$tableStringStart = "<form name = 'selectFlights' class='navbar-form navbar-left' id='searchResults' action='search_results_processor.php' method='POST'>
+									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered' width=100%>\n
 										<thead><tr><th colspan='9'>";
 	$tableStringMid = "</table><table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
 								<thead><tr><th colspan='9'>";
 	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>BOOK NOW!</button></form></body>";
 
 	// if not return trip, build and echo output string with outbound only
-	if ($_POST ["roundTripOrOneWay"] == 0) {
-		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</tr>" . $outputTableOutbound . $tableStringEnd;;
+	if($_POST ["roundTripOrOneWay"] == 0) {
+		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringEnd;;
 	} else {
 		// otherwise, execute return search flight with same process: clean inputs, adjust dates to needed format for return trip
 		$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
 		$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
 		$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-			$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
-			$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
-			$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-	//fixme check to see why is breaking when a second search is executed
+		$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
+		$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+		$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
+		//fixme check to see why is breaking when a second search is executed
 		// execute inbound flight search
 		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
-															$userFlyDateStart2, "priceWithReturnPath");
+			$userFlyDateStart2, "priceWithReturnPath");
 
 		// build and echo output string with outbound and return flight
-		echo 	$tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringMid .
-				"SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
+		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringMid .
+			"SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
 	}
 
-}catch (Exception $e){
-	// $_SESSION[$savedName] = $savedToken;
-	echo "<div class='alert alert-danger' role='alert'>
-".$e->getMessage()."</div>";
+
 }
+
+
 ?>
+
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>PRZM AIR</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="../../js/search_results.js"></script>
+<header>
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../../index.php"><span class="glyphicon glyphicon-cloud"
+																			  aria-hidden="true"></span> PRZM AIR</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+
+			<li><a href="#"></a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+	</nav>
+</header>
+<body>
+	<div id="outboundTabs" class="bs-example bs-example-tabs" role="tabpanel">
+		<ul id="mySearchTabs" class="nav nav-tabs" role="tablist">
+
+
+			<li role="presentation" class="active">
+				<a href="#2daysBeforeOutbound" id="2daysBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
+			</li>
+
+			<li role="presentation" class="active">
+				<a href="#dayBeforeOutbound" id="dayBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of day before entered date</a>
+			</li>
+
+			<li role="presentation" class="active">
+				<a href="#originalOutboundDate" id="originalOutboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of entered date</a>
+			</li>
+
+			<li role="presentation" class="active">
+				<a href="#dayAfterOutbound" id="dayAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterOutbound" aria-expanded="true">php echo of day after entered date</a>
+			</li>
+
+			<li role="presentation" class="active">
+				<a href="#2daysAfterOutbound" id="2daysAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterOutbound" aria-expanded="true">php echo of 2 days after entered date</a>
+			</li>
+
+		</ul>
+
+		<div id="myTabContent" class="tab-content">
+
+
+			<div role="tabpanel" class="tab-pane fade" id="2daysBeforeOutbound" aria-labelledby="2daysBefore-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade" id="dayBeforeOutbound" aria-labelledby="dayBefore-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade in active" id="originalOutboundDate" aria-labelledby="dayOf-tab">
+
+				<?php
+
+				// execute outbound search and build results table within outbound tabs
+				try {
+
+					//	$savedName  = $_POST["csrfName"//];
+					//	$savedToken = $_POST["csrfToken"];//
+					//
+					//
+					//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
+					//		throw(new RuntimeException("Make sure cookies are enabled.")//);
+					//	}
+
+
+					// clean inputs, adjust dates to needed format for outbound flight
+					$userOrigin1 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
+					$userDestination1 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+
+
+					$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "departDate", FILTER_SANITIZE_STRING);
+					$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+					$userFlyDateStartObj1 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
+					$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
+
+					// get outbound results
+					$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
+						$userFlyDateStart1, "priceWithOutboundPath");
+
+
+
+
+
+				}catch (Exception $e){
+					// $_SESSION[$savedName] = $savedToken;
+					echo "<div class='alert alert-danger' role='alert'>
+									".$e->getMessage()."
+							</div>";
+				}
+				?>
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade" id="dayAfterOutbound" aria-labelledby="dayAfter-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade" id="2daysAfterOutbound" aria-labelledby="2daysAfter-tab">
+			</div>
+		</div>
+	</div>
+
+
+<!-- ************************************RETURN TABS******************************************-->
+		<div id = "returnTabs" class="bs-example bs-example-tabs" role="tabpanel">
+			<ul id="myReturnSearchTabs" class="nav nav-tabs" role="tablist">
+
+
+				<li role="presentation" class="active">
+					<a href="#2daysBeforeOutbound" id="2daysBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
+				</li>
+
+				<li role="presentation" class="active">
+					<a href="#dayBeforeOutbound" id="dayBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of day before entered date</a>
+				</li>
+
+				<li role="presentation" class="active">
+					<a href="#originalOutboundDate" id="originalOutboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of entered date</a>
+				</li>
+
+				<li role="presentation" class="active">
+					<a href="#dayAfterOutbound" id="dayAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterOutbound" aria-expanded="true">php echo of day after entered date</a>
+				</li>
+
+				<li role="presentation" class="active">
+					<a href="#2daysAfterOutbound" id="2daysAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterOutbound" aria-expanded="true">php echo of 2 days after entered date</a>
+				</li>
+
+			</ul>
+
+			<div id="myTabContent" class="tab-content">
+
+
+				<div role="tabpanel" class="tab-pane fade" id="2daysBeforeOutbound" aria-labelledby="2daysBefore-tab">
+				</div>
+
+				<div role="tabpanel" class="tab-pane fade" id="dayBeforeOutbound" aria-labelledby="dayBefore-tab">
+				</div>
+
+				<div role="tabpanel" class="tab-pane fade in active" id="originalOutboundDate" aria-labelledby="dayOf-tab">
+
+					<?php
+
+
+					// execute return search and build results table within return tabs if round trip selected
+					try {
+
+						//	$savedName  = $_POST["csrfName"//];
+						//	$savedToken = $_POST["csrfToken"];//
+						//
+						//
+						//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
+						//		throw(new RuntimeException("Make sure cookies are enabled.")//);
+						//	}
+
+
+
+
+
+					}catch (Exception $e){
+						// $_SESSION[$savedName] = $savedToken;
+						echo "<div class='alert alert-danger' role='alert'>
+									".$e->getMessage()."
+							</div>";
+					}
+					?>
+				</div>
+
+				<div role="tabpanel" class="tab-pane fade" id="dayAfterOutbound" aria-labelledby="dayAfter-tab">
+				</div>
+
+				<div role="tabpanel" class="tab-pane fade" id="2daysAfterOutbound" aria-labelledby="2daysAfter-tab">
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+
+
+
+
+
