@@ -89,19 +89,19 @@ $(document).ready(function()
 	var nyc = new Bloodhound({
 		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		prefetch: '../lib/fuzzy_search/airports_chicago.json'
+		prefetch: 'lib/fuzzy_search/airports_chicago.json'
 	});
 
 	var chicago = new Bloodhound({
 		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		prefetch: '../lib/fuzzy_search/airports_nyc.json'
+		prefetch: 'lib/fuzzy_search/airports_nyc.json'
 	});
 
 	var all = new Bloodhound({
 		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		prefetch: '../lib/fuzzy_search/airports.json'
+		prefetch: 'lib/fuzzy_search/airports.json'
 	});
 
 	nyc.initialize();

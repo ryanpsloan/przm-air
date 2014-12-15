@@ -85,6 +85,44 @@ echo <<< EOF
 	</nav>
 </header>
 
+<div class="bs-example bs-example-tabs" role="tabpanel">
+		<ul id="mySearchTabs" class="nav nav-tabs" role="tablist">
+
+
+
+			<li role="presentation" class="active">
+				<a href="#originalSearch" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
+					Your Flight</a>
+			</li>
+
+			<li role="presentation">
+				<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
+					aria-expanded="true">CheckIn</a>
+			</li>
+
+			<?php echo $account?>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+
+
+			<div role="tabpanel" class="tab-pane fade" id="2daysBeforeOutbound" aria-labelledby="2daysBefore-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade" id="dayBeforeOutbound" aria-labelledby="dayBefore-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade in active" id="originalOutboundDate" aria-labelledby="dayOf-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade" id="dayAfterOutbound" aria-labelledby="dayAfter-tab">
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade" id="2daysAfterOutbound" aria-labelledby="2daysAfter-tab">
+			</div>
+		</div>
+
+
+
 
 EOF;
 

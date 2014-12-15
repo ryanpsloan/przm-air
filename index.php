@@ -109,24 +109,24 @@ EOF;
 			</div><!-- /.container-fluid -->
 		</nav>
 	</header>
-	<div class="bs-example bs-example-tabs" role="tabpanel">
-		<ul id="myTabs" class="nav nav-tabs" role="tablist">
-			<li role="presentation" class="active">
-				<a href="#search" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
-					Your Flight</a>
-			</li>
+		<div class="bs-example bs-example-tabs" role="tabpanel">
+			<ul id="myTabs" class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#search" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
+						Your Flight</a>
+				</li>
 
-			<li role="presentation">
-				<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
-					aria-expanded="true">CheckIn</a>
-			</li>
+				<li role="presentation">
+					<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
+						aria-expanded="true">CheckIn</a>
+				</li>
 
-			<?php echo $account?>
-		</ul>
-		<div id="myTabContent" class="tab-content">
+				<?php echo $account?>
+			</ul>
+			<div id="myTabContent" class="tab-content">
 
-		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
-			<form class="navbar-form navbar-left" id="flightSearchForm"
+			<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
+				<form class="navbar-form navbar-left" id="flightSearchForm"
 							 action="php/processors/flight_search_processor.php" method="POST">
 				<div class="form-group">
 					<div class="btn-group styleBtn" data-toggle="buttons">
