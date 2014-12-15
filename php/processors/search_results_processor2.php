@@ -290,7 +290,8 @@ function beginSearch (&$mysqli, $userFlyDateStart1, $userFlyDateStart2)
 
 
 }
-
+$hiddenRadio = $_POST['roundTripOrOneWay'];
+var_dump($hiddenRadio);
 
 ?>
 
@@ -342,6 +343,7 @@ function beginSearch (&$mysqli, $userFlyDateStart1, $userFlyDateStart2)
 	</nav>
 </header>
 <body>
+<input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio?>">
 	<div id="outboundTabs" class="bs-example bs-example-tabs" role="tabpanel">
 		<ul id="mySearchTabs" class="nav nav-tabs" role="tablist">
 
