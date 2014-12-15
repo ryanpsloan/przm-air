@@ -37,6 +37,15 @@ else{
 	$status = "";
 }
 
+//	$savedName  = $_POST["csrfName"//];
+//	$savedToken = $_POST["csrfToken"];//
+//
+//
+//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
+//		throw(new RuntimeException("Make sure cookies are enabled.")//);
+//	}
+
+
 /**
  * sets up all other needed variables that are same for outbound and return searches, then calls the method with all inputs
  * @param 	resource $mysqli pointer to temp mySQL connection, by reference
@@ -291,6 +300,13 @@ var_dump($hiddenRadio);
 <script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="../../js/search_results.js"></script>
+<style>
+	.tab-container{
+		/*style tabs here*/
+	}
+</style>
+</head>
+<body>
 <header>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container-fluid">
@@ -321,57 +337,113 @@ var_dump($hiddenRadio);
 	</nav>
 </header>
 <body>
-<input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio?>">
-	<div id="outboundTabs" class="bs-example bs-example-tabs" role="tabpanel">
-		<ul id="mySearchOutboundTabs" class="nav nav-tabs" role="tablist">
+<input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio;?>">
+
+<div id="outbound" class="tabContainer" role="tabpanel">
+
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">2DB</a></li>
+		<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">1DB</a></li>
+		<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab"
+																data-toggle="tab">D</a></li>
+		<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab"
+											data-toggle="tab">1DA</a></li>
+		<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab"
+											data-toggle="tab">2DA</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane" id="2DB">
+			<p>Test HTML to show if tabs are working 2DB</p>
+			<!--Insert Function Here-->
+
+		</div>
+		<div role="tabpanel" class="tab-pane" id="1DB">
+			<p>Test HTML to show if tabs are working 1DB</p>
+			<!--Insert Function Here-->
+		</div>
+		<div role="tabpanel" class="tab-pane" id="D">
+			<p>Test HTML to show if tabs are working D</p>
+			<!--Insert Function Here-->
 
 
-			<li role="presentation" class="active">
-				<a href="#2daysBeforeOutbound" id="2daysBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#dayBeforeOutbound" id="dayBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of day before entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#originalOutboundDate" id="originalOutboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#dayAfterOutbound" id="dayAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterOutbound" aria-expanded="true">php echo of day after entered date</a>
-			</li>
-
-			<li role="presentation" class="active">
-				<a href="#2daysAfterOutbound" id="2daysAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterOutbound" aria-expanded="true">php echo of 2 days after entered date</a>
-			</li>
-
-		</ul>
-
-		<div id="myTabContent" class="tab-content">
 
 
-			<div role="tabpanel" class="tab-pane fade" id="2daysBeforeOutbound" aria-labelledby="2daysBefore-tab">
-			</div>
 
-			<div role="tabpanel" class="tab-pane fade" id="dayBeforeOutbound" aria-labelledby="dayBefore-tab">
-			</div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="1DA">
+			<p>Test HTML to show if tabs are working 1DA</p>
+			<!--Insert Function Here-->
+		</div>
+		<div role="tabpanel" class="tab-pane" id="2DA">
+			<p>Test HTML to show if tabs are working 2DA</p>
+			<!--Insert Function Here-->
+		</div>
+	</div>
 
-			<div role="tabpanel" class="tab-pane fade in active" id="originalOutboundDate" aria-labelledby="dayOf-tab">
+</div>
+<hr>
+<div id="inbound" class="tabContainer" role="tabpanel">
 
-				<?php
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">2DB</a></li>
+		<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">1DB</a></li>
+		<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab"
+																data-toggle="tab">D</a></li>
+		<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab"
+											data-toggle="tab">1DA</a></li>
+		<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab"
+											data-toggle="tab">2DA</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane" id="I2DB">
+			<p>Test HTML to show if tabs are working 2DB</p>
+			<!--Insert Function Here-->
+
+		</div>
+		<div role="tabpanel" class="tab-pane" id="I1DB">
+			<p>Test HTML to show if tabs are working 1DB</p>
+			<!--Insert Function Here-->
+		</div>
+		<div role="tabpanel" class="tab-pane" id="ID">
+			<p>Test HTML to show if tabs are working D</p>
+			<!--Insert Function Here-->
+
+
+
+
+
+		</div>
+		<div role="tabpanel" class="tab-pane" id="I1DA">
+			<p>Test HTML to show if tabs are working 1DA</p>
+			<!--Insert Function Here-->
+		</div>
+		<div role="tabpanel" class="tab-pane" id="I2DA">
+			<p>Test HTML to show if tabs are working 2DA</p>
+			<!--Insert Function Here-->
+		</div>
+	</div>
+
+</div>
+
+<button type='submit' form="selectFlights" class='btn btn-default'>BOOK NOW!</button>
+</body>
+</html>
+<!-- Zach The tabs above work, you just need to insert your function to process the results. Please run this and play
+ with them to see how they work
+
+
+				<?php/*
 
 				// execute outbound search and build results table within outbound tabs
 				try {
 
-					//	$savedName  = $_POST["csrfName"//];
-					//	$savedToken = $_POST["csrfToken"];//
-					//
-					//
-					//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
-					//		throw(new RuntimeException("Make sure cookies are enabled.")//);
-					//	}
-
+					//test for csrf at the top of the page
 
 					// clean inputs, adjust dates to needed format for outbound flight
 					$userOrigin1 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
@@ -406,117 +478,44 @@ var_dump($hiddenRadio);
 					echo "<div class='alert alert-danger' role='alert'>
 									".$e->getMessage()."
 							</div>";
-				}
+				}*/
 				?>
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade" id="dayAfterOutbound" aria-labelledby="dayAfter-tab">
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade" id="2daysAfterOutbound" aria-labelledby="2daysAfter-tab">
-			</div>
-		</div>
-	</div>
 
 
-<!-- ************************************RETURN TABS******************************************-->
-	<section>
+ ************************************RETURN TABS******************************************
 
-		</div><div id = "returnTabs" class="bs-example bs-example-tabs" role="tabpanel">
-			<ul id="myReturnSearchTabs" class="nav nav-tabs" role="tablist">
+				<?/*php
 
 
-				<li role="presentation" class="active">
-					<a href="#2daysBeforeInbound" id="2daysBeforeInbound-tab" role="tab" data-toggle="tab" aria-controls="originalInboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
-				</li>
+				// execute return search and build results table within return tabs if round trip selected
+				try {
 
-				<li role="presentation" class="active">
-					<a href="#dayBeforeInbound" id="dayBeforeInbound-tab" role="tab" data-toggle="tab" aria-controls="originalInboundDate" aria-expanded="true">php echo of day before entered date</a>
-				</li>
+					// execute return search flight with same process: clean inputs, adjust dates to needed format for return trip, switch origin and destination
+					$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+					$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
-				<li role="presentation" class="active">
-					<a href="#originalInboundDate" id="originalInboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalInboundDate" aria-expanded="true">php echo of entered date</a>
-				</li>
+					$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
+					$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
+					$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+					$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
+					//fixme check to see why is breaking when a second search is executed
+					// execute inbound flight search
+					$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
+						$userFlyDateStart2, "priceWithReturnPath");
 
-				<li role="presentation" class="active">
-					<a href="#dayA fterInbound" id="dayAfterInbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterInbound" aria-expanded="true">php echo of day after entered date</a>
-				</li>
-
-				<li role="presentation" class="active">
-					<a href="#2daysAfterInbound" id="2daysAfterInbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterInbound" aria-expanded="true">php echo of 2 days after entered date</a>
-				</li>
-
-			</ul>
-
-			<div id="myTabContent" class="tab-content">
-
-
-				<div role="tabpanel" class="tab-pane fade" id="2daysBeforeInbound" aria-labelledby="2daysBefore-tab">
-				</div>
-
-				<div role="tabpanel" class="tab-pane fade" id="dayBeforeInbound" aria-labelledby="dayBefore-tab">
-				</div>
-
-				<div role="tabpanel" class="tab-pane fade in active" id="originalInboundDate" aria-labelledby="dayOf-tab">
-
-					<?php
-
-
-					// execute return search and build results table within return tabs if round trip selected
-					try {
-
-						//	$savedName  = $_POST["csrfName"//];
-						//	$savedToken = $_POST["csrfToken"];//
-						//
-						//
-						//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
-						//		throw(new RuntimeException("Make sure cookies are enabled.")//);
-						//	}
-
-						// execute return search flight with same process: clean inputs, adjust dates to needed format for return trip, switch origin and destination
-						$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-						$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
-
-						$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-						$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
-						$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
-						$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-						//fixme check to see why is breaking when a second search is executed
-						// execute inbound flight search
-						$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
-							$userFlyDateStart2, "priceWithReturnPath");
-
-						// build and echo output string return flight
-						echo $tableStringMid . "SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
+					// build and echo output string return flight
+					echo $tableStringMid . "SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
 
 
 
-					}catch (Exception $e){
-						// $_SESSION[$savedName] = $savedToken;
-						echo "<div class='alert alert-danger' role='alert'>
+				}catch (Exception $e){
+					// $_SESSION[$savedName] = $savedToken;
+					echo "<div class='alert alert-danger' role='alert'>
 									".$e->getMessage()."
 							</div>";
-					}
-					?>
-				</div>
-
-				<div role="tabpanel" class="tab-pane fade" id="dayAfterInbound" aria-labelledby="dayAfter-tab">
-				</div>
-
-				<div role="tabpanel" class="tab-pane fade" id="2daysAfterInbound" aria-labelledby="2daysAfter-tab">
-				</div>
-			</div>
-
-		</div>
-
-	</section>
-	<button type='submit' form="selectFlights" class='btn btn-default'>BOOK NOW!</button>
-</body>
-</html>
-
-
-
-
+				}
+				*/?>
+			-->
 
 
 
