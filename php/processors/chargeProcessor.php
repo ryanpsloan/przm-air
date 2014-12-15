@@ -17,7 +17,7 @@ Stripe::setApiKey("sk_test_rjlpx8EvsmEGVk5RinBMV0Jj");
 // Get the credit card details submitted by the form
 $token = $_POST['stripeToken'];
 
-$amount = $_POST['$totalInCents'];
+$amount = $_SESSION['totalInCents'];
 
 
 // Create the charge on Stripe's servers - this will charge the user's card
@@ -32,7 +32,7 @@ try {
 	// The card has been declined
 }
 
-
+	var_dump($charge);
 
 
 // insert new transaction into mysql
@@ -53,9 +53,7 @@ try {
 	echo "Unable to create transaction.";
 }
 
-// insert ticket(s) into mysql
 
 
 
-// send ticket(s) via email to user
 

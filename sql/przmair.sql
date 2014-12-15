@@ -79,8 +79,8 @@ CREATE TABLE traveler (
 CREATE TABLE transaction (
 	transactionId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	profileId INT UNSIGNED NOT NULL,
-	amount DECIMAL(5,2) UNSIGNED,
-	dateApproved DATETIME,
+	amount INT UNSIGNED,
+	dateApproved BIGINT,
 	cardToken VARCHAR(124),
 	stripeToken VARCHAR(124),
 	PRIMARY KEY (transactionId),

@@ -234,6 +234,7 @@ HTML;
 				 $fees = money_format("%n", (.10 * $newPrice));
 				 $totalPrice = money_format("%n", ($newPrice + $salesTax + $fees));
 				 $totalInCents = $totalPrice * 100;
+				 $_SESSION['totalInCents'] = $totalInCents;
 
 				 echo <<<HTML
 				 	<form id="confirmForm"  method="post">
