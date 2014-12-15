@@ -21,7 +21,7 @@ $(document).ready(function() {
 	});
 
 	$('input:radio[name="roundTripOrOneWay"]').change(function(){
-		if($(this).val() == '0'){
+		if($(this).is(':checked') && $(this).val() == '0'){
 			alert("test");
 		}
 	});
