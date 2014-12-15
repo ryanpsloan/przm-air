@@ -56,15 +56,15 @@ EOF;
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<style>
 		.displayFlt{
-			width: 90%;
+			width: 100%;
 			border: 1px solid lightgrey;
 			margin-top: 1em;
-			margin-left: 4.2em;
 			font-size: 1.2em;
 
 		}
 		.flightData td{
 			padding: .5em;
+			background-color: lightblue;
 		}
 		table.paddedA tr td {
 			padding-left: 10em;
@@ -136,7 +136,8 @@ EOF;
 	</nav>
 </header>
 
-<h2 style="text-align:center">Outbound Flight Itinerary - <?php echo "$".money_format("%n",$prices[0]);?></h2>
+<h2 class="head" style="text-align:center">Outbound Flight Itinerary - <?php echo "$".money_format("%n",
+		$prices[0]);?></h2>
 <?php
 
 	$flightIds = $_SESSION['flightIds'];
@@ -197,7 +198,7 @@ HTML;
 
 HTML;
 				$travelerIds = $_SESSION['travelerIds'];
-				$prices = $_SESSION['prices'];
+
 				$i = 0;
 				foreach($travelerIds as $tId) {
 					$travelers[] = Traveler::getTravelerByTravelerId($mysqli, $tId);
