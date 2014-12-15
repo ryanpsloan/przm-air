@@ -125,66 +125,71 @@ EOF;
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
 			<form class="navbar-form navbar-left" id="flightSearch"
 							 action="php/processors/flight_search_processor.php" method="POST">
-
-						<div class="form-group">
-
+				<div class="form-group">
 					<div class="btn-group styleBtn" data-toggle="buttons">
-							<label class="btn btn-primary active">
-								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
-								Round Trip
-							</label>
-							<label class="btn btn-primary">
-								<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="0">
-								One Way
-							</label>
-						</div>
-						<div id="multiple-datasets">
+						<label class="btn btn-primary active">
+							<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
+							Round Trip
+						</label>
+						<label class="btn btn-primary">
+							<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="0">
+							One Way
+						</label>
+					</div>
+					<div id="multiple-datasets">
 
-							<p><label>From:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for origin airport" id="origin" name="origin" autocomplete="off"><br/></p>
-
-
-							<p><label>To:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for destination airport" id="destination" name="destination" autocomplete="off"><br/></p>
-
-						</div>
-						<p>
-							<label>Departure Date:</label><br/>
-							<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
-
+						<p><label>From:</label><br/>
+							<input type="text" class="form-control typeahead" placeholder="search for origin airport" id="origin" name="origin" autocomplete="off"><br/>
 						</p>
 
-						<p>
-							<label>Return Date:</label><br/>
-							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
+
+						<p><label>To:</label><br/>
+							<input type="text" class="form-control typeahead" placeholder="search for destination airport" id="destination" name="destination" autocomplete="off"><br/>
 						</p>
 
-						<p><label>Number of Travelers:</label><br/>
-							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
-									 autocomplete="off"></p>
-
-						<p><label>Minimum Layover: </label><br/>
-							<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" autocomplete="off"
-								><br/>
-							<em>enter number of minutes</em></p>
-
-						<p><button type="submit" class="btn btn-default">Search Flights</button></p>
-						<hr>
-						<p><label class="btn btn-primary active">
-							<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
-								Flexible Dates?
-							</label></p>
-						<div style="text-align: left"><em>**still under construction**</em><br/>select to see grid of cheapest fares in month</em></div>
-						<?php /*echo generateInputTags()
-							fixme csrf stuff, needs to be validated in your form processor uncomment when ready
-					      to implement*/?>
-						</div>
-				</form>
-				<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
-			</div>
+					</div>
+					<p>
+						<label>Departure Date:</label><br/>
+						<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
+					</p>
 
 
-	<div role="tabpanel" class="tab-pane fade" id="checkIn"
+					<p>
+						<label>Return Date:</label><br/>
+						<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
+					</p>
+
+					<p><label>Number of Travelers:</label><br/>
+						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
+								 autocomplete="off">
+					</p>
+
+					<p><label>Minimum Layover: </label><br/>
+						<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" autocomplete="off"
+							><br/>
+						<em>enter number of minutes</em>
+					</p>
+
+					<p><button type="submit" class="btn btn-default">Search Flights</button></p>
+					<hr>
+					<p><label class="btn btn-primary active">
+						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
+							Flexible Dates?
+						</label>
+					</p>
+					<div style="text-align: left">
+							<em>**still under construction**</em><br/>select to see grid of cheapest fares in month</em>
+					</div>
+					<?php /*echo generateInputTags()
+						fixme csrf stuff, needs to be validated in your form processor uncomment when ready
+						to implement*/?>
+				</div>
+			</form>
+			<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
+		</div>
+
+
+		<div role="tabpanel" class="tab-pane fade" id="checkIn"
 			  aria-labelledby="checkIn-tab">
 			<div id="checkInLinksDiv">
 				<ul id="checkInLinksList">
