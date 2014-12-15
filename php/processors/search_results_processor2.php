@@ -78,15 +78,15 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 
 	// set up head of table of search results
 	$outputTableHead = "<tr>
-											<th>Remaining<br/>Tickets</th>
-											<th>Flight #</th>
-											<th>Depart</th>
-											<th>Arrive</th>
-											<th>Stops</th>
-											<th>Layover</th>
-											<th>Travel Time</th>
-											<th>Price</th>
-											<th>SELECT</th>
+											<th style='text-align:center'>Remaining<br/>Tickets</th>
+											<th style='text-align:center'>Flight #</th>
+											<th style='text-align:center'>Depart</th>
+											<th style='text-align:center'>Arrive</th>
+											<th style='text-align:center'>Stops</th>
+											<th style='text-align:center'>Layover</th>
+											<th style='text-align:center'>Travel Time</th>
+											<th style='text-align:center'>Price</th>
+											<th style='text-align:center'>SELECT</th>
 									</tr></thead>\n";
 
 	// set up variable for rows then fill in with results by looping through each path in the array of paths
@@ -342,6 +342,7 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 
 	<!--************************************OUTBOUND TABS******************************************-->
+<form style='width: 100%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
 <section class="center">
 	<br/>
 	<h2>SELECT DEPARTURE FLIGHT</h2>
@@ -396,15 +397,17 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 						$userFlyDateStart1, "priceWithOutboundPath");
 
 					// set up modular string pieces for building output echo here and with later return path if exists
-					$tableStringStart = 	"<div class='center-table'><form style='width: 100%;' name='selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+					$tableStringStart = 	"<div class='center-table'>
 												<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
 												<thead>";
-					$tableStringMid = 	"<div><form style='width: 100%;' name='selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+					$tableStringMid = 	"<div>
 												<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
 												<thead>";
 					$tableStringEnd = "</table>\n</form></div>";
-
-
+//in case need to put back in string:
+//					<form style='width: 100%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+//					<form style='width: 100%;' name='selectInbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+//					Value="BOOK NOW!" onclick="submitForms()"
 
 					//<button type='submit' class='btn btn-default'>BOOK NOW!</button> --  </body> save for later fixme
 					echo $tableStringStart . $outputTableOutbound . $tableStringEnd;
@@ -417,9 +420,6 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 								</div>";
 				}
 				?>
-
-
-
 
 			</div>
 			<div role="tabpanel" class="tab-pane fade in center" id="1DA">
@@ -436,10 +436,10 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 	<!--************************************RETURN TABS******************************************-->
 
-	<div class="clearfix" style="background-color: powderblue"></div>
+	<div class="clearfix"></div>
 <section class="center">
 	<br/>
-	<h3>SELECT RETURN FLIGHT</h3>
+	<h2>SELECT RETURN FLIGHT</h2>
 	<hr>
 
 	<div id="inbound" class="tabContainer" role="tabpanel">
@@ -518,9 +518,8 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 <div class="clearfix"></div>
 <section class="center">
-	<hr>
 	<div class="btn-group btn-group-lg" role="group" aria-label="...">
-		<button type='submit' form="selectFlights" class='btn btn-primary'>BOOK NOW!</button>
+		<button type='submit' class='btn btn-primary'>BOOK NOW!</button>
 	</div>
 	<br>
 	<br>
@@ -529,6 +528,7 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 	<br>
 
 </section>
+</form>
 </body>
 </html>
 

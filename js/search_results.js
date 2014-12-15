@@ -8,19 +8,19 @@ $(document).ready(function()
 
 			rules: {
 
-				OutboundPath: {
+				selectOutbound: {
 					required: true
 				},
-				ReturnPath  : {
+				selectInbound  : {
 					required: true
 				}
 			},
 
 			messages: {
-				OutboundPath: {
+				selectOutbound: {
 					required: "Please select outbound trip."
 				},
-				ReturnPath  : {
+				selectInbound  : {
 					required: "Please select return trip."
 				}
 			}
@@ -58,3 +58,9 @@ $(document).ready(function()
 			//		});
 			//}
 });
+
+
+submitForms = function(){
+	document.forms["selectOutbound"].submit();
+	document.forms["selectInbound"].submit();
+};
