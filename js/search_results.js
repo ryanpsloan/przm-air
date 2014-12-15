@@ -37,7 +37,7 @@ $(document).ready(function()
 			//	$(form).ajaxSubmit(
 			//		{
 			//			type   : "POST",
-			//			url    : "../php/processors/search_results_processor.php",
+			//			url    : "../php/processors/selected_results_processor.php",
 			//			success:
 			//
 			//
