@@ -28,30 +28,48 @@ try {
 			"card" => $token,
 			"description" => $email)
 	);
+	var_dump($charge);
+
+// Check that it was paid:
+	if ($charge->paid === true) {
+
+		// Store the order in the database.
+		// Send the email.
+		// Celebrate!
+
+		// insert new transaction into mysql
+
+
+		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+		$amount = "";
+		$dateApproved = new DateTime();
+		$cardToken = null;
+		$stripeToken ="";
+
+		$transaction = new Transaction(null, $profile->__get("ProfileId"), $amount, $dateApproved, $cardToken, $StripeToken);
+
+		try {
+			$transaction->insert($mysqli);
+
+		} catch (Exception $exception) {
+			echo "Unable to create transaction.";
+		}
+
+
+
+	}
 } catch(Stripe_CardError $e) {
 	// The card has been declined
 }
 
-	var_dump($charge);
 
 
-// insert new transaction into mysql
+
+// base URL is the basis for *ALL* API calls
+// $baseUrl = "https://api.stripe.com";
 
 
-$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
-$amount = "";
-$dateApproved = new DateTime();
-$cardToken = "";
-$stripeToken ="";
 
-$transaction = new Transaction(null, $profile->__get("ProfileId"), $amount, $dateApproved, $cardToken, $StripeToken);
-
-try {
-	$transaction->insert($mysqli);
-
-} catch (Exception $exception) {
-	echo "Unable to create transaction.";
-}
 
 
 

@@ -36,6 +36,6 @@ foreach($flights as $flight) {
 }
 $_SESSION['tickets'] = $tickets;
 $_SESSION['ticketFlights'] = $ticketFlight;
-header("Location: ../../forms/printTickets.php");
+header("Location: ../../forms/displayTickets.php");
 ?>
 
