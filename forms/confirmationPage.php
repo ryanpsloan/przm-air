@@ -28,10 +28,16 @@ EOF;
 
 	}
 	$prices = $_SESSION['prices'];
+
+	if(isset($_POST['stripeToken'])) {
+		header("Location: ../php/processors/chargeProcessor.php");
+	}
+
 }catch(Exception $e){
 	//$_SESSION[$savedName] = $savedToken;
-
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +65,7 @@ EOF;
 	<script type="text/javascript">
 		Stripe.setPublishableKey('pk_test_y7K8SRtvByY4GmoKMeQ2qmn2');
 	</script>
-	<script type="text/javascript" src="../js/payment.js"></script>
+
 
 	<style>
 		.displayFlt{
@@ -239,15 +245,19 @@ HTML;
 					</table>
 					<hr>
 					<input type="hidden" name="total" value="$totalPrice"/>
-					<form action="../php/processors/chargeProcessor.php" method="POST">
+					<form method="POST">
 						<script
 							src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 							data-key="pk_test_y7K8SRtvByY4GmoKMeQ2qmn2"
 							data-amount= $totalInCents
 							data-name="PRZM AIR"
 							data-description="Purchase Airfare"
-							data-image="/128x128.png">
+							data-image="../img/cloud-icon.png">
+
+
 						</script>
+
+
 					</form>
 HTML;
 
