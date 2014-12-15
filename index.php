@@ -71,6 +71,7 @@ EOF;
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/typeahead.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
 	<script type="text/javascript" src="js/utility.js"></script>
@@ -151,17 +152,18 @@ EOF;
 								One Way
 							</label>
 						</div>
+						<div id="multiple-datasets">
+
+							<p><label>From:</label><br/>
+								<input type="text" class="form-control typeahead" placeholder="search for airport" id="origin" name="origin" autocomplete="off"><br/>
+								<em>enter city or airport code</em></p>
 
 
-						<p><label>From:</label><br/>
-							<input type="text" class="form-control" id="origin" name="origin" autocomplete="off"><br/>
-							<em>enter city or airport code</em></p>
+							<p><label>To:</label><br/>
+								<input type="text" class="form-control typeahead" placeholder="search for airport" id="destination" name="destination" autocomplete="off"><br/>
+								<em>enter city or airport code</em></p>
 
-
-						<p><label>To:</label><br/>
-							<input type="text" class="form-control" id="destination" name="destination" autocomplete="off"><br/>
-							<em>enter city or airport code</em></p>
-
+						</div>
 						<p>
 							<label>Departure Date:</label><br/>
 							<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">

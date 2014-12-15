@@ -87,6 +87,58 @@ $(document).ready(function()
 			//}
 		});
 
+	var nyc = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		prefetch: '../lib/fuzzy_search/airports_chicago.json'
+	});
+
+	var chicago = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		prefetch: '../lib/fuzzy_search/airports_nyc.json'
+	});
+
+	var all = new Bloodhound({
+		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+		queryTokenizer: Bloodhound.tokenizers.whitespace,
+		prefetch: '../lib/fuzzy_search/airports.json'
+	});
+
+	nyc.initialize();
+	chicago.initialize();
+	all.initialize();
+
+	$('#multiple-datasets .typeahead').typeahead({
+			highlight: true
+		},
+		{
+			name: 'nyc',
+			displayKey: 'state',
+			source: nyc.ttAdapter(),
+			templates: {
+				header: '<h3 class="city-code">New York Area</h3>'
+			}
+		},
+
+		{
+			name: 'chicago',
+			displayKey: 'state',
+			source: chicago.ttAdapter(),
+			templates: {
+				header: '<h3 class="city-code">Chicago Area</h3>'
+			}
+		},
+
+		{
+			name: 'all',
+			displayKey: 'state',
+			source: all.ttAdapter(),
+			templates: {
+				header: '<h3 class="city-code">All Airports</h3>'
+			}
+		});
+
 
 
 
