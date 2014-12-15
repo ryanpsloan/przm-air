@@ -136,8 +136,9 @@ EOF;
 	</nav>
 </header>
 
-<h2 style="text-align:center">Outbound Flight Itinerary - <?php echo $prices[0];?></h2>
+<h2 style="text-align:center">Outbound Flight Itinerary - <?php echo "$".money_format("%n",$prices[0]);?></h2>
 <?php
+
 	$flightIds = $_SESSION['flightIds'];
 
 	for($i =0; $i < count($flightIds); $i++){
@@ -149,11 +150,12 @@ EOF;
 		$origin = $flight->getOrigin();
 		$destination = $flight->getDestination();
 		$duration =  $flight->getDuration()->format("%H:%I");
-		$depTime = $flight->getDepartureDateTime()->format("m/d/Y h:i:s a");
-		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
+		$depTime = $flight->getDepartureDateTime()->format("h:i:s a m/d/Y");
+		$arrTime = $flight->getArrivalDateTime()->format("h:i:s a m/d/Y");
 		if($outboundFlightCount-- === 0) {
+			$money = "$".money_format("%n", $prices[1]);
 			echo <<<HTML
-		<h2 style="text-align:center">Inbound Flight Itinerary - <?php echo $prices;?></h2>
+		<h2 style="text-align:center">Inbound Flight Itinerary - $money </h2>
 HTML;
 		}
 
