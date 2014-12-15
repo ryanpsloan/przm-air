@@ -27,6 +27,7 @@ EOF;
 EOF;
 
 	}
+	$prices = $_SESSION['prices'];
 }catch(Exception $e){
 	//$_SESSION[$savedName] = $savedToken;
 
@@ -135,7 +136,7 @@ EOF;
 	</nav>
 </header>
 
-<h2 style="text-align:center">Outbound Flight Itinerary</h2>
+<h2 style="text-align:center">Outbound Flight Itinerary - <?php echo $prices[0];?></h2>
 <?php
 	$flightIds = $_SESSION['flightIds'];
 
@@ -152,7 +153,7 @@ EOF;
 		$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
 		if($outboundFlightCount-- === 0) {
 			echo <<<HTML
-		<h2 style="text-align:center">Inbound Flight Itinerary</h2>
+		<h2 style="text-align:center">Inbound Flight Itinerary - <?php echo $prices;?></h2>
 HTML;
 		}
 
