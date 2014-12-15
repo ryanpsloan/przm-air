@@ -74,58 +74,57 @@ EOF;
 
 </head>
 <body>
-<header>
-	<nav class="navbar navbar-default" role="navigation">
-		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="# "><span class="glyphicon glyphicon-cloud"
-																				  aria-hidden="true"></span> PRZM AIR</a>
-				</div>
+	<header>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="# "><span class="glyphicon glyphicon-cloud"
+																					  aria-hidden="true"></span> PRZM AIR</a>
+					</div>
 
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li></li>
-					<li><a href="#"></a></li>
-					<li><a href="#">About</a></li>
-					<li></li>
-					<li></li>
-					<li></li>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li></li>
+						<li><a href="#"></a></li>
+						<li><a href="#">About</a></li>
+						<li></li>
+						<li></li>
+						<li></li>
 
-				</ul>
+					</ul>
 
-				<ul class="nav navbar-nav navbar-right">
-					<li class="disabled"><?php echo $userName?> </li>
-					<li class="active"><?php echo $status?></li>
-					<li></li>
-				</ul>
-			</div><!-- /.navbar-collapse -->
-		</div><!-- /.container-fluid -->
-	</nav>
-</header>
-<!--isPun($humor) === true ? $source = "dylan" : $source = "somebody funny";-->
-<div class="bs-example bs-example-tabs" role="tabpanel">
-	<ul id="myTabs" class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active">
-			<a href="#search" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
-				Your Flight</a>
-		</li>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="disabled"><?php echo $userName?> </li>
+						<li class="active"><?php echo $status?></li>
+						<li></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+	</header>
+	<div class="bs-example bs-example-tabs" role="tabpanel">
+		<ul id="myTabs" class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#search" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
+					Your Flight</a>
+			</li>
 
-		<li role="presentation">
-			<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
-				aria-expanded="true">CheckIn</a>
-		</li>
+			<li role="presentation">
+				<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
+					aria-expanded="true">CheckIn</a>
+			</li>
 
-		<?php echo $account?>
-	</ul>
-	<div id="myTabContent" class="tab-content">
+			<?php echo $account?>
+		</ul>
+		<div id="myTabContent" class="tab-content">
 
 		<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
 			<form class="navbar-form navbar-left" id="flightSearchForm"
@@ -143,86 +142,85 @@ EOF;
 					</div>
 					<div id="multiple-datasets">
 
-						<p><label>From:</label><br/>
-							<input type="text" class="form-control typeahead" placeholder="search for origin airport" id="origin" name="origin" autocomplete="off"><br/>
+							<p><label>From:</label><br/>
+								<input type="text" class="form-control typeahead" placeholder="search for origin airport" id="origin" name="origin" autocomplete="off"><br/>
+							</p>
+
+
+							<p><label>To:</label><br/>
+								<input type="text" class="form-control typeahead" placeholder="search for destination airport" id="destination" name="destination" autocomplete="off"><br/>
+							</p>
+
+						</div>
+						<p>
+							<label>Departure Date:</label><br/>
+							<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
 						</p>
 
 
-						<p><label>To:</label><br/>
-							<input type="text" class="form-control typeahead" placeholder="search for destination airport" id="destination" name="destination" autocomplete="off"><br/>
+						<p>
+							<label>Return Date:</label><br/>
+							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
 						</p>
 
+						<p><label>Number of Travelers:</label><br/>
+							<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
+									 autocomplete="off">
+						</p>
+
+						<p><label>Minimum Layover: </label><br/>
+							<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" autocomplete="off"
+								><br/>
+							<em>enter number of minutes</em>
+						</p>
+
+						<p><button type="submit" class="btn btn-default">Search Flights</button></p>
+						<hr>
+						<p><label class="btn btn-primary active">
+							<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
+								Flexible Dates?
+							</label>
+						</p>
+						<div style="text-align: left">
+								<em>**still under construction**</em><br/>select to see grid of cheapest fares in month</em>
+						</div>
+						<?php /*echo generateInputTags()
+							fixme csrf stuff, needs to be validated in your form processor uncomment when ready
+							to implement*/?>
 					</div>
-					<p>
-						<label>Departure Date:</label><br/>
-						<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
-					</p>
-
-
-					<p>
-						<label>Return Date:</label><br/>
-						<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
-					</p>
-
-					<p><label>Number of Travelers:</label><br/>
-						<input type="text" class="form-control" id="numberOfPassengers" name="numberOfPassengers" size="5" value = "1"
-								 autocomplete="off">
-					</p>
-
-					<p><label>Minimum Layover: </label><br/>
-						<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" autocomplete="off"
-							><br/>
-						<em>enter number of minutes</em>
-					</p>
-
-					<p><button type="submit" class="btn btn-default">Search Flights</button></p>
-					<hr>
-					<p><label class="btn btn-primary active">
-						<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
-							Flexible Dates?
-						</label>
-					</p>
-					<div style="text-align: left">
-							<em>**still under construction**</em><br/>select to see grid of cheapest fares in month</em>
-					</div>
-					<?php /*echo generateInputTags()
-						fixme csrf stuff, needs to be validated in your form processor uncomment when ready
-						to implement*/?>
-				</div>
-			</form>
-			<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
-		</div>
-
-
-		<div role="tabpanel" class="tab-pane fade" id="checkIn"
-			  aria-labelledby="checkIn-tab">
-			<div id="checkInLinksDiv">
-				<ul id="checkInLinksList">
-					<li><p><a href="#">
-						<span class="glyphicon glyphicon-plus"></span>Check Flight Status</a></p></li>
-					<li><p><a href="#">
-						<span class="glyphicon glyphicon-plus"></span>Check In</a></p></li>
-				</ul>
+				</form>
+				<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
 			</div>
-		</div>
-		<div role="tabpanel" class="tab-pane fade" id="account"
-			  aria-labelledby="account-tab">
-			<div id="accountLinksDiv">
-				<ul id="accountLinksList">
-					<li><p><a href="forms/editUserProfile.php">
-						<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
-					<li><p><a href="forms/editTravelers.php">
-								<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
-					<li><p><a href="">
-								<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
-					<li><p><a href="">
-								<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>
 
-				</ul>
+
+			<div role="tabpanel" class="tab-pane fade" id="checkIn"
+				  aria-labelledby="checkIn-tab">
+				<div id="checkInLinksDiv">
+					<ul id="checkInLinksList">
+						<li><p><a href="#">
+							<span class="glyphicon glyphicon-plus"></span>Check Flight Status</a></p></li>
+						<li><p><a href="#">
+							<span class="glyphicon glyphicon-plus"></span>Check In</a></p></li>
+					</ul>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="account"
+				  aria-labelledby="account-tab">
+				<div id="accountLinksDiv">
+					<ul id="accountLinksList">
+						<li><p><a href="forms/editUserProfile.php">
+							<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
+						<li><p><a href="forms/editTravelers.php">
+									<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
+						<li><p><a href="">
+									<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
+						<li><p><a href="">
+									<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>
+
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
 </body>
 </html>
