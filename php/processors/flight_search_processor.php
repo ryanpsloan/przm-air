@@ -89,19 +89,28 @@ echo <<< EOF
 		<ul id="mySearchTabs" class="nav nav-tabs" role="tablist">
 
 
+			<li role="presentation" class="active">
+				<a href="#2daysBeforeOutbound" id="2daysBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
+			</li>
 
 			<li role="presentation" class="active">
-				<a href="#originalSearch" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
-					Your Flight</a>
+				<a href="#dayBeforeOutbound" id="dayBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of day before entered date</a>
 			</li>
 
-			<li role="presentation">
-				<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
-					aria-expanded="true">CheckIn</a>
+			<li role="presentation" class="active">
+				<a href="#originalOutboundDate" id="originalOutboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of entered date</a>
 			</li>
 
-			<?php echo $account?>
+			<li role="presentation" class="active">
+				<a href="#dayAfterOutbound" id="dayAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterOutbound" aria-expanded="true">php echo of day after entered date</a>
+			</li>
+
+			<li role="presentation" class="active">
+				<a href="#2daysAfterOutbound" id="2daysAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterOutbound" aria-expanded="true">php echo of 2 days after entered date</a>
+			</li>
+
 		</ul>
+
 		<div id="myTabContent" class="tab-content">
 
 
@@ -368,7 +377,7 @@ try {
 	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>BOOK NOW!</button></form></body>";
 
 	// if not return trip, build and echo output string with outbound only
-	if ($_POST ["roundTripOrOneWay"] === 0) {
+	if ($_POST ["roundTripOrOneWay"] == 0) {
 		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</tr>" . $outputTableOutbound . $tableStringEnd;;
 	} else {
 		// otherwise, execute return search flight with same process: clean inputs, adjust dates to needed format for return trip

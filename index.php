@@ -109,44 +109,45 @@ EOF;
 			</div><!-- /.container-fluid -->
 		</nav>
 	</header>
-		<div class="bs-example bs-example-tabs" role="tabpanel">
-			<ul id="myTabs" class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active">
-					<a href="#search" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
-						Your Flight</a>
-				</li>
+	<div class="bs-example bs-example-tabs" role="tabpanel">
+		<ul id="myTabs" class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#search" id="search-tab" role="tab" data-toggle="tab" aria-controls="search" aria-expanded="true">Plan
+					Your Flight</a>
+			</li>
 
-				<li role="presentation">
-					<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
-						aria-expanded="true">CheckIn</a>
-				</li>
+			<li role="presentation">
+				<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
+					aria-expanded="true">CheckIn</a>
+			</li>
 
-				<?php echo $account?>
-			</ul>
-			<div id="myTabContent" class="tab-content">
+			<?php echo $account?>
+		</ul>
+		<div id="myTabContent" class="tab-content">
 
 			<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
 				<form class="navbar-form navbar-left" id="flightSearchForm"
 							 action="php/processors/flight_search_processor.php" method="POST">
-				<div class="form-group">
-
-					<div class="btn-group styleBtn" data-toggle="buttons">
-						<label class="btn btn-primary active">
-							<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
-							Round Trip
-						</label>
-						<label class="btn btn-primary">
-							<input type="radio" name="roundTripOrOneWay" id="oneWay"  autocomplete="off" value="0">	One Way	</label>
-					</div>
-					<div id="multiple-datasets">
+					<div class="form-group">
+						<div class="btn-group styleBtn" data-toggle="buttons">
+							<label class="btn btn-primary active">
+								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="1">
+								Round Trip
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="0">
+								One Way
+							</label>
+						</div>
+						<div id="multiple-datasets">
 
 							<p><label>From:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for origin airport" id="origin" name="origin" autocomplete="off"><br/>
+								<input type="text" class="form-control typeahead" placeholder="search for origin" id="origin" name="origin" autocomplete="off"><br/>
 							</p>
 
 
 							<p><label>To:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for destination airport" id="destination" name="destination" autocomplete="off"><br/>
+								<input type="text" class="form-control typeahead" placeholder="search for destination" id="destination" name="destination" autocomplete="off"><br/>
 							</p>
 
 						</div>
@@ -155,7 +156,8 @@ EOF;
 							<input type="text" class="datepicker" id="departDate" name="departDate" autocomplete="off">
 						</p>
 
-						<p id="returnP" style="display: block;">
+
+						<p>
 							<label>Return Date:</label><br/>
 							<input type="text" class="datepicker" id="returnDate" name="returnDate" disabled="disabled" autocomplete="off">
 						</p>
@@ -217,6 +219,8 @@ EOF;
 					</ul>
 				</div>
 			</div>
+
+
 		</div>
 	</div>
 </body>
