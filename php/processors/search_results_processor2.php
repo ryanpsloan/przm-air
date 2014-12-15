@@ -258,34 +258,12 @@ function beginSearch (&$mysqli, $userFlyDateStart1, $userFlyDateStart2)
 {
 
 
-	// set up modular string pieces for building output echo
-	$tableStringStart = "<form name = 'selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
-									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered' width=100%>\n
-										<thead><tr><th colspan='9'>";
-	$tableStringMid = "</table><table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
-								<thead><tr><th colspan='9'>";
-	$tableStringEnd = "</table>\n<button type='submit' class='btn btn-default'>BOOK NOW!</button></form></body>";
+
 
 	// if not return trip, build and echo output string with outbound only
 	if($_POST ["roundTripOrOneWay"] == 0) {
-		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringEnd;;
 	} else {
-		// otherwise, execute return search flight with same process: clean inputs, adjust dates to needed format for return trip
-		$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-		$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
-		$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-		$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
-		$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
-		$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-		//fixme check to see why is breaking when a second search is executed
-		// execute inbound flight search
-		$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
-			$userFlyDateStart2, "priceWithReturnPath");
-
-		// build and echo output string with outbound and return flight
-		echo $tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringMid .
-			"SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
 	}
 
 
@@ -345,7 +323,7 @@ var_dump($hiddenRadio);
 <body>
 <input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio?>">
 	<div id="outboundTabs" class="bs-example bs-example-tabs" role="tabpanel">
-		<ul id="mySearchTabs" class="nav nav-tabs" role="tablist">
+		<ul id="mySearchOutboundTabs" class="nav nav-tabs" role="tablist">
 
 
 			<li role="presentation" class="active">
@@ -409,8 +387,18 @@ var_dump($hiddenRadio);
 					$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
 						$userFlyDateStart1, "priceWithOutboundPath");
 
+					// set up modular string pieces for building output echo here and with later return path if exists
+					$tableStringStart = "<form name='selectFlights' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered' width=100%>\n
+										<thead><tr><th colspan='9'>";
+					$tableStringMid = "</table><table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+								<thead><tr><th colspan='9'>";
+					$tableStringEnd = "</table>\n</form>";
 
 
+
+					//<button type='submit' class='btn btn-default'>BOOK NOW!</button> --  </body> save for later fixme
+					echo $tableStringStart . "SELECT DEPARTURE FLIGHT</th></tr>" . $outputTableOutbound . $tableStringEnd;
 
 
 				}catch (Exception $e){
@@ -432,28 +420,30 @@ var_dump($hiddenRadio);
 
 
 <!-- ************************************RETURN TABS******************************************-->
-		<div id = "returnTabs" class="bs-example bs-example-tabs" role="tabpanel">
+	<section>
+
+		</div><div id = "returnTabs" class="bs-example bs-example-tabs" role="tabpanel">
 			<ul id="myReturnSearchTabs" class="nav nav-tabs" role="tablist">
 
 
 				<li role="presentation" class="active">
-					<a href="#2daysBeforeOutbound" id="2daysBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
+					<a href="#2daysBeforeInbound" id="2daysBeforeInbound-tab" role="tab" data-toggle="tab" aria-controls="originalInboundDate" aria-expanded="true">php echo of 2 days before entered date</a>
 				</li>
 
 				<li role="presentation" class="active">
-					<a href="#dayBeforeOutbound" id="dayBeforeOutbound-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of day before entered date</a>
+					<a href="#dayBeforeInbound" id="dayBeforeInbound-tab" role="tab" data-toggle="tab" aria-controls="originalInboundDate" aria-expanded="true">php echo of day before entered date</a>
 				</li>
 
 				<li role="presentation" class="active">
-					<a href="#originalOutboundDate" id="originalOutboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalOutboundDate" aria-expanded="true">php echo of entered date</a>
+					<a href="#originalInboundDate" id="originalInboundDate-tab" role="tab" data-toggle="tab" aria-controls="originalInboundDate" aria-expanded="true">php echo of entered date</a>
 				</li>
 
 				<li role="presentation" class="active">
-					<a href="#dayAfterOutbound" id="dayAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterOutbound" aria-expanded="true">php echo of day after entered date</a>
+					<a href="#dayA fterInbound" id="dayAfterInbound-tab" role="tab" data-toggle="tab" aria-controls="dayAfterInbound" aria-expanded="true">php echo of day after entered date</a>
 				</li>
 
 				<li role="presentation" class="active">
-					<a href="#2daysAfterOutbound" id="2daysAfterOutbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterOutbound" aria-expanded="true">php echo of 2 days after entered date</a>
+					<a href="#2daysAfterInbound" id="2daysAfterInbound-tab" role="tab" data-toggle="tab" aria-controls="2daysAfterInbound" aria-expanded="true">php echo of 2 days after entered date</a>
 				</li>
 
 			</ul>
@@ -461,13 +451,13 @@ var_dump($hiddenRadio);
 			<div id="myTabContent" class="tab-content">
 
 
-				<div role="tabpanel" class="tab-pane fade" id="2daysBeforeOutbound" aria-labelledby="2daysBefore-tab">
+				<div role="tabpanel" class="tab-pane fade" id="2daysBeforeInbound" aria-labelledby="2daysBefore-tab">
 				</div>
 
-				<div role="tabpanel" class="tab-pane fade" id="dayBeforeOutbound" aria-labelledby="dayBefore-tab">
+				<div role="tabpanel" class="tab-pane fade" id="dayBeforeInbound" aria-labelledby="dayBefore-tab">
 				</div>
 
-				<div role="tabpanel" class="tab-pane fade in active" id="originalOutboundDate" aria-labelledby="dayOf-tab">
+				<div role="tabpanel" class="tab-pane fade in active" id="originalInboundDate" aria-labelledby="dayOf-tab">
 
 					<?php
 
@@ -483,7 +473,21 @@ var_dump($hiddenRadio);
 						//		throw(new RuntimeException("Make sure cookies are enabled.")//);
 						//	}
 
+						// execute return search flight with same process: clean inputs, adjust dates to needed format for return trip, switch origin and destination
+						$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+						$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
+						$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
+						$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
+						$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+						$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
+						//fixme check to see why is breaking when a second search is executed
+						// execute inbound flight search
+						$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
+							$userFlyDateStart2, "priceWithReturnPath");
+
+						// build and echo output string return flight
+						echo $tableStringStart . "SELECT RETURN FLIGHT</th></tr>" . $outputTableInbound . $tableStringEnd;
 
 
 
@@ -496,15 +500,19 @@ var_dump($hiddenRadio);
 					?>
 				</div>
 
-				<div role="tabpanel" class="tab-pane fade" id="dayAfterOutbound" aria-labelledby="dayAfter-tab">
+				<div role="tabpanel" class="tab-pane fade" id="dayAfterInbound" aria-labelledby="dayAfter-tab">
 				</div>
 
-				<div role="tabpanel" class="tab-pane fade" id="2daysAfterOutbound" aria-labelledby="2daysAfter-tab">
+				<div role="tabpanel" class="tab-pane fade" id="2daysAfterInbound" aria-labelledby="2daysAfter-tab">
 				</div>
 			</div>
 
 		</div>
 
+	</section>
+	<button type='submit' form="selectFlights" class='btn btn-default'>BOOK NOW!</button>
+</body>
+</html>
 
 
 
