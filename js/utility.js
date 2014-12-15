@@ -1,8 +1,8 @@
-// function to assign range for datepicker
 $(document).ready(function() {
 
-	//$('#departDate').datepicker();
-	//$('#returnDate').datepicker();
+	$(window).load(function(){
+		$(':input','#flightSearch').not('.form-control,:button, :submit, :reset, :hidden').val('')
+	});
 
 	$(function() {
 		function enableEnd() {
