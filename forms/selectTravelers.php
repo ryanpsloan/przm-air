@@ -21,24 +21,6 @@ EOF;
 
 	}
 
-	if(isset($_SESSION['travelerIds'])){
-		echo<<<HTML
-		<script>
-			$(function(){
-					var array = @Session['travelerIds'];
-				$(':checkbox').each(function() {
-					for(var i =0; i <; ++i){
-						if(this.val = array[i]){
-							this.checked = true;
-						}
-					}
-      		});
-		   });
-		</script>
-HTML;
-
-	}
-
 	$outboundArray = explode(",",$_SESSION['priceWithOutboundPath']);
 	$outboundFlightCount = 0;
 	for($i = 2; $i < count($outboundArray); $i++){
@@ -46,7 +28,9 @@ HTML;
 	}
 	$_SESSION['outboundFlightCount'] = $outboundFlightCount;
 	$paths[] = $_SESSION['priceWithOutboundPath'];
-	$paths[] = $_SESSION['priceWithReturnPath'];
+	if(isset($_SESSION['priceWithReturnPath'])){
+		$paths[] = $_SESSION['priceWithReturnPath'];
+	}
 	$flightIds = array();
 	$prices = array();
 

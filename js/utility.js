@@ -20,18 +20,10 @@ $(document).ready(function() {
 
 	});
 
-	$('input:radio[name=""]').change(function(){
-		if($(this).val() == 'Yes'){
+	$('input:radio[name="roundTripOrOneWay"]').change(function(){
+		if($(this).val() == '0'){
 			alert("test");
 		}
 	});
 });
 
-function isOneWay() {
-	if (document.getElementById('oneWay').checked) {
-		document.getElementById('returnP').style.display = 'none';
-	}
-	else{
-		document.getElementById('returnP').style.display = 'block';
-	}
-}
