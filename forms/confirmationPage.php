@@ -1,10 +1,12 @@
 <?php
 session_start();
+
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/class/profile.php");
 require("../php/class/flight.php");
 require("../php/class/traveler.php");
 require_once("../lib/csrf.php");
+
 
 
 

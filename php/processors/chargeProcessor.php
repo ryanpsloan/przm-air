@@ -14,8 +14,6 @@ require_once("../class/flight.php");
 require_once("../class/ticket.php");
 require_once("../class/ticketFlight.php");
 require_once('../../lib/csrf.php');
-// require_once("../../lib/stripe-php-1.17.3/lib/Stripe.php");
-
 
 $mysqli = MysqliConfiguration::getMysqli();
 
@@ -73,7 +71,7 @@ try {
 				$ticketFlights[$i]->insert($mysqli);
 			}
 		}
-		$_SESSION['tickets'] = $tickets;
+		$_SESSION['ticketIds'] = $tickets;
 		$_SESSION['ticketFlights'] = $ticketFlights;
 		header("Location: ../../forms/displayTickets.php");
 	}

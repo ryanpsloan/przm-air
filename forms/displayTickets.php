@@ -1,12 +1,12 @@
 <?php
 session_start();
-
 require("/etc/apache2/capstone-mysql/przm.php");
 require_once("../php/class/ticket.php");
 require_once("../php/class/ticketFlight.php");
 require_once("../php/class/traveler.php");
 require_once("../php/class/profile.php");
 require_once("../php/class/flight.php");
+
 if(isset($_SESSION['userId'])) {
 	$mysqli = MysqliConfiguration::getMysqli();
 	$profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);
