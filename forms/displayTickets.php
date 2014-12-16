@@ -55,6 +55,7 @@ $flightIds = $_SESSION['flightIds'];
 			width: 3em;
 		}
 		#displayArea{
+			display: block;
 		}
 		#headDiv{
 			margin-left: 3em;
@@ -66,6 +67,7 @@ $flightIds = $_SESSION['flightIds'];
 			margin-left: auto;
 			margin-right: auto;
 			margin-top: 2em;
+			display: block;
 		}
 		.innerDiv{
 			border: 1px solid black;
@@ -229,7 +231,8 @@ HTML;
 		}
 	}
 	echo "</tbody>
-			</table>";
+			</table>
+			</div>";
 ?>
 
 </div>
