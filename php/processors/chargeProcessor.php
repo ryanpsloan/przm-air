@@ -63,6 +63,7 @@ try {
 			$tickets[$i] = new Ticket(null, $confirmationNumber, $price, $status,
 				$profile->__get("profileId"), $travelers[$i], $transactionId);
 			$tickets[$i]->insert($mysqli);
+			$_SESSION['ticketIds'] = $tickets[$i];
 		}
 		foreach($flights as $flight) {
 
@@ -71,7 +72,7 @@ try {
 				$ticketFlights[$i]->insert($mysqli);
 			}
 		}
-		$_SESSION['ticketIds'] = $tickets;
+
 		$_SESSION['ticketFlights'] = $ticketFlights;
 		header("Location: ../../forms/displayTickets.php");
 	}
