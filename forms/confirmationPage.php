@@ -30,6 +30,7 @@ EOF;
 	$prices = $_SESSION['prices'];
 
 	if(isset($_POST['stripeToken'])) {
+		$_SESSION['stripeToken'] = $_POST['stripeToken'];
 		header("Location: ../php/processors/chargeProcessor.php");
 	}
 
@@ -101,9 +102,8 @@ EOF;
 			padding-left: 0;
 		}
 
-		#btn{
-			margin: .6em;
-			margin-left: 30em;
+		#paymentBtn{
+			margin-left: 32em;
 		}
 		#travelerDiv {
 			width: 30%;
@@ -227,6 +227,7 @@ HTML;
 
 			<div id="paymentDiv" class="col-lg-8">
 				<?php
+				$_SESSION['price'] = $price;
 				 $numTravelers = count($travelers);
 				 $newPrice = money_format("%n" ,($numTravelers * $price));
 
@@ -246,6 +247,7 @@ HTML;
 					</table>
 					<hr>
 					<input type="hidden" name="total" value="$totalPrice"/>
+					<div id="paymentBtn">
 					<form method="POST">
 						<script
 							src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -254,12 +256,9 @@ HTML;
 							data-name="PRZM AIR"
 							data-description="Purchase Airfare"
 							data-image="../img/cloud-icon.png">
-
-
 						</script>
-
-
 					</form>
+					</div>
 HTML;
 
 				?>

@@ -1,9 +1,12 @@
 <?php
 session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
-require_once("../php/class/transaction");
-require_once("../php/class/user");
-require_once("../php/class/profile");
+require_once("../class/transaction.php");
+require_once("../class/user.php");
+require_once("../class/profile.php");
+require_once("../class/flight.php");
+require_once("../class/ticket.php");
+require_once("../class/ticketFlight.php");
 require_once('../../lib/csrf.php');
 
 
@@ -15,10 +18,10 @@ $email = User::getUserByEmail($mysqli, $_SESSION['userId']);
 Stripe::setApiKey("sk_test_rjlpx8EvsmEGVk5RinBMV0Jj");
 
 // Get the credit card details submitted by the form
-$token = $_POST['stripeToken'];
-echo "vardump stripe token";
-var_dump($token);
+var_dump($_SESSION);
+$token = $_SESSION['stripeToken'];
 $amount = $_SESSION['totalInCents'];
+$price = $_SESSION['price'];
 
 
 // Create the charge on Stripe's servers - this will charge the user's card
@@ -29,68 +32,47 @@ try {
 			"card" => $token,
 			"description" => $email)
 	);
-	echo "vardump stripe charge";
-	var_dump($charge);
 
-// Check that it was paid:
 	if ($charge->paid === true) {
-
-		// Store the order in the database.
-		// Send the email.
-		// Celebrate!
-
-		// insert new transaction into mysql
-
-
 		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
-		$amount = "";
-		$dateApproved = new DateTime();
+		$dateApproved = new DateTime("NOW");
 		$cardToken = null;
-		$stripeToken ="";
-
-		$transaction = new Transaction(null, $profile->__get("ProfileId"), $amount, $dateApproved, $cardToken, $StripeToken);
-
-		try {
-			$transaction->insert($mysqli);
-
-		} catch (Exception $exception) {
-			echo "Unable to create transaction.";
+		$stripeToken = $charge->id;
+		$transaction = new Transaction(null, $profile->__get("profileId"), $amount, $dateApproved, $cardToken,
+			$stripeToken);
+		$transaction->insert($mysqli);
+		$flights = $_SESSION['flightIds'];
+		$travelers = $_SESSION['travelerIds'];
+		for($i = 0; $i < count($flights); $i++) {
+			Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($travelers)));
 		}
 
+		$transactionId = $transaction->getTransactionId();
+		$status = "PAID";
 
+		for($i = 0; $i < count($travelers); $i++) {
+			//generate confirmation #
+			$confirmationNumber = bin2hex(openssl_random_pseudo_bytes(3));
+			$confirmationNumber = strtoupper($confirmationNumber);
+			$tickets[$i] = new Ticket(null, $confirmationNumber, $price, $status,
+				$profile->__get("profileId"), $travelers[$i], $transactionId);
+			$tickets[$i]->insert($mysqli);
+		}
+		foreach($flights as $flight) {
 
+			for($i = 0; $i < count($tickets); $i++) {
+				$ticketFlights[$i] = new TicketFlight($flight, $tickets[$i]->getTicketId());
+				$ticketFlights[$i]->insert($mysqli);
+			}
+		}
+		$_SESSION['tickets'] = $tickets;
+		$_SESSION['ticketFlights'] = $ticketFlights;
+		header("Location: ../../forms/displayTickets.php");
+	}else{
+		throw(new Exception("Payment was unsuccessful"));
 	}
-} catch(Stripe_CardError $e) {
-	// The card has been declined
+}catch(Exception $e){
+	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
 
-$flights = $_SESSION['flightIds'];
-for($i = 0; $i < count($flights); $i++){
-	$tempFlt = Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($_SESSION['travelerIds'])));
-}
-$travelers = $_SESSION['travelerIds'];
-$transactionId = $transaction->getTransactionId();
-$totalPrice = $_SESSION['total'];
-$status = "PAID";
-
-//create individual tickets
-for($i = 0; $i < count($travelers); $i++){
-	//generate confirmation #
-	$confirmationNumber = bin2hex(openssl_random_pseudo_bytes(3));
-	$confirmationNumber = strtoupper($confirmationNumber);
-	$tickets[$i] = new Ticket(null, $confirmationNumber, $price, $status,
-		$profile->__get("profileId"), $travelers[$i], $transactionId);
-	$tickets[$i]->insert($mysqli);
-}
-foreach($flights as $flight) {
-
-	for($i = 0; $i < count($tickets); $i++){
-		$ticketFlights[] = new TicketFlight($flight, $tickets[$i]->getTicketId());
-		$ticketFlights->insert($mysqli);
-	}
-}
-$_SESSION['tickets'] = $tickets;
-$_SESSION['ticketFlights'] = $ticketFlights;
-header("Location: ../../forms/displayTickets.php");
-
-
+?>

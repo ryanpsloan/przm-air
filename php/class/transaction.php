@@ -156,13 +156,13 @@ class Transaction {
 	 **/
 	public function setAmount($newAmount) {
 		// first, ensure the amount is a double
-		if(filter_var($newAmount, FILTER_VALIDATE_FLOAT) === false) {
+		if(filter_var($newAmount, FILTER_VALIDATE_INT) === false) {
 			throw(new UnexpectedValueException("amount $newAmount is not numeric"));
 		}
 
 		// second, convert the amount to a double and enforce it's positive
-		$newAmount = floatval($newAmount);
-		if($newAmount <= 0.0) {
+		$newAmount = intval($newAmount);
+		if($newAmount <= 0) {
 			throw(new RangeException("amount $newAmount is not positive"));
 		}
 
@@ -235,6 +235,11 @@ class Transaction {
 	 **/
 	public function setCardToken($newCardToken) {
 		// filter the card token as a generic string
+		if($newCardToken === null){
+			$this->cardToken = null;
+			return;
+		}
+
 		$newCardToken = trim($newCardToken);
 
 		if(($newCardToken = filter_var($newCardToken, FILTER_SANITIZE_STRING)) === false){
