@@ -175,8 +175,9 @@ EOF;
 			background-color: lightblue;
 		}
 		#selectAll{
-			margin-left: 5.7em;
+			margin-left: 5.8em;
 		}
+
 
 	</style>
 </head>
@@ -223,8 +224,8 @@ EOF;
 					$origin = $flight->getOrigin();
 					$destination = $flight->getDestination();
 					$duration = $flight->getDuration()->format("%H:%I");
-					$depTime = $flight->getDepartureDateTime()->format('m/d/Y h:i:s a');
-					$arrTime = $flight->getArrivalDateTime()->format("m/d/Y h:i:s a");
+					$depTime = $flight->getDepartureDateTime()->format('h:i:s a m/d/Y');
+					$arrTime = $flight->getArrivalDateTime()->format("h:i:s a m/d/Y");
 					if($outboundFlightCount-- === 0){
 						echo <<<HTML
 					<hr><h3 style="text-align: center">Inbound Flight Details</h3>
@@ -266,13 +267,13 @@ HTML;
 
 </section>
 <section>
-	<h3 style="text-align: center">Select Travelers</h3>
+	<h3 style="text-align: center">Select <?php echo $numTravelers;?> Travelers</h3>
 <div id="formDiv">
 <form id="selectTravelersForm" action="../php/processors/processTravelers.php" method="post">
 	<?php echo generateInputTags(); ?>
 	<div class="buttonDiv">
 		<div class="innerBtnDiv">
-				<button id="A" type="submit" name="action" class="btn" value="Remove">Remove Travelers</button>
+				<button id="A" type="submit" name="action" class="btn" value="Remove">Remove Selected Travelers</button>
 				<button id="B" type="button" class="btn" data-toggle="modal" data-target="#myModal">
 				Add New Travelers</button>
 
@@ -282,39 +283,10 @@ HTML;
 	<div id="travelerContainer">
 	<h3 style="text-align: center"><span style="color: lightgrey">Travelers</span></h3>
 
-		<?php
-		if(count($staticTravelers) > 5) {
-			echo <<<HTML
-				<script>
-					$(function (){
-						$('#select_all').click(function(event) {
-  								if(this.checked) {
-          							$(':checkbox').each(function() {
-          							this.checked = true;
-      							});
-  								}
-  								else {
-    								$(':checkbox').each(function() {
-          							this.checked = false;
-      							});
-  								}
-						});
-				});
-				</script>
-HTML;
-			echo <<<HTML
-				<div id="selectAll"><input type="checkbox" id="select_all" /><span class="nameSpan">
-					Select All</span></div>
-
-HTML;
-		}
-
-		?>
 	<hr>
 		<div id="travelerList">
 			<div id="ckBoxes">
 			<input type="hidden" id="numTravelers" value="<?php echo $numTravelers?>">
-
 
 			<?php
 			$travelerArray = array();
@@ -349,11 +321,49 @@ HTML;
 			else{
 				echo "<p style='text-align: center'>You have not added any travelers</p>";
 			}
+
+			if(count($staticTravelers) > 4) {
+				echo <<<HTML
+				<script>
+					$(function (){
+						$('#select_all').click(function(event) {
+  								var limit = $('#numTravelers').val();
+  								var checkboxes = $('input[class="chkbox"]');
+
+  								if(this.checked) {
+          							checkboxes.each(function(){
+          								if(checkboxes.filter(':checked').length < limit){
+          									this.checked = true;
+											}
+											else{
+												checkboxes.filter(':not(:checked)').prop('disabled');
+											}
+      							});
+  								}
+  								else {
+    								checkboxes.filter(':checked').each(function() {
+          							this.checked = false;
+      							});
+  								}
+						});
+				});
+				</script>
+HTML;
+			}
 			?>
 			<div id="selectOutput"></div>
 			</div>
 		</div>
 		<hr>
+		<?php
+		if(count($staticTravelers) > 4) {
+		echo <<<HTML
+				<div id="selectAll"><input type="checkbox" id="select_all" /><span class="nameSpan">
+					Select $numTravelers</span></div>
+HTML;
+		}
+
+		?>
 	</div>
 
 	<div id="addTDiv"">
