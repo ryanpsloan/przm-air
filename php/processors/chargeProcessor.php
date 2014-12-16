@@ -27,7 +27,6 @@ $email = $user->getEmail();
 Stripe::setApiKey("sk_test_rjlpx8EvsmEGVk5RinBMV0Jj");
 
 // Get the credit card details submitted by the form
-var_dump($_SESSION);
 $token = $_SESSION['stripeToken'];
 $amount = $_SESSION['totalInCents'];
 $price = $_SESSION['price'];

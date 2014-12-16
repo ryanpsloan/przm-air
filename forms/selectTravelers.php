@@ -130,7 +130,7 @@ EOF;
 			margin-top: .7em;
 		}
 		#A{
-			margin-left: 3em;
+			margin-left: 1em;
 		}
 		#B{
 			margin-left: 2em;
