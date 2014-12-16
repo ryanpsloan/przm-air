@@ -24,7 +24,7 @@ $email = User::getUserByEmail($mysqli, $_SESSION['userId']);
 Stripe::setApiKey("sk_test_rjlpx8EvsmEGVk5RinBMV0Jj");
 
 // Get the credit card details submitted by the form
-var_dump($_SESSION);
+
 $token = $_SESSION['stripeToken'];
 $amount = $_SESSION['totalInCents'];
 $price = $_SESSION['price'];
@@ -63,6 +63,7 @@ try {
 			$tickets[$i] = new Ticket(null, $confirmationNumber, $price, $status,
 				$profile->__get("profileId"), $travelers[$i], $transactionId);
 			$tickets[$i]->insert($mysqli);
+			$ticketIds[$i] = $tickets[$i]->getTicketId();
 		}
 		foreach($flights as $flight) {
 
@@ -71,7 +72,8 @@ try {
 				$ticketFlights[$i]->insert($mysqli);
 			}
 		}
-		$_SESSION['tickets'] = $tickets;
+
+		$_SESSION['ticketIds'] = $ticketIds;
 		$_SESSION['ticketFlights'] = $ticketFlights;
 		header("Location: ../../forms/displayTickets.php");
 	}
