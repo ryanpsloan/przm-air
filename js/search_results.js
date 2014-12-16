@@ -39,8 +39,7 @@ $(document).ready(function()
 	});
 
 
-	//Data table function:
-	// $('.search-results').dataTable();
+	$('.search-results').dataTable();
 
 
 

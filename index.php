@@ -127,11 +127,12 @@ EOF;
 
 			<div role="tabpanel" class="tab-pane fade in active" id="search" aria-labelledby="search-tab">
 				<form class="navbar-form navbar-left" id="flightSearchForm"
-							 action="zach-temp-files/search_results_processor.php" method="POST">
+							 action="php/processors/search_results_processor2.php" method="POST">
 					<div class="form-group">
 						<div class="btn-group styleBtn" data-toggle="buttons">
 							<label class="btn btn-primary active">
-								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked value="No">
+								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked
+										 value="No">
 								Round Trip
 							</label>
 							<label class="btn btn-primary">
