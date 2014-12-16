@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Process Transaction</title>
+</head>
+<body>
 <?php
 session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
@@ -68,11 +74,20 @@ try {
 		$_SESSION['tickets'] = $tickets;
 		$_SESSION['ticketFlights'] = $ticketFlights;
 		header("Location: ../../forms/displayTickets.php");
-	}else{
-		throw(new Exception("Payment was unsuccessful"));
+	}
+	else{
+		echo <<<HTML
+			<div class='alert alert-danger' role='alert'>Payment unsuccessful...Redirecting</div>
+			<script>
+				setTimeout(function(){window.location.replace("../../forms/confirmationPage.php")}, 3000)
+			</script>
+HTML;
+
 	}
 }catch(Exception $e){
 	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
 }
 
 ?>
+</body>
+</html>
