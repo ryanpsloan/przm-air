@@ -282,7 +282,53 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 ?>
 
+<?php
 
+// set up all post variables that repeat in each tab, starting with outbound tabs and followed by inbound
+try {
+
+	//test for csrf at the top of the page fixme
+
+	// clean inputs, adjust dates to needed format for outbound flight
+	$userOrigin1 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
+	$userDestination1 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+
+
+	$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "departDate", FILTER_SANITIZE_STRING);
+	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+
+
+	// return inputs, adjust dates to needed format for return trip, switch origin and destination
+	$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+	$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
+
+	$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
+	$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
+	$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+
+
+	// set up modular string pieces for building output echo here and with later return path if exists
+	$tableStringStart = 	"<div class='center-table'>
+																<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+																	<thead>";
+	$tableStringMid = 	"<div>
+																<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
+																	<thead>";
+	$tableStringEnd = "</table>\n</div>";
+
+	//in case need to put back in string:
+	//<form style='width: 100%;' name='selectInbound' class='navbar-form navbar-left searchResults' action='selected_results_processor.php' method='POST'>
+	//</form>
+	//
+
+}catch (Exception $e){
+	// $_SESSION[$savedName] = $savedToken;
+	echo "<div class='alert alert-danger' role='alert'>
+												".$e->getMessage()."
+										</div>";
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -338,16 +384,13 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 	</nav>
 </header>
 <body>
-<input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio;?>">
-
-
-
+	<input type="hidden" name="hiddenRadio" value="<?php echo $hiddenRadio;?>">
 	<!--************************************OUTBOUND TABS******************************************-->
-<!--
-	<form style='width: 75%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
-	style='width: 100%;
--->
-<form name='selectOutbound' class='navbar-form navbar-left searchResults center' action='selected_results_processor.php' method='POST'>
+		<!--
+			<form style='width: 75%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+			style='width: 100%;
+		-->
+	<form name="selectFlights" class='navbar-form navbar-left searchResults' action='selected_results_processor.php' method='POST'>
 
 		<section class="center">
 			<br/>
@@ -385,16 +428,6 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 						// execute outbound search and build results table within outbound tabs
 						try {
-
-							//test for csrf at the top of the page
-
-							// clean inputs, adjust dates to needed format for outbound flight
-							$userOrigin1 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
-							$userDestination1 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-
-
-							$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "departDate", FILTER_SANITIZE_STRING);
-							$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
 							$userFlyDateStartObj1 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
 							$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
 
@@ -402,20 +435,7 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 							$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
 								$userFlyDateStart1, "priceWithOutboundPath");
 
-							// set up modular string pieces for building output echo here and with later return path if exists
-							$tableStringStart = 	"<div class='center-table'>
-															<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
-																<thead>";
-							$tableStringMid = 	"<div>
-															<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
-																<thead>";
-							$tableStringEnd = "</table>\n</div>";
-		//in case need to put back in string:
-		//<form style='width: 100%;' name='selectInbound' class='navbar-form navbar-left searchResults' action='selected_results_processor.php' method='POST'>
-		//</form>
-		//
 
-							//<button type='submit' class='btn btn-default'>BOOK NOW!</button> --  </body> save for later fixme
 							echo $tableStringStart . $outputTableOutbound . $tableStringEnd;
 
 
@@ -480,15 +500,8 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 						// execute return search and build results table within return tabs if round trip selected
 						try {
 
-							// execute return search flight with same process: clean inputs, adjust dates to needed format for return trip, switch origin and destination
-							$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-							$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
-
-							$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-							$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
-							$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
 							$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-							//fixme check to see why is breaking when a second search is executed
+
 							// execute inbound flight search
 							$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
 								$userFlyDateStart2, "priceWithReturnPath");
@@ -524,15 +537,15 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 		<div class="clearfix"></div>
 		<section class="center">
+			<br/>
 			<div class="btn-group btn-group-lg" role="group" aria-label="...">
-				<!--<button type='submit' class='btn btn-primary'>BOOK NOW!</button> -->
-				<input type="button" Value="BOOK NOW!" onclick="submitForms()">
+				<button type='submit' class='btn btn-primary'>BOOK NOW!</button>
 			</div>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+
 
 		</section>
 	</form>

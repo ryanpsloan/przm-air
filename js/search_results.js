@@ -60,10 +60,7 @@ $(document).ready(function()
 
 });
 
-submitForms = function(){
-	document.forms["selectOutbound"].submit();
-	document.forms["selectInbound"].submit();
-};
+
 
 
 
