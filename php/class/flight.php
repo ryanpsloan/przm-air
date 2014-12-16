@@ -1004,7 +1004,7 @@ var_dump($flightId);
 			throw(new RangeException("Number of layover minutes of $minLayover is not positive"));
 		}
 
-		$sessionId = session_id();
+		$sessionId = session_id() . mt_rand(0, 100000);
 
 		// fixme, create query template if possible to call the stored procedure and execute search in MySQL.  IF not possible COMMENT LIKE CRAZY so people aware of this bug.
 		// run stored procedure in MySQL and then get results from the results.php file.
