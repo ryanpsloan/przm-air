@@ -14,11 +14,14 @@ require_once("../class/flight.php");
 require_once("../class/ticket.php");
 require_once("../class/ticketFlight.php");
 require_once('../../lib/csrf.php');
+// require_once("../../lib/stripe-php-1.17.3/lib/Stripe.php");
 
 
 $mysqli = MysqliConfiguration::getMysqli();
 
-$email = User::getUserByEmail($mysqli, $_SESSION['userId']);
+$user = User::getUserByUserId($mysqli, $_SESSION['userId']);
+$email = $user->getEmail();
+
 
 // Set your secret key
 Stripe::setApiKey("sk_test_rjlpx8EvsmEGVk5RinBMV0Jj");
