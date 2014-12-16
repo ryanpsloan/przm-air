@@ -16,7 +16,8 @@ Stripe::setApiKey("sk_test_rjlpx8EvsmEGVk5RinBMV0Jj");
 
 // Get the credit card details submitted by the form
 $token = $_POST['stripeToken'];
-
+echo "vardump stripe token";
+var_dump($token);
 $amount = $_SESSION['totalInCents'];
 
 
@@ -28,6 +29,7 @@ try {
 			"card" => $token,
 			"description" => $email)
 	);
+	echo "vardump stripe charge";
 	var_dump($charge);
 
 // Check that it was paid:
@@ -67,7 +69,7 @@ for($i = 0; $i < count($flights); $i++){
 	$tempFlt = Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($_SESSION['travelerIds'])));
 }
 $travelers = $_SESSION['travelerIds'];
-$transactionId = $_SESSION['transactionId'];
+$transactionId = $transaction->getTransactionId();
 $totalPrice = $_SESSION['total'];
 $status = "PAID";
 
@@ -83,12 +85,12 @@ for($i = 0; $i < count($travelers); $i++){
 foreach($flights as $flight) {
 
 	for($i = 0; $i < count($tickets); $i++){
-		$ticketFlight[] = new TicketFlight($flight, $tickets[$i]->getTicketId());
-		$ticketFlight->insert($mysqli);
+		$ticketFlights[] = new TicketFlight($flight, $tickets[$i]->getTicketId());
+		$ticketFlights->insert($mysqli);
 	}
 }
 $_SESSION['tickets'] = $tickets;
-$_SESSION['ticketFlights'] = $ticketFlight;
+$_SESSION['ticketFlights'] = $ticketFlights;
 header("Location: ../../forms/displayTickets.php");
 
 
