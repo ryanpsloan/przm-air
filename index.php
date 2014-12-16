@@ -73,10 +73,10 @@ EOF;
 
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-default" role="navigation">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
+<header>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 						<span class="sr-only">Toggle navigation</span>
@@ -131,12 +131,12 @@ EOF;
 					<div class="form-group">
 						<div class="btn-group styleBtn" data-toggle="buttons">
 							<label class="btn btn-primary active">
-								<input type="radio" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked
-										 value="No">
+								<input type="radio" class="form-control" name="roundTripOrOneWay" id="roundTrip" autocomplete="off" checked
+										 value="no">
 								Round Trip
 							</label>
 							<label class="btn btn-primary">
-								<input type="radio" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="Yes">
+								<input type="radio" class="form-control" name="roundTripOrOneWay" id="oneWay" autocomplete="off" value="yes">
 								One Way
 							</label>
 						</div>
