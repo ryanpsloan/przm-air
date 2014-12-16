@@ -39,8 +39,7 @@ $(document).ready(function()
 	});
 
 
-	$('#outboundSelection').dataTable();
-	$('#returnSelection').dataTable();
+	$('.search-results').dataTable();
 
 
 

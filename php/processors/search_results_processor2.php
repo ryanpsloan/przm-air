@@ -286,10 +286,10 @@ try {
 
 	// set up modular string pieces for building output echo here and with later return path if exists
 	$tableStringStart = 	"<div class='center-table'>
-									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+									<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered search-results'>\n
 										<thead>";
 	$tableStringMid = 	"<div>
-									<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
+									<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered search-results' width='100%'>\n
 										<thead>";
 	$tableStringEnd = "</table>\n</div>";
 
