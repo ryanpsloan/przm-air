@@ -290,6 +290,7 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 	<title>PRZM AIR</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 <link type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<link type="text/css" href="../../css/search_results.css" rel="stylesheet" />
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
@@ -342,193 +343,199 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
 
 
 	<!--************************************OUTBOUND TABS******************************************-->
-<form style='width: 100%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
-<section class="center">
-	<br/>
-	<h2>SELECT DEPARTURE FLIGHT</h2>
-	<hr>
+<!--
+	<form style='width: 75%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
+	style='width: 100%;
+-->
+<form name='selectOutbound' class='navbar-form navbar-left searchResults center' action='selected_results_processor.php' method='POST'>
 
-	<div id="outbound" class="tabContainer" role="tabpanel">
+		<section class="center">
+			<br/>
+			<h2>SELECT DEPARTURE FLIGHT</h2>
+			<hr>
 
-	<!-- Nav tabs -->
-	<div class="container-fluid">
-		<ul class="nav nav-tabs nav-justified" role="tablist">
-			<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">2DB</a></li>
-			<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">1DB</a></li>
-			<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab"
-																	data-toggle="tab">D</a></li>
-			<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab"
-												data-toggle="tab">1DA</a></li>
-			<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab"
-												data-toggle="tab">2DA</a></li>
-		</ul>
-	</div>
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane fade in center" id="2DB">
-				<p>Test HTML to show if tabs are working 2DB</p>
-				<!--Insert Function Here-->
+			<div id="outbound" class="tabContainer" role="tabpanel">
+
+			<!-- Nav tabs -->
+			<div class="container-fluid">
+				<ul class="nav nav-tabs nav-justified" role="tablist">
+					<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">2DB</a></li>
+					<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">1DB</a></li>
+					<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab"
+																			data-toggle="tab">D</a></li>
+					<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab"
+														data-toggle="tab">1DA</a></li>
+					<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab"
+														data-toggle="tab">2DA</a></li>
+				</ul>
+			</div>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade in center" id="2DB">
+						<p>Test HTML to show if tabs are working 2DB</p>
+						<!--Insert Function Here-->
+
+					</div>
+					<div role="tabpanel" class="tab-pane fade in center" id="1DB">
+						<!--Insert Function Here-->
+					</div>
+					<div role="tabpanel" class="tab-pane fade in active center" id="D">
+						<br/>
+
+						<?php
+
+						// execute outbound search and build results table within outbound tabs
+						try {
+
+							//test for csrf at the top of the page
+
+							// clean inputs, adjust dates to needed format for outbound flight
+							$userOrigin1 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
+							$userDestination1 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+
+
+							$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "departDate", FILTER_SANITIZE_STRING);
+							$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
+							$userFlyDateStartObj1 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
+							$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
+
+							// get outbound results
+							$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
+								$userFlyDateStart1, "priceWithOutboundPath");
+
+							// set up modular string pieces for building output echo here and with later return path if exists
+							$tableStringStart = 	"<div class='center-table'>
+															<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
+																<thead>";
+							$tableStringMid = 	"<div>
+															<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
+																<thead>";
+							$tableStringEnd = "</table>\n</div>";
+		//in case need to put back in string:
+		//<form style='width: 100%;' name='selectInbound' class='navbar-form navbar-left searchResults' action='selected_results_processor.php' method='POST'>
+		//</form>
+		//
+
+							//<button type='submit' class='btn btn-default'>BOOK NOW!</button> --  </body> save for later fixme
+							echo $tableStringStart . $outputTableOutbound . $tableStringEnd;
+
+
+						}catch (Exception $e){
+							// $_SESSION[$savedName] = $savedToken;
+							echo "<div class='alert alert-danger' role='alert'>
+												".$e->getMessage()."
+										</div>";
+						}
+						?>
+
+					</div>
+					<div role="tabpanel" class="tab-pane fade in center" id="1DA">
+						<!--Insert Function Here-->
+					</div>
+					<div role="tabpanel" class="tab-pane fade in center" id="2DA">
+						<!--Insert Function Here-->
+					</div>
+				</div>
 
 			</div>
-			<div role="tabpanel" class="tab-pane fade in center" id="1DB">
-				<!--Insert Function Here-->
-			</div>
-			<div role="tabpanel" class="tab-pane fade in active center" id="D">
-				<br/>
-
-				<?php
-
-				// execute outbound search and build results table within outbound tabs
-				try {
-
-					//test for csrf at the top of the page
-
-					// clean inputs, adjust dates to needed format for outbound flight
-					$userOrigin1 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
-					$userDestination1 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+		</section>
 
 
-					$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "departDate", FILTER_SANITIZE_STRING);
-					$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
-					$userFlyDateStartObj1 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming2, new DateTimeZone('UTC'));
-					$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
+			<!--************************************RETURN TABS******************************************-->
 
-					// get outbound results
-					$outputTableOutbound = completeSearch($mysqli, $userOrigin1, $userDestination1,
-						$userFlyDateStart1, "priceWithOutboundPath");
+			<div class="clearfix"></div>
+		<section class="center">
+			<br/>
+			<h2>SELECT RETURN FLIGHT</h2>
+			<hr>
 
-					// set up modular string pieces for building output echo here and with later return path if exists
-					$tableStringStart = 	"<div class='center-table'>
-												<table id='outboundSelection' class='table table-striped table-responsive table-hover table-bordered'>\n
-												<thead>";
-					$tableStringMid = 	"<div>
-												<table id='returnSelection' class='table table-striped table-responsive table-hover table-bordered' width='100%'>\n
-												<thead>";
-					$tableStringEnd = "</table>\n</form></div>";
-//in case need to put back in string:
-//					<form style='width: 100%;' name='selectOutbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
-//					<form style='width: 100%;' name='selectInbound' class='navbar-form navbar-left' id='searchResults' action='selected_results_processor.php' method='POST'>
-//					Value="BOOK NOW!" onclick="submitForms()"
+			<div id="inbound" class="tabContainer" role="tabpanel">
 
-					//<button type='submit' class='btn btn-default'>BOOK NOW!</button> --  </body> save for later fixme
-					echo $tableStringStart . $outputTableOutbound . $tableStringEnd;
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs nav-justified" role="tablist">
+					<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">2DB</a></li>
+					<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">1DB</a></li>
+					<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab"
+																			data-toggle="tab">D</a></li>
+					<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab"
+														data-toggle="tab">1DA</a></li>
+					<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab"
+														data-toggle="tab">2DA</a></li>
+				</ul>
 
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade in center" id="I2DB">
+						<!--Insert Function Here-->
 
-				}catch (Exception $e){
-					// $_SESSION[$savedName] = $savedToken;
-					echo "<div class='alert alert-danger' role='alert'>
-										".$e->getMessage()."
-								</div>";
-				}
-				?>
+					</div>
+					<div role="tabpanel" class="tab-pane fade in center" id="I1DB">
+						<!--Insert Function Here-->
+					</div>
+					<div role="tabpanel" class="tab-pane fade in active center" id="ID">
+						<br/>
 
-			</div>
-			<div role="tabpanel" class="tab-pane fade in center" id="1DA">
-				<!--Insert Function Here-->
-			</div>
-			<div role="tabpanel" class="tab-pane fade in center" id="2DA">
-				<!--Insert Function Here-->
-			</div>
-		</div>
-
-	</div>
-</section>
+						<?php
 
 
-	<!--************************************RETURN TABS******************************************-->
+						// execute return search and build results table within return tabs if round trip selected
+						try {
 
-	<div class="clearfix"></div>
-<section class="center">
-	<br/>
-	<h2>SELECT RETURN FLIGHT</h2>
-	<hr>
+							// execute return search flight with same process: clean inputs, adjust dates to needed format for return trip, switch origin and destination
+							$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
+							$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
-	<div id="inbound" class="tabContainer" role="tabpanel">
+							$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
+							$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
+							$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+							$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
+							//fixme check to see why is breaking when a second search is executed
+							// execute inbound flight search
+							$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
+								$userFlyDateStart2, "priceWithReturnPath");
 
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs nav-justified" role="tablist">
-			<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">2DB</a></li>
-			<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">1DB</a></li>
-			<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab"
-																	data-toggle="tab">D</a></li>
-			<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab"
-												data-toggle="tab">1DA</a></li>
-			<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab"
-												data-toggle="tab">2DA</a></li>
-		</ul>
+							// build and echo output string return flight
+							echo $tableStringMid . $outputTableInbound . $tableStringEnd;
 
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane fade in center" id="I2DB">
-				<!--Insert Function Here-->
+
+
+						}catch (Exception $e){
+							// $_SESSION[$savedName] = $savedToken;
+							echo "<div class='alert alert-danger' role='alert'>
+												".$e->getMessage()."
+										</div>";
+						}
+						?>
+
+
+
+
+					</div>
+
+					<div role="tabpanel" class="tab-pane fade in center" id="I1DA">
+						<!--Insert Function Here-->
+					</div>
+					<div role="tabpanel" class="tab-pane fade in center" id="I2DA">
+						<!--Insert Function Here-->
+					</div>
+				</div>
 
 			</div>
-			<div role="tabpanel" class="tab-pane fade in center" id="I1DB">
-				<!--Insert Function Here-->
+		</section>
+
+		<div class="clearfix"></div>
+		<section class="center">
+			<div class="btn-group btn-group-lg" role="group" aria-label="...">
+				<!--<button type='submit' class='btn btn-primary'>BOOK NOW!</button> -->
+				<input type="button" Value="BOOK NOW!" onclick="submitForms()">
 			</div>
-			<div role="tabpanel" class="tab-pane fade in active center" id="ID">
-				<br/>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
 
-				<?php
-
-
-				// execute return search and build results table within return tabs if round trip selected
-				try {
-
-					// execute return search flight with same process: clean inputs, adjust dates to needed format for return trip, switch origin and destination
-					$userOrigin2 = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-					$userDestination2 = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
-
-					$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
-					$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
-					$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
-					$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-					//fixme check to see why is breaking when a second search is executed
-					// execute inbound flight search
-					$outputTableInbound = completeSearch($mysqli, $userOrigin2, $userDestination2,
-						$userFlyDateStart2, "priceWithReturnPath");
-
-					// build and echo output string return flight
-					echo $tableStringMid . $outputTableInbound . $tableStringEnd;
-
-
-
-				}catch (Exception $e){
-					// $_SESSION[$savedName] = $savedToken;
-					echo "<div class='alert alert-danger' role='alert'>
-										".$e->getMessage()."
-								</div>";
-				}
-				?>
-
-
-
-
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade in center" id="I1DA">
-				<!--Insert Function Here-->
-			</div>
-			<div role="tabpanel" class="tab-pane fade in center" id="I2DA">
-				<!--Insert Function Here-->
-			</div>
-		</div>
-
-	</div>
-</section>
-
-<div class="clearfix"></div>
-<section class="center">
-	<div class="btn-group btn-group-lg" role="group" aria-label="...">
-		<button type='submit' class='btn btn-primary'>BOOK NOW!</button>
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-
-</section>
-</form>
+		</section>
+	</form>
 </body>
 </html>
 
