@@ -294,10 +294,9 @@ try {
 	$tableStringEnd = "</table>\n</div>";
 
 
-	// clean inputs, adjust dates to needed format for outbound path
+	// clean inputs, adjust dates to needed format for OUTBOUND path***************************************************
 	$originOutbound = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 	$destinationOutbound = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
-
 
 	$userFlyDateStartIncoming1 = filter_input(INPUT_POST, "departDate", FILTER_SANITIZE_STRING);
 	$userFlyDateStartIncoming2 = $userFlyDateStartIncoming1 . " 07:00:00";
@@ -317,8 +316,8 @@ try {
 	$userFlyDateStartLess1 = $userFlyDateStartLess1obj->format("Y-m-d H:i:s");
 
 	// tab 3 or the MAIN tab
-	$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
 	$tabDisplayMainDay = $userFlyDateStartObj1->format("m-d-Y");
+	$userFlyDateStart1 = $userFlyDateStartObj1->format("Y-m-d H:i:s");
 
 	// tab 4 date math off main date for heading and input format
 	$userFlyDateStartAdd1obj = $userFlyDateStartObj1->add($oneDayInterval);
@@ -335,15 +334,38 @@ try {
 
 
 
-
-	// Inbound inputs, adjust dates to needed format for return trip, switch origin and destination
+	// clean INBOUND inputs, adjust dates format, switch origin and destination***************************************************
 	$originInbound = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
 	$destinationInbound = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
 
 	$userFlyDateStartIncoming3 = filter_input(INPUT_POST, "returnDate", FILTER_SANITIZE_STRING);
 	$userFlyDateStartIncoming4 = $userFlyDateStartIncoming3 . " 07:00:00";
-	$userFlyDateStartObj2 = DateTime::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
+	$userFlyDateInboundObj = DateTimeImmutable::createFromFormat("m/d/Y H:i:s", $userFlyDateStartIncoming4, new DateTimeZone('UTC'));
 
+
+	// tab 1 date math off main date for heading and input format
+	$userFlyDateInboundLess2obj = $userFlyDateInboundObj->sub($twoDayInterval);
+	$tabDisplayInboundLess2Days = $userFlyDateInboundLess2obj->format("m-d-Y");
+	$userFlyDateInboundLess2 = $userFlyDateInboundLess2obj->format("Y-m-d H:i:s");
+
+	// tab 2 date math off main date for heading and input format
+	$userFlyDateInboundLess1obj = $userFlyDateInboundObj->sub($oneDayInterval);
+	$tabDisplayInboundLess1Day = $userFlyDateInboundLess1obj->format("m-d-Y");
+	$userFlyDateInboundLess1 = $userFlyDateInboundLess1obj->format("Y-m-d H:i:s");
+
+	// tab 3 or the MAIN tab
+	$tabDisplayInboundMainDay = $userFlyDateInboundObj->format("m-d-Y");
+	$userFlyDateInbound = $userFlyDateInboundObj->format("Y-m-d H:i:s");
+
+	// tab 4 date math off main date for heading and input format
+	$userFlyDateInboundAdd1obj = $userFlyDateInboundObj->add($oneDayInterval);
+	$tabDisplayInboundAdd1Day = $userFlyDateInboundAdd1obj->format("m-d-Y");
+	$userFlyDateInboundAdd1 = $userFlyDateInboundAdd1obj->format("Y-m-d H:i:s");
+
+	// tab 5 date math off main date for heading and input format
+	$userFlyDateInboundAdd2obj = $userFlyDateInboundObj->add($twoDayInterval);
+	$tabDisplayInboundAdd2Days = $userFlyDateInboundAdd2obj->format("m-d-Y");
+	$userFlyDateInboundAdd2 = $userFlyDateInboundAdd2obj->format("Y-m-d H:i:s");
 
 
 
@@ -430,30 +452,29 @@ try {
 
 			<div id="outbound" class="tabContainer" role="tabpanel">
 
-			<!-- Nav tabs -->
-			<div class="container-fluid">
-				<ul class="nav nav-tabs nav-justified" role="tablist">
-					<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">
-							<?php echo $tabDisplayLess2Days;?></a></li>
+				<!-- Nav tabs -->
+				<div class="container-fluid">
+					<ul class="nav nav-tabs nav-justified" role="tablist">
+						<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">
+								<?php echo $tabDisplayLess2Days;?></a></li>
 
-					<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">
-							<?php echo $tabDisplayLess1Day;?></a></li>
+						<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">
+								<?php echo $tabDisplayLess1Day;?></a></li>
 
-					<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab" data-toggle="tab">
-							<?php echo $tabDisplayMainDay;?></a></li>
+						<li role="presentation" class="active"><a href="#D" aria-controls="D" role="tab" data-toggle="tab">
+								<?php echo $tabDisplayMainDay;?></a></li>
 
-					<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab" data-toggle="tab">
-							<?php echo $tabDisplayAdd1Day;?></a></li>
-					<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab" data-toggle="tab">
-							<?php echo $tabDisplayAdd2Days;?></a></li>
-				</ul>
-			</div>
+						<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab" data-toggle="tab">
+								<?php echo $tabDisplayAdd1Day;?></a></li>
+						<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab" data-toggle="tab">
+								<?php echo $tabDisplayAdd2Days;?></a></li>
+					</ul>
+				</div>
+
+				<!-- Tab panes -->
 				<div class="tab-content">
-
-
 					<div role="tabpanel" class="tab-pane fade in center" id="2DB">
 						<br/>
-
 						<?php
 							// execute outbound search and build results table within outbound tabs
 							try {
@@ -474,7 +495,6 @@ try {
 
 					<div role="tabpanel" class="tab-pane fade in center" id="1DB">
 						<br/>
-
 						<?php
 							// execute outbound search and build results table within outbound tabs
 							try {
@@ -483,7 +503,6 @@ try {
 									$userFlyDateStartLess1, "priceWithOutboundPath");
 
 								echo $tableStringStart . $outputTableOutboundLess1 . $tableStringEnd;
-
 
 							}catch (Exception $e){
 								// $_SESSION[$savedName] = $savedToken;
@@ -497,7 +516,6 @@ try {
 
 					<div role="tabpanel" class="tab-pane fade in active center" id="D">
 						<br/>
-
 						<?php
 							// execute outbound search and build results table within outbound tabs
 							try {
@@ -505,7 +523,6 @@ try {
 									$userFlyDateStart1, "priceWithOutboundPath");
 
 								echo $tableStringStart . $outputTableOutbound . $tableStringEnd;
-
 
 							}catch (Exception $e){
 								// $_SESSION[$savedName] = $savedToken;
@@ -519,7 +536,6 @@ try {
 
 					<div role="tabpanel" class="tab-pane fade in center" id="1DA">
 						<br/>
-
 						<?php
 							// execute outbound search and build results table within outbound tabs
 							try {
@@ -528,7 +544,6 @@ try {
 									$userFlyDateStartAdd1, "priceWithOutboundPath");
 
 								echo $tableStringStart . $outputTableOutboundAdd1 . $tableStringEnd;
-
 
 							}catch (Exception $e){
 								// $_SESSION[$savedName] = $savedToken;
@@ -542,7 +557,6 @@ try {
 
 					<div role="tabpanel" class="tab-pane fade in center" id="2DA">
 						<br/>
-
 						<?php
 							// execute outbound search and build results table within outbound tabs
 							try {
@@ -551,7 +565,6 @@ try {
 									$userFlyDateStartAdd2, "priceWithOutboundPath");
 
 								echo $tableStringStart . $outputTableOutboundAdd2 . $tableStringEnd;
-
 
 							}catch (Exception $e){
 								// $_SESSION[$savedName] = $savedToken;
@@ -562,84 +575,150 @@ try {
 						?>
 					</div>
 				</div>
-
-
 			</div>
 		</section>
 
 
 			<!--************************************RETURN TABS******************************************-->
 
-			<div class="clearfix"></div>
+		<div class="clearfix"></div>
 		<section class="center">
 			<br/>
 			<h2>SELECT RETURN FLIGHT</h2>
 			<hr>
 
 			<div id="inbound" class="tabContainer" role="tabpanel">
-
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs nav-justified" role="tablist">
-					<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">2DB</a></li>
-					<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">1DB</a></li>
-					<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab"
-																			data-toggle="tab">D</a></li>
-					<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab"
-														data-toggle="tab">1DA</a></li>
-					<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab"
-														data-toggle="tab">2DA</a></li>
+					<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundLess2Days;?></a></li>
+
+					<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundLess1Day;?></a></li>
+
+					<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundMainDay;?></a></li>
+
+					<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundAdd1Day;?></a></li>
+
+					<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundAdd2Days;?></a></li>
 				</ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane fade in center" id="I2DB">
-						<!--Insert Function Here-->
 
+
+					<div role="tabpanel" class="tab-pane fade in center" id="I2DB">
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundLess2 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundLess2, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundLess2 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+														".$e->getMessage()."
+												</div>";
+							}
+						?>
 					</div>
+
+
 					<div role="tabpanel" class="tab-pane fade in center" id="I1DB">
-						<!--Insert Function Here-->
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundLess1 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundLess1, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundLess1 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+															".$e->getMessage()."
+													</div>";
+							}
+						?>
 					</div>
+
+
 					<div role="tabpanel" class="tab-pane fade in active center" id="ID">
 						<br/>
-
 						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInbound = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInbound, "priceWithReturnPath");
 
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInbound . $tableStringEnd;
 
-						// execute return search and build results table within return tabs if round trip selected
-						try {
-
-							$userFlyDateStart2 = $userFlyDateStartObj2->format("Y-m-d H:i:s");
-
-							// execute inbound flight search
-							$outputTableInbound = completeSearch($mysqli, $originInbound, $destinationInbound,
-								$userFlyDateStart2, "priceWithReturnPath");
-
-							// build and echo output string return flight
-							echo $tableStringMid . $outputTableInbound . $tableStringEnd;
-
-
-
-						}catch (Exception $e){
-							// $_SESSION[$savedName] = $savedToken;
-							echo "<div class='alert alert-danger' role='alert'>
-												".$e->getMessage()."
-										</div>";
-						}
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+													".$e->getMessage()."
+											</div>";
+							}
 						?>
-
-
-
-
 					</div>
+
 
 					<div role="tabpanel" class="tab-pane fade in center" id="I1DA">
-						<!--Insert Function Here-->
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundAdd1 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundAdd1, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundAdd1 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+															".$e->getMessage()."
+													</div>";
+							}
+						?>
 					</div>
+
+
 					<div role="tabpanel" class="tab-pane fade in center" id="I2DA">
-						<!--Insert Function Here-->
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundAdd2 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundAdd2, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundAdd2 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+															".$e->getMessage()."
+													</div>";
+							}
+						?>
 					</div>
 				</div>
-
 			</div>
 		</section>
 

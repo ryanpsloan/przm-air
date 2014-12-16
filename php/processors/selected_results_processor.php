@@ -27,30 +27,30 @@ try {
 
 // The following code may be needed at later time to decrement seats on each flight at the time of selection by user
 //
-//	$mysqli = MysqliConfiguration::getMysqli();
-//	$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
-//
-//	// turn results into array, then grab number of passengers and loop through flight Ids to decrement seats available
-//	$outboundArray = explode(",", $_POST["priceWithOutboundPath"]);
-//	$outboundChangeBy = -$outboundArray[1];
-//
-//	for ($i=2; empty($outboundArray[$i]) === false; $i++){
-//		$flightId = $outboundArray[$i];
-//		Flight::changeNumberOfSeats($mysqli, $flightId, $outboundChangeBy);
-//	}
-//
-//	if(!empty($_POST ["priceWithReturnPath"])) {
-//		$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
-//
-//		// turn results into array, then grab number of passengers and loop through flight Ids to decrement seats available
-//		$returnArray = explode(",", $_POST["priceWithReturnPath"]);
-//		$returnChangeBy = -$returnArray[1];
-//
-//		for ($j=2; empty($returnArray[$j]) === false; $j++){
-//			$flightId = $returnArray[$j];
-//			Flight::changeNumberOfSeats($mysqli, $flightId, $returnChangeBy);
-//		}
-//	}
+	$mysqli = MysqliConfiguration::getMysqli();
+	$_SESSION['priceWithOutboundPath'] = $_POST ["priceWithOutboundPath"];
+
+	// turn results into array, then grab number of passengers and loop through flight Ids to decrement seats available
+	$outboundArray = explode(",", $_POST["priceWithOutboundPath"]);
+	$outboundChangeBy = -$outboundArray[1];
+
+	for ($i=2; empty($outboundArray[$i]) === false; $i++){
+		$flightId = $outboundArray[$i];
+		Flight::changeNumberOfSeats($mysqli, $flightId, $outboundChangeBy);
+	}
+
+	if(!empty($_POST ["priceWithReturnPath"])) {
+		$_SESSION['priceWithReturnPath'] = $_POST ["priceWithReturnPath"];
+
+		// turn results into array, then grab number of passengers and loop through flight Ids to decrement seats available
+		$returnArray = explode(",", $_POST["priceWithReturnPath"]);
+		$returnChangeBy = -$returnArray[1];
+
+		for ($j=2; empty($returnArray[$j]) === false; $j++){
+			$flightId = $returnArray[$j];
+			Flight::changeNumberOfSeats($mysqli, $flightId, $returnChangeBy);
+		}
+	}
 
 
 	if(isset($_SESSION['userId'])){
