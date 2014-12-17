@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_SESSION);
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/class/profile.php");
 require("../php/class/traveler.php");
@@ -97,7 +98,7 @@ EOF;
 		#formDiv{
 			position: relative;
 			top: 52%;
-			left: 33%;
+			left: 29%;
 			display: inline;
 		}
 		#travelerContainer{
@@ -355,7 +356,7 @@ HTML;
 		</div>
 		<hr>
 		<?php
-		if(count($staticTravelers) > 4) {
+		if(count($staticTravelers) > 4 && $numTravelers > 4) {
 		echo <<<HTML
 				<div id="selectAll"><input type="checkbox" id="select_all" /><span class="nameSpan">
 					Select $numTravelers</span></div>

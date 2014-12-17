@@ -54,6 +54,7 @@ HTML;
 			$travelerArray = $_POST['travelerArray'];
 			for($i = 0; $i < count($travelerArray); $i++) {
 				$oldTraveler = Traveler::getTravelerByTravelerId($mysqli, $travelerArray[$i]);
+				var_dump($oldTraveler);
 				$oldTraveler->delete($mysqli);
 
 			}
@@ -105,7 +106,7 @@ HTML;
 	echo <<<HTML
 	<div class='alert alert-danger si' role='alert'>$msg</div>
 	<script>
-	setTimeout(function(){location.reload()}, 2000)
+	//setTimeout(function(){location.reload()}, 2000)
 	</script>
 HTML;
 

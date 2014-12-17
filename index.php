@@ -1,11 +1,13 @@
 <?php
-	include("php/class/user.php");
-	include("php/class/profile.php");
-	include("php/class/flight.php");
-	include("lib/csrf.php");
+session_start();
+
+include("php/class/user.php");
+include("php/class/profile.php");
+include("php/class/flight.php");
+include("lib/csrf.php");
 
 try {
-	session_start();
+
 
 	$mysqli = MysqliConfiguration::getMysqli();
 
@@ -212,7 +214,7 @@ EOF;
 							<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
 						<li><p><a href="forms/editTravelers.php">
 									<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
-						<li><p><a href="">
+						<li><p><a href="forms/viewItinerary.php">
 									<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
 						<li><p><a href="">
 									<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>

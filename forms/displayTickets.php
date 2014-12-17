@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_SESSION);
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../php/class/traveler.php");
 require_once("../php/class/profile.php");
