@@ -2176,24 +2176,145 @@ try {
 
 
 
-<?php 	if(($hiddenRadio == 'No')) {  		echo " 			<section class='center' id='returnTabs'> 			<br/> 			<h2>SELECT RETURN FLIGHT</h2> 			<hr>  			<div id='inbound' class='tabContainer' role='tabpanel'> 				<!-- Nav tabs --> 				<ul class='nav nav-tabs nav-justified' role='tablist'> 					<li role='presentation'><a href='#I2DB' aria-controls='I2DB' role='tab' data-toggle='tab'> 							$tabDisplayInboundLess2Days</a></li>  					<li role='presentation'><a href='#I1DB' aria-controls='I1DB' role='tab' data-toggle='tab'> 							$tabDisplayInboundLess1Day;</a></li>  					<li role='presentation' class='active'><a href='#ID' aria-controls='ID' role='tab' data-toggle='tab'> 							$tabDisplayInboundMainDay;</a></li>  					<li role='presentation'><a href='#I1DA' aria-controls='I1DA' role='tab' data-toggle='tab'> 							$tabDisplayInboundAdd1Day;</a></li>  					<li role='presentation'><a href='#I2DA' aria-controls='I2DA' role='tab' data-toggle='tab'> 							$tabDisplayInboundAdd2Days</a></li> 				</ul>  				<!-- Tab panes --> 				<div class='tab-content'>   					<div role='tabpanel' class='tab-pane fade in center' id='I2DB'> 						<br/>";   		// execute return search and build results table within return tabs if round trip selected 
-		try { 
-		// execute inbound flight search 
-		$outputTableInboundLess2 = completeSearch($mysqli, $originInbound, $destinationInbound, 				$userFlyDateInboundLess2, 'priceWithReturnPath');  
-		// build and echo output string return flight 
-		echo $tableStringMid . $outputTableInboundLess2 . $tableStringEnd;   		} catch(Exception $e) { 			// $_SESSION[$savedName] = $savedToken; 
-		echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>"; 		}  		echo "</div>   					<div role='tabpanel' class='tab-pane fade in center' id='I1DB'> 						<br/>";  
-		// execute return search and build results table within return tabs if round trip selected 
-		try { 
-		// execute inbound flight search 
-		$outputTableInboundLess1 = completeSearch($mysqli, $originInbound, $destinationInbound, 				$userFlyDateInboundLess1, 'priceWithReturnPath');  
-		// build and echo output string return flight 
-		echo $tableStringMid . $outputTableInboundLess1 . $tableStringEnd;  		} catch(Exception $e) { 			// $_SESSION[$savedName] = $savedToken; 
-		echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>"; 		}  		echo "</div>   					<div role='tabpanel' class='tab-pane fade in active center' id='ID'> 						<br/>";   
-		// execute return search and build results table within return tabs if round trip selected 
-		try { 			// execute inbound flight search 
-		$outputTableInbound = completeSearch($mysqli, $originInbound, $destinationInbound,  $userFlyDateInbound, 'priceWithReturnPath');  
-		// build and echo output string return flight 			echo $tableStringMid . $outputTableInbound . $tableStringEnd;  		} catch(Exception $e) { 			// $_SESSION[$savedName] = $savedToken; 			echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>"; 		}  		echo "</div>   					<div role='tabpanel' class='tab-pane fade in center' id='I1DA'> 						<br/>";  		// execute return search and build results table within return tabs if round trip selected 		try { 			// execute inbound flight search 			$outputTableInboundAdd1 = completeSearch($mysqli, $originInbound, $destinationInbound, 				$userFlyDateInboundAdd1, 'priceWithReturnPath');  			// build and echo output string return flight 			echo $tableStringMid . $outputTableInboundAdd1 . $tableStringEnd;  		} catch(Exception $e) { 			// $_SESSION[$savedName] = $savedToken; 			echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>"; 		}  		echo "</div>   					<div role='tabpanel' class='tab-pane fade in center' id='I2DA'> 						<br/>";  		// execute return search and build results table within return tabs if round trip selected 		try { 			// execute inbound flight search 			$outputTableInboundAdd2 = completeSearch($mysqli, $originInbound, $destinationInbound, 				$userFlyDateInboundAdd2, 'priceWithReturnPath');  			// build and echo output string return flight 			echo $tableStringMid . $outputTableInboundAdd2 . $tableStringEnd;   		} catch(Exception $e) { 			// $_SESSION[$savedName] = $savedToken; 			echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>"; 		} 		echo "</div> 				</div> 			</div> 		</section>"; }?> 
+		<section class="center">
+			<br/>
+			<h2>SELECT RETURN FLIGHT</h2>
+			<hr>
+
+			<div id="inbound" class="tabContainer" role="tabpanel">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs nav-justified" role="tablist">
+					<li role="presentation"><a href="#I2DB" aria-controls="I2DB" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundLess2Days;?></a></li>
+
+					<li role="presentation"><a href="#I1DB" aria-controls="I1DB" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundLess1Day;?></a></li>
+
+					<li role="presentation" class="active"><a href="#ID" aria-controls="ID" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundMainDay;?></a></li>
+
+					<li role="presentation"><a href="#I1DA" aria-controls="I1DA" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundAdd1Day;?></a></li>
+
+					<li role="presentation"><a href="#I2DA" aria-controls="I2DA" role="tab" data-toggle="tab">
+							<?php echo $tabDisplayInboundAdd2Days;?></a></li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+
+
+					<div role="tabpanel" class="tab-pane fade in center" id="I2DB">
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundLess2 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundLess2, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundLess2 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+														".$e->getMessage()."
+												</div>";
+							}
+						?>
+					</div>
+
+
+					<div role="tabpanel" class="tab-pane fade in center" id="I1DB">
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundLess1 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundLess1, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundLess1 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+															".$e->getMessage()."
+													</div>";
+							}
+						?>
+					</div>
+
+
+					<div role="tabpanel" class="tab-pane fade in active center" id="ID">
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInbound = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInbound, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInbound . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+													".$e->getMessage()."
+											</div>";
+							}
+						?>
+					</div>
+
+
+					<div role="tabpanel" class="tab-pane fade in center" id="I1DA">
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundAdd1 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundAdd1, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundAdd1 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+															".$e->getMessage()."
+													</div>";
+							}
+						?>
+					</div>
+
+
+					<div role="tabpanel" class="tab-pane fade in center" id="I2DA">
+						<br/>
+						<?php
+							// execute return search and build results table within return tabs if round trip selected
+							try {
+								// execute inbound flight search
+								$outputTableInboundAdd2 = completeSearch($mysqli, $originInbound, $destinationInbound,
+									$userFlyDateInboundAdd2, "priceWithReturnPath");
+
+								// build and echo output string return flight
+								echo $tableStringMid . $outputTableInboundAdd2 . $tableStringEnd;
+
+							}catch (Exception $e){
+								// $_SESSION[$savedName] = $savedToken;
+								echo "<div class='alert alert-danger' role='alert'>
+															".$e->getMessage()."
+													</div>";
+							}
+						?>
+					</div>
+				</div>
+			</div>
+		</section>
 
 
 
