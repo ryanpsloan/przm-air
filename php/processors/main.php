@@ -44,22 +44,30 @@ $traveler1->insert($mysqli);
 //echo "traveler1 after insert->";
 //var_dump($traveler1);
 
-$traveler2 = new Traveler(null, $profileId, "Traveler", "a", "Two", $testDateOfBirth);
+$traveler2 = new Traveler(null, $profileId, "Zach", "", "Grant", $testDateOfBirth);
 $traveler2->insert($mysqli);
 //echo "traveler2 after insert->";
 //var_dump($traveler2);
 
-$traveler3 = new Traveler(null, $profileId, "Traveler", "b" , "Three", $testDateOfBirth);
+$traveler3 = new Traveler(null, $profileId, "Ryan", "" , "Sloan", $testDateOfBirth);
 $traveler3->insert($mysqli);
 //echo "traveler3 after insert->";
 //var_dump($traveler3);
 
-$traveler4 = new Traveler(null, $profileId, "Traveler", "c", "Four", $testDateOfBirth);
+$traveler4 = new Traveler(null, $profileId, "Paul", "", "Morbitzer", $testDateOfBirth);
 $traveler4->insert($mysqli);
 //echo "traveler4 after insert->";
 //var_dump($traveler4);
 
-$travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4);
+$traveler5 = new Traveler(null, $profileId, "Marc", "", "Hayes", $testDateOfBirth);
+$traveler5->insert($mysqli);
+
+$traveler6 = new Traveler(null, $profileId, "Dylan", "", "McDonald", $testDateOfBirth);
+$traveler6->insert($mysqli);
+
+
+
+$travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4,$traveler5,$traveler6);
 $_SESSION['travelerArray'] = $travelerArray;
 
 

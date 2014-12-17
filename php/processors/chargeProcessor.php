@@ -79,7 +79,7 @@ try {
 		}
 
 
-		header("Location: ../../forms/displayTickets.php");
+		//header("Location: ../../forms/displayTickets.php");
 	}
 	else{
 		echo <<<HTML

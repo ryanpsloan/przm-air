@@ -102,38 +102,40 @@ $flightIds = $_SESSION['flightIds'];
 	</style>
 </head>
 <body>
-<nav class="navbar navbar-default" role="navigation">
-	<div class="container-fluid">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="../php/processors/clearSession.php"><span class="glyphicon glyphicon-cloud"
-																											aria-hidden="true"></span> PRZM AIR</a>
-		</div>
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li></li>
-			</ul>
+<<header>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="../php/processors/clearSession.php"><span class="glyphicon glyphicon-cloud"
+																												aria-hidden="true"></span> PRZM AIR</a>
+			</div>
 
-			<ul class="nav navbar-nav navbar-right">
-				<li class="disabled"> </li>
-				<li class="active"><a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a></li>
-				<li><a href="#"></a></li>
-			</ul>
-		</div><!-- /.navbar-collapse -->
-	</div><!-- /.container-fluid -->
-</nav>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a>
+					</li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class="disabled"><?php echo $userName?> </li>
+					<li class="active"><?php echo $status?></li>
+					<li><a href="#"></a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
 </header>
 <div id="headDiv">
 	<h3>Payment Successful! Thanks for flying with us!</h3>
 </div>
-<a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a>
 <div id="displayArea" class="col-lg-12">
 <?php
 
