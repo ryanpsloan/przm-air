@@ -1,12 +1,11 @@
 <?php
 session_start();
-unset($_SESSION['priceWithOutboundPath']);
-unset($_SESSION['priceWithInboundPath']);
-unset($_SESSION['flightIds']);
-unset($_SESSION['prices']);
-unset($_SESSION['numTravelers']);
-unset($_SESSION['outboundFlightCount']);
-unset($_SESSION['travelerIds']);
-
-header("Location: https://bootcamp-coders.cnm.edu/~rsloan/przmair/index.php");
+$userIdSession = $_SESSION['userId'];
+$_SESSION = array();
+$params = session_get_cookie_params();
+setcookie(session_name(), "", 1, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+session_unset();
+session_destroy();
+$_SESSION = $userIdSession;
+header("Location: ../../index.php");
 ?>
