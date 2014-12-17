@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../php/class/profile.php");
 require("../php/class/traveler.php");
@@ -117,11 +116,11 @@ EOF;
 			border: 1px solid lightgrey;
 		}
 		.innerBtnDiv{
-			margin-left: 3.7em;
+			margin-left: 1.7em;
 			margin-top: .7em;
 		}
 		.confirmButtonDiv{
-			margin-left: 11em;
+			margin-left: 4.7em;
 			margin-bottom: 2em;
 			height: 4em;
 			width: 15em;
@@ -134,10 +133,10 @@ EOF;
 			margin-left: 1em;
 		}
 		#B{
-			margin-left: 2em;
+			margin-left: 1.2em;
 		}
 		#addTravelerDiv{
-			height: 30em;
+			height: 35em;
 			width: 30em;
 			border: 1px solid lightgrey;
 
@@ -161,7 +160,7 @@ EOF;
 		}
 		#travelerList{
 			background-color: white;
-			height: 20em;
+			height: 23em;
 		}
 		#ckBoxes input{
 			margin-left: 4.2em;
@@ -338,6 +337,7 @@ HTML;
 											else{
 												checkboxes.filter(':not(:checked)').prop('disabled');
 											}
+
       							});
   								}
   								else {
@@ -360,6 +360,7 @@ HTML;
 		echo <<<HTML
 				<div id="selectAll"><input type="checkbox" id="select_all" /><span class="nameSpan">
 					Select $numTravelers</span></div>
+				<input type="hidden" name="numTravelers" value="$numTravelers">;
 HTML;
 		}
 

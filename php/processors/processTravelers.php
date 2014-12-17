@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../../php/class/traveler.php");
 require_once("../../php/class/profile.php");
@@ -14,8 +15,10 @@ try {
 	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
 	}
+
 	$mysqli = MysqliConfiguration::getMysqli();
 	$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+
 	if($_POST['action'] === "Add") {
 			$totalTravelers = Traveler::getTravelerByProfileId($mysqli, $profile->__get("profileId"));
 			if($i = count($totalTravelers) > 7) {
@@ -80,7 +83,11 @@ HTML;
 		if(!isset($_POST['travelerArray'])){
 			throw(new ErrorException("Please check the travelers for whom you are purchasing this flight"));
 		}
-
+		if(isset($_POST['travelerArray'])  && isset($_POST['numTravelers'])){
+			if(count($_POST['travelerArray']) < $_POST['numTravelers']) {
+				throw(new Exception("Please select " . $_POST['numTravelers'] . " Total Travelers"));
+			}
+		}
 		if(isset($_SESSION['priceWithOutboundPath'])) {
 			$_SESSION['travelerIds'] = $_POST['travelerArray'];
 			echo <<<HTML
@@ -106,7 +113,7 @@ HTML;
 	echo <<<HTML
 	<div class='alert alert-danger si' role='alert'>$msg</div>
 	<script>
-	//setTimeout(function(){location.reload()}, 2000)
+	setTimeout(function(){location.reload()}, 2000)
 	</script>
 HTML;
 

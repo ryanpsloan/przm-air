@@ -11,7 +11,7 @@ require_once("../class/transaction.php");
 require_once("../class/user.php");
 require_once("../class/profile.php");
 require_once("../class/flight.php");
-require_once("../class/ticket.php");
+include("../class/ticket.php");
 require_once("../class/ticketFlight.php");
 require_once('../../lib/csrf.php');
 
@@ -48,32 +48,37 @@ try {
 			$stripeToken);
 		$transaction->insert($mysqli);
 		$flights = $_SESSION['flightIds'];
-		$travelers = $_SESSION['travelerIds'];
+		$travelerIds = $_SESSION['travelerIds'];
 		for($i = 0; $i < count($flights); $i++) {
-			Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($travelers)));
+			Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($travelerIds)));
 		}
 
 		$transactionId = $transaction->getTransactionId();
 		$status = "PAID";
 
-		for($i = 0; $i < count($travelers); $i++) {
+		foreach($travelerIds as $travelerId); {
 			//generate confirmation #
 			$confirmationNumber = bin2hex(openssl_random_pseudo_bytes(3));
 			$confirmationNumber = strtoupper($confirmationNumber);
-			$tickets[$i] = new Ticket(null, $confirmationNumber, $price, $status,
-				$profile->__get("profileId"), $travelers[$i], $transactionId);
-			$tickets[$i]->insert($mysqli);
-			$_SESSION['ticketIds'] = $tickets[$i];
+			$newTicket = new Ticket(null, $confirmationNumber, $price, $status,
+				$profile->__get("profileId"), $travelerId, $transactionId);
+			$newTicket->insert($mysqli);
+			$ticketIds[] = $newTicket->getTicketId();
+			echo "vardump ticketIds";
+			var_dump($ticketIds);
+
 		}
+
+		$_SESSION['ticketIds'] = $ticketIds;
 		foreach($flights as $flight) {
 
-			for($i = 0; $i < count($tickets); $i++) {
-				$ticketFlights[$i] = new TicketFlight($flight, $tickets[$i]->getTicketId());
+			for($i = 0; $i < count($ticketIds); $i++) {
+				$ticketFlights[$i] = new TicketFlight($flight, $ticketIds[$i]);
 				$ticketFlights[$i]->insert($mysqli);
 			}
 		}
 
-		$_SESSION['ticketFlights'] = $ticketFlights;
+
 		header("Location: ../../forms/displayTickets.php");
 	}
 	else{

@@ -1,12 +1,12 @@
 <?php
 session_start();
-var_dump($_SESSION);
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../php/class/traveler.php");
 require_once("../php/class/profile.php");
 require_once("../php/class/flight.php");
 require_once("../php/class/ticket.php");
 require_once("../php/class/ticketFlight.php");
+
 
 if(isset($_SESSION['userId'])) {
 	$mysqli = MysqliConfiguration::getMysqli();
@@ -29,6 +29,7 @@ else{
 	$status = "";
 }
 $ticketIds = $_SESSION['ticketIds'];
+
 $total = $_SESSION['prices'][0] + $_SESSION['prices'][1];
 $outboundFltCount = $_SESSION['outboundFlightCount'];
 $flightIds = $_SESSION['flightIds'];
@@ -59,11 +60,11 @@ $flightIds = $_SESSION['flightIds'];
 			display: block;
 		}
 		#headDiv{
-			margin-left: 3em;
+			margin-left: 10.5em;
 		}
 		.ticket{
 			border: 2px solid black;
-			height: 66em;
+			height: auto;
 			width: 54em;
 			margin-left: auto;
 			margin-right: auto;
@@ -121,8 +122,8 @@ $flightIds = $_SESSION['flightIds'];
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
-				<li class="disabled"><?php echo $userName?> </li>
-				<li class="active"><?php echo $status?></li>
+				<li class="disabled"> </li>
+				<li class="active"><a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a></li>
 				<li><a href="#"></a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
@@ -136,8 +137,8 @@ $flightIds = $_SESSION['flightIds'];
 <div id="displayArea" class="col-lg-12">
 <?php
 
-	for($i = 0; $i < count($ticketIds); ++$i){
-		$ticket = Ticket::getTicketByTicketId($mysqli, $ticketIds[$i]);
+	foreach($ticketIds as $ticketId){
+		$ticket = Ticket::getTicketByTicketId($mysqli, $ticketId);
 		$traveler = Traveler::getTravelerByTravelerId($mysqli,$ticket->getTravelerId());
 
 		//^this gives me each tickets flights and travelers
