@@ -51,7 +51,7 @@ try {
 		$travelerIds = $_SESSION['travelerIds'];
 
 		for($i = 0; $i < count($flights); $i++) {
-			$temp = Flight::changeNumberOfSeats($mysqli, $flights[$i], (count($travelerIds)));
+			$temp = Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($travelerIds)));
 		}
 
 		$transactionId = $transaction->getTransactionId();
