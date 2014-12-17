@@ -1,0 +1,251 @@
+.form-group{
+	width: 25em;
+	height: 50em;
+	background-color: lightblue;
+	margin-top: .5em;
+}
+.form-group p{
+	margin-left: 2em;
+}
+img {
+	height: 50em;
+	width: 50em;
+	margin-top: 1em;
+	margin-right: 5em;
+}
+.styleBtn{
+	margin: 1em 0;
+	margin-left: 3.3em;
+}
+#search{
+	margin-left: 5em;
+	margin-top: .4em;
+}
+
+#searchResults{
+	list-style: none;
+}
+#accountLinksDiv{
+	margin-left: 5em;
+	height: 60em;
+	width: 50em;
+	padding: 2em;
+}
+
+#accountLinksList{
+	list-style: none;
+	padding: 2em;
+	font-size: 2em;
+}
+#accountLinksList li{
+	padding: .3em;
+}
+#checkInLinksDiv{
+	margin-left: 5em;
+	height: 30em;
+	width: 50em;
+	padding: 2em;
+}
+
+#checkInLinksList{
+	list-style: none;
+	font-size: 2em;
+	padding: 2em;
+}
+
+#checkInLinksList li{
+	padding: .3em;
+}
+
+#multiple-datasets .league-name {
+	margin: 0 20px 5px 20px;
+	padding: 3px 0;
+	border-bottom: 1px solid #ccc;
+}
+.center-table{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.center{
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+	text-align: center;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+	color: black;
+	font-weight: bold;
+	cursor: default;
+	background-color: lightsteelblue;
+	border: 1px solid grey;
+	border-bottom-color: transparent;
+}
+
+.nav-tabs > li {
+	color: black;
+	border-right: 1px solid darkblue;
+	border-left: 1px solid darkblue;
+	border-top: 1px solid darkblue;
+	border-top-left-radius: 6%;
+	border-top-right-radius: 6%;
+	background-color: aliceblue;
+
+
+}
+
+#formDiv{
+	position: absolute;
+	height: 30em;
+	width: 30em;
+	top: 20%;
+	left: 35%;
+	padding: 2em;
+	border: 1px solid lightgrey;
+}
+#outputArea{
+	margin-top: 1.5em;
+}
+
+.displayFlt{
+	width: 100%;
+	border: 1px solid lightgrey;
+	margin-top: 1em;
+	font-size: 1.2em;
+
+}
+.flightData td{
+	padding: .5em;
+	background-color: lightblue;
+}
+table.paddedA tr td {
+	padding-left: 10em;
+	padding-top: .6em;
+	padding-bottom: .6em;
+}
+
+table.paddedA tr td:first-child {
+	padding-left: 0;
+}
+table.paddedB{
+	margin-top: 1em;
+}
+table.paddedB tr td {
+	padding-left: 14em;
+	padding-top: .3em;
+	padding-bottom: .3em;
+}
+
+table.paddedB tr td:first-child {
+	padding-left: 0;
+}
+
+#paymentBtn{
+	margin-left: 32em;
+}
+#travelerDiv {
+	width: 30%;
+	border: 1px solid lightgray;
+}
+#paymentDiv{
+	border: 1px solid lightgray;
+	margin-left: 1em;
+}
+
+#print-button{
+	position: absolute;
+	top: 10%;
+	right: 5%;
+	height: 3em;
+	width: 3em;
+}
+#displayArea{
+	display: block;
+}
+#headDiv{
+	text-align: center;
+}
+.ticket{
+	border: 2px solid black;
+	height: auto;
+	width: 54em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 2em;
+	page-break-after: always;
+}
+.innerDiv{
+	border: 1px solid black;
+	height: 20em;
+	width: 10em;
+	margin-left: auto;
+	margin-right: 0;
+
+}
+table{
+	padding: 1em;
+	margin-left: 4em;
+
+}
+table td, th{
+	padding: .8em;
+
+}
+ul{
+	list-style: none;
+	text-align: left;
+	padding-left: 0pt;
+	padding: -1em 0;
+}
+#cloud{
+	height: 1.5em;
+	width: 1.5em;
+	margin-right: .3em;
+}
+
+#travelerDiv{
+	border: 1px solid lightgrey;
+	height: 50em;
+	width: 30em;
+	position: absolute;
+	top: 10%;
+	left: 30%;
+
+}
+#innerDiv{
+	padding: 2em;
+}
+.inline{
+	margin-left: 1em;
+	margin-right: 2em;
+}
+
+#formDiv{
+	position: absolute;
+	height: 51em;
+	width: 50em;
+	top: 10%;
+	left: 20%;
+	border: 1px solid lightgrey;
+	padding: 2em 2em;
+}
+legend{
+	text-align: center;
+}
+#container{
+	margin-left: 18em;
+}
+#pass{
+	margin-left: 18em;
+}
+.red{
+	background-color: red;
+	text-align: center;
+	height: 4.5em;
+}
+.red input{
+	margin: .5em 0 0 0;
+}

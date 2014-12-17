@@ -1,0 +1,25 @@
+#container{
+	position:absolute;
+	top: 12%;
+	left: 20%;
+	height: 100em;
+	width: 55em;
+	padding: 2em;
+}
+#signIn{
+	margin-top: 1em;
+	border: 1px solid lightgrey;
+	padding: 2em;
+	height: 26em;
+	width: 51em;
+}
+#formDiv{
+	margin-left: 16em;
+}
+#signUpLink p {
+	text-align: center;
+}
+#outputArea{
+	padding: 1em 0;
+
+}

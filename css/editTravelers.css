@@ -1,0 +1,16 @@
+#travelerDiv{
+	border: 1px solid lightgrey;
+	height: 50em;
+	width: 30em;
+	position: absolute;
+	top: 10%;
+	left: 30%;
+
+}
+#innerDiv{
+	padding: 2em;
+}
+.inline{
+	margin-left: 1em;
+	margin-right: 2em;
+}

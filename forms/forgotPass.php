@@ -34,6 +34,8 @@ HTML;
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
+	<link type="text/css" rel="stylesheet" href="../css/forgotPass.css">
+
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -41,20 +43,7 @@ HTML;
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="../js/forgotPass.js"></script>
-	<style>
-		#formDiv{
-			padding: 2em;
-			position: absolute;
-			top: 10%;
-			left: 20%;
-			border: 1px solid lightgrey;
-			height: 36em;
-			width: 30em;
-		}
-		#outputArea{
-			margin-top: 2em;
-		}
-	</style>
+
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">

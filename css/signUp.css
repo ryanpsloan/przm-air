@@ -1,0 +1,12 @@
+#container{
+	padding: 1em;
+	border: 1px solid lightgrey;
+	position: absolute;
+	top: 10%;
+	left: 20%;
+	height: 46em;
+	width: 60em;
+}
+#outputArea{
+	margin-top: 1em;
+}

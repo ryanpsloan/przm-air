@@ -69,6 +69,9 @@ HTML;
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script type="text/javascript" src="../js/editUserProfile.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="../css/editUserProfile.css">
+
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({
@@ -79,34 +82,7 @@ HTML;
 			});
 		});
 	</script>
-	<style>
-		#formDiv{
-			position: absolute;
-			height: 51em;
-			width: 50em;
-			top: 10%;
-			left: 20%;
-			border: 1px solid lightgrey;
-			padding: 2em 2em;
-		}
-		legend{
-			text-align: center;
-		}
-		#container{
-			margin-left: 18em;
-		}
-		#pass{
-			margin-left: 18em;
-		}
-		.red{
-			background-color: red;
-			text-align: center;
-			height: 4.5em;
-		}
-		.red input{
-			margin: .5em 0 0 0;
-		}
-	</style>
+
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">

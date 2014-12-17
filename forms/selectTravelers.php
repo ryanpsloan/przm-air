@@ -81,6 +81,8 @@ EOF;
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
+	<link type="text/css" rel="stylesheet" href="../css/selectTravelers.css">
+
 	<script type="text/javascript" src="../js/selectTravelers.js"></script>
 
 	<script>
@@ -93,92 +95,7 @@ EOF;
 			});
 		});
 	</script>
-	<style>
-		#formDiv{
-			position: relative;
-			top: 52%;
-			left: 29%;
-			display: inline;
-		}
-		#travelerContainer{
-			border: 1px solid lightgrey;
-			height: 35em;
-			width: 27em;
-			margin-left: 4.7em;
-			margin-top: 2em;
-			margin-bottom: 2em;
 
-		}
-		.buttonDiv{
-			margin-bottom: 2em;
-			height: 4em;
-			width: 35em;
-			border: 1px solid lightgrey;
-		}
-		.innerBtnDiv{
-			margin-left: 1.7em;
-			margin-top: .7em;
-		}
-		.confirmButtonDiv{
-			margin-left: 4.7em;
-			margin-bottom: 2em;
-			height: 4em;
-			width: 15em;
-			border: 1px solid lightgrey;
-		}
-		.innerCfrmBtnDiv{
-			margin-top: .7em;
-		}
-		#A{
-			margin-left: 1em;
-		}
-		#B{
-			margin-left: 1.2em;
-		}
-		#addTravelerDiv{
-			height: 35em;
-			width: 30em;
-			border: 1px solid lightgrey;
-
-		}
-		#addTInnerDiv input{
-			margin-left: 3.5em;
-		}
-		#addTInnerDiv label{
-			margin-left: 3.5em;
-		}
-		.travelerSelect{
-			font-size: 1.2em;
-			padding: .5em;
-			background-color: white;
-
-		}
-		.nameSpan{
-			margin-left: .4em;
-			padding: .5em;
-			font-weight: bold;
-		}
-		#travelerList{
-			background-color: white;
-			height: 23em;
-		}
-		#ckBoxes input{
-			margin-left: 4.2em;
-		}
-		#confirmBtn{
-			margin-top: .5em;
-			margin-left: 2.5em;
-		}
-		.flightData td{
-			padding: .5em;
-			background-color: lightblue;
-		}
-		#selectAll{
-			margin-left: 5.8em;
-		}
-
-
-	</style>
 </head>
 <body>
 <header>

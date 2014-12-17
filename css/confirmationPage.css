@@ -1,0 +1,44 @@
+.displayFlt{
+	width: 100%;
+	border: 1px solid lightgrey;
+	margin-top: 1em;
+	font-size: 1.2em;
+
+}
+.flightData td{
+	padding: .5em;
+	background-color: lightblue;
+}
+table.paddedA tr td {
+	padding-left: 10em;
+	padding-top: .6em;
+	padding-bottom: .6em;
+}
+
+table.paddedA tr td:first-child {
+	padding-left: 0;
+}
+table.paddedB{
+	margin-top: 1em;
+}
+table.paddedB tr td {
+	padding-left: 14em;
+	padding-top: .3em;
+	padding-bottom: .3em;
+}
+
+table.paddedB tr td:first-child {
+	padding-left: 0;
+}
+
+#paymentBtn{
+	margin-left: 32em;
+}
+#travelerDiv {
+	width: 30%;
+	border: 1px solid lightgray;
+}
+#paymentDiv{
+	border: 1px solid lightgray;
+	margin-left: 1em;
+}

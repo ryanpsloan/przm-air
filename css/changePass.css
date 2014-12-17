@@ -1,0 +1,12 @@
+#formDiv{
+	position: absolute;
+	height: 30em;
+	width: 30em;
+	top: 20%;
+	left: 35%;
+	padding: 2em;
+	border: 1px solid lightgrey;
+}
+#outputArea{
+	margin-top: 1.5em;
+}

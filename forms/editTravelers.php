@@ -40,6 +40,8 @@ EOF;
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
+	<link type="text/css" rel="stylesheet" href="../css/editTravelers.css">
+
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({
@@ -50,24 +52,7 @@ EOF;
 			});
 		});
 	</script>
-	<style>
-		#travelerDiv{
-			border: 1px solid lightgrey;
-			height: 50em;
-			width: 30em;
-			position: absolute;
-			top: 10%;
-			left: 30%;
 
-		}
-		#innerDiv{
-			padding: 2em;
-		}
-		.inline{
-			margin-left: 1em;
-			margin-right: 2em;
-		}
-	</style>
 </head>
 <body>
 <header>

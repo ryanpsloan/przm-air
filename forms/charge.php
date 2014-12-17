@@ -35,20 +35,7 @@ EOF;
 			Stripe.setPublishableKey('pk_test_y7K8SRtvByY4GmoKMeQ2qmn2');
 		</script>
 		<script type="text/javascript" src="../js/payment.js"></script>
-		<style>
-			#formDiv{
-				position: absolute;
-				height: 30em;
-				width: 30em;
-				top: 20%;
-				left: 35%;
-				padding: 2em;
-				border: 1px solid lightgrey;
-			}
-			#outputArea{
-				margin-top: 1.5em;
-			}
-		</style>
+
 	</head>
 
 	<body>

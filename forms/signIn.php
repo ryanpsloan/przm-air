@@ -21,6 +21,8 @@ if(isset($_SESSION['userId'])) {
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 
+	<link type="text/css" rel="stylesheet" href="../css/signIn.css">
+
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
@@ -28,33 +30,7 @@ if(isset($_SESSION['userId'])) {
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="../js/signIn.js"></script>
-	<style>
-		#container{
-			position:absolute;
-			top: 12%;
-			left: 20%;
-			height: 100em;
-			width: 55em;
-			padding: 2em;
-		}
-		#signIn{
-			margin-top: 1em;
-			border: 1px solid lightgrey;
-			padding: 2em;
-			height: 26em;
-			width: 51em;
-		}
-		#formDiv{
-			margin-left: 16em;
-		}
-		#signUpLink p {
-			text-align: center;
-		}
-		#outputArea{
-			padding: 1em 0;
 
-		}
-	</style>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">

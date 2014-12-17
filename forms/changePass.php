@@ -34,6 +34,7 @@ EOF;
 
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link type="text/css" rel="stylesheet" href="../css/changePass.css">
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
@@ -42,20 +43,7 @@ EOF;
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="../js/changePass.js"></script>
-	<style>
-		#formDiv{
-			position: absolute;
-			height: 30em;
-			width: 30em;
-			top: 20%;
-			left: 35%;
-			padding: 2em;
-			border: 1px solid lightgrey;
-		}
-		#outputArea{
-			margin-top: 1.5em;
-		}
-	</style>
+
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">

@@ -58,65 +58,18 @@ EOF;
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<link type="text/css" rel="stylesheet" href="../css/confirmationPage.css">
 
 	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script type="text/javascript">
 		Stripe.setPublishableKey('pk_test_y7K8SRtvByY4GmoKMeQ2qmn2');
 	</script>
 
-
-	<style>
-		.displayFlt{
-			width: 100%;
-			border: 1px solid lightgrey;
-			margin-top: 1em;
-			font-size: 1.2em;
-
-		}
-		.flightData td{
-			padding: .5em;
-			background-color: lightblue;
-		}
-		table.paddedA tr td {
-			padding-left: 10em;
-			padding-top: .6em;
-			padding-bottom: .6em;
-		}
-
-		table.paddedA tr td:first-child {
-			padding-left: 0;
-		}
-		table.paddedB{
-			margin-top: 1em;
-		}
-		table.paddedB tr td {
-			padding-left: 14em;
-			padding-top: .em;
-			padding-bottom: .3em;
-		}
-
-		table.paddedB tr td:first-child {
-			padding-left: 0;
-		}
-
-		#paymentBtn{
-			margin-left: 32em;
-		}
-		#travelerDiv {
-			width: 30%;
-			border: 1px solid lightgray;
-		}
-		#paymentDiv{
-			border: 1px solid lightgray;
-			margin-left: 1em;
-		}
-
-
-	</style>
 </head>
 <body>
 <header>

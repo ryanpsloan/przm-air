@@ -47,55 +47,12 @@ EOF;
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
+
+	<link type="text/css" rel="stylesheet" href="../css/viewItinerary.css">
+
 	<script type="text/javascript" src="../js/selectTravelers.js"></script>
 
-	<style>
 
-		#travelerContainer{
-			border: 1px solid lightgrey;
-			height: 35em;
-			width: 27em;
-			margin-left: 4.7em;
-			margin-top: 2em;
-			margin-bottom: 2em;
-
-		}
-
-		.travelerSelect{
-			font-size: 1.2em;
-			padding: .5em;
-			background-color: white;
-
-		}
-		.nameSpan{
-			margin-left: .4em;
-			padding: .5em;
-			font-weight: bold;
-		}
-		#travelerList{
-			background-color: white;
-			height: 20em;
-		}
-		.flightData td{
-			padding: .5em;
-			background-color: lightblue;
-		}
-		table{
-			padding: 1em;
-			margin-left: 4em;
-
-		}
-		table td, th{
-			padding: .8em;
-
-		}
-		ul{
-			list-style: none;
-			text-align: left;
-			padding-left: 0pt;
-		}
-
-	</style>
 </head>
 <body>
 <?php

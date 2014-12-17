@@ -48,59 +48,8 @@ $flightIds = $_SESSION['flightIds'];
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<style>
-		#print-button{
-			position: absolute;
-			top: 10%;
-			right: 5%;
-			height: 3em;
-			width: 3em;
-		}
-		#displayArea{
-			display: block;
-		}
-		#headDiv{
-			text-align: center;
-		}
-		.ticket{
-			border: 2px solid black;
-			height: auto;
-			width: 54em;
-			margin-left: auto;
-			margin-right: auto;
-			margin-top: 2em;
-			page-break-after: always;
-		}
-		.innerDiv{
-			border: 1px solid black;
-			height: 20em;
-			width: 10em;
-			margin-left: auto;
-			margin-right: 0;
 
-		}
-		table{
-			padding: 1em;
-			margin-left: 4em;
-
-		}
-		table td, th{
-			padding: .8em;
-
-		}
-		ul{
-			list-style: none;
-			text-align: left;
-			padding-left: 0pt;
-			padding: -1em 0;
-		}
-		#cloud{
-			height: 1.5em;
-			width: 1.5em;
-			margin-right: .3em;
-		}
-
-	</style>
+	<link type="text/css" rel="stylesheet" href="../css/displayTickets.css">
 </head>
 <body>
 <<header>

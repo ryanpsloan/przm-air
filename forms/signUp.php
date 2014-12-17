@@ -24,6 +24,9 @@ session_start();
 	<script type="text/javascript" src="../js/signUp.js"></script>
 	<script type="text/javascript" src="../js/signIn.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+
+	<link type="text/css" rel="stylesheet" href="../css/signUp.css">
+
 	<!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script>
@@ -36,22 +39,7 @@ session_start();
 			});
 		});
 	</script>
-	<style>
-		#container{
-			padding: 1em;
-			border: 1px solid lightgrey;
-			position: absolute;
-			top: 10%;
-			left: 20%;
-			height: 46em;
-			width: 60em;
-		}
-		#outputArea{
-			margin-top: 1em;
-		}
 
-
-	</style>
 </head>
 
 <body>
