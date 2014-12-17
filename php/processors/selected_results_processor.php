@@ -36,7 +36,7 @@ try {
 
 	for ($i=2; empty($outboundArray[$i]) === false; $i++){
 		$flightId = $outboundArray[$i];
-		Flight::changeNumberOfSeats($mysqli, $flightId, $outboundChangeBy);
+		//Flight::changeNumberOfSeats($mysqli, $flightId, $outboundChangeBy);
 	}
 
 	if(!empty($_POST ["priceWithReturnPath"])) {
@@ -48,7 +48,7 @@ try {
 
 		for ($j=2; empty($returnArray[$j]) === false; $j++){
 			$flightId = $returnArray[$j];
-			Flight::changeNumberOfSeats($mysqli, $flightId, $returnChangeBy);
+			//Flight::changeNumberOfSeats($mysqli, $flightId, $returnChangeBy);
 		}
 	}
 
