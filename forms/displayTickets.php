@@ -60,7 +60,7 @@ $flightIds = $_SESSION['flightIds'];
 			display: block;
 		}
 		#headDiv{
-			margin-left: 10.5em;
+			text-align: center;
 		}
 		.ticket{
 			border: 2px solid black;
@@ -69,7 +69,7 @@ $flightIds = $_SESSION['flightIds'];
 			margin-left: auto;
 			margin-right: auto;
 			margin-top: 2em;
-
+			page-break-after: always;
 		}
 		.innerDiv{
 			border: 1px solid black;
@@ -92,6 +92,7 @@ $flightIds = $_SESSION['flightIds'];
 			list-style: none;
 			text-align: left;
 			padding-left: 0pt;
+			padding: -1em 0;
 		}
 		#cloud{
 			height: 1.5em;
@@ -120,11 +121,13 @@ $flightIds = $_SESSION['flightIds'];
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a>
-					</li>
+
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a>
+					</li>
+					<li></li>
 					<li class="disabled"><?php echo $userName?> </li>
 					<li class="active"><?php echo $status?></li>
 					<li><a href="#"></a></li>
@@ -139,18 +142,20 @@ $flightIds = $_SESSION['flightIds'];
 <div id="displayArea" class="col-lg-12">
 <?php
 
-	foreach($travelerIds as $travelerId){
+	foreach($flightIds as $flightId) {
+		$flights[] = Flight::getFlightByFlightId($mysqli, $flightId);
+	}
 
-		$traveler = Traveler::getTravelerByTravelerId($mysqli,$travelerId);
+//^this gives me the flight data for each flight on the ticket
+	foreach($travelerIds as $travelerId) {
+
+		$traveler = Traveler::getTravelerByTravelerId($mysqli, $travelerId);
 		$ticket = Ticket::getTicketByTravelerId($mysqli, $traveler->__get("travelerId"));
 
 		//^this gives me each tickets flights and travelers
 
-		foreach($flightIds as $flightId){
-			$flights[] = Flight::getFlightByFlightId($mysqli, $flightId);
-		}
-		//^this gives me the flight data for each flight on the ticket
-		$travelerName = $traveler->__get("travelerFirstName")." ".$traveler->__get("travelerLastName");
+
+		$travelerName = $traveler->__get("travelerFirstName") . " " . $traveler->__get("travelerLastName");
 		$travelerName = ucwords($travelerName);
 		$price = $ticket->getPrice();
 		$price = money_format("%n", $price);
@@ -158,7 +163,8 @@ $flightIds = $_SESSION['flightIds'];
 		$confNum = strtoupper($confNum);
 		$today = new DateTime();
 		$today = $today->format("m/d/Y");
-			echo <<<HTML
+		$status = $ticket->getStatus();
+		echo <<<HTML
 			<div class="ticket">
 				<h1 style="text-align: center"><img id="cloud" src="../img/cloud-icon.png">PRZM AIR</h1>
 
@@ -179,7 +185,7 @@ $flightIds = $_SESSION['flightIds'];
 
 		<tr>
 			<td colspan="14">
-
+				Status: $status
 			</td>
 			<td colspan="2">
 				<ul>
@@ -204,7 +210,7 @@ HTML;
 			$depDate = $flight->getDepartureDateTime()->format("m/d/Y");
 			$arrTime = $flight->getArrivalDateTime()->format("h:i:s a");
 			$arrDate = $flight->getArrivalDateTime()->format("m/d/Y");
-			if($outboundFltCount-- === 0){
+			if($outboundFltCount-- === 0) {
 				echo "<tr><td colspan='16'><b>Return Details</b><hr></td></tr>";
 			}
 			echo <<<HTML
@@ -235,10 +241,11 @@ HTML;
 		</tr>
 HTML;
 		}
-	}
-	echo "</tbody>
+
+		echo "</tbody>
 			</table>
 			</div>";
+	}
 ?>
 
 </div>
