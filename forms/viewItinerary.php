@@ -3,6 +3,8 @@ session_start();
 require_once("/etc/apache2/capstone-mysql/przm.php");
 require_once("../php/class/flight.php");
 require_once("../php/class/profile.php");
+require_once("../php/class/ticket.php");
+require_once("../php/class/ticketFlight.php");
 
 	if(isset($_SESSION['userId'])) {
 		$mysqli = MysqliConfiguration::getMysqli();
@@ -16,14 +18,43 @@ EOF;
 EOF;
 
 	}
+	if(isset($_POST['confirmationNumber'])) {
+		$flights = array();
+		$confirmationNumber = "8bd362"; //$_POST['confirmationNumber'];
+		$query = "SELECT ticketId FROM ticket WHERE confirmationNumber = ?";
+		$statement = $mysqli->prepare($query);
+		$statement->bind_param("s", $confirmationNumber);
+		$statement->execute();
+		$result = $statement->get_result();
+		$row = $result->fetch_assoc();
+		$ticketId = $row['ticketId'];
 
-	$flightIds = $_SESSION['flightIds'];
-	foreach($flightIds as $flightId){
-		$flights[] = Flight::getFlightByFlightId($mysqli, $flightId);
-	}
-	$outboundFlightCount = $_SESSION['outboundFlightCount'];
+		$ticket = Ticket::getTicketByTicketId($mysqli, $ticketId);
 
-?>
+		$ticketFlights[] = TicketFlight::getTicketFlightByTicketId($mysqli, $ticket->getTicketId());
+		echo "ticketFlight";
+		var_dump($ticketFlights);
+		foreach($ticketFlights as $ticketFlight) {
+			$flightIds[] = $ticketFlight->getFlightId();
+		}
+
+		foreach($flightIds as $flightId) {
+			$flights[] = Flight::getFlightByFlightId($mysqli, $flightId);
+		}
+
+		$outboundFlightCount = $_SESSION['outboundFlightCount'];
+		$input = <<<HTML
+	<div id="formDiv">
+		<form id="viewItineraryForm" method="post"  action="viewItinerary.php">
+			<p><label for="confirmationNumber">Enter 6 Digit Ticket Confirmation Number to View Itinerary<br>
+			<input type="text" name="confirmationNumber"></label></p>
+			<input type="submit" value="Get Itinerary">
+		</form>
+	<div>
+HTML;
+
+
+		echo <<<HTML
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -55,8 +86,7 @@ EOF;
 
 </head>
 <body>
-<?php
-echo<<<HTML
+
 	<header>
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
@@ -89,18 +119,18 @@ echo<<<HTML
 </header>
 <!-- Display Flights -->
 <section>
+
 HTML;
+		echo $input;
 
-
-
-echo <<<HTML
+		echo <<<HTML
 
 <h3 style="text-align: center">Outbound Flight Details</h3>
 <div class="flightContainer">
 HTML;
 
 
-		foreach ($flights as $flight){
+		foreach($flights as $flight) {
 
 			$fltNum = $flight->getFlightNumber();
 			$origin = $flight->getOrigin();
@@ -108,7 +138,7 @@ HTML;
 			$duration = $flight->getDuration()->format("%H:%I");
 			$depTime = $flight->getDepartureDateTime()->format('h:i:s a m/d/Y');
 			$arrTime = $flight->getArrivalDateTime()->format("h:i:s a m/d/Y");
-			if($outboundFlightCount-- === 0){
+			if($outboundFlightCount-- === 0) {
 				echo <<<HTML
 					<hr><h3 style="text-align: center">Inbound Flight Details</h3>
 HTML;
@@ -142,17 +172,17 @@ HTML;
 		</div>
 
 HTML;
-echo "</div>";
+			echo "</div>";
 		}
-echo <<<HTML
+		echo <<<HTML
 	</div>
 </section>
 <section>
 HTML;
-	$today = new DateTime('now');
-	$today = $today->format("h:i:s a m/d/y");
-	$outboundFltCount = $_SESSION['outboundFlightCount'];
-echo <<<HTML
+		$today = new DateTime('now');
+		$today = $today->format("h:i:s a m/d/y");
+		$outboundFltCount = $_SESSION['outboundFlightCount'];
+		echo <<<HTML
 <div>
 	<table>
 
@@ -211,10 +241,23 @@ HTML;
 		</tr>
 HTML;
 		}
-echo "</table>
+		echo "</table>
 </div>
 
 </section>";
+	}
+	else{
+		echo <<<HTML
+	<div id="formDiv">
+		<form id="viewItineraryForm" method="post"  action="viewItinerary.php">
+			<p><label for="confirmationNumber">Enter 6 Digit Ticket Confirmation Number to View Itinerary<br>
+			<input type="text" name="confirmationNumber"></label></p>
+			<input type="submit" value="Get Itinerary">
+		</form>
+	<div>
+HTML;
+
+	}
 ?>
 </body>
 </html>

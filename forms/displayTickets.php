@@ -30,7 +30,13 @@ else{
 }
 
 $travelerIds = $_SESSION['travelerIds'];
-$total = $_SESSION['prices'][0] + $_SESSION['prices'][1];
+$tempPrices = $_SESSION['prices'];
+if(count($tempPrices) > 1){
+	$total = $tempPrices[0] + $tempPrices[1];
+}
+else{
+	$total = $tempPrices[0];
+}
 $outboundFltCount = $_SESSION['outboundFlightCount'];
 $flightIds = $_SESSION['flightIds'];
 ?>
