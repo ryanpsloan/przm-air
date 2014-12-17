@@ -13,22 +13,17 @@ session_start();
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../js/signUp.js"></script>
-	<script type="text/javascript" src="../js/signIn.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 
 	<link type="text/css" rel="stylesheet" href="../css/signUp.css">
-
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
 	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<script type="text/javascript" src="../js/signUp.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker({
@@ -77,9 +72,9 @@ session_start();
 </nav>
 <div id="container">
 	<div id="formDiv">
-		<fieldset>
-		<form id="signUpForm" action="../php/processors/signUpProcessor.php" method="POST">
 
+		<form id="signUpForm" action="../php/processors/signUpProcessor.php" method="POST">
+			<fieldset>
 				<legend style="text-align: center">Create a Profile</legend>
 				<div id="outputArea"></div>
 				<p><label>First Name</label></br>
@@ -100,8 +95,8 @@ session_start();
 					<input type="password" id="confPassword" name="confPassword"></p>
 				<button id="button" type="submit">Register</button>
 				<?php echo generateInputTags(); ?>
-		</form>
 		</fieldset>
+		</form>
 
 </div>
 </div>

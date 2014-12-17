@@ -171,7 +171,11 @@ HTML;
 					$travelers[] = Traveler::getTravelerByTravelerId($mysqli, $tId);
 					$name = $travelers[$i]->__get("travelerFirstName"). " " . $travelers[$i]->__get("travelerLastName");
 					$name = ucwords($name);
-					$price = money_format("%n", floatval($prices[0]) + floatval($prices[1]));
+					if(count($prices) > 1) {
+						$price = money_format("%n", floatval($prices[0]) + floatval($prices[1]));
+					}else{
+						$price = money_format("%n", floatval($prices[0]));
+					}
 					echo "<tr><td>$name</td><td>$$price</td></tr>";
 					$i++;
 				}

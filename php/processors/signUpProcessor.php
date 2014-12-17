@@ -1,4 +1,5 @@
 <?php
+session_start();
 require("/etc/apache2/capstone-mysql/przm.php");
 require("../../php/class/user.php");
 require("../../php/class/profile.php");
@@ -7,7 +8,7 @@ require("../../lib/csrf.php");
 require("Mail.php");
 
 try {
-	session_start();
+
 	$savedName  = $_POST["csrfName"];
 	$savedToken = $_POST["csrfToken"];
 
@@ -55,8 +56,6 @@ try {
 	$newTraveler = new Traveler(null, $newProfile->__get("profileId"), $newProfile->__get("userFirstName"),
 		$newProfile->__get("userMiddleName"), $newProfile->__get("userLastName"), $newProfile->__get("dateOfBirth"));
 	$newTraveler->insert($mysqli);
-
-
 
 	echo "<div class='alert alert-success' role='alert'>
 Your account has been authenticated. You are now signed in
