@@ -540,10 +540,7 @@ try {
 
 		<div class="clearfix"></div>
 		<?php
-
-
-
-			if($hiddenRadio == "No") {
+			if($hiddenRadio == "no") {
 				// clean INBOUND inputs, adjust dates format, switch origin and destination***************************************************
 				$originInbound = filter_input(INPUT_POST, "destination", FILTER_SANITIZE_STRING);
 				$destinationInbound = filter_input(INPUT_POST, "origin", FILTER_SANITIZE_STRING);
@@ -578,25 +575,28 @@ try {
 				$userFlyDateInboundAdd2 = $userFlyDateInboundAdd2obj->format("Y-m-d H:i:s");
 
 
-				echo " 
+				echo" 
 				<section class='center' id='returnTabs'> 
 					<br/> 
 					<h2>SELECT RETURN FLIGHT</h2> 
-					<hr>  
+					<hr>
 					<div id='inbound' class='tabContainer' role='tabpanel'> 
+
 						<!-- Nav tabs --> 
-						<ul class='nav nav-tabs nav-justified' role='tablist'> 
-							<li role='presentation'><a href='#I2DB' aria-controls='I2DB' role='tab' data-toggle='tab'> 
-								$tabDisplayInboundLess2Days</a></li>  
-							<li role='presentation'><a href='#I1DB' aria-controls='I1DB' role='tab' data-toggle='tab'> 
-								$tabDisplayInboundLess1Day;</a></li>  
-							<li role='presentation' class='active'><a href='#ID' aria-controls='ID' role='tab' data-toggle='tab'> 
-								$tabDisplayInboundMainDay;</a></li>  
-							<li role='presentation'><a href='#I1DA' aria-controls='I1DA' role='tab' data-toggle='tab'> 
-								$tabDisplayInboundAdd1Day;</a></li>  
-							<li role='presentation'><a href='#I2DA' aria-controls='I2DA' role='tab' data-toggle='tab'> 
-								$tabDisplayInboundAdd2Days</a></li> 
-						</ul>  
+						<div class='container-fluid'>
+							<ul class='nav nav-tabs nav-justified' role='tablist'> 
+								<li role='presentation'><a href='#I2DB' aria-controls='I2DB' role='tab' data-toggle='tab'> 
+									$tabDisplayInboundLess2Days</a></li>  
+								<li role='presentation'><a href='#I1DB' aria-controls='I1DB' role='tab' data-toggle='tab'> 
+									$tabDisplayInboundLess1Day;</a></li>  
+								<li role='presentation' class='active'><a href='#ID' aria-controls='ID' role='tab' data-toggle='tab'> 
+									$tabDisplayInboundMainDay;</a></li>  
+								<li role='presentation'><a href='#I1DA' aria-controls='I1DA' role='tab' data-toggle='tab'> 
+									$tabDisplayInboundAdd1Day;</a></li>  
+								<li role='presentation'><a href='#I2DA' aria-controls='I2DA' role='tab' data-toggle='tab'> 
+									$tabDisplayInboundAdd2Days</a></li> 
+							</ul>  
+						</div>
 
 						<!-- Tab panes --> 
 						<div class='tab-content'>   
@@ -683,8 +683,8 @@ try {
 						</div> 
 					</div> 
 				</section>";
-			}
 
+			}
 		?> 
 		<div class="clearfix"></div>
 		<section class="center">
