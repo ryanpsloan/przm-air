@@ -273,7 +273,7 @@ HTML;
 		</div>
 		<hr>
 		<?php
-		if(count($staticTravelers) > 4 && $numTravelers > 4) {
+		if(count($staticTravelers) > 4 && $numTravelers > 3) {
 		echo <<<HTML
 				<div id="selectAll"><input type="checkbox" id="select_all" /><span class="nameSpan">
 					Select $numTravelers</span></div>

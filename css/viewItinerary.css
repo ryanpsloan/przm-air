@@ -45,8 +45,12 @@ ul{
 #formDiv{
 	border: 1px solid lightgrey;
 	position: absolute;
-	top: 7%;
-	left: 10%;
-	height: 15em;
-	width: 15em;
+	top: 10%;
+	left: 70%;
+	height: 10em;
+	width: 20em;
+}
+
+#formDiv p{
+	padding: .5em;
 }

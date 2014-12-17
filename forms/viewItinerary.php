@@ -5,11 +5,11 @@ require_once("../php/class/flight.php");
 require_once("../php/class/profile.php");
 require_once("../php/class/ticket.php");
 require_once("../php/class/ticketFlight.php");
-
+try {
 	if(isset($_SESSION['userId'])) {
 		$mysqli = MysqliConfiguration::getMysqli();
-		$profile = Profile::getProfileByUserId($mysqli,$_SESSION['userId']);
-		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
+		$fullName = ucfirst($profile->__get('userFirstName')) . ' ' . ucfirst($profile->__get('userLastName'));
 		$userName = <<<EOF
 		<a><span	class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
 EOF;
@@ -18,9 +18,43 @@ EOF;
 EOF;
 
 	}
+	function array_sort($array, $on, $order=SORT_ASC)
+	{
+		$new_array = array();
+		$sortable_array = array();
+
+		if (count($array) > 0) {
+			foreach ($array as $k => $v) {
+				if (is_array($v)) {
+					foreach ($v as $k2 => $v2) {
+						if ($k2 == $on) {
+							$sortable_array[$k] = $v2;
+						}
+					}
+				} else {
+					$sortable_array[$k] = $v;
+				}
+			}
+
+			switch ($order) {
+				case SORT_ASC:
+					asort($sortable_array);
+					break;
+				case SORT_DESC:
+					arsort($sortable_array);
+					break;
+			}
+
+			foreach ($sortable_array as $k => $v) {
+				$new_array[$k] = $array[$k];
+			}
+		}
+
+		return $new_array;
+	}
 	if(isset($_POST['confirmationNumber'])) {
 		$flights = array();
-		$confirmationNumber = "8bd362"; //$_POST['confirmationNumber'];
+		$confirmationNumber = $_POST['confirmationNumber'];
 		$query = "SELECT ticketId FROM ticket WHERE confirmationNumber = ?";
 		$statement = $mysqli->prepare($query);
 		$statement->bind_param("s", $confirmationNumber);
@@ -31,26 +65,35 @@ EOF;
 
 		$ticket = Ticket::getTicketByTicketId($mysqli, $ticketId);
 
-		$ticketFlights[] = TicketFlight::getTicketFlightByTicketId($mysqli, $ticket->getTicketId());
-		echo "ticketFlight";
-		var_dump($ticketFlights);
+		$ticketFlights = TicketFlight::getTicketFlightByTicketId($mysqli, $ticket->getTicketId());
+
 		foreach($ticketFlights as $ticketFlight) {
 			$flightIds[] = $ticketFlight->getFlightId();
 		}
 
+		$i = 0;
 		foreach($flightIds as $flightId) {
-			$flights[] = Flight::getFlightByFlightId($mysqli, $flightId);
+			$flights[$i] = Flight::getFlightByFlightId($mysqli, $flightId);
+			$tempDT = $flights[$i]['departureDate']->format("Y-m-d H:i:s");
+			$dateTime[] = array('departureDate'=> $tempDT,
+									  'flightId'=>	$flights[$i]->getFlightId());
+			$i++;
 		}
+		var_dump($dateTime);
 
-		$outboundFlightCount = $_SESSION['outboundFlightCount'];
+		$sortedArray = array_sort($dateTime,'departureDate');
+		var_dump($dateTime);
+		if(isset($_SESSION['outboundFlightCount'])) {
+			$outboundFlightCount = $_SESSION['outboundFlightCount'];
+		}
 		$input = <<<HTML
 	<div id="formDiv">
 		<form id="viewItineraryForm" method="post"  action="viewItinerary.php">
 			<p><label for="confirmationNumber">Enter 6 Digit Ticket Confirmation Number to View Itinerary<br>
 			<input type="text" name="confirmationNumber"></label></p>
-			<input type="submit" value="Get Itinerary">
+			<p><input type="submit" value="Get Itinerary"></p>
 		</form>
-	<div>
+	</div>
 HTML;
 
 
@@ -60,7 +103,7 @@ HTML;
 <head lang="en">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Travelers</title>
+	<title>Itinerary</title>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
@@ -118,103 +161,52 @@ HTML;
 	</nav>
 </header>
 <!-- Display Flights -->
-<section>
-
 HTML;
-		echo $input;
-
 		echo <<<HTML
-
-<h3 style="text-align: center">Outbound Flight Details</h3>
-<div class="flightContainer">
+<main>
+<div class="container-fluid">
+	$input
 HTML;
-
-
-		foreach($flights as $flight) {
-
-			$fltNum = $flight->getFlightNumber();
-			$origin = $flight->getOrigin();
-			$destination = $flight->getDestination();
-			$duration = $flight->getDuration()->format("%H:%I");
-			$depTime = $flight->getDepartureDateTime()->format('h:i:s a m/d/Y');
-			$arrTime = $flight->getArrivalDateTime()->format("h:i:s a m/d/Y");
-			if($outboundFlightCount-- === 0) {
-				echo <<<HTML
-					<hr><h3 style="text-align: center">Inbound Flight Details</h3>
-HTML;
-
-			}
-			echo <<<HTML
-		<div class="displayFlt">
-			<table class="flightData table">
-				<thead>
-					<tr>
-						<th>Flight Number</th>
-						<th>Origin</th>
-						<th>Destination</th>
-						<th>Duration</th>
-						<th>Departure</th>
-						<th>Arrival</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>$fltNum</td>
-						<td>$origin</td>
-						<td>$destination</td>
-						<td>$duration</td>
-						<td>$depTime</td>
-						<td>$arrTime</td>
-
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-HTML;
-			echo "</div>";
-		}
-		echo <<<HTML
-	</div>
-</section>
-<section>
-HTML;
-		$today = new DateTime('now');
-		$today = $today->format("h:i:s a m/d/y");
-		$outboundFltCount = $_SESSION['outboundFlightCount'];
-		echo <<<HTML
+	$today = new DateTime('now');
+	$today = $today->format("h:i:s a m/d/y");
+	if(isset($_SESSION['outboundFlightCount'])) {
+		$outboundFlightCount = $_SESSION['outboundFlightCount'];
+	}
+	echo <<<HTML
 <div>
 	<table>
-
-		<tr><th colspan="16">Your Itinerary</th></tr>
-
 		<tr>
 			<td>
 				<ul>
 
-					<li>Today: $today</li>
+					<li>Today's Date: $today</li>
 
 				</ul>
 			</td>
 		</tr>
+		<tr><th colspan="16"><h3>Your Itinerary</h3></th></tr>
+
+
 
 
 		<tr><td colspan="16"><b>Departure Details</b><hr></td></tr>
 HTML;
 
-		foreach($flights as $flight) {
-			$fltNum = $flight->getFlightNumber();
-			$origin = $flight->getOrigin();
-			$destination = $flight->getDestination();
-			$duration = $flight->getDuration()->format("%H:%I");
-			$depTime = $flight->getDepartureDateTime()->format("h:i:s a");
-			$depDate = $flight->getDepartureDateTime()->format("m/d/Y");
-			$arrTime = $flight->getArrivalDateTime()->format("h:i:s a");
-			$arrDate = $flight->getArrivalDateTime()->format("m/d/Y");
-			if($outboundFltCount-- === 0) {
+	foreach($flights as $flight) {
+		$fltNum = $flight->getFlightNumber();
+		$origin = $flight->getOrigin();
+		$destination = $flight->getDestination();
+		$duration = $flight->getDuration()->format("%H:%I");
+		$depTime = $flight->getDepartureDateTime()->format("h:i:s a");
+		$depDate = $flight->getDepartureDateTime()->format("m/d/Y");
+		$arrTime = $flight->getArrivalDateTime()->format("h:i:s a");
+		$arrDate = $flight->getArrivalDateTime()->format("m/d/Y");
+		if(isset($_SESSION['outboundFlightCount'])) {
+			if(--$outboundFlightCount === 0) {
 				echo "<tr><td colspan='16'><b>Return Details</b><hr></td></tr>";
 			}
-			echo <<<HTML
+		}
+		echo <<<HTML
 		<tr>
 			<td>
 				<ul>
@@ -240,11 +232,11 @@ HTML;
 			</td>
 		</tr>
 HTML;
-		}
-		echo "</table>
+	}
+	echo "</table>
 </div>
-
-</section>";
+</div>
+</main>";
 	}
 	else{
 		echo <<<HTML
@@ -252,12 +244,15 @@ HTML;
 		<form id="viewItineraryForm" method="post"  action="viewItinerary.php">
 			<p><label for="confirmationNumber">Enter 6 Digit Ticket Confirmation Number to View Itinerary<br>
 			<input type="text" name="confirmationNumber"></label></p>
-			<input type="submit" value="Get Itinerary">
+			<p><input type="submit" value="Get Itinerary"></p>
 		</form>
-	<div>
+	</div>
 HTML;
 
 	}
+}catch(Exception $e){
+	echo "<div class='alert alert-danger' role='alert'>".$e->getMessage()."</div>";
+}
 ?>
 </body>
 </html>

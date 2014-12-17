@@ -58,7 +58,7 @@ $flightIds = $_SESSION['flightIds'];
 	<link type="text/css" rel="stylesheet" href="../css/displayTickets.css">
 </head>
 <body>
-<<header>
+<header>
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -76,11 +76,13 @@ $flightIds = $_SESSION['flightIds'];
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<a>Touch the Sky &reg;</a>
+					<li></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="javascript:window.print()"><img src="../img/printer-icon.png" alt="print this page" id="print-button" /></a>
+					<li><a href="javascript:window.print()">
+							<img src="../img/printer-icon.png" alt="print this page" id="print-button" />
+						</a>
 					</li>
 					<li></li>
 					<li class="disabled"><?php echo $userName?> </li>
