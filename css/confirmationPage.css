@@ -33,12 +33,17 @@ table.paddedB tr td:first-child {
 
 #paymentBtn{
 	margin-left: 32em;
+	padding-bottom: .75em;
 }
 #travelerDiv {
 	width: 30%;
+	min-height: 15.5em;
 	border: 1px solid lightgray;
+	margin-bottom: 1em;
 }
 #paymentDiv{
 	border: 1px solid lightgray;
 	margin-left: 1em;
+	min-height: 15.5em;
+	margin-bottom: 1em;
 }
