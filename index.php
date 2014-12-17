@@ -191,7 +191,9 @@ EOF;
 							to implement*/?>
 					</div>
 				</form>
-				<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
+				<section class="container-fluid">
+					<img class="img-responsive" src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
+
 			</div>
 
 
