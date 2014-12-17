@@ -89,17 +89,13 @@ HTML;
 		}
 		if(isset($_SESSION['priceWithOutboundPath'])) {
 			$_SESSION['travelerIds'] = $_POST['travelerArray'];
-			echo "session";
-			var_dump($_SESSION);
-			echo "post";
-			var_dump($_POST);
 
 			echo <<<HTML
 				<div class='alert alert-success si' role='alert' style="text-align: center">
 				Your travelers have been confirmed</div>
 				<script>
-					//setTimeout(function(){window.location.href =
-					//"../forms/confirmationPage.php";}, 1000)
+					setTimeout(function(){window.location.href =
+					"../forms/confirmationPage.php";}, 1000)
 				</script>
 
 HTML;
@@ -117,7 +113,7 @@ HTML;
 	echo <<<HTML
 	<div class='alert alert-danger si' role='alert'>$msg</div>
 	<script>
-	//setTimeout(function(){location.reload()}, 2000)
+	setTimeout(function(){location.reload()}, 2000)
 	</script>
 HTML;
 

@@ -49,24 +49,23 @@ try {
 		$transaction->insert($mysqli);
 		$flights = $_SESSION['flightIds'];
 		$travelerIds = $_SESSION['travelerIds'];
+
 		for($i = 0; $i < count($flights); $i++) {
-			Flight::changeNumberOfSeats($mysqli, $flights[$i], -(count($travelerIds)));
+			$temp = Flight::changeNumberOfSeats($mysqli, $flights[$i], (count($travelerIds)));
 		}
 
 		$transactionId = $transaction->getTransactionId();
 		$status = "PAID";
 
-		foreach($travelerIds as $travelerId); {
+		foreach($travelerIds as $travelerId) {
 			//generate confirmation #
 			$confirmationNumber = bin2hex(openssl_random_pseudo_bytes(3));
 			$confirmationNumber = strtoupper($confirmationNumber);
 			$newTicket = new Ticket(null, $confirmationNumber, $price, $status,
 				$profile->__get("profileId"), $travelerId, $transactionId);
+
 			$newTicket->insert($mysqli);
 			$ticketIds[] = $newTicket->getTicketId();
-			echo "vardump ticketIds";
-			var_dump($ticketIds);
-
 		}
 
 		$_SESSION['ticketIds'] = $ticketIds;
@@ -79,7 +78,7 @@ try {
 		}
 
 
-		//header("Location: ../../forms/displayTickets.php");
+		header("Location: ../../forms/displayTickets.php");
 	}
 	else{
 		echo <<<HTML

@@ -28,8 +28,8 @@ else{
 	$userName = "";
 	$status = "";
 }
-$ticketIds = $_SESSION['ticketIds'];
 
+$travelerIds = $_SESSION['travelerIds'];
 $total = $_SESSION['prices'][0] + $_SESSION['prices'][1];
 $outboundFltCount = $_SESSION['outboundFlightCount'];
 $flightIds = $_SESSION['flightIds'];
@@ -69,7 +69,7 @@ $flightIds = $_SESSION['flightIds'];
 			margin-left: auto;
 			margin-right: auto;
 			margin-top: 2em;
-			display: block;
+
 		}
 		.innerDiv{
 			border: 1px solid black;
@@ -139,9 +139,10 @@ $flightIds = $_SESSION['flightIds'];
 <div id="displayArea" class="col-lg-12">
 <?php
 
-	foreach($ticketIds as $ticketId){
-		$ticket = Ticket::getTicketByTicketId($mysqli, $ticketId);
-		$traveler = Traveler::getTravelerByTravelerId($mysqli,$ticket->getTravelerId());
+	foreach($travelerIds as $travelerId){
+
+		$traveler = Traveler::getTravelerByTravelerId($mysqli,$travelerId);
+		$ticket = Ticket::getTicketByTravelerId($mysqli, $traveler->__get("travelerId"));
 
 		//^this gives me each tickets flights and travelers
 
@@ -158,8 +159,9 @@ $flightIds = $_SESSION['flightIds'];
 		$today = new DateTime();
 		$today = $today->format("m/d/Y");
 			echo <<<HTML
-			<div class="ticket col-lg-8">
+			<div class="ticket">
 				<h1 style="text-align: center"><img id="cloud" src="../img/cloud-icon.png">PRZM AIR</h1>
+
 			<hr>
 			<h2 style="text-align:center">Ticket</h2>
 			<table>

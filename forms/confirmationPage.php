@@ -150,7 +150,7 @@ EOF;
 	</nav>
 </header>
 
-<h2 class="head" style="text-align:center">Outbound Flight Itinerary - <?php echo "$".money_format("%n",
+<h2 class="head" style="text-align:center">Outbound Flight Itinerary <?php echo "$".money_format("%n",
 		$prices[0]);?></h2>
 <?php
 
@@ -170,7 +170,7 @@ EOF;
 		if($outboundFlightCount-- === 0) {
 			$money = "$".money_format("%n", $prices[1]);
 			echo <<<HTML
-		<h2 style="text-align:center">Inbound Flight Itinerary - $money </h2>
+		<h2 style="text-align:center">Inbound Flight Itinerary  $money </h2>
 HTML;
 		}
 

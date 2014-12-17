@@ -771,7 +771,7 @@ class Flight {
 		}
 
 		$changeBy = intval($changeBy);
-var_dump($flightId);
+
 
 		// first, get the total seats left on this flightId
 		// create query template for SELECT
@@ -783,7 +783,7 @@ var_dump($flightId);
 
 		// bind the flightId to the place holder in the template
 		$wasClean = $statement->bind_param("i", $flightId);
-		var_dump($wasClean);
+
 
 		if($wasClean === false) {
 			throw(new mysqli_sql_exception("Unable to bind parameters"));

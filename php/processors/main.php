@@ -12,8 +12,8 @@ require_once("../class/ticketFlight.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 
-//$_SESSION['priceWithOutboundPath'] = "300.00,3,91";
-//$_SESSION['priceWithReturnPath'] = "300.00,3,864";
+$_SESSION['priceWithOutboundPath'] = "300.00,3,91";
+$_SESSION['priceWithReturnPath'] = "300.00,3,864";
 
 $testEmail       = "przmair@gmail.com";
 $testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
@@ -68,10 +68,10 @@ $traveler6->insert($mysqli);
 
 
 $travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4,$traveler5,$traveler6);
-$_SESSION['travelerArray'] = $travelerArray;
 
 
-header("Location: ../../index.php");
+
+header("Location: ../../forms/selectTravelers.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";
 $fileName = "weekDay01.csv";
