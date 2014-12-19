@@ -18,43 +18,11 @@ EOF;
 EOF;
 
 	}
-	function array_sort($array, $on, $order=SORT_ASC)
-	{
-		$new_array = array();
-		$sortable_array = array();
 
-		if (count($array) > 0) {
-			foreach ($array as $k => $v) {
-				if (is_array($v)) {
-					foreach ($v as $k2 => $v2) {
-						if ($k2 == $on) {
-							$sortable_array[$k] = $v2;
-						}
-					}
-				} else {
-					$sortable_array[$k] = $v;
-				}
-			}
-
-			switch ($order) {
-				case SORT_ASC:
-					asort($sortable_array);
-					break;
-				case SORT_DESC:
-					arsort($sortable_array);
-					break;
-			}
-
-			foreach ($sortable_array as $k => $v) {
-				$new_array[$k] = $array[$k];
-			}
-		}
-
-		return $new_array;
-	}
-	if(isset($_POST['confirmationNumber'])) {
+	if(!isset($_POST['confirmationNumber'])) {
+		$mysqli = MysqliConfiguration::getMysqli();
 		$flights = array();
-		$confirmationNumber = $_POST['confirmationNumber'];
+		$confirmationNumber = "1fd126"; //$_POST['confirmationNumber'];
 		$query = "SELECT ticketId FROM ticket WHERE confirmationNumber = ?";
 		$statement = $mysqli->prepare($query);
 		$statement->bind_param("s", $confirmationNumber);
@@ -71,18 +39,50 @@ EOF;
 			$flightIds[] = $ticketFlight->getFlightId();
 		}
 
-		$i = 0;
-		foreach($flightIds as $flightId) {
-			$flights[$i] = Flight::getFlightByFlightId($mysqli, $flightId);
-			$tempDT = $flights[$i]['departureDate']->format("Y-m-d H:i:s");
-			$dateTime[] = array('departureDate'=> $tempDT,
-									  'flightId'=>	$flights[$i]->getFlightId());
-			$i++;
-		}
-		var_dump($dateTime);
 
-		$sortedArray = array_sort($dateTime,'departureDate');
-		var_dump($dateTime);
+		foreach($flightIds as $flightId) {
+			$flights[] = Flight::getFlightByFlightId($mysqli, $flightId);
+
+		}
+		var_dump($flights);
+		for($i = 0; $i < count($flights); $i++) {
+			for($j = 0; $j < count($flights); $j++) {
+				$firstDateTime = DateTime::createFromFormat("Y-m-d H:i:s", $flights[$j]->getDepartureDateTime()->format
+				("Y-m-d H:i:s"));
+				$secondDateTime = DateTime::createFromFormat("Y-m-d H:i:s", $flights[$j + 1]->getDepartureDateTime());
+
+				if($firstDateTime > $secondDateTime) {
+						//no switch
+				} else {
+					$temp = $flights[$j];
+					$flights[$j] = $flights[$j + 1];
+					$flights[$j + 1] = $temp;
+
+				}
+			}
+		}
+			//evaluate datetime string using nested for loops
+			//is stringA > stringB if true move stringA up
+			/**										if(DateTimeA > DateTimeB)
+			 * pos0 15:30 12/28 DateTimeA	x			false
+			 * pos1 13:45 12/27 DateTimeB x-1	if( [x] > [x-1])
+			 * pos2 21:00 12/26 DateTimeC				pos0
+			 * pos3 12:00 12/25 DateTimeD				pos1 //no switch
+			 * pos4 06:00 12/24 DateTimeE   else
+			 *												   pos1           		temp = pos1
+			 * pos5 07:00 12/28 DateTimeF				pos0  //switch			pos1 = pos2
+			 * pos6 18:00 12/27 DateTimeG											pos2 = temp
+			 * pos7 08:00 12/26 DateTimeH
+			 *
+			 * dateTime = DateTime::create  (flightData[x]['departureDate'])
+			 *
+			 * sort by depaturedate until in order then pull flight ids in order
+			 */
+
+
+
+		var_dump($flights);
+
 		if(isset($_SESSION['outboundFlightCount'])) {
 			$outboundFlightCount = $_SESSION['outboundFlightCount'];
 		}

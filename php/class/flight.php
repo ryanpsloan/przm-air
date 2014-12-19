@@ -1212,7 +1212,7 @@ class Flight {
 	public function __toString() {
 		return ("<p>" . "Flight Id: " . $this->flightId . "<br/>" . "Origin: " . $this->origin . "<br/>" . "Destination: "
 			. $this->destination . "<br/>" . "Duration: " . $this->duration . "<br/>" . "Departure: " .
-			$this->departureDateTime . "<br/>" . "Arrival: " .	$this->arrivalDateTime . "<br/>" . "Flight Number: " .
+			$this->departureDateTime->format("Y-m-d H:i:s") . "<br/>" . "Arrival: " .	$this->arrivalDateTime->format("Y-m-d H:i:s") . "<br/>" . "Flight Number: " .
 			$this->flightNumber . "<br/>" . "Price: " . $this->price . "<br/>" . "Remaining Seats Available: " .
 			$this->totalSeatsOnPlane . "<br/>" . "</p>");
 	}
