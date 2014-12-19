@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require("/etc/apache2/capstone-mysql/przm.php");
 include("php/class/user.php");
 include("php/class/profile.php");
 include("php/class/flight.php");
@@ -68,11 +68,6 @@ EOF;
 	<script type="text/javascript" src="js/utility.js"></script>
 	<script type="text/javascript" src="js/indexValidation.js"></script>
 
-
-
-
-
-
 </head>
 <body>
 <header>
@@ -95,7 +90,7 @@ EOF;
 					<ul class="nav navbar-nav">
 						<li></li>
 						<li><a href="#"></a></li>
-						<li><a href="#">About</a></li>
+						<li><a href="pages/about.php">About</a></li>
 						<li></li>
 						<li></li>
 						<li></li>

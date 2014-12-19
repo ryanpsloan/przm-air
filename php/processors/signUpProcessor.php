@@ -47,7 +47,6 @@ try {
 
 	$newUser = new User(null, $email, $hash, $salt, $authToken);
 	$newUser->insert($mysqli);
-	$_SESSION['userId'] = $newUser->getUserId();
 
 	$newProfile = new Profile(null, $newUser->getUserId(), $firstNm, $middleNm, $lastNm,
 		$DOB, null, $newUser);
@@ -57,18 +56,7 @@ try {
 		$newProfile->__get("userMiddleName"), $newProfile->__get("userLastName"), $newProfile->__get("dateOfBirth"));
 	$newTraveler->insert($mysqli);
 
-	echo "<div class='alert alert-success' role='alert'>
-Your account has been authenticated. You are now signed in
-</div>";
-	if(isset($_SESSION['priceWithOutboundPath'])) {
-		sleep(1000);
-		header("Location: ../forms/selectTravelers.php");
-	}
-	else{
-		sleep(1000);
-		header("Location: ../index.php");
-	}
-	/*// email the user with an activation message
+	// email the user with an activation message
 	$to = $newUser->getEmail();
 	$from = "noreply@przm-air.com";
 
@@ -113,7 +101,7 @@ HTML;
 	} else {
 		echo "<div class=\"alert alert-success\" role=\"alert\">Sign up successful!
 						Please <strong>check your email</strong> to complete the signup process.</div>" . $output;
-	}*/
+	}
 
 }catch(Exception $e){
 	$_SESSION[$savedName] = $savedToken;
