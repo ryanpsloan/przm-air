@@ -178,9 +178,11 @@ EOF;
 								Flexible Dates?
 							</label>
 						</p>
-						<div style="text-align: left">
-								<em>**still under construction**</em><br/>select to see grid of cheapest fares in month</em>
-						</div>
+						<p>
+<!--						<div style="text-align: left">-->
+<!--							<em>**still under construction**</em>-->
+							<br/>select to see grid of cheapest fares in month</em>
+						</p>
 						<?php /*echo generateInputTags()
 							fixme csrf stuff, needs to be validated in your form processor uncomment when ready
 							to implement*/?>
