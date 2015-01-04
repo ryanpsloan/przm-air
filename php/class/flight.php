@@ -1,6 +1,6 @@
 <?php
 
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 require_once("results.php");
 /**
  * TODO: write bloody doc block

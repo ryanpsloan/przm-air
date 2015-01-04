@@ -11,7 +11,7 @@
 try {
 	session_start();
 
-	require_once("/etc/apache2/capstone-mysql/przm.php");
+	require_once("/home/gaster15/przm.php");
 	require("../../lib/csrf.php");
 	require("../class/flight.php");
 

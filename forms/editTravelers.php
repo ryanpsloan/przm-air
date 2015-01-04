@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("/etc/apache2/capstone-mysql/przm.php");
+require("/home/gaster15/przm.php");
 require_once("../php/class/traveler.php");
 require_once("../php/class/profile.php");
 if(isset($_SESSION['userId'])) {

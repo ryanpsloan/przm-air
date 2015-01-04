@@ -1,35 +1,43 @@
 <?php
 session_start();
-require("/etc/apache2/capstone-mysql/przm.php");
-require("../../php/class/user.php");
-require("../../php/class/profile.php");
-require("../../php/class/traveler.php");
+require("../../przm.php");
+require("../class/user.php");
+require("../class/profile.php");
+require("../class/traveler.php");
 require("../../lib/csrf.php");
-require("Mail.php");
+require_once("../../../../../../usr/local/cpanel/3rdparty/php/54/lib/php/Mail.php");
 
 try {
 
-	$savedName  = $_POST["csrfName"];
-	$savedToken = $_POST["csrfToken"];
+	//$savedName  = $_POST["csrfName"];
+	//$savedToken = $_POST["csrfToken"];
 
-	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+	/*if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled"));
-	}
-
+	}*/
+	echo "<p>Made it to page signUpProcessor.php</p>";
 	//filter and process input
 	$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 	$confPassword = filter_input(INPUT_POST, "confPassword", FILTER_SANITIZE_STRING);
 	$email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_STRING);
 	$mysqli = MysqliConfiguration::getMysqli();
+	echo "<p>Mysqli object \$mysqli ->signUpProcessor.php 24</p>";
+	var_dump($mysqli);
+
+	echo "<p>Having problems here with static call of User getbyEmail-- signUpProcessor.php 27</p>";
+	var_dump(User::getUserByEmail($mysqli, $email));
 
 	if(User::getUserByEmail($mysqli, $email) !== null) {
-		echo "<script>
+		echo <<<HTML
+				<script>
 					$(function() {
 							$('#signInLink').removeClass('hidden');
 							$(':input').attr('disabled', true);
 
 						});
-				</script>";
+				</script>
+HTML;
+
 		throw(new RuntimeException("That email is already in use. Sign-in or use a different email"));
 	}
 
@@ -40,22 +48,22 @@ try {
 	$DOB = DateTime::createFromFormat("m/d/Y", $DOB);
 	$DOB = $DOB->format("Y-m-d H:i:s");
 	$fullName = $firstNm . " " . $middleNm . " " . $lastNm;
-
+	echo "<p>processed name and dob 46</p>";
 	$salt = bin2hex(openssl_random_pseudo_bytes(32));
 	$authToken = bin2hex(openssl_random_pseudo_bytes(16));
 	$hash = hash_pbkdf2("sha512", $confPassword, $salt, 2048, 128);
 
 	$newUser = new User(null, $email, $hash, $salt, $authToken);
 	$newUser->insert($mysqli);
-
+	echo "<p>created user 53</p>";
 	$newProfile = new Profile(null, $newUser->getUserId(), $firstNm, $middleNm, $lastNm,
-		$DOB, null, $newUser);
+		$DOB, null);
 	$newProfile->insert($mysqli);
 
 	$newTraveler = new Traveler(null, $newProfile->__get("profileId"), $newProfile->__get("userFirstName"),
 		$newProfile->__get("userMiddleName"), $newProfile->__get("userLastName"), $newProfile->__get("dateOfBirth"));
 	$newTraveler->insert($mysqli);
-
+	echo "<p>created profile and traveler 61</p>";
 	// email the user with an activation message
 	$to = $newUser->getEmail();
 	$from = "noreply@przm-air.com";
@@ -71,7 +79,7 @@ try {
 	$headers["Content-Type"] = "text/html; charset=UTF-8";
 
 	$pageName = end(explode("/", $_SERVER["PHP_SELF"]));
-	$url      = "https://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
+	$url      = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["PHP_SELF"];
 	$url      = str_replace($pageName, "activate.php", $url);
 	$url      = "$url?authToken=$authToken&uId=".$newUser->getUserId();
 
@@ -89,12 +97,13 @@ HTML;
 						$(function() {
 							$(':input').attr('disabled', true);
 						});
-						setInterval(function () {location.href = '../index.php'}, 2000);
+						setTimeout(function () {location.href = '../index.php'}, 2000);
 					</script>";
 	// send the email
 	error_reporting(E_ALL & ~E_STRICT);
 	$mailer =& Mail::factory("sendmail");
 	$status = $mailer->send($to, $headers, $message);
+	echo "Test Place Liine 98 signUpProcessor.php--->";
 	if(PEAR::isError($status) === true) {
 		echo $output;
 		throw(new RuntimeException("Unable to send mail message:" .$status->getMessage()));

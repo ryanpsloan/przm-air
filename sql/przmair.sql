@@ -17,8 +17,7 @@ CREATE TABLE flightSearchR (
 	INDEX (endId),
 	INDEX (path),
 	INDEX (userSession)
-)
-ENGINE = MEMORY;
+);
 
 CREATE TABLE user (
 	userId INT UNSIGNED NOT NULL AUTO_INCREMENT,

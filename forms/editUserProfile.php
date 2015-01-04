@@ -2,7 +2,7 @@
 require("../php/class/user.php");
 require("../php/class/profile.php");
 include("../lib/csrf.php");
-require("/etc/apache2/capstone-mysql/przm.php");
+require("/home/gaster15/przm.php");
 try {
 session_start();
 

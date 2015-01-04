@@ -10,7 +10,7 @@ $(document).ready(function()
 				},
 				middle: {
 					required: false,
-					pattern: /^[a-zA-Z]+$/
+					pattern: /^[a-zA-Z]*$/
 				},
 				last  : {
 					required: true,

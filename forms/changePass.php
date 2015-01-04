@@ -1,7 +1,7 @@
 <?php
 include("../lib/csrf.php");
 include("../php/class/profile.php");
-include("/etc/apache2/capstone-mysql/przm.php");
+include("/home/gaster15/przm.php");
 session_start();
 try {
 	if(isset($_SESSION['userId'])) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 include("../../php/class/user.php");
 include("../../php/class/profile.php");
 include('../../lib/csrf.php');

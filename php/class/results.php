@@ -5,7 +5,7 @@
  * @throws mysqli_sql_exception
  */
 
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 
 class Results {
 	public static function db_all($query)

@@ -1,7 +1,7 @@
 <?php
 include('../class/user.php');
 include('../../lib/csrf.php');
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 try {
 	session_start();
 	$mysqli = MysqliConfiguration::getMysqli();

@@ -352,6 +352,9 @@ class User {
 		// create query template
 		$query     = "SELECT userId, email, password, salt, authToken FROM user WHERE email = ?";
 		$statement = $mysqli->prepare($query);
+		echo "<p>vardump statement after mysqli->prepare(query)-- user.php 355</p>";
+		var_dump($statement);
+
 		if($statement === false) {
 			throw(new mysqli_sql_exception("Unable to prepare statement"));
 		}
@@ -366,13 +369,19 @@ class User {
 		if($statement->execute() === false) {
 			throw(new mysqli_sql_exception("Unable to execute mySQL statement"));
 		}
-
+		echo "<p> vardump statement after bindparam and execute -> user.php 367</p>";
+		var_dump($statement);
 		// get result from the SELECT query *pounds fists*
+		echo "<p>vardump of statement->get_result() -- user.php 375</p>";
+		var_dump($statement->get_result());
 		$result = $statement->get_result();
+		echo "<p> get result->user.php 375</p>";
+		var_dump($result);
 		if($result === false) {
 			throw(new mysqli_sql_exception("Unable to get result set"));
 		}
-
+		echo "result";
+		var_dump($result);
 		// since this is a unique field, this will only return 0 or 1 results. So...
 		// 1) if there's a result, we can make it into a User object normally
 		// 2) if there's no result, we can just return null

@@ -8,7 +8,7 @@
 
 
 // require the class under scrutiny
-//require_once("/etc/apache2/capstone-mysql/przm.php");
+//require_once("/home/gaster15/przm.php");
 //require_once("results.php");
 //require_once("flight.php");
 //

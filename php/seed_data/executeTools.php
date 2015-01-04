@@ -1,5 +1,5 @@
 <?php
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 $numOfWeeks = 104;

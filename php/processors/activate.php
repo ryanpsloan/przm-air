@@ -1,5 +1,5 @@
 <?php
-require("/etc/apache2/capstone-mysql/przm.php");
+require("/home/gaster15/przm.php");
 include("../class/user.php");
 session_start();
 ?>

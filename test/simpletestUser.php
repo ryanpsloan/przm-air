@@ -1,7 +1,7 @@
 <?php
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 
 // then require the class under scrutiny
 require_once("../php/user.php");

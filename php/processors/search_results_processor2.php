@@ -10,7 +10,7 @@
  * and displays results to the user in table form.
  */
 session_start();
-require("/etc/apache2/capstone-mysql/przm.php");
+require("/home/gaster15/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
 $mysqli = MysqliConfiguration::getMysqli();

@@ -12,7 +12,7 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("../php/ticketFlight.php");
 
 // require the mysqli
-require_once("/etc/apache2/capstone-mysql/przm.php");
+require_once("/home/gaster15/przm.php");
 
 // require the classes for foreign keys
 require_once("../php/ticket.php");
