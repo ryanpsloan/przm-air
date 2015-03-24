@@ -3,7 +3,7 @@ session_start();
 require("../php/class/user.php");
 require("../php/class/profile.php");
 include("../lib/csrf.php");
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 
 if(isset($_SESSION['userId'])) {
 	$mysqli = MysqliConfiguration::getMysqli();

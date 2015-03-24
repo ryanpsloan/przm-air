@@ -1,7 +1,7 @@
 <?php
 include("../lib/csrf.php");
 include("../php/class/profile.php");
-include("/home/gaster15/przm.php");
+include("/var/www/html/przm.php");
 session_start();
 try {
 	if(isset($_SESSION['userId'])) {

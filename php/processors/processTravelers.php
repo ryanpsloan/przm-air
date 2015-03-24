@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 require_once("../../php/class/traveler.php");
 require_once("../../php/class/profile.php");
 require_once("../../lib/csrf.php");
@@ -60,13 +60,13 @@ HTML;
 				$oldTraveler->delete($mysqli);
 
 			}
-			echo <<<HTML
+			/*echo <<<HTML
 				<script>
 					$(function(){
 						location.reload();
 					});
 				</script>
-HTML;
+HTML;*/
 
 		}
 		else{

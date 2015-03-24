@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require("../php/class/profile.php");
 require("../php/class/flight.php");
 require("../php/class/traveler.php");

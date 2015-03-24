@@ -6,7 +6,7 @@
 <body>
 <?php
 session_start();
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 require_once("../class/transaction.php");
 require_once("../class/user.php");
 require_once("../class/profile.php");

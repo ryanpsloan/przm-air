@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require("../php/class/profile.php");
 require("../php/class/traveler.php");
 require("../php/class/flight.php");
@@ -23,14 +23,22 @@ EOF;
 
 	$outboundArray = explode(",",$_SESSION['priceWithOutboundPath']);
 	$outboundFlightCount = 0;
+	$returnFlightCount = 0;
 	for($i = 2; $i < count($outboundArray); $i++){
 		$outboundFlightCount++;
 	}
+
 	$_SESSION['outboundFlightCount'] = $outboundFlightCount;
 	$paths[] = $_SESSION['priceWithOutboundPath'];
 	if(isset($_SESSION['priceWithReturnPath'])){
 		$paths[] = $_SESSION['priceWithReturnPath'];
+		$test[] = $_SESSION['priceWithReturnPath'];
+		for($i = 0; $i < count($test); $i++) {
+			$returnFlightCount++;
+		}
+
 	}
+	$_SESSION['returnFlightCount'] = $returnFlightCount;
 	$flightIds = array();
 	$prices = array();
 

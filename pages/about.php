@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	require("/home/gaster15/przm.php");
-	include("php/class/user.php");
-	include("php/class/profile.php");
-	include("php/class/flight.php");
+	require("/var/www/html/przm.php");
+	include("../php/class/user.php");
+	include("../php/class/profile.php");
+	include("../php/class/flight.php");
 
 	$mysqli = MysqliConfiguration::getMysqli();
 
@@ -121,7 +121,7 @@ EOF;
 					<li>Profile Class</li>
 					<li>Traveler Class</li>
 				</ul>
-				<h3>Forms I developed using PHP, Mysqli, jQuery, JavaScript, HTML and CSS</h3>
+				<h3>Forms I developed using PHP, mySQL, jQuery, JavaScript, HTML and CSS</h3>
 				<ul>
 					<li>sign/in, sign/up</li>
 					<li>forgot/change password</li>

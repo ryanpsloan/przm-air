@@ -1,5 +1,5 @@
 <?php
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 include("../class/user.php");
 session_start();
 ?>

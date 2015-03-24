@@ -7,16 +7,20 @@ $(document).ready(function() {
 	$(function() {
 		function enableEnd() {
 			end.attr('disabled', !this.value.length).datepicker('option', 'minDate', this.value).datepicker('option',
-				'maxDate', "+1y");
+				'maxDate', new Date(2015, 2 - 1, 22));
 		}
 
 		var end = $('#returnDate').datepicker();
 
 		$('#departDate').datepicker({
-			minDate : '0d',
-			maxDate : '+1y',
+			minDate : new Date(2015, 2 - 1, 9),
+			maxDate : new Date(2015, 2 - 1, 15),
 			onSelect: enableEnd
 		}).bind('input', enableEnd);
+
+		$('#origin').change(function(){
+			$('#destination').children("option[value^=" + $(this).val() + "]").hide();
+		});
 
 	});
 

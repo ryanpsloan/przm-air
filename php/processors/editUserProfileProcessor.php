@@ -1,5 +1,5 @@
 <?php
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require("../class/user.php");
 require("../class/profile.php");
 require("../class/traveler.php");

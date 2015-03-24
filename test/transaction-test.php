@@ -13,7 +13,7 @@ require_once("/usr/lib/php5/simpletest/autorun.php");
 require_once("../php/transaction.php");
 
 // require the mysqli
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 
 // require the classes for foreign key
 require_once("../php/user.php");

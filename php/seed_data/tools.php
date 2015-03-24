@@ -6,7 +6,7 @@
  * @param int    $totalSeats
  * @param int    $numOfDays
  */
-function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 20, $numOfDays = 5)
+function readCSV(&$mysqli, $fileName, $baseDate = "2015-01-05", $totalSeats = 20, $numOfDays = 5)
 {
 	if(gettype($mysqli) !== "object" || get_class($mysqli) !== "mysqli") {
 		throw(new mysqli_sql_exception("input is not a mysqli object"));
@@ -126,7 +126,7 @@ function readCSV(&$mysqli,$fileName, $baseDate = "2014-12-01", $totalSeats = 20,
 				}
 			}
 
-				$baseDate = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate." 00:00:00");
+				$baseDate = DateTime::createFromFormat("Y-m-d H:i:s", $baseDate." 00:00:00", new DateTimeZone('UTC'));
 
 //				//echo "baseDate Obj Y-m-d 00:00:00";
 //				//var_dump($baseDate);

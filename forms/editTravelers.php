@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require_once("../php/class/traveler.php");
 require_once("../php/class/profile.php");
 if(isset($_SESSION['userId'])) {

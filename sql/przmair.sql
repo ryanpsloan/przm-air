@@ -19,6 +19,7 @@ CREATE TABLE flightSearchR (
 	INDEX (userSession)
 );
 
+
 CREATE TABLE user (
 	userId INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	email VARCHAR(64) NOT NULL,

@@ -2,7 +2,6 @@ $(document).ready(function()
 {
 	$("#signUpForm").validate(
 		{
-
 			rules: {
 				first : {
 					required: true,
@@ -46,7 +45,7 @@ $(document).ready(function()
 					required: "Please enter your last name"
 				},
 				dob   : {
-					required: "Enter your date of birth."
+					required: "Enter your date of birth"
 				},
 				email : {
 					required: "Please enter a valid email"

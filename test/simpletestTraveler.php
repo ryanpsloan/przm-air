@@ -1,7 +1,7 @@
 <?php
 // first require the SimpleTest framework
 require_once("/usr/lib/php5/simpletest/autorun.php");
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 
 // then require the class under scrutiny
 require_once("../php/class/traveler.php");

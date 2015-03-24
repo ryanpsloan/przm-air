@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 include("php/class/user.php");
 include("php/class/profile.php");
 include("php/class/flight.php");
@@ -8,12 +8,11 @@ include("lib/csrf.php");
 
 try {
 
-
 	$mysqli = MysqliConfiguration::getMysqli();
 
-	if(isset($_SESSION['userId'])) {
+	if(@isset($_SESSION["userId"])) {
 		$profile = Profile::getProfileByUserId($mysqli, $_SESSION['userId']);
-		$fullName =  ucfirst($profile->__get('userFirstName')).' '.ucfirst($profile->__get('userLastName'));
+		$fullName =  ucfirst($profile->userFirstName).' '.ucfirst($profile->userLastName);
 		$userName = <<<EOF
 		<a><span
 			class="glyphicon glyphicon-user"></span> Welcome, $fullName  </a>
@@ -41,7 +40,7 @@ EOF;
 		$account = "";
 	}
 } catch(Exception $e){
-
+	throw(new Exception($e->getMessage(), 0, $e));
 }
 ?>
 
@@ -113,10 +112,10 @@ EOF;
 					Your Flight</a>
 			</li>
 
-			<li role="presentation">
+			<!--<li role="presentation">
 				<a href="#checkIn" id="checkIn-tab" role="tab" data-toggle="tab" aria-controls="checkIn"
 					aria-expanded="true">CheckIn</a>
-			</li>
+			</li>-->
 
 			<?php echo $account?>
 		</ul>
@@ -140,12 +139,42 @@ EOF;
 						<div id="multiple-datasets">
 
 							<p><label>From:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for origin" id="origin" name="origin" autocomplete="off"><br/>
+								<select class="form-control" id="origin" name="origin">
+									<option value="ABQ">Albuquerque, NM (ABQ)</option>
+									<option value="ATL">Atlanta, GA (ATL)</option>
+									<option value="DEN">Denver, CO (DEN)</option>
+									<option value="DFW">Dallas/Fort Worth, TX (DFW)</option>
+									<option value="DTW">Detroit, MI (DTW)</option>
+									<option value="JFK">New York, NY (JFK)</option>
+									<option value="LAX">Los Angeles, CA (LAX)</option>
+									<option value="LGA">New York, NY (LGA)</option>
+									<option value="MDW">Chicago, IL (MDW)</option>
+									<option value="MIA">Miami, FL (MIA)</option>
+									<option value="ORD">Chicago, IL (ORD)</option>
+									<option value="SEA">Seattle, WA (SEA)</option>
+								</select>
+								<!--<input type="text" class="form-control typeahead" placeholder="search for origin"
+										  id="origin" name="origin" autocomplete="off">--><br/>
 							</p>
 
 
 							<p><label>To:</label><br/>
-								<input type="text" class="form-control typeahead" placeholder="search for destination" id="destination" name="destination" autocomplete="off"><br/>
+								<select class="form-control" id="destination" name="destination">
+								<option value="ABQ">Albuquerque, NM (ABQ)</option>
+								<option value="ATL">Atlanta, GA (ATL)</option>
+								<option value="DEN">Denver, CO (DEN)</option>
+								<option value="DFW">Dallas/Fort Worth, TX (DFW)</option>
+								<option value="DTW">Detroit, MI (DTW)</option>
+								<option value="JFK">New York, NY (JFK)</option>
+								<option value="LAX">Los Angeles, CA (LAX)</option>
+								<option value="LGA">New York, NY (LGA)</option>
+								<option value="MDW">Chicago, IL (MDW)</option>
+								<option value="MIA">Miami, FL (MIA)</option>
+								<option value="ORD">Chicago, IL (ORD)</option>
+								<option value="SEA">Seattle, WA (SEA)</option>
+								</select>
+								<!-- <input type="text" class="form-control typeahead" placeholder="search for destination"
+										  id="destination" name="destination" autocomplete="off">--><br/>
 							</p>
 
 						</div>
@@ -165,34 +194,32 @@ EOF;
 									 autocomplete="off">
 						</p>
 
-						<p><label>Minimum Layover: </label><br/>
+						<!--<p><label>Minimum Layover: </label><br/>
 							<input type="text" class="form-control" id="minLayover" name="minLayover" size="5" value = "30" autocomplete="off"
 								><br/>
 							<em>enter number of minutes</em>
-						</p>
+						</p>-->
 
 						<p><button type="submit" class="btn btn-default">Search Flights</button></p>
-						<hr>
+						<!--<hr>
 						<p><label class="btn btn-primary active">
 							<input type="checkbox" name="options" id="flexDatesBoolean" name="flexDatesBoolean" autocomplete="off">
 								Flexible Dates?
 							</label>
 						</p>
 						<p>
-<!--						<div style="text-align: left">-->
-<!--							<em>**still under construction**</em>-->
+<!--						<div style="text-align: left">
+<!--							<em>**still under construction**</em>
 							<br/>select to see grid of cheapest fares in month</em>
-						</p>
-						<?php /*echo generateInputTags()
-							fixme csrf stuff, needs to be validated in your form processor uncomment when ready
-							to implement*/?>
+						</p>-->
+						<?php echo generateInputTags()?>
 					</div>
 				</form>
 				<img src="img/white-clouds-and-blue-sky_1600x1200_78559.jpg">
 			</div>
 
 
-			<div role="tabpanel" class="tab-pane fade" id="checkIn"
+		<!--	<div role="tabpanel" class="tab-pane fade" id="checkIn"
 				  aria-labelledby="checkIn-tab">
 				<div id="checkInLinksDiv">
 					<ul id="checkInLinksList">
@@ -202,7 +229,7 @@ EOF;
 							<span class="glyphicon glyphicon-plus"></span>Check In</a></p></li>
 					</ul>
 				</div>
-			</div>
+			</div> -->
 			<div role="tabpanel" class="tab-pane fade" id="account"
 				  aria-labelledby="account-tab">
 				<div id="accountLinksDiv">
@@ -211,10 +238,10 @@ EOF;
 							<span class="glyphicon glyphicon-plus"></span>Edit Profile</a></p></li>
 						<li><p><a href="forms/editTravelers.php">
 									<span class="glyphicon glyphicon-plus"></span>Edit Travelers</a></p></li>
-						<li><p><a href="forms/viewItinerary.php">
-									<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>
-						<li><p><a href="">
-									<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>
+						<!--<li><p><a href="forms/viewItinerary.php">
+									<span class="glyphicon glyphicon-plus"></span>View Itinerary</a></p></li>-->
+						<!--<li><p><a href="">
+									<span class="glyphicon glyphicon-minus"></span>Cancel Flight</a></p></li>-->
 
 					</ul>
 				</div>

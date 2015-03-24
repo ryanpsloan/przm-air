@@ -10,7 +10,7 @@
  * and displays results to the user in table form.
  */
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
 $mysqli = MysqliConfiguration::getMysqli();
@@ -36,15 +36,14 @@ else{
 	$userName = "";
 	$status = "";
 }
+	//var_dump($_POST);
 
-//	$savedName  = $_POST["csrfName"//];
-//	$savedToken = $_POST["csrfToken"];//
-//
-//
-//	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false)// {
-//		throw(new RuntimeException("Make sure cookies are enabled.")//);
-//	}
+	$savedName  = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
 
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+		throw(new RuntimeException("Make sure cookies are enabled."));
+	}
 
 /**
  * sets up all other needed variables that are same for outbound and return searches, then calls the method with all inputs
@@ -67,7 +66,7 @@ function completeSearch (&$mysqli, $userOrigin, $userDestination,
 //$i<$numberToShow
 
 	$numberOfPassengersRequested = filter_input(INPUT_POST, "numberOfPassengers", FILTER_SANITIZE_NUMBER_INT);
-	$minLayover = filter_input(INPUT_POST, "minLayover", FILTER_SANITIZE_NUMBER_INT);
+	$minLayover = 30;//filter_input(INPUT_POST, "minLayover", FILTER_SANITIZE_NUMBER_INT);
 
 
 
@@ -332,7 +331,7 @@ try {
 
 
 }catch (Exception $e){
-	// $_SESSION[$savedName] = $savedToken;
+	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>
 												".$e->getMessage()."
 										</div>";
@@ -412,8 +411,8 @@ try {
 					<!-- Nav tabs -->
 					<div class="container-fluid">
 						<ul class="nav nav-tabs nav-justified" role="tablist">
-							<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">
-									<?php echo $tabDisplayLess2Days;?></a></li>
+							<!--<li role="presentation"><a href="#2DB" aria-controls="2DB" role="tab" data-toggle="tab">
+									<?php //echo $tabDisplayLess2Days;?></a></li>-->
 
 							<li role="presentation"><a href="#1DB" aria-controls="1DB" role="tab" data-toggle="tab">
 									<?php echo $tabDisplayLess1Day;?></a></li>
@@ -423,18 +422,18 @@ try {
 
 							<li role="presentation"><a href="#1DA" aria-controls="1DA" role="tab" data-toggle="tab">
 									<?php echo $tabDisplayAdd1Day;?></a></li>
-							<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab" data-toggle="tab">
-									<?php echo $tabDisplayAdd2Days;?></a></li>
+							<!--<li role="presentation"><a href="#2DA" aria-controls="2DA" role="tab" data-toggle="tab">
+									<?php //echo $tabDisplayAdd2Days;?></a></li>-->
 						</ul>
 					</div>
 
 					<!-- Tab panes -->
 					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane fade in center" id="2DB">
+						<!--<div role="tabpanel" class="tab-pane fade in center" id="2DB">
 							<br/>
 							<?php
 							// execute outbound search and build results table within outbound tabs
-							try {
+							/*try {
 								$outputTableOutboundLess2 = completeSearch($mysqli, $originOutbound, $destinationOutbound,
 									$userFlyDateStartLess2, "priceWithOutboundPath");
 
@@ -445,9 +444,9 @@ try {
 								echo "<div class='alert alert-danger' role='alert'>
 												".$e->getMessage()."
 										</div>";
-							}
+							}*/
 							?>
-						</div>
+						</div>-->
 
 
 						<div role="tabpanel" class="tab-pane fade in center" id="1DB">
@@ -462,7 +461,7 @@ try {
 								echo $tableStringStart . $outputTableOutboundLess1 . $tableStringEnd;
 
 							}catch (Exception $e){
-								// $_SESSION[$savedName] = $savedToken;
+								$_SESSION[$savedName] = $savedToken;
 								echo "<div class='alert alert-danger' role='alert'>
 												".$e->getMessage()."
 										</div>";
@@ -512,11 +511,11 @@ try {
 						</div>
 
 
-						<div role="tabpanel" class="tab-pane fade in center" id="2DA">
+						<!--<div role="tabpanel" class="tab-pane fade in center" id="2DA">
 							<br/>
 							<?php
 							// execute outbound search and build results table within outbound tabs
-							try {
+							/*try {
 								// get outbound results
 								$outputTableOutboundAdd2 = completeSearch($mysqli, $originOutbound, $destinationOutbound,
 									$userFlyDateStartAdd2, "priceWithOutboundPath");
@@ -528,9 +527,9 @@ try {
 								echo "<div class='alert alert-danger' role='alert'>
 														".$e->getMessage()."
 												</div>";
-							}
+							}*/
 							?>
-						</div>
+						</div>-->
 					</div>
 				</div>
 			</section>
@@ -585,16 +584,16 @@ try {
 					<!-- Nav tabs -->
 					<div class='container-fluid'>
 						<ul class='nav nav-tabs nav-justified' role='tablist'>
-							<li role='presentation'><a href='#I2DB' aria-controls='I2DB' role='tab' data-toggle='tab'>
-								$tabDisplayInboundLess2Days</a></li>
+							<!--<li role='presentation'><a href='#I2DB' aria-controls='I2DB' role='tab' data-toggle='tab'>
+								$tabDisplayInboundLess2Days</a></li>-->
 							<li role='presentation'><a href='#I1DB' aria-controls='I1DB' role='tab' data-toggle='tab'>
 								$tabDisplayInboundLess1Day</a></li>
 							<li role='presentation' class='active'><a href='#ID' aria-controls='ID' role='tab' data-toggle='tab'>
 								$tabDisplayInboundMainDay</a></li>
 							<li role='presentation'><a href='#I1DA' aria-controls='I1DA' role='tab' data-toggle='tab'>
 								$tabDisplayInboundAdd1Day</a></li>
-							<li role='presentation'><a href='#I2DA' aria-controls='I2DA' role='tab' data-toggle='tab'>
-								$tabDisplayInboundAdd2Days</a></li>
+							<!--<li role='presentation'><a href='#I2DA' aria-controls='I2DA' role='tab' data-toggle='tab'>
+								$tabDisplayInboundAdd2Days</a></li>-->
 						</ul>
 					</div>
 
@@ -603,7 +602,7 @@ try {
 						<div role='tabpanel' class='tab-pane fade in center' id='I2DB'>
 							<br/>";
 				// execute return search and build results table within return tabs if round trip selected
-				try {
+				/*try {
 					// execute inbound flight search
 					$outputTableInboundLess2 = completeSearch($mysqli, $originInbound, $destinationInbound,
 						$userFlyDateInboundLess2, 'priceWithReturnPath');
@@ -612,7 +611,7 @@ try {
 				} catch(Exception $e) {
 					// $_SESSION[$savedName] = $savedToken;
 					echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>";
-				}
+				}*/
 
 				echo "
 						</div>
@@ -668,7 +667,7 @@ try {
 						<div role='tabpanel' class='tab-pane fade in center' id='I2DA'>
 							<br/>";
 				// execute return search and build results table within return tabs if round trip selected
-				try {
+				/*try {
 					// execute inbound flight search
 					$outputTableInboundAdd2 = completeSearch($mysqli, $originInbound, $destinationInbound,
 						$userFlyDateInboundAdd2, 'priceWithReturnPath');
@@ -677,7 +676,7 @@ try {
 				} catch(Exception $e) {
 					// $_SESSION[$savedName] = $savedToken;
 					echo "<div class='alert alert-danger' role='alert'>" . $e->getMessage() . "</div>";
-				}
+				}*/
 				echo "
 						</div>
 					</div>
@@ -692,6 +691,7 @@ try {
 				<div class="btn-group btn-group-lg" role="group" aria-label="...">
 					<button type='submit' class='btn btn-primary'>BOOK NOW!</button>
 				</div>
+				<?php echo generateInputTags(); ?>
 				<br/>
 				<br/>
 				<br/>

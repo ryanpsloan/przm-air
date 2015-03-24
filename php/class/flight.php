@@ -1,7 +1,8 @@
 <?php
 
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 require_once("results.php");
+date_default_timezone_set("UTC");
 /**
  * TODO: write bloody doc block
  *

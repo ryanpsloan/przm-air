@@ -8,7 +8,7 @@
 
 
 // require the class under scrutiny
-//require_once("/home/gaster15/przm.php");
+//require_once("/var/www/html/przm.php");
 //require_once("results.php");
 //require_once("flight.php");
 //

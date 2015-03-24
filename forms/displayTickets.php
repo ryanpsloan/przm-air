@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 require_once("../php/class/traveler.php");
 require_once("../php/class/profile.php");
 require_once("../php/class/flight.php");
@@ -38,6 +38,7 @@ else{
 	$total = $tempPrices[0];
 }
 $outboundFltCount = $_SESSION['outboundFlightCount'];
+$returnFltCount = $_SESSION['returnFlightCount'];
 $flightIds = $_SESSION['flightIds'];
 ?>
 
@@ -167,7 +168,7 @@ HTML;
 			$depDate = $flight->getDepartureDateTime()->format("m/d/Y");
 			$arrTime = $flight->getArrivalDateTime()->format("h:i:s a");
 			$arrDate = $flight->getArrivalDateTime()->format("m/d/Y");
-			if($outboundFltCount-- === 0) {
+			if($outboundFltCount-- === 0 && $returnFltCount > 0) {
 				echo "<tr><td colspan='16'><b>Return Details</b><hr></td></tr>";
 			}
 			echo <<<HTML
@@ -199,6 +200,7 @@ HTML;
 HTML;
 		}
 
+		$outboundFltCount = $_SESSION['outboundFlightCount'];
 		echo "</tbody>
 			</table>
 			</div>";

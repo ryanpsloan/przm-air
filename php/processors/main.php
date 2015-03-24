@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("/home/gaster15/przm.php");
+require_once("/var/www/html/przm.php");
 require_once("../class/user.php");
 require_once("../class/profile.php");
 require_once("../class/traveler.php");
@@ -12,8 +12,8 @@ require_once("../class/ticketFlight.php");
 $mysqli = MysqliConfiguration::getMysqli();
 
 
-$_SESSION['priceWithOutboundPath'] = "300.00,3,91";
-$_SESSION['priceWithReturnPath'] = "300.00,3,864";
+//$_SESSION['priceWithOutboundPath'] = "300.00,3,91";
+//$_SESSION['priceWithReturnPath'] = "300.00,3,864";
 
 $testEmail       = "przmair@gmail.com";
 $testSalt        = bin2hex(openssl_random_pseudo_bytes(32));
@@ -24,9 +24,9 @@ $user = new User(null, $testEmail, $testHash, $testSalt, $testAuthToken);
 $user->insert($mysqli);
 $userId = $user->getUserId();
 //echo "userId after insert->";
- //var_dump($userId);
+//var_dump($userId);
 //var_dump($user);
-$_SESSION['userId'] = $userId;
+//$_SESSION['userId'] = $userId;
 
 $testFirstName = "PRZM";
 $testMiddleName = "";
@@ -35,7 +35,7 @@ $testDateOfBirth = DateTime::createFromFormat("Y-m-d H:i:s" ,"2010-11-12 12:11:1
 $profile = new Profile(null, $userId, $testFirstName, $testMiddleName, $testLastName, $testDateOfBirth, null);
 $profile->insert($mysqli);
 $profileId = $profile->__get("profileId");
-echo "profile Id after insert->";
+//echo "profile Id after insert->";
 //var_dump($profileId);
 //var_dump($profile);
 
@@ -65,13 +65,11 @@ $traveler5->insert($mysqli);
 $traveler6 = new Traveler(null, $profileId, "Dylan", "", "McDonald", $testDateOfBirth);
 $traveler6->insert($mysqli);
 
-
-
-$travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4,$traveler5,$traveler6);
+//$travelerArray = array($traveler1,$traveler2,$traveler3,$traveler4,$traveler5,$traveler6);
 
 
 
-header("Location: ../../forms/selectTravelers.php");
+//header("Location: ../../forms/selectTravelers.php");
 //require_once("tools.php");
 /*$baseDate = "2014-12-01";
 $fileName = "weekDay01.csv";

@@ -49,7 +49,8 @@ CREATE PROCEDURE spFlightSearchR (IN startLoc VARCHAR(20), endLoc VARCHAR(20), d
 			INNER JOIN flight F ON F.flightId = R.endId
 		WHERE F.destination = endLoc
 				AND R.userSession = userSesID
-		ORDER BY Stops;
+		ORDER BY Stops
+		LIMIT 20;
 
 		DELETE FROM flightSearchR WHERE userSession = userSesID;
 	END;

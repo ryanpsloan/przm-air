@@ -11,9 +11,9 @@ class MysqliConfiguration {
         mysqli_report(MYSQLI_REPORT_STRICT);
 
         // connect!
-        self::$mysqli = new mysqli("23.229.221.226", "przm", "myg70FA1X5ud", "przm");
-		   echo "<p>MysqliConfiguration getMysqli static mysqli przm.php 15</p>";
-			var_dump(self::$mysqli);
+        self::$mysqli = new mysqli("localhost", "root", "przmair", "przm");
+		  // echo "<p>MysqliConfiguration getMysqli static mysqli przm.php 15</p>";
+			//var_dump(self::$mysqli);
       } catch(mysqli_sql_exception $error) {
 	throw(new mysqli_sql_exception("Unable to connect to mySQL", 0, $error));
       }
@@ -28,7 +28,7 @@ class MysqliConfiguration {
        mysqli_report(MYSQLI_REPORT_STRICT);
 
        // connect!
-       $mysqli = new mysqli("23.229.221.226", "przm", "myg70FA1X5ud", "przm");
+       $mysqli = new mysqli("localhost", "root", "przmair", "przm");
        return($mysqli);
      } catch(mysqli_sql_exception $error) {
        throw(new mysqli_sql_exception("Unable to connect to mySQL", 0, $error));

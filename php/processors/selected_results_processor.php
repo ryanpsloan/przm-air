@@ -11,19 +11,16 @@
 try {
 	session_start();
 
-	require_once("/home/gaster15/przm.php");
+	require_once("/var/www/html/przm.php");
 	require("../../lib/csrf.php");
 	require("../class/flight.php");
 
+	$savedName  = $_POST["csrfName"];
+	$savedToken = $_POST["csrfToken"];
 
-
-	//$savedName  = $_POST["csrfName"];
-	//$savedToken = $_POST["csrfToken"];
-
-
-	/*if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
+	if(verifyCsrf($_POST["csrfName"], $_POST["csrfToken"]) === false) {
 		throw(new RuntimeException("Make sure cookies are enabled."));
-	}*/
+	}
 
 // The following code may be needed at later time to decrement seats on each flight at the time of selection by user
 //
@@ -65,7 +62,7 @@ try {
 //	alert($('input[name="selectFlightB"]:checked').val());
 
 }catch (Exception $e){
-	//$_SESSION[$savedName] = $savedToken;
+	$_SESSION[$savedName] = $savedToken;
 	echo "<div class='alert alert-danger' role='alert'>
   ".$e->getMessage()."</div>";
 }

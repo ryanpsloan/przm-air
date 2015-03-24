@@ -882,7 +882,7 @@ $row = $result->fetch_assoc(); // fetch_assoc() returns a row as an associative 
  * and displays results to the user in table form.
  */
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
 $mysqli = MysqliConfiguration::getMysqli();
@@ -1444,7 +1444,7 @@ $hiddenRadio = $_POST['roundTripOrOneWay'];
  * results to the user in sortable table form under tabs for each day of results.
  */
 session_start();
-require("/home/gaster15/przm.php");
+require("/var/www/html/przm.php");
 require("../class/flight.php");
 require("../../lib/csrf.php");
 $mysqli = MysqliConfiguration::getMysqli();

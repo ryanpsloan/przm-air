@@ -9,25 +9,18 @@ session_start();
 	<meta charset="UTF-8">
 	<title>Sign Up</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
 	<!-- JavaScript -->
 	<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<script src="http://malsup.github.com/jquery.form.js"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.js"></script>
-	<script src="http://malsup.github.com/jquery.form.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-	<!--<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min
-	.js"></script>-->
-	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	<!--<script type="text/javascript" src="../js/signUp.js"></script>-->
-
+	<script type="text/javascript" src="../js/signUp.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<!-- CSS -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link type="text/css" rel="stylesheet" href="../css/signUp.css">
-
 	<script type="text/javascript">
 		$(function() {
 			$( ".datepicker" ).datepicker({
@@ -76,13 +69,14 @@ session_start();
 </nav>
 <div id="container">
 	<div id="formDiv">
-
-		<form id="signUpForm" action="../php/processors/signUpProcessor.php" method="POST">
+		<p>This section of the site is down for maintenance. Sorry for the inconvenience</p>
 			<fieldset>
+
 				<legend style="text-align: center">Create a Profile</legend>
 				<div id="outputArea"></div>
+				<form id="signUpForm" action="../php/processors/signUpProcessor.php" method="POST">
 				<p><label>First Name</label></br>
-					<input type="text" id="first" name="first" autocomplete="off"></p>
+				<input type="text" id="first" name="first" autocomplete="off"></p>
 				<p></p><label>Middle Name</label></br>
 				<input type="text" id="middle" name="middle" autocomplete="off"><br>
 				<p><label>Last Name</label></br>
@@ -98,16 +92,22 @@ session_start();
 				<p><label>Confirm Password</label></br>
 					<input type="password" id="confPassword" name="confPassword"></p>
 				<button id="button" type="submit">Register</button>
-				<?php echo generateInputTags(); ?>
+				</form>
 		</fieldset>
-		</form>
 
-
+	</div>
 </div>
-<div id="outputArea"></div>
-</div>
-
-
+<?php
+echo <<<HTML
+		<script>
+			$(function() {
+				$('#signInLink').removeClass('hidden');
+				$(':input').attr('disabled', true);
+				$(':button').attr('disabled', true);
+			});
+		</script>
+HTML;
+?>
 </body>
 </html>
 
